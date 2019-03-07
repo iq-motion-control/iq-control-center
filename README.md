@@ -1,4 +1,4 @@
-![release](https://img.shields.io/github/tag/iq-motion-control-admin/iq_gui.svg?color=green&label=release)
+![release](https://img.shields.io/github/tag/iq-motion-control/iq-control-center.svg?color=green&label=release)
 
 # IQ Control Center
 
@@ -22,7 +22,7 @@ When you have QT installed, just choose Open Project and select IQControlCenter.
 ## Deployment
 
 Deployment of this GUI can be done on any platform thanks to QT. If you would like more information on how to do this please follow the following link [QT deployement](https://doc.qt.io/qt-5/deployment.html)
-We also have already deployed installers that you can download here ADD LINK !!!!!
+We also have already deployed installers that you can download for MAC and WINDOWS on our [website](http://iq-control.com/control-center)
 
 ## Contributing
 
@@ -30,7 +30,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/iq-motion-control-admin/iq_gui/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/iq-motion-control/iq-control-center/tags).
 
 ## Authors
 
