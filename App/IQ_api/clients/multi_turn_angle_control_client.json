@@ -1,0 +1,34 @@
+[  //multi_turn_angle_control_client 
+  {
+    "descriptor":"multi_turn_angle_control_client",
+    "Entries": 
+		[
+			{"type_idn":59, "descriptor":"ctrl_mode",                       "sub_idn":0,  "format":"b", "unit":""         },
+			{"type_idn":59, "descriptor":"ctrl_brake",                      "sub_idn":1,  "format":"n", "unit":""         },
+			{"type_idn":59, "descriptor":"ctrl_coast",                      "sub_idn":2,  "format":"n", "unit":""         },
+			{"type_idn":59, "descriptor":"ctrl_angle",                      "sub_idn":3,  "format":"f", "unit":"rad"      },
+			{"type_idn":59, "descriptor":"ctrl_velocity",                   "sub_idn":4,  "format":"f", "unit":"rad/s"    },
+			{"type_idn":59, "descriptor":"angle_Kp",                        "sub_idn":5,  "format":"f", "unit":"V/rad"    },
+			{"type_idn":59, "descriptor":"angle_Ki",                        "sub_idn":6,  "format":"f", "unit":"V/(rad*s)"},
+			{"type_idn":59, "descriptor":"angle_Kd",                        "sub_idn":7,  "format":"f", "unit":"V/(rad/s)"},
+			{"type_idn":59, "descriptor":"timeout",                         "sub_idn":8,  "format":"f", "unit":"s"        },
+			{"type_idn":59, "descriptor":"filter_fc",                       "sub_idn":9,  "format":"I", "unit":"Hz"       },
+			{"type_idn":59, "descriptor":"filter_fs",                       "sub_idn":10, "format":"I", "unit":"Hz"       },
+			{"type_idn":59, "descriptor":"obs_angular_displacement",        "sub_idn":11, "format":"f", "unit":"rad"      },
+			{"type_idn":59, "descriptor":"obs_angular_velocity",            "sub_idn":12, "format":"f", "unit":"rad/s"    },
+			{"type_idn":59, "descriptor":"meter_per_rad",                   "sub_idn":13, "format":"f", "unit":"m/rad"    },
+			{"type_idn":59, "descriptor":"ctrl_linear_displacement",        "sub_idn":14, "format":"f", "unit":"m"        },
+			{"type_idn":59, "descriptor":"ctrl_linear_velocity",            "sub_idn":15, "format":"f", "unit":"m/s"      },
+			{"type_idn":59, "descriptor":"obs_linear_displacement",         "sub_idn":16, "format":"f", "unit":"m"        },
+			{"type_idn":59, "descriptor":"obs_linear_velocity",             "sub_idn":17, "format":"f", "unit":"m/s"      },
+			{"type_idn":59, "descriptor":"angular_speed_max",               "sub_idn":18, "format":"f", "unit":"rad/s"    },
+			{"type_idn":59, "descriptor":"trajectory_angular_displacement", "sub_idn":19, "format":"f", "unit":"rad"      },
+			{"type_idn":59, "descriptor":"trajectory_angular_velocity",     "sub_idn":20, "format":"f", "unit":"rad/s"    },
+			{"type_idn":59, "descriptor":"trajectory_angular_acceleration", "sub_idn":21, "format":"f", "unit":"rad/s^2"  },
+			{"type_idn":59, "descriptor":"trajectory_duration",             "sub_idn":22, "format":"f", "unit":"s"        },
+			{"type_idn":59, "descriptor":"trajectory_linear_displacement",  "sub_idn":23, "format":"f", "unit":"m"        },
+			{"type_idn":59, "descriptor":"trajectory_linear_velocity",      "sub_idn":24, "format":"f", "unit":"m/s"      },
+			{"type_idn":59, "descriptor":"trajectory_linear_acceleration",  "sub_idn":25, "format":"f", "unit":"m/s^2"    }
+		]
+  }
+]

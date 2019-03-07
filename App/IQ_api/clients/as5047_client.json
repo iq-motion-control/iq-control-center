@@ -1,0 +1,15 @@
+[  //as5047_client 
+  {
+    "descriptor":"as5047_client",
+    "Entries": 
+		[
+			{"type_idn":57, "descriptor":"angle",            "sub_idn":0, "format":"f", "unit": "rad"},
+			{"type_idn":57, "descriptor":"angle_source",     "sub_idn":1, "format":"B", "unit": ""   },
+			{"type_idn":57, "descriptor":"settings1",        "sub_idn":2, "format":"H", "unit": ""   },
+			{"type_idn":57, "descriptor":"settings2",        "sub_idn":3, "format":"H", "unit": ""   },
+			{"type_idn":57, "descriptor":"diagnostic",       "sub_idn":4, "format":"H", "unit": ""   },
+			{"type_idn":57, "descriptor":"errfl",            "sub_idn":5, "format":"H", "unit": ""   },
+			{"type_idn":57, "descriptor":"one_time_program", "sub_idn":6, "format":"n", "unit": ""   }
+		]
+  }
+]

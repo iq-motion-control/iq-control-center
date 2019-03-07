@@ -1,0 +1,25 @@
+[  //propeller_motor_control_client
+  {
+    "descriptor":"propeller_motor_control_client",
+    "Entries": 
+		[
+			{"type_idn":52, "descriptor":"ctrl_mode",        "sub_idn":0,  "format":"b", "unit":""           },
+			{"type_idn":52, "descriptor":"ctrl_brake",       "sub_idn":1,  "format":"n", "unit":""           },
+			{"type_idn":52, "descriptor":"ctrl_coast",       "sub_idn":2,  "format":"n", "unit":""           },
+			{"type_idn":52, "descriptor":"ctrl_pwm",         "sub_idn":3,  "format":"f", "unit":"pwm"        },
+			{"type_idn":52, "descriptor":"ctrl_volts",       "sub_idn":4,  "format":"f", "unit":"V"          },
+			{"type_idn":52, "descriptor":"ctrl_velocity",    "sub_idn":5,  "format":"f", "unit":"rad/s"      },
+			{"type_idn":52, "descriptor":"ctrl_thrust",      "sub_idn":6,  "format":"f", "unit":"N"          },
+			{"type_idn":52, "descriptor":"velocity_Kp",      "sub_idn":7,  "format":"f", "unit":"V/(rad/s)"  },
+			{"type_idn":52, "descriptor":"velocity_Ki",      "sub_idn":8,  "format":"f", "unit":"V/(rad)"    },
+			{"type_idn":52, "descriptor":"velocity_Kd",      "sub_idn":9,  "format":"f", "unit":"V/(rad/s^2)"},
+			{"type_idn":52, "descriptor":"velocity_ff0",     "sub_idn":10, "format":"f", "unit":"V"          },
+			{"type_idn":52, "descriptor":"velocity_ff1",     "sub_idn":11, "format":"f", "unit":"V/(rad/s)"  },
+			{"type_idn":52, "descriptor":"velocity_ff2",     "sub_idn":12, "format":"f", "unit":"V/(rad/s)^2"},
+			{"type_idn":52, "descriptor":"propeller_kt_pos", "sub_idn":13, "format":"f", "unit":"N/(rad/s)^2"},
+			{"type_idn":52, "descriptor":"propeller_kt_neg", "sub_idn":14, "format":"f", "unit":"N/(rad/s)^2"},
+			{"type_idn":52, "descriptor":"timeout",          "sub_idn":15, "format":"f", "unit":"s"          },
+			{"type_idn":52, "descriptor":"input_filter_fc",  "sub_idn":16, "format":"I", "unit":"Hz"         }
+		]
+  }
+]

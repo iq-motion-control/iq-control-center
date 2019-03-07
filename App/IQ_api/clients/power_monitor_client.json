@@ -1,0 +1,20 @@
+[  //power_monitor_client 
+  {
+    "descriptor":"power_monitor_client",
+    "Entries": 
+		[
+			{"type_idn":69, "descriptor":"volts",        "sub_idn":0,  "format":"f", "unit":"V"    },
+			{"type_idn":69, "descriptor":"amps",         "sub_idn":1,  "format":"f", "unit":"A"    },
+			{"type_idn":69, "descriptor":"watts",        "sub_idn":2,  "format":"f", "unit":"W"    },
+			{"type_idn":69, "descriptor":"joules",       "sub_idn":3,  "format":"f", "unit":"J"    },
+			{"type_idn":69, "descriptor":"reset_joules", "sub_idn":4,  "format":"n", "unit":""     },
+			{"type_idn":69, "descriptor":"filter_fs",    "sub_idn":5,  "format":"I", "unit":"Hz"   },
+			{"type_idn":69, "descriptor":"filter_fc",    "sub_idn":6,  "format":"I", "unit":"Hz"   },
+			{"type_idn":69, "descriptor":"volts_raw",    "sub_idn":7,  "format":"H", "unit":"-"    },
+			{"type_idn":69, "descriptor":"amps_raw",     "sub_idn":8,  "format":"H", "unit":"-"    },
+			{"type_idn":69, "descriptor":"volts_gain",   "sub_idn":9,  "format":"f", "unit":"V/bit"},
+			{"type_idn":69, "descriptor":"amps_gain",    "sub_idn":10, "format":"f", "unit":"A/bit"},
+			{"type_idn":69, "descriptor":"amps_bias",    "sub_idn":11, "format":"f", "unit":"-"    }
+		]
+  }
+]

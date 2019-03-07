@@ -1,0 +1,12 @@
+[  //sin_cos_encoder_client 
+  {
+    "descriptor":"sin_cos_encoder_client",
+    "Entries": 
+		[
+			{"type_idn":68, "descriptor":"x",            "sub_idn":0, "format":"h", "unit":""},
+			{"type_idn":68, "descriptor":"y",            "sub_idn":1, "format":"h", "unit":""},
+			{"type_idn":68, "descriptor":"absolute_rev", "sub_idn":2, "format":"I", "unit":""},
+			{"type_idn":68, "descriptor":"absolute_rad", "sub_idn":3, "format":"f", "unit":""}
+		]
+  }
+]

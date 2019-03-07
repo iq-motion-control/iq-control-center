@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>IQ_api/clients/angle_motor_control_client.json</file>
+        <file>IQ_api/clients/as5047_client.json</file>
+        <file>IQ_api/clients/buffered_voltage_monitor_client.json</file>
+        <file>IQ_api/clients/buzzer_control_client.json</file>
+        <file>IQ_api/clients/clients.json</file>
+        <file>IQ_api/clients/complex_motor_control_client.json</file>
+        <file>IQ_api/clients/encoder_client.json</file>
+        <file>IQ_api/clients/esc_propeller_input_parser_client.json</file>
+        <file>IQ_api/clients/multi_turn_angle_control_client.json</file>
+        <file>IQ_api/clients/power_monitor_client.json</file>
+        <file>IQ_api/clients/predicting_linearizing_rev_conv_compact_client.json</file>
+        <file>IQ_api/clients/propeller_motor_control_client.json</file>
+        <file>IQ_api/clients/safe_brushless_drive_client.json</file>
+        <file>IQ_api/clients/serial_client.json</file>
+        <file>IQ_api/clients/sin_cos_encoder_client.json</file>
+        <file>IQ_api/clients/system_control_client.json</file>
+    </qresource>
+</RCC>
