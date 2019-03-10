@@ -75,6 +75,36 @@
           7,
           8
         ]
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "Safe Factor",
+        "info": "Scales down the values coming from the FC.  Set this to 0.1 to make everything 1/10th the command.  Set this to 1 for normal use.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "PU",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "FC 2D/3D Mode",
+        "info": "The FC and the ESC must agree upon the meaning of the signal coming out of the ESC.  When FCs are in 3D mode they remap negative signals.  This parameter keeps the FC and ESC in agreement.",
+        "sub_idn": 8,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "2D",
+          "3D"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
       }
     ]
   }
