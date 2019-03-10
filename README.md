@@ -1,4 +1,4 @@
-![release](https://img.shields.io/github/tag/iq-motion-control/iq-control-center.svg?color=green&label=release)
+![Release Version](release_badge.svg)
 
 # IQ Control Center
 
