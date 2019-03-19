@@ -1,0 +1,68 @@
+[  //complex_motor_control_client 
+  {
+    "descriptor":"complex_motor_control_client",
+    "Entries": 
+		[
+			{"type_idn":51, "descriptor":"cmd_mode",              "sub_idn":0,  "format":"B", "unit":""            },
+			{"type_idn":51, "descriptor":"cmd_phase_pwm",         "sub_idn":1,  "format":"f", "unit":"pwm"         },
+			{"type_idn":51, "descriptor":"cmd_phase_volts",       "sub_idn":2,  "format":"f", "unit":"V"           },
+			{"type_idn":51, "descriptor":"cmd_spin_pwm",          "sub_idn":3,  "format":"f", "unit":"pwm"         },
+			{"type_idn":51, "descriptor":"cmd_spin_volts",        "sub_idn":4,  "format":"f", "unit":"V"           },
+			{"type_idn":51, "descriptor":"cmd_brake",             "sub_idn":5,  "format":"n", "unit":""            },
+			{"type_idn":51, "descriptor":"cmd_coast",             "sub_idn":6,  "format":"n", "unit":""            },
+			{"type_idn":51, "descriptor":"cmd_calibrate",         "sub_idn":7,  "format":"f", "unit":"pwm"         },
+			{"type_idn":51, "descriptor":"cmd_velocity",          "sub_idn":8,  "format":"f", "unit":"rad/s"       },
+			{"type_idn":51, "descriptor":"cmd_angle",             "sub_idn":9,  "format":"f", "unit":"rad"         },
+
+			{"type_idn":51, "descriptor":"drive_pwm",             "sub_idn":10, "format":"f", "unit":"pwm"        },
+			{"type_idn":51, "descriptor":"drive_volts",           "sub_idn":11, "format":"f", "unit":"V"          },
+
+			{"type_idn":51, "descriptor":"mech_lead_angle",       "sub_idn":12, "format":"f", "unit":"rad"        },
+
+			{"type_idn":51, "descriptor":"obs_supply_volts",      "sub_idn":13, "format":"f", "unit":"V"          },
+			{"type_idn":51, "descriptor":"obs_supply_amps",       "sub_idn":14, "format":"f", "unit":"A"          },
+			{"type_idn":51, "descriptor":"obs_angle",             "sub_idn":15, "format":"f", "unit":"rad"        },
+			{"type_idn":51, "descriptor":"obs_absolute_angle",    "sub_idn":16, "format":"f", "unit":"rad"        },
+			{"type_idn":51, "descriptor":"obs_velocity",          "sub_idn":17, "format":"f", "unit":"rad/s"      },
+
+			{"type_idn":51, "descriptor":"motor_pole_pairs",      "sub_idn":18, "format":"H", "unit":""           },
+			{"type_idn":51, "descriptor":"motor_emf_shape",       "sub_idn":19, "format":"B", "unit":""           },
+			{"type_idn":51, "descriptor":"motor_Kv",              "sub_idn":20, "format":"f", "unit":"RPM/V"      },
+			{"type_idn":51, "descriptor":"motor_R_ohm",           "sub_idn":21, "format":"f", "unit":"ohm"        },
+			{"type_idn":51, "descriptor":"motor_I_max",           "sub_idn":22, "format":"f", "unit":"A"          },
+
+			{"type_idn":51, "descriptor":"permute_wires",         "sub_idn":23, "format":"B", "unit":"bool"       },
+			{"type_idn":51, "descriptor":"calibration_angle",     "sub_idn":24, "format":"f", "unit":"rad"        },
+			{"type_idn":51, "descriptor":"lead_time",             "sub_idn":25, "format":"f", "unit":"s"          },
+			{"type_idn":51, "descriptor":"commutation_hz",        "sub_idn":26, "format":"I", "unit":"Hz"         },
+			{"type_idn":51, "descriptor":"control_hz",            "sub_idn":27, "format":"I", "unit":"Hz"         },
+
+			{"type_idn":51, "descriptor":"phase_angle",           "sub_idn":28, "format":"f", "unit":"rad"        },
+			{"type_idn":51, "descriptor":"calibration_time",      "sub_idn":29, "format":"f", "unit":"s"          },
+			{"type_idn":51, "descriptor":"velocity_filter_fc",    "sub_idn":30, "format":"I", "unit":"Hz"         },
+			{"type_idn":51, "descriptor":"velocity_filter_value", "sub_idn":31, "format":"f", "unit":"rad/s"      },
+
+			{"type_idn":51, "descriptor":"velocity_Kp",           "sub_idn":32, "format":"f", "unit":"V/(rad/s)"  },
+			{"type_idn":51, "descriptor":"velocity_Ki",           "sub_idn":33, "format":"f", "unit":"V/(rad)"    },
+			{"type_idn":51, "descriptor":"velocity_Kd",           "sub_idn":34, "format":"f", "unit":"V/(rad/s^2)"},
+			{"type_idn":51, "descriptor":"velocity_ff0",          "sub_idn":35, "format":"f", "unit":"V"          },
+			{"type_idn":51, "descriptor":"velocity_ff1",          "sub_idn":36, "format":"f", "unit":"V/(rad/s)"  },
+			{"type_idn":51, "descriptor":"velocity_ff2",          "sub_idn":37, "format":"f", "unit":"V/(rad/s)^2"},
+
+			{"type_idn":51, "descriptor":"angle_Kp",              "sub_idn":38, "format":"f", "unit":"V/(rad)"    },
+			{"type_idn":51, "descriptor":"angle_Ki",              "sub_idn":39, "format":"f", "unit":"V/(rad*s)"  },
+			{"type_idn":51, "descriptor":"angle_Kd",              "sub_idn":40, "format":"f", "unit":"V/(rad/s)"  },
+
+			{"type_idn":51, "descriptor":"est_motor_amps",        "sub_idn":42, "format":"f", "unit":"A"          },
+			{"type_idn":51, "descriptor":"est_motor_torque",      "sub_idn":43, "format":"f", "unit":"Nm"         },
+			{"type_idn":51, "descriptor":"obs_motor_amps",        "sub_idn":44, "format":"f", "unit":"A"          },
+			{"type_idn":51, "descriptor":"ctrl_spin_amps",        "sub_idn":45, "format":"f", "unit":"A"          },
+			{"type_idn":51, "descriptor":"ctrl_spin_torque",      "sub_idn":46, "format":"f", "unit":"Nm"         },
+			{"type_idn":51, "descriptor":"amps_Kp",               "sub_idn":47, "format":"f", "unit":"V/A"        },
+			{"type_idn":51, "descriptor":"amps_Ki",               "sub_idn":48, "format":"f", "unit":"V/(A*s)"    },
+			{"type_idn":51, "descriptor":"amps_Kd",               "sub_idn":49, "format":"f", "unit":"V/(A/s)"    },
+
+			{"type_idn":51, "descriptor":"volts_limit",           "sub_idn":50, "format":"f", "unit":"V"          }
+		]
+  }
+]

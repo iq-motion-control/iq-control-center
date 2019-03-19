@@ -1,0 +1,13 @@
+[  //buffered_voltage_monitor_client 
+  {
+    "descriptor":"buffered_voltage_monitor_client",
+    "Entries": 
+		[
+			{"type_idn":42, "descriptor":"volts_raw",  "sub_idn":0,  "format":"f", "unit":"V" },
+			{"type_idn":42, "descriptor":"volts",      "sub_idn":2,  "format":"f", "unit":"V" },
+			{"type_idn":42, "descriptor":"volts_gain", "sub_idn":11, "format":"f", "unit":""  },
+			{"type_idn":42, "descriptor":"filter_fs",  "sub_idn":16, "format":"I", "unit":"Hz"},
+			{"type_idn":42, "descriptor":"filter_fc",  "sub_idn":17, "format":"I", "unit":"Hz"}
+		]
+  }
+]

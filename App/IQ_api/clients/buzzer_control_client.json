@@ -1,0 +1,14 @@
+[  //buzzer_control_client 
+  {
+    "descriptor":"buzzer_control_client",
+    "Entries": 
+		[
+			{"type_idn":61, "descriptor":"ctrl_mode",  "sub_idn":0, "format":"b", "unit":""     },
+			{"type_idn":61, "descriptor":"ctrl_brake", "sub_idn":1, "format":"n", "unit":""     },
+			{"type_idn":61, "descriptor":"ctrl_coast", "sub_idn":2, "format":"n", "unit":""     },
+			{"type_idn":61, "descriptor":"ctrl_note",  "sub_idn":3, "format":"n", "unit":"pwm"  },
+			{"type_idn":61, "descriptor":"volume",     "sub_idn":4, "format":"f", "unit":"V"    },
+			{"type_idn":61, "descriptor":"period",     "sub_idn":5, "format":"I", "unit":"rad/s"}
+		]
+  }
+]

@@ -1,0 +1,16 @@
+[  //encoder_client 
+  {
+    "descriptor":"encoder_client",
+    "Entries": 
+		[
+			{"type_idn":53, "descriptor":"zero_angle",         "sub_idn":0, "format":"f", "unit":"rad"  },
+			{"type_idn":53, "descriptor":"velocity_filter_fs", "sub_idn":1, "format":"I", "unit":"Hz"   },
+			{"type_idn":53, "descriptor":"velocity_filter_fc", "sub_idn":2, "format":"I", "unit":"Hz"   },
+			{"type_idn":53, "descriptor":"rev",                "sub_idn":3, "format":"I", "unit":"Rev32"},
+			{"type_idn":53, "descriptor":"absolute_rev",       "sub_idn":4, "format":"I", "unit":"Rev32"},
+			{"type_idn":53, "descriptor":"rad",                "sub_idn":5, "format":"f", "unit":"rad"  },
+			{"type_idn":53, "descriptor":"absolute_rad",       "sub_idn":6, "format":"f", "unit":"rad"  },
+			{"type_idn":53, "descriptor":"velocity",           "sub_idn":7, "format":"f", "unit":"rad"  }
+	  ]
+  }
+]

@@ -1,45 +1,47 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+![Release Version](release_badge.svg)
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+# IQ Control Center
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+This is all the source code used to create and run the IQ Control Center.
 
----
+## Getting Started
 
-## Edit a file
+If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows and Mac. 
+  
+If you are looking to play with the source code or compile from source continue reading !
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+### Prerequisites
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+To use the precompiled versions fo the app, you will need Windows 10 or higher and/or macOS 10.13 or higher.  
+  
+To use the source code, you will need to install QT creator IDE in order to edit and build this project.
+You will need QT 5.12 or higher.
+Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)
 
----
+### Installing
 
-## Create a file
+When you have QT installed, just choose Open Project and select IQControlCenter.pro file !
 
-Next, you’ll add a new file to this repository.
+## Deployment
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+Deployment of this app can be done on any platform thanks to QT. If you would like more information on how to do this please follow the following link [QT deployement](https://doc.qt.io/qt-5/deployment.html)
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
 
----
+## Contributing
 
-## Clone a repository
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
+## Versioning
 
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/iq-motion-control/iq-control-center/tags) or the [releases on this repository](https://github.com/iq-motion-control/iq-control-center/releases).
 
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+## Authors
+
+* **Raphael Van Hoffelen** 
+
+See also the list of [contributors](contributors.md) who participated in this project
+
+## License
+
+The Qt app part of this project is licensed under the GNU GPL-3.0-or-later license  - see the [LICENSE](LICENSE) file for details.  
+The IQ_API part of this project is licensed under the GNU LGPL-3.0-or-later license - see the [LICENSE.LESSER](App/IQ_api/LICENSE.LESSER) file for details.

@@ -1,0 +1,9 @@
+[  //serial_client 
+  {
+    "descriptor":"serial_client",
+    "Entries": 
+		[
+			{"type_idn":16, "descriptor":"baud_rate", "sub_idn":0, "format":"I", "unit":"bps"}
+		]
+  }
+]

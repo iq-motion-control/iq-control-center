@@ -1,0 +1,16 @@
+[  //predicting_linearizing_rev_conv_compact_client 
+  {
+    "descriptor":"predicting_linearizing_rev_conv_compact_client",
+    "Entries": 
+		[
+			{"type_idn":70, "descriptor":"table_size",    "sub_idn":0, "format":"H", "unit":""     },
+			{"type_idn":70, "descriptor":"is_data_valid", "sub_idn":1, "format":"B", "unit":"bool" },
+			{"type_idn":70, "descriptor":"is_enabled",    "sub_idn":2, "format":"B", "unit":"bool" },
+			{"type_idn":70, "descriptor":"erase",         "sub_idn":3, "format":"n", "unit":""     },
+			{"type_idn":70, "descriptor":"alpha",         "sub_idn":6, "format":"i", "unit":"Fix29"},
+			{"type_idn":70, "descriptor":"beta",          "sub_idn":7, "format":"i", "unit":"Fix29"},
+			{"type_idn":70, "descriptor":"position",      "sub_idn":8, "format":"f", "unit":"rad"  },
+			{"type_idn":70, "descriptor":"velocity",      "sub_idn":9, "format":"f", "unit":"rad/s"}
+		]
+  }
+]

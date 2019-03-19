@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/IQ_blue.png</file>
+        <file>res/general_icon.png</file>
+        <file>res/setup_icon.png</file>
+        <file>res/tuning_icon.png</file>
+        <file>res/plotting_icon.png</file>
+        <file>res/advanced_icon.png</file>
+        <file>res/firmware_icon.png</file>
+        <file>res/IQ_gui_header2.png</file>
+        <file>res/board.png</file>
+        <file>res/IQ_gui_header3.png</file>
+        <file>res/welcome_icon.png</file>
+        <file>res/default_icon.png</file>
+        <file>res/save.png</file>
+        <file>res/up_arrow_icon.png</file>
+        <file>res/down_arrow_icon.png</file>
+        <file>res/loader.gif</file>
+        <file>res/info_icon.png</file>
+    </qresource>
+</RCC>

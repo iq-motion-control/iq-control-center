@@ -1,0 +1,27 @@
+[  //system_control_client 
+{
+    "descriptor":"system_control_client",
+            "Entries":
+            [
+                {"type_idn":5, "descriptor":"reboot_program",     "sub_idn":0,  "format":"n",  "unit":""    },
+                {"type_idn":5, "descriptor":"reboot_boot_loader", "sub_idn":1,  "format":"n",  "unit":""    },
+                {"type_idn":5, "descriptor":"dev_id",             "sub_idn":2,  "format":"H", "unit":""    },
+                {"type_idn":5, "descriptor":"rev_id",             "sub_idn":3,  "format":"H", "unit":""    },
+                {"type_idn":5, "descriptor":"uid1",               "sub_idn":4,  "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"uid2",               "sub_idn":5,  "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"uid3",               "sub_idn":6,  "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"mem_size",           "sub_idn":7,  "format":"H", "unit":"Kb"  },
+                {"type_idn":5, "descriptor":"build_year",         "sub_idn":8,  "format":"H", "unit":"year"},
+                {"type_idn":5, "descriptor":"build_month",        "sub_idn":9,  "format":"B", "unit":"mon" },
+                {"type_idn":5, "descriptor":"build_day",          "sub_idn":10, "format":"B", "unit":"day" },
+                {"type_idn":5, "descriptor":"build_hour",         "sub_idn":11, "format":"B", "unit":"hour"},
+                {"type_idn":5, "descriptor":"build_minute",       "sub_idn":12, "format":"B", "unit":"min" },
+                {"type_idn":5, "descriptor":"build_second",       "sub_idn":13, "format":"B", "unit":"s"   },
+                {"type_idn":5, "descriptor":"module_id",          "sub_idn":14, "format":"B", "unit":"id"  },
+                {"type_idn":5, "descriptor":"time",               "sub_idn":15, "format":"f", "unit":"s"   },
+                {"type_idn":5, "descriptor":"firmware",           "sub_idn":16, "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"hardware",           "sub_idn":17, "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"electronics",        "sub_idn":18, "format":"I", "unit":""    }
+            ]
+}
+]

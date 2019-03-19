@@ -1,0 +1,15 @@
+[  //esc_propeller_input_parser_client 
+  {
+    "descriptor":"esc_propeller_input_parser_client",
+    "Entries": 
+		[
+			{"type_idn":60, "descriptor":"mode",         "sub_idn":0, "format":"B", "unit":"enum" },
+			{"type_idn":60, "descriptor":"raw_value",    "sub_idn":1, "format":"f", "unit":"PU"   },
+			{"type_idn":60, "descriptor":"map",          "sub_idn":2, "format":"B", "unit":"enum" },
+			{"type_idn":60, "descriptor":"sign",         "sub_idn":3, "format":"B", "unit":"enum" },
+			{"type_idn":60, "descriptor":"volts_max",    "sub_idn":4, "format":"f", "unit":"V"    },
+			{"type_idn":60, "descriptor":"velocity_max", "sub_idn":5, "format":"f", "unit":"rad/s"},
+			{"type_idn":60, "descriptor":"thrust_max",   "sub_idn":6, "format":"f", "unit":"N"    }
+		]
+  }
+]
