@@ -22,6 +22,10 @@ Here is the link to download QT creator IDE for free : [QT Creator](https://www.
 
 When you have QT installed, just choose Open Project and select IQControlCenter.pro file !
 
+## Running
+
+QT normally compiles and create an executable in a different directory that where the source code is located. You have to make sure to have the Resource folder in the same directory of your executable after you compiled the project on QT Creator. You will still be able to run the Control Center without the Resource Folder in the same directory but the tabs won't populate when you connect a motor.
+
 ## Deployment
 
 Deployment of this app can be done on any platform thanks to QT. If you would like more information on how to do this please follow the following link [QT deployement](https://doc.qt.io/qt-5/deployment.html)
