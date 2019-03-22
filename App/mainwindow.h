@@ -23,12 +23,15 @@
 
 #include <QMainWindow>
 #include <QBoxLayout>
+#include <QtAutoUpdaterGui/UpdateController>
+#include <QtAutoUpdaterGui/UpdateButton>
 
 #include "tab.h"
 #include "defaults.h"
 #include "home.h"
 #include "firmware.h"
 #include "testing.h"
+#include "updater.hpp"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
@@ -38,8 +41,6 @@
 #include <string>
 #include <map>
 #include <vector>
-
-//#define GUI_VERSION "0.1.0"
 
 namespace Ui {
 class MainWindow;
@@ -76,8 +77,14 @@ private slots:
 
     void SetDefaults(Json::Value defaults);
 
+    void initializeUpdater();
+
+    void checkUpdate();
+
 private:
     Ui::MainWindow *ui;
+    QtAutoUpdater::UpdateController *controller;
+    QtAutoUpdater::UpdateButton *updateButton;
 };
 
 #endif // MAINWINDOW_H

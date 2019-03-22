@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->stackedWidget->setCurrentIndex(0);
   ui->pushButton_home->setChecked(1);
 
+  Updater *update = new Updater(ui,parent);
+  update->ConnectUpdater();
+
   QString gui_version = QString::number(MAJOR) + "." + QString::number(MINOR) + "." + QString::number(PATCH);
   ui->label_gui_version_value->setText(gui_version);
   try
@@ -241,5 +244,20 @@ void MainWindow::ClearTabs()
 {
   tab_map_.clear();
 }
+
+//Initialize the updater
+void MainWindow::initializeUpdater()
+{
+  controller = new QtAutoUpdater::UpdateController(QStringLiteral("maintenancetool.exe"), qApp);	//Updater app name
+  controller->setDetailedUpdateInfo(true);
+  updateButton->setController(controller);
+}
+
+//Starts update check process
+void MainWindow::checkUpdate()
+{
+  controller->start(QtAutoUpdater::UpdateController::ProgressLevel);	//Check for updates. Displays a progress bar when searching
+}
+
 
 

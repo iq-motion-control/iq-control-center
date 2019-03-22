@@ -7,6 +7,8 @@
 QT       += core gui widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 QT += serialport
+QT += autoupdatergui
+QT += autoupdatercore
 
 TARGET = "IQ Control Center"
 #TEMPLATE = app
@@ -21,17 +23,18 @@ RC_ICONS = icons/IQ.ico
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-DEFINES += MAJOR=0 \
-           MINOR=1 \
+DEFINES += MAJOR=1 \
+           MINOR=0 \
            PATCH=0
 
+DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++11
-#CONFIG += static
+CONFIG += static
 
 #CONFIG-=app_bundle
 #QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
@@ -61,7 +64,8 @@ SOURCES += \
     frame_testing.cpp \
     testing.cpp \
     custom_double_spinbox.cpp \
-    custom_combo_box.cpp
+    custom_combo_box.cpp \
+    updater.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -92,7 +96,8 @@ HEADERS += \
     frame_testing.h \
     testing.h \
     custom_double_spinbox.h \
-    custom_combo_box.h
+    custom_combo_box.h \
+    updater.hpp
 
 FORMS += \
         mainwindow.ui
