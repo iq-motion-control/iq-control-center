@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->boot_mode_button, SIGNAL(clicked()), firm, SLOT(BootModeSelected()));
 
     Testing *test = new Testing();
+    connect(iv.pcon, SIGNAL(ObjIdFound()), test, SLOT(CreateClient()));
     connect(ui->testing_coast, SIGNAL(clicked()), test, SLOT(Coast()));
     connect(ui->testing_brake, SIGNAL(clicked()), test, SLOT(Brake()));
 

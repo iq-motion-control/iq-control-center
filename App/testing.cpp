@@ -22,6 +22,10 @@
 
 Testing::Testing()
 {
+}
+
+void Testing::CreateClient()
+{
   mot_map_ = ClientsFromJson(iv.pcon->GetObjId(), "safe_brushless_drive_client.json",  ":/IQ_api/clients/");
 }
 

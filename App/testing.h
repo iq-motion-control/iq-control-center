@@ -36,6 +36,7 @@ class Testing : public QObject
   signals:
 
   public slots:
+    void CreateClient();
     void Coast();
     void Brake();
 };

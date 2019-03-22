@@ -76,6 +76,8 @@ class PortConnection: public QObject
 
   signals:
 
+    void ObjIdFound();
+
     void FindSavedValues();
 
     void TypeStyleFound(int,int);

@@ -36,7 +36,8 @@ CMakeLists.txt.user
 
 # Build directory
 dist/
-*IQ
+*IQ\ Control\ Center
+*"IQ Control Center"
 *.exe
 
 #Mac

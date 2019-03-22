@@ -77,7 +77,7 @@ void PortConnection::ConnectMotor()
         if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_))
           throw QString("CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
 
-        std::map<std::string, Client*> mot_map = ClientsFromJson(obj_id_, "safe_brushless_drive_client.json", clients_folder_path_);
+        emit ObjIdFound();
 
         // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
         if(GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f, hardware_value))
