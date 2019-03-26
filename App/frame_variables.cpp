@@ -131,6 +131,12 @@ FrameVariables* CreateFrameVariables(const Json::Value &param)
       frame_variables_ptr->testing_frame_.single_step = param["single_step"].asDouble();
       frame_variables_ptr->testing_frame_.decimal = param["decimal"].asDouble();
       frame_variables_ptr->testing_frame_.unit = param["unit"].asString();
+      break;
+    }
+    case 5:
+    {
+      frame_variables_ptr->button_frame_.info = param["info"].asString();
+      break;
     }
   }
 

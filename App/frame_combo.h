@@ -39,7 +39,7 @@
 
 class FrameCombo: public Frame
 {
-    Q_OBJECT
+  Q_OBJECT
   public:
     FrameCombo(QWidget *parent,Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry,  FrameVariables* fv);
 

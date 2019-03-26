@@ -81,6 +81,12 @@ void Tab::CreateFrames()
           frame_map_[client_entry_descriptor] = ft;
           break;
         }
+        case 5:
+          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv);
+          gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
+          ConnectFrameButton(fb);
+          frame_map_[client_entry_descriptor] = fb;
+          break;
       }
       ++frame_vertical_position;
     }
@@ -169,6 +175,11 @@ void Tab::ConnectFrameTesting(FrameTesting *ft)
 {
   connect(ft->spin_box_, QOverload<double>::of(&QDoubleSpinBox::valueChanged), ft, &FrameTesting::SpinBoxValueChanged);
   connect(ft->push_button_set_, SIGNAL(clicked()), ft, SLOT(SetValue()));
+}
+
+void Tab::ConnectFrameButton(FrameButton *fb)
+{
+  connect(fb->push_button_set_, SIGNAL(clicked()), fb, SLOT(SetValue()));
 }
 
 Tab::~Tab()

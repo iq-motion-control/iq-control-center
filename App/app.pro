@@ -65,7 +65,8 @@ SOURCES += \
     testing.cpp \
     custom_double_spinbox.cpp \
     custom_combo_box.cpp \
-    updater.cpp
+    updater.cpp \
+    frame_button.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -97,7 +98,8 @@ HEADERS += \
     testing.h \
     custom_double_spinbox.h \
     custom_combo_box.h \
-    updater.hpp
+    updater.hpp \
+    frame_button.hpp
 
 FORMS += \
         mainwindow.ui

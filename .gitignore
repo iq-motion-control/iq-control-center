@@ -50,4 +50,5 @@ dist/
 *debug/
 *users*
 *object_script*
+*.vscode/
 
