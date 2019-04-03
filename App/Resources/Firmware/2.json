@@ -1,6 +1,14 @@
 [
   {
+    "value": 1,
+    "name": "speed-1"
+  },
+  {
     "value": 2,
-    "name": "position-2"
+    "name": "servo-2"
+  },
+  {
+    "value": 4,
+    "name": "stepdir-4"
   }
 ]
