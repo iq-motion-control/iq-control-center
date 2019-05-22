@@ -87,7 +87,7 @@ void FrameButton::SetValue()
     try
     {
       if(!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first))
-        throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+        throw QString("COULDN'T SET VALUE: please reconnect or try again");
       iv.pcon->GetQSerialInterface()->SendNow();
     }
     catch(const QString &e)

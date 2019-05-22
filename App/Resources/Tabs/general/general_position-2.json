@@ -19,7 +19,7 @@
       {
         "type_idn": 71,
         "descriptor": "Anticogging",
-	"info": "This electrically cancels cogging torque to make your motor smoother.",
+	      "info": "This electrically cancels cogging torque to make your motor smoother.",
         "sub_idn": 2,
         "format": "B",
         "unit": "enum",

@@ -25,6 +25,15 @@
         "minimum": -25,
         "decimal": 2,
         "single_step": 0.01
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "button test",
+        "info": "LALALALALALA",
+        "sub_idn": 6,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }
