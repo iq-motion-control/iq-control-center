@@ -3,9 +3,9 @@
     "descriptor": "testing_position-2",
     "Entries": [
       {
-        "type_idn": 50,
+        "type_idn": 59,
         "descriptor": "PWM",
-        "sub_idn": 3,
+        "sub_idn": 9,
         "format": "f",
         "unit": "pwm",
         "frame_type": 4,
@@ -15,9 +15,9 @@
         "single_step": 0.01
       },
       {
-        "type_idn": 50,
+        "type_idn": 59,
         "descriptor": "Voltage",
-        "sub_idn": 4,
+        "sub_idn": 10,
         "format": "f",
         "unit": "V",
         "frame_type": 4,
@@ -25,6 +25,48 @@
         "minimum": -25,
         "decimal": 2,
         "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Angle",
+        "sub_idn": 3,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 4,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Velocity",
+        "sub_idn": 4,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 4,
+        "maximum": 450,
+        "minimum": -450,
+        "decimal": 2,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Coast",
+        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity."
+        "sub_idn": 2,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Brake",
+        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity."
+        "sub_idn": 1,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }

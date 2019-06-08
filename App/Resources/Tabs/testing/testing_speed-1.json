@@ -28,9 +28,18 @@
       },
       {
         "type_idn": 50,
-        "descriptor": "button test",
-        "info": "LALALALALALA",
+        "descriptor": "Coast",
+        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity."
         "sub_idn": 6,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Brake",
+        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity."
+        "sub_idn": 5,
         "format": "n",
         "unit": "",
         "frame_type": 5
