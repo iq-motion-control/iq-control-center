@@ -80,7 +80,7 @@ class PortConnection: public QObject
 
     void FindSavedValues();
 
-    void TypeStyleFound(int,int);
+    void TypeStyleFound(int,int,int);
 
     void LostConnection();
 

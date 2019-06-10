@@ -529,7 +529,7 @@ QLabel {
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QLabel" name="label_firmware_value">
+        <widget class="QLabel" name="label_firmware_name">
          <property name="font">
           <font>
            <family>Lato</family>
@@ -1171,7 +1171,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1226,7 +1226,7 @@ QScrollBar::handle:vertical {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Update Module Settings:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Navigate to the General, Tuning, and Advanced tabs&lt;/span&gt;&lt;/p&gt;
@@ -1257,7 +1257,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Connect Your Module:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Plug FC, arduino, or USB to UART chip into computer&lt;/span&gt;&lt;/p&gt;
@@ -1304,7 +1304,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! IQ Motion Control created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
@@ -1410,8 +1410,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1843,8 +1843,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1918,20 +1918,6 @@ QPushButton:pressed {
 </string>
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
-           <item row="1" column="0">
-            <widget class="QPushButton" name="testing_coast">
-             <property name="text">
-              <string>COAST</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="testing_brake">
-             <property name="text">
-              <string>BRAKE</string>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0" colspan="2">
             <widget class="QScrollArea" name="scroll_area_testing">
              <property name="styleSheet">
@@ -1948,8 +1934,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>1076</width>
+                <height>698</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2028,7 +2014,7 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your desired firmware from the IQ website&lt;/span&gt;&lt;/p&gt;
@@ -2144,7 +2130,7 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions. This can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
@@ -2206,8 +2192,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
              </widget>

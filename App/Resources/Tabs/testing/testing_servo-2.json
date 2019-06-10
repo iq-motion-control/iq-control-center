@@ -53,7 +53,7 @@
       {
         "type_idn": 59,
         "descriptor": "Coast",
-        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity."
+        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity.",
         "sub_idn": 2,
         "format": "n",
         "unit": "",
@@ -62,7 +62,7 @@
       {
         "type_idn": 59,
         "descriptor": "Brake",
-        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity."
+        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity.",
         "sub_idn": 1,
         "format": "n",
         "unit": "",
