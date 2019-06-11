@@ -44,7 +44,7 @@ void PortConnection::SetPortConnection(bool state)
     ui_->header_combo_box->clear();
 
     ui_->label_firmware_build_value->setText(QString(""));
-    ui_->label_firmware_value->setText(QString(""));
+    ui_->label_firmware_name->setText(QString(""));
 
     ui_->header_connect_button->setText("CONNECT");
   }
@@ -101,7 +101,7 @@ void PortConnection::ConnectMotor()
         ui_->header_error_label->setText(message);
 
 
-        emit TypeStyleFound(hardware_type_, firmware_style_);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number);
         emit FindSavedValues();
       }
       catch(const QString &e)

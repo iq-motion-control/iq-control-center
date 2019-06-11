@@ -30,8 +30,8 @@
 #include "defaults.h"
 #include "home.h"
 #include "firmware.h"
-#include "testing.h"
 #include "updater.hpp"
+#include "tab_populator.hpp"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
@@ -71,7 +71,7 @@ private slots:
 
     void ShowMotorSavedValues();
 
-    void PopulateTabs(int hardware_type, int firmware_style);
+//    void PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number);
 
     void ClearTabs();
 
@@ -85,6 +85,8 @@ private:
     Ui::MainWindow *ui;
     QtAutoUpdater::UpdateController *controller;
     QtAutoUpdater::UpdateButton *updateButton;
+
+    TabPopulator *tab_populator;
 };
 
 #endif // MAINWINDOW_H

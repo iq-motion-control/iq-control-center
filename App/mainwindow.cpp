@@ -53,7 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
     iv.pcon->FindBaudrates();
 
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
-    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int)), this, SLOT(PopulateTabs(int,int)));
+    tab_populator = new TabPopulator(ui, &tab_map_);
+    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator, SLOT(PopulateTabs(int,int,int)));
+
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
     Defaults *def = new Defaults(ui->default_box, "/Resources/Defaults/");
@@ -65,11 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
     Firmware *firm = new Firmware();
 
     connect(ui->boot_mode_button, SIGNAL(clicked()), firm, SLOT(BootModeSelected()));
-
-    Testing *test = new Testing();
-    connect(iv.pcon, SIGNAL(ObjIdFound()), test, SLOT(CreateClient()));
-    connect(ui->testing_coast, SIGNAL(clicked()), test, SLOT(Coast()));
-    connect(ui->testing_brake, SIGNAL(clicked()), test, SLOT(Brake()));
 
   }
   catch(const QString &e)
@@ -185,60 +182,6 @@ void MainWindow::SetDefaults(Json::Value defaults)
     return;
   }
 }
-
-void MainWindow::PopulateTabs(int hardware_type, int firmware_style)
-{
-
-  std::string harwdware_type_str = std::to_string(hardware_type);
-  JsonCpp json;
-  Json::Value JSON;
-
-  std::string file_path = "/Resources/Firmware/" + harwdware_type_str + ".json";
-  QString current_path = QCoreApplication::applicationDirPath();
-  QString path = current_path + QString::fromStdString(file_path);
-
-  QFile myfile(path);
-  if (myfile.open(QIODevice::ReadOnly | QIODevice::Text))
-  {
-    std::istringstream iss(QTextStream(&myfile).readAll().toStdString());
-    std::string errs;
-    Json::parseFromStream(json.rbuilder, iss, &JSON, &errs);
-    myfile.close();
-  }
-  else
-  {
-    throw QString("RESOURCE FILE MISSING, UPDATE RESOURCE FOLDER");
-  }
-
-  uint32_t file_size = JSON.size();
-  std::map<QWidget*,std::vector<std::string>> tabs;
-  for(uint8_t i = 0; i < file_size; ++i)
-  {
-    if (firmware_style == JSON[i]["value"].asInt())
-    {
-      std::string firmware_name =  JSON[i]["name"].asString();
-      tabs[ui->general_scroll_area] = {"/Resources/Tabs/general/","general_" + firmware_name +".json"};
-      tabs[ui->tuning_scroll_area] = {"/Resources/Tabs/tuning/","tuning_" + firmware_name +".json"};
-      tabs[ui->advanced_scroll_area] = {"/Resources/Tabs/advanced/","advanced_" + firmware_name +".json"};
-      tabs[ui->testing_scroll_area] = {"/Resources/Tabs/testing/","testing_" + firmware_name +".json"};
-
-      QString firmware_qname   = QString::fromStdString(firmware_name);
-      firmware_qname = firmware_qname.split("-")[0];
-
-      ui->label_firmware_value->setText(firmware_qname);
-      break;
-    }
-  }
-
-  tab_map_.clear();
-  for(std::pair<QWidget*,std::vector<std::string>> tab_name: tabs)
-  {
-    std::shared_ptr<Tab> tab = std::make_shared<Tab>(tab_name.first, iv.pcon->GetObjId(), tab_name.second);
-    tab->CreateFrames();
-    tab_map_[tab_name.second[1]] = tab;
-  }
-}
-
 
 void MainWindow::ClearTabs()
 {

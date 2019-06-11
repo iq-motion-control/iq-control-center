@@ -62,11 +62,11 @@ SOURCES += \
     defaults.cpp \
     firmware.cpp \
     frame_testing.cpp \
-    testing.cpp \
     custom_double_spinbox.cpp \
     custom_combo_box.cpp \
     updater.cpp \
-    frame_button.cpp
+    frame_button.cpp \
+    tab_populator.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -95,11 +95,11 @@ HEADERS += \
     defaults.h \
     firmware.h \
     frame_testing.h \
-    testing.h \
     custom_double_spinbox.h \
     custom_combo_box.h \
     updater.hpp \
-    frame_button.hpp
+    frame_button.hpp \
+    tab_populator.hpp
 
 FORMS += \
         mainwindow.ui
