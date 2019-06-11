@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 - 2019 IQ Motion Control   	dskart11@gmail.com
+    Copyright 2018 - 2019 IQ Motion Control   	raf@iq-control.com
 
     This file is part of IQ Control Center.
 
