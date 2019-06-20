@@ -10,12 +10,13 @@ QT += serialport
 QT += autoupdatergui
 
 TARGET = "IQ Control Center"
-#TEMPLATE = app
+TEMPLATE = app
 
 QMAKE_CFLAGS = -Wno-unused-parameter
 QMAKE_CXXFLAGS = -Wno-unused-parameter
 
-RC_ICONS = icons/IQ.ico
+#RC_ICONS = icons/IQ.ico
+ICON = icons/IQ.icns
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -26,15 +27,15 @@ DEFINES += MAJOR=1 \
            MINOR=0 \
            PATCH=0
 
-DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
-
+#DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
+DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++11
-CONFIG += static
+#CONFIG += static
 
 #CONFIG-=app_bundle
 #QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13

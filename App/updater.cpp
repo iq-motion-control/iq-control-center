@@ -1,4 +1,5 @@
 #include "updater.hpp"
+#include <QDebug>
 
 Updater::Updater(Ui::MainWindow *user_int,  QWidget *parent):
    ui_(user_int),
@@ -6,7 +7,6 @@ Updater::Updater(Ui::MainWindow *user_int,  QWidget *parent):
    controller(nullptr),
    updateButton(new QtAutoUpdater::UpdateButton(parent_))
 {
-//  updateButton->setVisible(false);
   initializeUpdater();
   controller->start(QtAutoUpdater::UpdateController::InfoLevel);
 }
@@ -18,9 +18,9 @@ void Updater::ConnectUpdater()
 
 void Updater::initializeUpdater()
 {
-  controller = new QtAutoUpdater::UpdateController(QStringLiteral(MAINTENANCETOOL_PATH),qApp);	//Updater app name
-  controller->setDetailedUpdateInfo(true);
-  updateButton->setController(controller);
+    controller = new QtAutoUpdater::UpdateController(QStringLiteral(MAINTENANCETOOL_PATH),qApp);	//Updater app name
+    controller->setDetailedUpdateInfo(true);
+    updateButton->setController(controller);
 }
 
 //Starts update check process

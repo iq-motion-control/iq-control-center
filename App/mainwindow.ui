@@ -22,29 +22,11 @@
        </color>
       </brush>
      </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
     </active>
     <inactive>
      <colorrole role="Text">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
         <red>14</red>
         <green>98</green>
         <blue>175</blue>
@@ -59,15 +41,6 @@
         <red>128</red>
         <green>128</green>
         <blue>128</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
        </color>
       </brush>
      </colorrole>
@@ -771,15 +744,6 @@ QPushButton:checked {
               </color>
              </brush>
             </colorrole>
-            <colorrole role="PlaceholderText">
-             <brush brushstyle="NoBrush">
-              <color alpha="128">
-               <red>175</red>
-               <green>175</green>
-               <blue>175</blue>
-              </color>
-             </brush>
-            </colorrole>
            </active>
            <inactive>
             <colorrole role="WindowText">
@@ -809,15 +773,6 @@ QPushButton:checked {
               </color>
              </brush>
             </colorrole>
-            <colorrole role="PlaceholderText">
-             <brush brushstyle="NoBrush">
-              <color alpha="128">
-               <red>175</red>
-               <green>175</green>
-               <blue>175</blue>
-              </color>
-             </brush>
-            </colorrole>
            </inactive>
            <disabled>
             <colorrole role="WindowText">
@@ -841,15 +796,6 @@ QPushButton:checked {
             <colorrole role="ButtonText">
              <brush brushstyle="SolidPattern">
               <color alpha="255">
-               <red>175</red>
-               <green>175</green>
-               <blue>175</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="PlaceholderText">
-             <brush brushstyle="NoBrush">
-              <color alpha="128">
                <red>175</red>
                <green>175</green>
                <blue>175</blue>
@@ -1226,7 +1172,7 @@ QScrollBar::handle:vertical {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Update Module Settings:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Navigate to the General, Tuning, and Advanced tabs&lt;/span&gt;&lt;/p&gt;
@@ -1257,7 +1203,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Connect Your Module:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Plug FC, arduino, or USB to UART chip into computer&lt;/span&gt;&lt;/p&gt;
@@ -1270,7 +1216,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 5: In the top bar, select the correct port (check your device manager)&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button&lt;/span&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1304,7 +1250,7 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! IQ Motion Control created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
@@ -1410,8 +1356,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1477,15 +1423,6 @@ p, li { white-space: pre-wrap; }
                    </color>
                   </brush>
                  </colorrole>
-                 <colorrole role="PlaceholderText">
-                  <brush brushstyle="NoBrush">
-                   <color alpha="128">
-                    <red>175</red>
-                    <green>175</green>
-                    <blue>175</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
                 </active>
                 <inactive>
                  <colorrole role="WindowText">
@@ -1542,15 +1479,6 @@ p, li { white-space: pre-wrap; }
                    </color>
                   </brush>
                  </colorrole>
-                 <colorrole role="PlaceholderText">
-                  <brush brushstyle="NoBrush">
-                   <color alpha="128">
-                    <red>175</red>
-                    <green>175</green>
-                    <blue>175</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
                 </inactive>
                 <disabled>
                  <colorrole role="WindowText">
@@ -1604,15 +1532,6 @@ p, li { white-space: pre-wrap; }
                     <red>70</red>
                     <green>70</green>
                     <blue>70</blue>
-                   </color>
-                  </brush>
-                 </colorrole>
-                 <colorrole role="PlaceholderText">
-                  <brush brushstyle="NoBrush">
-                   <color alpha="128">
-                    <red>175</red>
-                    <green>175</green>
-                    <blue>175</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -1843,8 +1762,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1934,8 +1853,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>698</height>
+                <width>1070</width>
+                <height>696</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2014,7 +1933,7 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your desired firmware from the IQ website&lt;/span&gt;&lt;/p&gt;
@@ -2130,7 +2049,7 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:9.75pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions. This can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
@@ -2192,8 +2111,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -2218,7 +2137,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1417</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -2238,6 +2157,9 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="actionCheck_for_Updates">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Check for Updates</string>
    </property>
