@@ -16,7 +16,9 @@ To use the precompiled versions fo the app, you will need Windows 10 or higher a
   
 To use the source code, you will need to install QT creator IDE in order to edit and build this project.
 You will need QT 5.12 or higher.
-Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)
+Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)  
+  
+You will also need to install this 3rd party library to compile this from source : [QtAutoupdater](https://github.com/Skycoder42/QtAutoUpdater)  
 
 ### Installing
 

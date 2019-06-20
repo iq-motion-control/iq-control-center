@@ -47,7 +47,6 @@ class FrameTesting: public Frame
 
   public slots:
     void SetValue();
-//    void GetSavedValue();
     void SpinBoxValueChanged(double spin_box_value);
 
   private:
