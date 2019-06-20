@@ -43,6 +43,7 @@ class FrameVariables
     // 2 = spinbox
     // 3 = switch
     // 4 = testing
+    // 5 = button
 
     struct ComboFrame
     {
@@ -75,10 +76,16 @@ class FrameVariables
         std::string unit;
     };
 
-    ComboFrame combo_frame_;
-    SpinFrame spin_frame_;
-    SwitchFrame switch_frame_;
+    struct ButtonFrame
+    {
+      std::string info;
+    };
+
+    ComboFrame   combo_frame_;
+    SpinFrame    spin_frame_;
+    SwitchFrame  switch_frame_;
     TestingFrame testing_frame_;
+    ButtonFrame  button_frame_;
 
 };
 

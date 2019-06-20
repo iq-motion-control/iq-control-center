@@ -22,6 +22,8 @@
 #include <QApplication>
 #include "switch.h"
 #include "main.h"
+#include <QDebug>
+#include <updatecontroller.h>
 
 //initializes global struct
 InterfaceVariables iv;
@@ -29,8 +31,8 @@ InterfaceVariables iv;
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+
   MainWindow w;
   w.show();
-
   return a.exec();
 }

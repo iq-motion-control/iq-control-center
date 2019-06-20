@@ -1,0 +1,51 @@
+[
+  {
+    "descriptor": "general_position-2",
+    "Entries": [
+      {
+        "type_idn": 59,
+        "descriptor": "Meters per radian",
+	      "info": "Rotational to linear conversion. For applications like driving lead screws.",
+        "sub_idn": 13,
+        "format": "f",
+        "unit": "m/rad",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -1,
+        "decimal": 6,
+        "single_step": 0.000001,
+        "nan": true
+      },
+      {
+        "type_idn": 71,
+        "descriptor": "Anticogging",
+	      "info": "This electrically cancels cogging torque to make your motor smoother.",
+        "sub_idn": 2,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Off",
+          "On"
+        ],
+        "list_value": [
+          0,
+          1
+	      ]
+      },
+      {
+        "type_idn": 58,
+        "descriptor": "Step angle",
+	      "info": "The angle that the motor moves per step edge.   Step sizes that are a multiple of 1/65536th of a rotation (9.58738e-5 radians) will be exact, while non-multiples will be floored to the nearest multiple.",
+        "sub_idn": 1,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 2,
+        "maximum": 32768,
+        "minimum": -32768,
+        "decimal": 6,
+        "single_step": 9.58738e-5
+      }
+    ]
+  }
+]

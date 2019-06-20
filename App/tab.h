@@ -31,6 +31,7 @@
 #include "frame_spin_box.h"
 #include "frame_switch.h"
 #include "frame_testing.h"
+#include "frame_button.hpp"
 #include "frame_variables.h"
 
 
@@ -58,6 +59,8 @@ class Tab: public QWidget
     void ConnectFrameSwitch(FrameSwitch *fs);
 
     void ConnectFrameTesting(FrameTesting *ft);
+
+    void ConnectFrameButton(FrameButton *fb);
 
     std::map<std::string,Frame*> frame_map_;
 
