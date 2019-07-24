@@ -151,6 +151,15 @@
         "maximum": 115200,
         "minimum": 9600,
         "single_step": 105600
+      },
+      {
+        "type_idn": 11,
+        "descriptor": "Revert to Factory Defaults",
+        "info": "Reverts any user saved information to the factory settings.  The motor will reboot and the GUI will disconnect.",
+        "sub_idn": 1,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }
