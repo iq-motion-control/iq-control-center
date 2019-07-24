@@ -141,23 +141,6 @@
         "decimal": 2
       },
       {
-        "type_idn": 71,
-        "descriptor": "Anticogging",
-        "info": "This electrically cancels cogging torque to make your motor smoother.",
-        "sub_idn": 2,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Off",
-          "On"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-      },
-      {
         "type_idn": 16,
         "descriptor": "UART Baud Rate",
         "info": "Bits per second of the serial/UART protocol.  The baud rate is effective immediately and you will have to reconnect with the proper baud rate.",
@@ -168,6 +151,15 @@
         "maximum": 115200,
         "minimum": 9600,
         "single_step": 105600
+      },
+      {
+        "type_idn": 11,
+        "descriptor": "Revert to Factory Defaults",
+        "info": "Reverts any user saved information to the factory settings.  The motor will reboot and the GUI will disconnect.",
+        "sub_idn": 1,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }
