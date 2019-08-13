@@ -71,15 +71,10 @@ private slots:
 
     void ShowMotorSavedValues();
 
-//    void PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number);
-
     void ClearTabs();
 
     void SetDefaults(Json::Value defaults);
 
-    void initializeUpdater();
-
-    void checkUpdate();
 
 private:
     Ui::MainWindow *ui;
