@@ -23,7 +23,6 @@
 #include "switch.h"
 #include "main.h"
 #include <QDebug>
-#include <updatecontroller.h>
 
 //initializes global struct
 InterfaceVariables iv;

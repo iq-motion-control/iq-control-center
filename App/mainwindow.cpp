@@ -188,19 +188,6 @@ void MainWindow::ClearTabs()
   tab_map_.clear();
 }
 
-//Initialize the updater
-void MainWindow::initializeUpdater()
-{
-  controller = new QtAutoUpdater::UpdateController(QStringLiteral("maintenancetool.exe"), qApp);	//Updater app name
-  controller->setDetailedUpdateInfo(true);
-  updateButton->setController(controller);
-}
-
-//Starts update check process
-void MainWindow::checkUpdate()
-{
-  controller->start(QtAutoUpdater::UpdateController::ProgressLevel);	//Check for updates. Displays a progress bar when searching
-}
 
 
 
