@@ -15,7 +15,9 @@ TEMPLATE = app
 QMAKE_CFLAGS = -Wno-unused-parameter
 QMAKE_CXXFLAGS = -Wno-unused-parameter
 
+# for windows
 RC_ICONS = icons/IQ.ico
+# for mac
 #ICON = icons/IQ.icns
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
