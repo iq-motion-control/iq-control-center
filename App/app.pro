@@ -15,7 +15,9 @@ TEMPLATE = app
 QMAKE_CFLAGS = -Wno-unused-parameter
 QMAKE_CXXFLAGS = -Wno-unused-parameter
 
+# for windows
 RC_ICONS = icons/IQ.ico
+# for mac
 #ICON = icons/IQ.icns
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -25,7 +27,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=0 \
-           PATCH=2
+           PATCH=3
 
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
 #DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"

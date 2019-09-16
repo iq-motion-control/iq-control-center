@@ -43,7 +43,7 @@ class FrameTesting: public Frame
 
     QPushButton *push_button_set_;
     QDoubleSpinBox *spin_box_;
-    double value_;
+    double value_ = 0;
 
   public slots:
     void SetValue();
@@ -54,6 +54,8 @@ class FrameTesting: public Frame
     void SetPushButton(QPushButton *push_button,QSizePolicy size_policy, QString push_button_name, QString icon_file_name );
 
     void SetSpinBox(QSizePolicy size_policy, FrameVariables* fv);
+
+    bool IsZero(double value, double threshold);
 
     Client *client_;
     std::map<int, int> index_value_ ;
