@@ -1170,7 +1170,7 @@ QWidget#advanced_scroll_area{
 }
 
 QWidget#testing_scroll_area{
-	background-color: rgb(70,70,100);
+	background-color: rgb(70,70,70);
 }
 
 QScrollArea {
@@ -1250,7 +1250,7 @@ QScrollBar::handle:vertical {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.AppleSystemUIFont'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! IQ Motion Control created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -1385,7 +1385,7 @@ p, li { white-space: pre-wrap; }
                 <x>0</x>
                 <y>0</y>
                 <width>1076</width>
-                <height>624</height>
+                <height>630</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1817,8 +1817,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>700</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1874,22 +1874,7 @@ QComboBox:on, QComboBox:off {
         <item row="1" column="0">
          <widget class="QWidget" name="testing_widget" native="true">
           <property name="styleSheet">
-           <string notr="true">QPushButton {
-    color: rgb(175, 175, 175);
-	background: rgb(60, 60, 60);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
-}
-
-QPushButton:hover {
-	background: rgb(50, 50, 50);
-}
-
-QPushButton:pressed {
-	background: rgb(100, 100, 100)
-}
-</string>
+           <string notr="true"/>
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
            <item row="0" column="0" colspan="2">
@@ -1909,7 +1894,7 @@ QPushButton:pressed {
                 <x>0</x>
                 <y>0</y>
                 <width>1076</width>
-                <height>700</height>
+                <height>706</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2049,7 +2034,7 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions. This can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
@@ -2151,8 +2136,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>700</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
              </widget>
@@ -2177,7 +2162,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1417</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
