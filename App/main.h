@@ -21,9 +21,9 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
-#include "qserial_interface.hpp"
+#include "qserial_interface.h"
 #include <QLabel>
-#include "port_connection.hpp"
+#include "port_connection.h"
 
 struct InterfaceVariables
 {

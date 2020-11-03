@@ -18,7 +18,7 @@
 
 */
 
-#include "port_connection.hpp"
+#include "port_connection.h"
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) :
   ui_(user_int),

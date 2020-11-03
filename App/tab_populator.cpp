@@ -17,7 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include "tab_populator.hpp"
+#include "tab_populator.h"
 
 TabPopulator::TabPopulator(Ui::MainWindow *ui, std::map<std::string,std::shared_ptr<Tab>> *tab_map) :
   ui_(ui),

@@ -31,7 +31,7 @@
 #include "frame_spin_box.h"
 #include "frame_switch.h"
 #include "frame_testing.h"
-#include "frame_button.hpp"
+#include "frame_button.h"
 #include "frame_variables.h"
 
 

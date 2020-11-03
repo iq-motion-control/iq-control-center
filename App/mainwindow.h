@@ -21,67 +21,65 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include <QBoxLayout>
-#include <QtAutoUpdaterGui/UpdateController>
-#include <QtAutoUpdaterGui/UpdateButton>
+#include <QMainWindow>
+//#include <QtAutoUpdaterGui/UpdateController>
+//#include <QtAutoUpdaterGui/UpdateButton>
 
-#include "tab.h"
 #include "defaults.h"
-#include "home.h"
 #include "firmware.h"
+#include "home.h"
+#include "tab.h"
+#include "tab_populator.h"
 #include "updater.hpp"
-#include "tab_populator.hpp"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 #include "custom_combo_box.h"
 
 #include <unistd.h>
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+ public:
+  explicit MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
 
-    std::map<std::string,std::shared_ptr<Tab>> tab_map_;
+  std::map<std::string, std::shared_ptr<Tab>> tab_map_;
 
-private slots:
-    void on_pushButton_home_clicked();
+ private slots:
+  void on_pushButton_home_clicked();
 
-    void on_pushButton_general_clicked();
+  void on_pushButton_general_clicked();
 
-    void on_pushButton_tuning_clicked();
+  void on_pushButton_tuning_clicked();
 
-    void on_pushButton_testing_clicked();
+  void on_pushButton_testing_clicked();
 
-    void on_pushButton_advanced_clicked();
+  void on_pushButton_advanced_clicked();
 
-    void on_pushButton_firmware_clicked();
+  void on_pushButton_firmware_clicked();
 
-    void ShowMotorSavedValues();
+  void ShowMotorSavedValues();
 
-    void ClearTabs();
+  void ClearTabs();
 
-    void SetDefaults(Json::Value defaults);
+  void SetDefaults(Json::Value defaults);
 
+ private:
+  Ui::MainWindow *ui;
+  //    QtAutoUpdater::UpdateController *controller;
+  //    QtAutoUpdater::UpdateButton *updateButton;
 
-private:
-    Ui::MainWindow *ui;
-    QtAutoUpdater::UpdateController *controller;
-    QtAutoUpdater::UpdateButton *updateButton;
-
-    TabPopulator *tab_populator;
+  TabPopulator *tab_populator;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

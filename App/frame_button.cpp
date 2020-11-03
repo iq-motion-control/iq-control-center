@@ -18,7 +18,7 @@
 
 */
 
-#include "frame_button.hpp"
+#include "frame_button.h"
 
 FrameButton::FrameButton(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv) :
   Frame(parent,5),

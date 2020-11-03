@@ -21,26 +21,46 @@
 #ifndef FIRMWARE_H
 #define FIRMWARE_H
 
+#include <chrono>
+
+#include <QFileDialog>
+#include <QJsonDocument>
 #include <QObject>
+#include <QProgressBar>
+#include <QStandardPaths>
+#include <QVector>
+
+#include "IQ_api/client.hpp"
+#include "Schmi/binary_file_std.hpp"
+#include "Schmi/flash_loader.hpp"
+#include "Schmi/loading_bar_std.hpp"
+#include "Schmi/qerror_handler.hpp"
+#include "Schmi/qserial.h"
+
+#include "flash_loading_bar.h"
 
 #include "main.h"
 
-#include "IQ_api/client.hpp"
+class Firmware : public QObject {
+  Q_OBJECT
+ public:
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button);
 
-class Firmware : public QObject
-{
-    Q_OBJECT
-  public:
-    Firmware();
+ private:
+  QString firmware_folder_dir_name_ = "";
+  std::string clients_folder_path_ = ":/IQ_api/clients/";
+  std::map<std::string, Client *> sys_map_;
+  QProgressBar *flash_progress_bar_;
+  QPushButton *firmware_binary_button_;
+  QString firmware_bin_path_;
 
-  private:
-    std::string clients_folder_path_ = ":/IQ_api/clients/";
-    std::map<std::string, Client*> sys_map_;
+  bool BootMode();
 
-  signals:
+ signals:
 
-  public slots:
-    void BootModeSelected();
+ public slots:
+  void FlashClicked();
+  void SelectFirmwareClicked();
 };
 
-#endif // FIRMWARE_H
+#endif  // FIRMWARE_H

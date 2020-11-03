@@ -22,11 +22,29 @@
        </color>
       </brush>
      </colorrole>
+     <colorrole role="PlaceholderText">
+      <brush brushstyle="NoBrush">
+       <color alpha="128">
+        <red>14</red>
+        <green>98</green>
+        <blue>175</blue>
+       </color>
+      </brush>
+     </colorrole>
     </active>
     <inactive>
      <colorrole role="Text">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
+        <red>14</red>
+        <green>98</green>
+        <blue>175</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="PlaceholderText">
+      <brush brushstyle="NoBrush">
+       <color alpha="128">
         <red>14</red>
         <green>98</green>
         <blue>175</blue>
@@ -41,6 +59,15 @@
         <red>128</red>
         <green>128</green>
         <blue>128</blue>
+       </color>
+      </brush>
+     </colorrole>
+     <colorrole role="PlaceholderText">
+      <brush brushstyle="NoBrush">
+       <color alpha="128">
+        <red>14</red>
+        <green>98</green>
+        <blue>175</blue>
        </color>
       </brush>
      </colorrole>
@@ -671,7 +698,7 @@ QPushButton:checked {
          <property name="minimumSize">
           <size>
            <width>275</width>
-           <height>0</height>
+           <height>75</height>
           </size>
          </property>
          <property name="font">
@@ -714,6 +741,12 @@ QPushButton:checked {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>75</height>
+          </size>
+         </property>
          <property name="palette">
           <palette>
            <active>
@@ -738,6 +771,15 @@ QPushButton:checked {
             <colorrole role="ButtonText">
              <brush brushstyle="SolidPattern">
               <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="NoBrush">
+              <color alpha="128">
                <red>175</red>
                <green>175</green>
                <blue>175</blue>
@@ -773,6 +815,15 @@ QPushButton:checked {
               </color>
              </brush>
             </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="NoBrush">
+              <color alpha="128">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
            </inactive>
            <disabled>
             <colorrole role="WindowText">
@@ -796,6 +847,15 @@ QPushButton:checked {
             <colorrole role="ButtonText">
              <brush brushstyle="SolidPattern">
               <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="NoBrush">
+              <color alpha="128">
                <red>175</red>
                <green>175</green>
                <blue>175</blue>
@@ -853,6 +913,12 @@ QPushButton:checked {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>75</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Lato</family>
@@ -886,6 +952,12 @@ QPushButton:checked {
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>75</height>
+          </size>
          </property>
          <property name="font">
           <font>
@@ -921,6 +993,12 @@ QPushButton:checked {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>75</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Lato</family>
@@ -955,6 +1033,12 @@ QPushButton:checked {
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>75</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Lato</family>
@@ -984,7 +1068,7 @@ QPushButton:checked {
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -1086,7 +1170,7 @@ QWidget#advanced_scroll_area{
 }
 
 QWidget#testing_scroll_area{
-	background-color: rgb(70,70,70);
+	background-color: rgb(70,70,100);
 }
 
 QScrollArea {
@@ -1148,44 +1232,7 @@ QScrollBar::handle:vertical {
            <string notr="true"/>
           </property>
           <layout class="QGridLayout" name="gridLayout_11">
-           <item row="3" column="0">
-            <widget class="QTextEdit" name="textEdit_home_settings_steps">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>250</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: transparent;
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Update Module Settings:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Navigate to the General, Tuning, and Advanced tabs&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 2: In the General tab, upload pre-made settings for specific applications. Select your application and click &amp;quot;Set&amp;quot; (optional)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 3: To update settings, change the value or mode, then click the &amp;quot;Save value to motor&amp;quot; button&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-style:italic;&quot;&gt;Note: any parameter with an unsaved, changed value will have a * next to it &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
+           <item row="1" column="0">
             <widget class="QTextEdit" name="textEdit_home_connect_steps">
              <property name="styleSheet">
               <string notr="true">QTextEdit {
@@ -1203,7 +1250,11 @@ p, li { white-space: pre-wrap; }
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! IQ Motion Control created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Connect Your Module:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Plug FC, arduino, or USB to UART chip into computer&lt;/span&gt;&lt;/p&gt;
@@ -1216,42 +1267,19 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 5: In the top bar, select the correct port (check your device manager)&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QTextEdit" name="textEdit_home_intro">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>135</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: transparent;
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! IQ Motion Control created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button&lt;/span&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Update Module Settings:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 1: Navigate to the General, Tuning, and Advanced tabs&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 2: In the General tab, upload pre-made settings for specific applications. Select your application and click &amp;quot;Set&amp;quot; (optional)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 3: To update settings, change the value or mode, then click the &amp;quot;Save value to motor&amp;quot; button&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-style:italic;&quot;&gt;Note: any parameter with an unsaved, changed value will have a * next to it &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
             </widget>
            </item>
@@ -1356,8 +1384,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>18</width>
-                <height>16</height>
+                <width>1076</width>
+                <height>624</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1423,6 +1451,15 @@ p, li { white-space: pre-wrap; }
                    </color>
                   </brush>
                  </colorrole>
+                 <colorrole role="PlaceholderText">
+                  <brush brushstyle="NoBrush">
+                   <color alpha="128">
+                    <red>175</red>
+                    <green>175</green>
+                    <blue>175</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                 </active>
                 <inactive>
                  <colorrole role="WindowText">
@@ -1479,6 +1516,15 @@ p, li { white-space: pre-wrap; }
                    </color>
                   </brush>
                  </colorrole>
+                 <colorrole role="PlaceholderText">
+                  <brush brushstyle="NoBrush">
+                   <color alpha="128">
+                    <red>175</red>
+                    <green>175</green>
+                    <blue>175</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                 </inactive>
                 <disabled>
                  <colorrole role="WindowText">
@@ -1532,6 +1578,15 @@ p, li { white-space: pre-wrap; }
                     <red>70</red>
                     <green>70</green>
                     <blue>70</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="PlaceholderText">
+                  <brush brushstyle="NoBrush">
+                   <color alpha="128">
+                    <red>175</red>
+                    <green>175</green>
+                    <blue>175</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -1762,8 +1817,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>18</width>
-                <height>16</height>
+                <width>1076</width>
+                <height>700</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1853,8 +1908,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1070</width>
-                <height>696</height>
+                <width>1076</width>
+                <height>700</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1886,78 +1941,20 @@ QPushButton:pressed {
          <number>24</number>
         </property>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_firmware">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Lato</family>
-            <pointsize>24</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>FIRMWARE</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
          <widget class="QWidget" name="firmware_widget" native="true">
           <layout class="QGridLayout" name="gridLayout_12">
            <item row="1" column="0">
-            <widget class="QTextEdit" name="textEdit_reflash_steps">
-             <property name="font">
-              <font>
-               <family>Lato</family>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: transparent;
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
-}</string>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="html">
-              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your desired firmware from the IQ website&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Download and open the ST Demonstrator. Set the appropriate comm port and timeout value. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 3: Connect your module to the GUI&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 4: Click the &amp;quot;Boot Mode&amp;quot; button below (this will disconnect the module)&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; color:#afafaf;&quot;&gt;Note: to get out of Boot Mode, just unplug your module&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 5: You'll have 3 second to click &amp;quot;Next&amp;quot; in the first window of the ST Demonstrator after clicking &amp;quot;Boot Mode&amp;quot;&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; color:#afafaf;&quot;&gt;Note: if your module does the startup jingle before you click &amp;quot;Next,&amp;quot; try again from Step 4&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 6: Navigate through the ST Demonstrator to complete reflashing  (see manual for detailed instructions)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
             <widget class="QFrame" name="boot_mode_frame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>70</height>
+               <height>0</height>
               </size>
              </property>
              <property name="font">
@@ -1993,9 +1990,9 @@ QPushButton:pressed {
              <property name="frameShadow">
               <enum>QFrame::Raised</enum>
              </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <widget class="QPushButton" name="boot_mode_button">
+             <layout class="QGridLayout" name="gridLayout_13">
+              <item row="0" column="1">
+               <widget class="QPushButton" name="flash_button">
                 <property name="minimumSize">
                  <size>
                   <width>150</width>
@@ -2006,7 +2003,23 @@ QPushButton:pressed {
                  <string notr="true">color: rgb(175, 175, 175)</string>
                 </property>
                 <property name="text">
-                 <string>Boot Mode</string>
+                 <string>Flash</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="select_firmware_binary_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: rgb(175, 175, 175)</string>
+                </property>
+                <property name="text">
+                 <string>Select Firmware Binary (&quot;.bin&quot;)</string>
                 </property>
                </widget>
               </item>
@@ -2014,24 +2027,11 @@ QPushButton:pressed {
             </widget>
            </item>
            <item row="0" column="0">
-            <widget class="QTextEdit" name="textEdit_reflash_intro">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>125</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>110</height>
-              </size>
+            <widget class="QTextEdit" name="textEdit_reflash_steps">
+             <property name="font">
+              <font>
+               <family>Lato</family>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">QTextEdit {
@@ -2049,8 +2049,48 @@ QPushButton:pressed {
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'.SF NS Text'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:180%;&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions. This can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions. This can be found at www.iq-control.com/documentation.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your the right firmware binary file (&amp;quot;.bin&amp;quot;) from the IQ website.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware binary file (&amp;quot;.bin&amp;quot;). The path of your file should appear underneath the button.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 3: Connect your module to the GUI&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 4: Click the &amp;quot;Flash&amp;quot; button below (this will disconnect the module)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-style:italic; color:#afafaf;&quot;&gt;Note: to get out of Boot Mode, just unplug your module&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 5: DO NOT UNPLUG MOTOR until flashing is done&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 6: When flashing is done, unplug and replug your motor to its power source to reset it.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QProgressBar" name="flash_progress_bar">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: rgb(175, 175, 175)</string>
+             </property>
+             <property name="value">
+              <number>24</number>
              </property>
             </widget>
            </item>
@@ -2111,8 +2151,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>18</width>
-                <height>16</height>
+                <width>1076</width>
+                <height>700</height>
                </rect>
               </property>
              </widget>
@@ -2137,7 +2177,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1417</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="nativeMenuBar">

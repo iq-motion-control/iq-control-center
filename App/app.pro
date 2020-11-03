@@ -8,6 +8,8 @@ QT       += core gui widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 QT += serialport
 QT += autoupdatergui
+#QT += autoupdatercore
+#QT += autoupdaterwidgets
 
 TARGET = "IQ Control Center"
 TEMPLATE = app
@@ -43,6 +45,13 @@ CONFIG += static
 #QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 
 SOURCES += \
+    Schmi/binary_file_std.cpp \
+    Schmi/flash_loader.cpp \
+    Schmi/loading_bar_std.cpp \
+    Schmi/qerror_handler.cpp \
+    Schmi/qserial.cpp \
+    Schmi/stm32.cpp \
+    flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
     switch.cpp \
@@ -67,12 +76,27 @@ SOURCES += \
     frame_testing.cpp \
     custom_double_spinbox.cpp \
     custom_combo_box.cpp \
-    updater.cpp \
     frame_button.cpp \
-    tab_populator.cpp
+    tab_populator.cpp \
+    updater.cpp
 
 HEADERS += \
+    Schmi/binary_file_interface.hpp \
+    Schmi/binary_file_std.hpp \
+    Schmi/error_handler_interface.hpp \
+    Schmi/flash_loader.hpp \
+    Schmi/loading_bar_interface.hpp \
+    Schmi/loading_bar_std.hpp \
+    Schmi/qerror_handler.hpp \
+    Schmi/qserial.h \
+    Schmi/serial_interface.hpp \
+    Schmi/std_exception.hpp \
+    Schmi/stm32.hpp \
+    flash_loading_bar.h \
+    frame_button.h \
         mainwindow.h \
+    port_connection.h \
+    qserial_interface.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \
@@ -87,22 +111,19 @@ HEADERS += \
     IQ_api/json_cpp.hpp \
     IQ_api/packet_finder.h \
     frame_combo.h \
-    qserial_interface.hpp \
     tab.h \
     frame_variables.h \
     frame_spin_box.h \
     frame.h \
     frame_switch.h \
     main.h \
-    port_connection.hpp \
     defaults.h \
     firmware.h \
     frame_testing.h \
     custom_double_spinbox.h \
     custom_combo_box.h \
-    updater.hpp \
-    frame_button.hpp \
-    tab_populator.hpp
+    tab_populator.h \
+    updater.hpp
 
 FORMS += \
         mainwindow.ui
