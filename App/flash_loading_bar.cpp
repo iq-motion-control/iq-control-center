@@ -22,6 +22,7 @@ void FlashLoadingBar::StartCheckingLoadingBar(const uint64_t& total_num_bytes) {
 void FlashLoadingBar::UpdateLoadingBar(const uint64_t& bytes_left) {
   qint64 progress = total_num_bytes_ - bytes_left;
   flash_progress_bar_->setValue(progress);
+  QCoreApplication::processEvents();
 };
 
 void FlashLoadingBar::EndLoadingBar() { iv.label_message->setText("FLASHING SUCCESFULL"); };
