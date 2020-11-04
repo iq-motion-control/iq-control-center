@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "general_position-2",
+    "descriptor": "general_servo-2",
     "Entries": [
       {
         "descriptor": "Meters per radian",
@@ -34,7 +34,7 @@
     ]
   },
   {
-    "descriptor": "advanced_position-2",
+    "descriptor": "advanced_servo-2",
     "Entries": [
       {
         "descriptor": "Amps Bias",

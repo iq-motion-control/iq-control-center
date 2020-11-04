@@ -1,0 +1,77 @@
+[
+  {
+    "descriptor": "testing_flyaiq-2048",
+    "Entries": [
+      {
+        "type_idn": 52,
+        "descriptor": "PWM",
+        "info": "Sends a PWM command to the motor.  The acceptable range is [-1, 1].  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
+        "sub_idn": 3,
+        "format": "f",
+        "unit": "pwm",
+        "frame_type": 4,
+        "maximum": 1,
+        "minimum": -1,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Voltage",
+        "info": "Sends a voltage command to the motor.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
+        "sub_idn": 4,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 4,
+        "maximum": 25,
+        "minimum": -25,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity",
+        "info": "Sends a velocity command to the motor.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
+        "sub_idn": 5,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 4,
+        "maximum": 3450,
+        "minimum": -3450,
+        "decimal": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "ESC Input",
+        "info": "Simulates an input from a flight controller to an ESC.  0 corresponds to 1000us, and 1 corresponds to 2000us.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
+        "sub_idn": 1,
+        "format": "f",
+        "unit": "PU",
+        "frame_type": 4,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Coast",
+        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity.",
+        "sub_idn": 2,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Brake",
+        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity.",
+        "sub_idn": 1,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      }
+    ]
+  }
+]

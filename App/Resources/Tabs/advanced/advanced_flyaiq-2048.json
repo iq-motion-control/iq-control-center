@@ -1,11 +1,11 @@
 [
   {
-    "descriptor": "advanced_servo-2",
+    "descriptor": "advanced_flyaiq-2048",
     "Entries": [
       {
         "type_idn": 50,
         "descriptor": "Volts Limit",
-	"info": "A safety feature that does not allow the motor to regenerate above the set voltage.",
+        "info": "A safety feature that does not allow the motor to regenerate above the set voltage.",
         "sub_idn": 35,
         "format": "f",
         "unit": "V",
@@ -18,7 +18,7 @@
       {
         "type_idn": 50,
         "descriptor": "Speed Redline Start",
-	"info": "A safety feature that begins derating the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "info": "A safety feature that begins derating the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
         "sub_idn": 38,
         "format": "f",
         "unit": "rad/s",
@@ -30,7 +30,7 @@
       {
         "type_idn": 50,
         "descriptor": "Speed Redline End",
-	"info": "A safety feature that fully derates the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "info": "A safety feature that fully derates the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
         "sub_idn": 39,
         "format": "f",
         "unit": "rad/s",
@@ -42,7 +42,7 @@
       {
         "type_idn": 50,
         "descriptor": "Current Redline Start",
-	"info": "A safety feature that begins derating the motor at this current. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "info": "A safety feature that begins derating the motor at this current. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
         "sub_idn": 42,
         "format": "f",
         "unit": "A",
@@ -55,7 +55,7 @@
       {
         "type_idn": 50,
         "descriptor": "Current Redline End",
-	"info": "A safety feature that fully derates the motor at this current. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "info": "A safety feature that fully derates the motor at this current. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
         "sub_idn": 43,
         "format": "f",
         "unit": "A",
@@ -68,7 +68,7 @@
       {
         "type_idn": 50,
         "descriptor": "Current Max",
-	"info": "A calculated maximum current using the built-in motor model.",
+        "info": "A calculated maximum current using the built-in motor model.",
         "sub_idn": 34,
         "format": "f",
         "unit": "A",
@@ -81,7 +81,7 @@
       {
         "type_idn": 69,
         "descriptor": "Amps Bias",
-	"info": "The offset of the current sensor from 0.",
+        "info": "The offset of the current sensor from 0.",
         "sub_idn": 11,
         "format": "f",
         "unit": "",
@@ -94,7 +94,7 @@
       {
         "type_idn": 69,
         "descriptor": "Power Filter Cutoff",
-	"info": "The cutoff frequency of the low pass filter on the voltage and current measurements.",
+        "info": "The cutoff frequency of the low pass filter on the voltage and current measurements.",
         "sub_idn": 6,
         "format": "I",
         "unit": "Hz",
@@ -106,7 +106,7 @@
       {
         "type_idn": 73,
         "descriptor": "Temperature Filter Cutoff",
-	"info": "The cutoff frequency of the low pass filter on the PCB temperature measurement.",
+        "info": "The cutoff frequency of the low pass filter on the PCB temperature measurement.",
         "sub_idn": 2,
         "format": "I",
         "unit": "Hz",
@@ -118,7 +118,7 @@
       {
         "type_idn": 5,
         "descriptor": "Module ID",
-	"info": "Change this to bus multiple motors on a single serial line. Each motor must have a unique ID.",
+        "info": "Change this to bus multiple motors on a single serial line. Each motor must have a unique ID.",
         "sub_idn": 14,
         "format": "B",
         "unit": "",
@@ -130,12 +130,12 @@
       {
         "type_idn": 61,
         "descriptor": "Volume Max",
-	"info": "The maximum voltage applied during buzzing. Like a volume knob.",
+        "info": "The maximum voltage applied during buzzing. Like a volume knob.",
         "sub_idn": 4,
         "format": "f",
         "unit": "V",
         "frame_type": 2,
-        "maximum": 5,
+        "maximum": 1,
         "minimum": 0,
         "single_step": 0.05,
         "decimal": 2
