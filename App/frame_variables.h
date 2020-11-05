@@ -21,76 +21,71 @@
 #ifndef FRAME_VARIABLES_H
 #define FRAME_VARIABLES_H
 
-#include <QString>
-#include <QFile>
-#include <QTextStream>
 #include <QCoreApplication>
 #include <QDir>
+#include <QFile>
 #include <QString>
+#include <QTextStream>
 
-#include <string>
 #include <map>
+#include <string>
 #include "IQ_api/json_cpp.hpp"
 
+#include <math.h>
 
-class FrameVariables
-{
-  public:
-    FrameVariables(){}
-    uint8_t frame_type_ = 0;
-    // 0 = error
-    // 1 = combobox
-    // 2 = spinbox
-    // 3 = switch
-    // 4 = testing
-    // 5 = button
+class FrameVariables {
+ public:
+  FrameVariables() {}
+  uint8_t frame_type_ = 0;
+  // 0 = error
+  // 1 = combobox
+  // 2 = spinbox
+  // 3 = switch
+  // 4 = testing
+  // 5 = button
 
-    struct ComboFrame
-    {
-       std::vector<std::string> list_names;
-       std::vector<uint8_t>     list_values;
-       std::string              info;
-    };
+  struct ComboFrame {
+    std::vector<std::string> list_names;
+    std::vector<uint8_t> list_values;
+    std::string info;
+  };
 
-    struct SpinFrame
-    {
-       double maximum;
-       double minimum;
-       double single_step;
-       double decimal;
-       std::string unit;
-       bool nan;
-       std::string info;
-    };
+  struct SpinFrame {
+    double maximum;
+    double minimum;
+    double single_step;
+    double decimal;
+    std::string unit;
+    bool nan;
+    std::string info;
+  };
 
-    struct SwitchFrame
-    {
-    };
+  struct SwitchFrame {};
 
-    struct TestingFrame
-    {
-        double maximum;
-        double minimum;
-        double single_step;
-        double decimal;
-        std::string unit;
-    };
+  struct TestingFrame {
+    double maximum;
+    double minimum;
+    double default_value;
+    double single_step;
+    double decimal;
+    std::string unit;
+    std::string info;
+  };
 
-    struct ButtonFrame
-    {
-      std::string info;
-    };
+  struct ButtonFrame {
+    std::string info;
+  };
 
-    ComboFrame   combo_frame_;
-    SpinFrame    spin_frame_;
-    SwitchFrame  switch_frame_;
-    TestingFrame testing_frame_;
-    ButtonFrame  button_frame_;
-
+  ComboFrame combo_frame_;
+  SpinFrame spin_frame_;
+  SwitchFrame switch_frame_;
+  TestingFrame testing_frame_;
+  ButtonFrame button_frame_;
 };
 
-std::map<std::string, FrameVariables*> FrameVariablesFromJson(const std::string &file_name, const std::string &folder_path);
-std::map<std::string, FrameVariables*> CreateFrameVariablesMap(const Json::Value &custom_client);
-FrameVariables* CreateFrameVariables(const Json::Value &param);
+std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
+                                                               const std::string &folder_path);
+std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client);
+FrameVariables *CreateFrameVariables(const Json::Value &param);
 
-#endif // FRAME_VARIABLES_H
+#endif  // FRAME_VARIABLES_H

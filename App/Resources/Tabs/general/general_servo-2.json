@@ -4,6 +4,23 @@
     "Entries": [
       {
         "type_idn": 59,
+        "descriptor": "Trajectory Queue Mode",
+	      "info": "Append mode will add a trajectory segment to the queue.  Overwrite mode will immediately execute any commanded trajectory as if the queue length is one.",
+        "sub_idn": 27,
+        "format": "b",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Append",
+          "Overwrite"
+        ],
+        "list_value": [
+          0,
+          1
+	      ]
+      },
+      {
+        "type_idn": 59,
         "descriptor": "Meters per radian",
 	      "info": "Rotational to linear conversion. For applications like driving lead screws.",
         "sub_idn": 13,

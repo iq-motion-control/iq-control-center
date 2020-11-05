@@ -20,11 +20,13 @@
 
 #include "frame_testing.h"
 
-FrameTesting::FrameTesting(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv) :
-  Frame(parent, 4),
-  client_(client),
-  client_entry_(client_entry)
-{
+FrameTesting::FrameTesting(QWidget* parent, Client* client,
+                           std::pair<std::string, ClientEntryAbstract*> client_entry,
+                           FrameVariables* fv)
+    : Frame(parent, 4), client_(client), client_entry_(client_entry) {
+  info_ = QString::fromStdString(fv->testing_frame_.info);
+  default_value_ = fv->testing_frame_.default_value;
+  value_ = default_value_;
 
   setObjectName(QStringLiteral("FrameTesting"));
   setGeometry(QRect(0, 0, 1029, 70));
@@ -32,35 +34,49 @@ FrameTesting::FrameTesting(QWidget *parent, Client* client, std::pair<std::strin
   QSizePolicy size_policy = CreateSizePolicy();
   SetSettings(size_policy, style_sheet_);
 
-  //creates a horizontal layout insisde the frame
+  // creates a horizontal layout insisde the frame
   HorizontalLayout();
 
-  //makes frame label
+  // makes frame label
   label_ = new QLabel(QString((client_entry.first).c_str()), this);
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
-  //creates spacer
-  horizontal_spacer_ = new QSpacerItem(30, 20, QSizePolicy::Expanding,     QSizePolicy::Minimum);
+  // creates spacer
+  horizontal_spacer_ = new QSpacerItem(30, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
   horizontal_layout_->addItem(horizontal_spacer_);
 
-  //creates spin_box
+  // creates spin_box
   spin_box_ = new QDoubleSpinBox(this);
   SetSpinBox(size_policy, fv);
   horizontal_layout_->addWidget(spin_box_);
   QString unit = "   " + QString::fromStdString(fv->testing_frame_.unit);
   spin_box_->setToolTip(QString::fromStdString(fv->testing_frame_.unit));
   spin_box_->setSuffix(unit);
+  spin_box_->setValue(default_value_);
 
-  //creates push buton set
+  // creates push buton set
   push_button_set_ = new QPushButton(this);
-  SetPushButton(push_button_set_, size_policy, QString("pushButtonSave"), QString(":/res/save.png"));
+  SetPushButton(push_button_set_, size_policy, QString("pushButtonSave"),
+                QString(":/res/save.png"));
   push_button_set_->setToolTip(set_tip_);
   horizontal_layout_->addWidget(push_button_set_);
+
+  // creates pushbutton info
+  push_button_info_ = new QPushButton(this);
+  SetPushButton(push_button_info_, size_policy, QString("pushButtonInfo"),
+                QString(":/res/info_icon.png"));
+  horizontal_layout_->addWidget(push_button_info_);
+  connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
 }
 
-void FrameTesting::SetPushButton(QPushButton *push_button,QSizePolicy size_policy, QString push_button_name, QString icon_file_name )
-{
+void FrameTesting::ShowInfo() {
+  QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
+  QWhatsThis::showText(globalPos, info_, push_button_info_);
+}
+
+void FrameTesting::SetPushButton(QPushButton* push_button, QSizePolicy size_policy,
+                                 QString push_button_name, QString icon_file_name) {
   push_button->setObjectName(push_button_name);
   size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
   push_button->setSizePolicy(size_policy);
@@ -73,8 +89,7 @@ void FrameTesting::SetPushButton(QPushButton *push_button,QSizePolicy size_polic
   push_button->setFlat(true);
 }
 
-void FrameTesting::SetSpinBox(QSizePolicy size_policy, FrameVariables* fv)
-{
+void FrameTesting::SetSpinBox(QSizePolicy size_policy, FrameVariables* fv) {
   size_policy.setHeightForWidth(spin_box_->sizePolicy().hasHeightForWidth());
   QFont font;
   font.setFamily(QStringLiteral("Lato"));
@@ -92,48 +107,45 @@ void FrameTesting::SetSpinBox(QSizePolicy size_policy, FrameVariables* fv)
   spin_box_->setKeyboardTracking(true);
   spin_box_->setProperty("showGroupSeparator", QVariant(false));
 
-  spin_box_->setRange(fv->testing_frame_.minimum, fv->testing_frame_.maximum);
+  double maximimum = INT_MAX;
+  double minimum = INT_MIN;
+
+  if (!isnan(fv->testing_frame_.maximum)) {
+    maximimum = fv->testing_frame_.maximum;
+  }
+  if (!isnan(fv->testing_frame_.minimum)) {
+    minimum = fv->testing_frame_.minimum;
+  }
+
+  spin_box_->setRange(minimum, maximimum);
   spin_box_->setSingleStep(fv->testing_frame_.single_step);
   spin_box_->setDecimals(fv->testing_frame_.decimal);
 }
 
-void FrameTesting::SetValue()
-{
-  if(iv.pcon->GetConnectionState() == 1)
-  {
-    try
-    {
+void FrameTesting::SetValue() {
+  if (iv.pcon->GetConnectionState() == 1) {
+    try {
       client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first, value_);
       iv.pcon->GetQSerialInterface()->SendNow();
-      if(IsZero(value_, 0.00001))
-      {
-        QString success_message = label_->text()  + " SUCCESSFULLY SET TO " + QString::number(0) ;
+      if (IsZero(value_, 0.00001)) {
+        QString success_message = label_->text() + " SUCCESSFULLY SET TO " + QString::number(0);
+        iv.label_message->setText(success_message);
+      } else {
+        QString success_message =
+            label_->text() + " SUCCESSFULLY SET TO " + QString::number(value_);
         iv.label_message->setText(success_message);
       }
-      else
-      {
-        QString success_message = label_->text()  + " SUCCESSFULLY SET TO " + QString::number(value_) ;
-        iv.label_message->setText(success_message);
-      }
-    }
-    catch(const QString &e)
-    {
+    } catch (const QString& e) {
       iv.label_message->setText(e);
     }
-  }
-  else
-  {
+  } else {
     QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
     iv.label_message->setText(error_message);
   }
 }
 
-void FrameTesting::SpinBoxValueChanged(double spin_box_value)
-{
-  value_ = spin_box_value;
-}
+void FrameTesting::SpinBoxValueChanged(double spin_box_value) { value_ = spin_box_value; }
 
-bool FrameTesting::IsZero(double value, double threshold)
-{
-    return value >= -threshold && value <= threshold;
+bool FrameTesting::IsZero(double value, double threshold) {
+  return value >= -threshold && value <= threshold;
 }

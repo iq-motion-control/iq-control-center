@@ -1,4 +1,5 @@
 [
+  {"hardware_name": "FlyIQ"},
   {
     "style": 1,
     "min_build_number": 20,
@@ -17,6 +18,6 @@
   {
     "style": 2048,
     "min_build_number": 1,
-    "name": "flyaiq-2048"
+    "name": "flyiq-2048"
   }
 ]

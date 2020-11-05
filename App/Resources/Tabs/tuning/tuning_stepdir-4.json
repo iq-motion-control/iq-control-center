@@ -5,7 +5,7 @@
       {
         "type_idn": 59,
         "descriptor": "Angle Kp",
-	"info": "The angle proportional gain. Helps to correct angle errors. Higher gain means smaller errors and faster response, but can lead to oscillations and overheating.",
+        "info": "The angle proportional gain. Helps to correct angle errors. Higher gain means smaller errors and faster response, but can lead to oscillations and overheating.",
         "sub_idn": 5,
         "format": "f",
         "unit": "V/rad",
@@ -19,7 +19,7 @@
       {
         "type_idn": 59,
         "descriptor": "Angle Ki",
-	"info": "The angle integral gain. Helps to correct steady state angle errors. Higher gain means quicker suppression of steady state errors, but also increased oscillations, overheating, and faster windup.",
+        "info": "The angle integral gain. Helps to correct steady state angle errors. Higher gain means quicker suppression of steady state errors, but also increased oscillations, overheating, and faster windup.",
         "sub_idn": 6,
         "format": "f",
         "unit": "V/(rad*s)",
@@ -33,7 +33,7 @@
       {
         "type_idn": 59,
         "descriptor": "Angle Kd",
-	"info": "The angle derivative gain. Helps to reduce overshoot oscillations. Higher gain means less overshoot from Kp and Ki, but can also introduce higher frequency oscillations and overheating.",
+        "info": "The angle derivative gain. Helps to reduce overshoot oscillations. Higher gain means less overshoot from Kp and Ki, but can also introduce higher frequency oscillations and overheating.",
         "sub_idn": 7,
         "format": "f",
         "unit": "V/(rad/s)",
@@ -47,7 +47,7 @@
       {
         "type_idn": 59,
         "descriptor": "Timeout",
-	"info": "The motor must receive a message within this amount of time. If it does not, it enters coast mode.",
+        "info": "The motor must receive a message within this amount of time. If it does not, it enters coast mode.",
         "sub_idn": 8,
         "format": "f",
         "unit": "s",
