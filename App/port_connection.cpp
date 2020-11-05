@@ -18,25 +18,18 @@
 
 */
 
-#include "port_connection.hpp"
+#include "port_connection.h"
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :
-  ui_(user_int),
-  ser_(nullptr)
-{
+PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
-  sys_map_ = ClientsFromJson(0, "system_control_client.json",  clients_folder_path_);
+  sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
 }
 
-void PortConnection::SetPortConnection(bool state)
-{
-  if(state)
-  {
+void PortConnection::SetPortConnection(bool state) {
+  if (state) {
     connection_state_ = 1;
     ui_->header_connect_button->setText("DISCONNECT");
-  }
-  else
-  {
+  } else {
     connection_state_ = 0;
     ports_names_.clear();
     selected_port_name_.clear();
@@ -45,52 +38,52 @@ void PortConnection::SetPortConnection(bool state)
 
     ui_->label_firmware_build_value->setText(QString(""));
     ui_->label_firmware_name->setText(QString(""));
+    ui_->label_hardware_name->setText(QString(""));
 
     ui_->header_connect_button->setText("CONNECT");
   }
 }
 
-void PortConnection::ConnectMotor()
-{
-  if(connection_state_ == 0)
-  {
-    if(!selected_port_name_.isEmpty())
-    {
-      QString message = "CONNECTING . . . . . . . . . .";
+void PortConnection::ConnectMotor() {
+  if (connection_state_ == 0) {
+    if (!selected_port_name_.isEmpty()) {
+      QString message = "CONNECTING . . . ";
       ui_->header_error_label->setText(message);
       ui_->header_error_label->repaint();
 
       connection_state_ = 0;
 
-      uint32_t  firmware_value = 0;
+      uint32_t firmware_value = 0;
       uint32_t hardware_value = 0;
       int hardware_type = 1;
       int firmware_style = 1;
       int firmware_build_number = 0;
 
-      ser_ = new QSerialInterface(selected_port_name_,selected_baudrate_);
-      try
-      {
-        if(!ser_->ser_port_->open(QIODevice::ReadWrite))
+      ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
+      try {
+        if (!ser_->ser_port_->open(QIODevice::ReadWrite))
           throw QString("CONNECTION ERROR: could not open serial port");
 
-        if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_))
-          throw QString("CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f,
+                           obj_id_))
+          throw QString(
+              "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
 
         emit ObjIdFound();
 
         // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
-        if(GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f, hardware_value))
-        {
-          if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f, firmware_value))
+        if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
+                          hardware_value)) {
+          if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
+                             firmware_value))
             throw QString("CONNECTION ERROR: please check selected port or reconnect IQ module");
           hardware_type = (hardware_value >> 16);
           firmware_style = (firmware_value >> 20);
-          firmware_build_number = (firmware_value & ((1 << 20)-1));
+          firmware_build_number = (firmware_value & ((1 << 20) - 1));
         }
 
         firmware_style_ = firmware_style;
-        hardware_type_  = hardware_type;
+        hardware_type_ = hardware_type;
 
         QString firmware_build_number_string = QString::number(firmware_build_number);
 
@@ -100,39 +93,29 @@ void PortConnection::ConnectMotor()
         QString message = "MOTOR CONNECTED SUCCESSFULLY";
         ui_->header_error_label->setText(message);
 
-
         emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number);
         emit FindSavedValues();
-      }
-      catch(const QString &e)
-      {
+      } catch (const QString &e) {
         ui_->header_error_label->setText(e);
         delete ser_->ser_port_;
         SetPortConnection(0);
       }
-    }
-    else
-    {
+    } else {
       QString error_message = "NO PORT SELECTED: please select a port from the drop down menu";
       ui_->header_error_label->setText(error_message);
       SetPortConnection(0);
     }
-  }
-  else if(connection_state_ == 1)
-  {
+  } else if (connection_state_ == 1) {
     delete ser_->ser_port_;
     SetPortConnection(0);
     emit LostConnection();
   }
 }
 
-void PortConnection::TimerTimeout()
-{
-  if(connection_state_ == 1)
-  {
+void PortConnection::TimerTimeout() {
+  if (connection_state_ == 1) {
     uint8_t obj_id;
-    if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id))
-    {
+    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
       delete ser_->ser_port_;
       SetPortConnection(0);
       QString error_message = "SERIAL PORT DISCONNECTED";
@@ -142,10 +125,8 @@ void PortConnection::TimerTimeout()
   }
 }
 
-void PortConnection::PortError(QSerialPort::SerialPortError error)
-{
-  if(error == 9)
-  {
+void PortConnection::PortError(QSerialPort::SerialPortError error) {
+  if (error == 9) {
     SetPortConnection(0);
     delete ser_->ser_port_;
     QString error_message = "SERIAL PORT DECONNECTED";
@@ -154,33 +135,28 @@ void PortConnection::PortError(QSerialPort::SerialPortError error)
   }
 }
 
-void PortConnection::PortComboBoxIndexChanged(int index)
-{
+void PortConnection::PortComboBoxIndexChanged(int index) {
   selected_port_name_ = ports_names_[index];
 }
 
-void PortConnection::FindPorts()
-{
+void PortConnection::FindPorts() {
   ports_names_.clear();
   selected_port_name_.clear();
   ui_->header_combo_box->clear();
-  Q_FOREACH(QSerialPortInfo port_info, QSerialPortInfo::availablePorts()) {
+  Q_FOREACH (QSerialPortInfo port_info, QSerialPortInfo::availablePorts()) {
     ports_names_.push_back(port_info.portName());
     ui_->header_combo_box->addItem(port_info.portName());
   }
-  if(ports_names_.size() != 0 )
-  {
+  if (ports_names_.size() != 0) {
     PortComboBoxIndexChanged(0);
   }
 }
 
-void PortConnection::BaudrateComboBoxIndexChanged(int index)
-{
+void PortConnection::BaudrateComboBoxIndexChanged(int index) {
   selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
 }
 
-void PortConnection::FindBaudrates()
-{
+void PortConnection::FindBaudrates() {
   ui_->header_baudrate_combo_box->clear();
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);

@@ -20,10 +20,8 @@
 
 #include "json_cpp.hpp"
 
-
-JsonCpp::JsonCpp(): writer(wbuilder.newStreamWriter())
-{
+JsonCpp::JsonCpp() : writer(wbuilder.newStreamWriter()) {
   wbuilder["commentStyle"] = "None";
-	wbuilder["indentation"] = "\t";  // or whatever you like
-	rbuilder["collectComments"] = false;
+  wbuilder["indentation"] = "\t";  // or whatever you like
+  rbuilder["collectComments"] = false;
 }

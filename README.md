@@ -1,4 +1,5 @@
-![Release Version](release_badge.svg)
+![tag](https://img.shields.io/github/v/tag/iq-motion-control/iq-control-center)
+![release](https://img.shields.io/github/release/iq-motion-control/iq-control-center/all.svg)
 
 # IQ Control Center
 
@@ -12,13 +13,14 @@ If you are looking to play with the source code or compile from source continue 
 
 ### Prerequisites
 
-To use the precompiled versions fo the app, you will need Windows 10 or higher and/or macOS 10.13 or higher.  
-  
-To use the source code, you will need to install QT creator IDE in order to edit and build this project.
-You will need QT 5.12 or higher.
-Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)  
-  
-You will also need to install this 3rd party library to compile this from source : [QtAutoupdater](https://github.com/Skycoder42/QtAutoUpdater)  
+- QT 5.13
+- MacOS sdk 10.14
+- Windows 10
+- [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4) v2.1.5-4 (for build qt 5.13)
+
+Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)
+
+Here is a [link](https://github.com/Skycoder42/QtAutoUpdater/tree/2.1.5-4) to the right version of QTAutoupdater and the readme explains how to install it (use the maintenance tool).
 
 ### Installing
 

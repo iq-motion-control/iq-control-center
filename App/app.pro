@@ -16,9 +16,13 @@ QMAKE_CFLAGS = -Wno-unused-parameter
 QMAKE_CXXFLAGS = -Wno-unused-parameter
 
 # for windows
+win32{
 RC_ICONS = icons/IQ.ico
+}
 # for mac
-#ICON = icons/IQ.icns
+macx {
+ICON = icons/IQ.icns
+}
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -26,11 +30,15 @@ RC_ICONS = icons/IQ.ico
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=0 \
-           PATCH=3
+           MINOR=1 \
+           PATCH=0
 
+win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
-#DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
+}
+macx {
+DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
+}
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -39,10 +47,15 @@ DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
 CONFIG += c++11
 CONFIG += static
 
-#CONFIG-=app_bundle
-#QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.13
 
 SOURCES += \
+    Schmi/binary_file_std.cpp \
+    Schmi/flash_loader.cpp \
+    Schmi/loading_bar_std.cpp \
+    Schmi/qerror_handler.cpp \
+    Schmi/qserial.cpp \
+    Schmi/stm32.cpp \
+    flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
     switch.cpp \
@@ -67,12 +80,27 @@ SOURCES += \
     frame_testing.cpp \
     custom_double_spinbox.cpp \
     custom_combo_box.cpp \
-    updater.cpp \
     frame_button.cpp \
-    tab_populator.cpp
+    tab_populator.cpp \
+    updater.cpp
 
 HEADERS += \
+    Schmi/binary_file_interface.hpp \
+    Schmi/binary_file_std.hpp \
+    Schmi/error_handler_interface.hpp \
+    Schmi/flash_loader.hpp \
+    Schmi/loading_bar_interface.hpp \
+    Schmi/loading_bar_std.hpp \
+    Schmi/qerror_handler.hpp \
+    Schmi/qserial.h \
+    Schmi/serial_interface.hpp \
+    Schmi/std_exception.hpp \
+    Schmi/stm32.hpp \
+    flash_loading_bar.h \
+    frame_button.h \
         mainwindow.h \
+    port_connection.h \
+    qserial_interface.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \
@@ -87,22 +115,19 @@ HEADERS += \
     IQ_api/json_cpp.hpp \
     IQ_api/packet_finder.h \
     frame_combo.h \
-    qserial_interface.hpp \
     tab.h \
     frame_variables.h \
     frame_spin_box.h \
     frame.h \
     frame_switch.h \
     main.h \
-    port_connection.hpp \
     defaults.h \
     firmware.h \
     frame_testing.h \
     custom_double_spinbox.h \
     custom_combo_box.h \
-    updater.hpp \
-    frame_button.hpp \
-    tab_populator.hpp
+    tab_populator.h \
+    updater.hpp
 
 FORMS += \
         mainwindow.ui

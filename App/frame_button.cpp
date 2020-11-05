@@ -18,55 +18,54 @@
 
 */
 
-#include "frame_button.hpp"
+#include "frame_button.h"
 
-FrameButton::FrameButton(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv) :
-  Frame(parent,5),
-  client_(client),
-  client_entry_(client_entry)
-{
+FrameButton::FrameButton(QWidget *parent, Client *client,
+                         std::pair<std::string, ClientEntryAbstract *> client_entry,
+                         FrameVariables *fv)
+    : Frame(parent, 5), client_(client), client_entry_(client_entry) {
   info_ = QString::fromStdString(fv->button_frame_.info);
-  //creates frame
+  // creates frame
   setObjectName(QStringLiteral("frameButton"));
   setGeometry(QRect(0, 10, 1029, 70));
 
-  //creates size policy for the frame label
-  QSizePolicy size_policy =  CreateSizePolicy();
+  // creates size policy for the frame label
+  QSizePolicy size_policy = CreateSizePolicy();
   SetSettings(size_policy, style_sheet_);
 
-  //creates a horizontal layout insisde the frame
+  // creates a horizontal layout insisde the frame
   HorizontalLayout();
 
-  //makes frame label
+  // makes frame label
   label_ = new QLabel(QString((client_entry.first).c_str()), this);
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
-  //creates spacer
-  horizontal_spacer_ = new QSpacerItem(30, 20, QSizePolicy::Expanding,     QSizePolicy::Minimum);
+  // creates spacer
+  horizontal_spacer_ = new QSpacerItem(30, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
   horizontal_layout_->addItem(horizontal_spacer_);
 
-  //creates push buton save
+  // creates push buton save
   push_button_set_ = new QPushButton(this);
   SetPushButton(push_button_set_, size_policy, QString("pushButtonSet"), QString(":/res/save.png"));
   push_button_set_->setToolTip(save_tip_);
   horizontal_layout_->addWidget(push_button_set_);
 
-  //creates pushbutton info
+  // creates pushbutton info
   push_button_info_ = new QPushButton(this);
-  SetPushButton(push_button_info_, size_policy, QString("pushButtonInfo"),  QString(":/res/info_icon.png"));
+  SetPushButton(push_button_info_, size_policy, QString("pushButtonInfo"),
+                QString(":/res/info_icon.png"));
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
 }
 
-void FrameButton::ShowInfo()
-{
+void FrameButton::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
-  QWhatsThis::showText(globalPos,info_, push_button_info_);
+  QWhatsThis::showText(globalPos, info_, push_button_info_);
 }
 
-void FrameButton::SetPushButton(QPushButton *push_button,QSizePolicy size_policy, QString push_button_name, QString icon_file_name )
-{
+void FrameButton::SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
+                                QString push_button_name, QString icon_file_name) {
   push_button->setObjectName(push_button_name);
   size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
   push_button->setSizePolicy(size_policy);
@@ -79,24 +78,17 @@ void FrameButton::SetPushButton(QPushButton *push_button,QSizePolicy size_policy
   push_button->setFlat(true);
 }
 
-
-void FrameButton::SetValue()
-{
-  if(iv.pcon->GetConnectionState() == 1)
-  {
-    try
-    {
-      if(!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first))
+void FrameButton::SetValue() {
+  if (iv.pcon->GetConnectionState() == 1) {
+    try {
+      if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first))
         throw QString("COULDN'T SET VALUE: please reconnect or try again");
+      iv.label_message->setText(QString("Value Saved Successfully"));
       iv.pcon->GetQSerialInterface()->SendNow();
-    }
-    catch(const QString &e)
-    {
+    } catch (const QString &e) {
       iv.label_message->setText(e);
     }
-  }
-  else
-  {
+  } else {
     QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
     iv.label_message->setText(error_message);
   }

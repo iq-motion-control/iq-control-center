@@ -18,35 +18,31 @@
 
 */
 
-#include "qserial_interface.hpp"
+#include "qserial_interface.h"
 
 #include <iostream>
-QSerialInterface::QSerialInterface(const QString &dev, const qint32 &baud_rate)
-{
+QSerialInterface::QSerialInterface(const QString& dev, const qint32& baud_rate) {
   InitBQ(&index_queue, pf_index_data, SERIAL_PF_INDEX_DATA_SIZE);
   InitPacketFinder(&pf, &index_queue);
   tx_bipbuf = BipBuffer(tx_buffer, SERIAL_TX_BUFFER_SIZE);
 
   ser_port_ = new QSerialPort(dev);
-  ser_port_->setBaudRate(baud_rate,QSerialPort::AllDirections);
+  ser_port_->setBaudRate(baud_rate, QSerialPort::AllDirections);
   ser_port_->setDataBits(QSerialPort::Data8);
   ser_port_->setParity(QSerialPort::NoParity);
   ser_port_->setStopBits(QSerialPort::OneStop);
 }
 
-int8_t QSerialInterface::GetBytes()
-{
+int8_t QSerialInterface::GetBytes() {
   ser_port_->waitForReadyRead(0);
   qint16 num_bytes_read_queue = ser_port_->bytesAvailable();
 
-  while(num_bytes_read_queue)
-  {
-
-    QByteArray read_buffer_qarray = ser_port_->read(std::min((int)num_bytes_read_queue,SERIAL_RX_BUFFER_SIZE));
+  while (num_bytes_read_queue) {
+    QByteArray read_buffer_qarray =
+        ser_port_->read(std::min((int)num_bytes_read_queue, SERIAL_RX_BUFFER_SIZE));
 
     uint8_t read_buffer[SERIAL_RX_BUFFER_SIZE];
-    for(int i = 0; i < read_buffer_qarray.size(); ++i)
-    {
+    for (int i = 0; i < read_buffer_qarray.size(); ++i) {
       read_buffer[i] = (uint8_t)(read_buffer_qarray.at(i));
     }
 
@@ -57,38 +53,29 @@ int8_t QSerialInterface::GetBytes()
   return 0;
 }
 
-int8_t QSerialInterface::SetRxBytes(uint8_t* data_in, uint16_t length_in)
-{
-  if(data_in == nullptr)
-    return -1;
+int8_t QSerialInterface::SetRxBytes(uint8_t* data_in, uint16_t length_in) {
+  if (data_in == nullptr) return -1;
 
-  if(length_in)
-  {
-    //copy it over
+  if (length_in) {
+    // copy it over
     PutBytes(&pf, data_in, length_in);
     return 1;
-  }
-  else
+  } else
     return 0;
 }
 
-int8_t QSerialInterface::PeekPacket(uint8_t **packet, uint8_t *length)
-{
-  return(::PeekPacket(&pf, packet, length));
+int8_t QSerialInterface::PeekPacket(uint8_t** packet, uint8_t* length) {
+  return (::PeekPacket(&pf, packet, length));
 }
 
-int8_t QSerialInterface::DropPacket()
-{
-  return(::DropPacket(&pf));
-}
+int8_t QSerialInterface::DropPacket() { return (::DropPacket(&pf)); }
 
-int8_t QSerialInterface::SendPacket(uint8_t msg_type, uint8_t *data, uint16_t length)
-{
+int8_t QSerialInterface::SendPacket(uint8_t msg_type, uint8_t* data, uint16_t length) {
   // This function must not be interrupted by another call to SendBytes or
   // SendPacket, or else the packet it builds will be spliced/corrupted.
 
   uint8_t header[3];
-  header[0] = kStartByte;                   // const defined by packet_finder.c
+  header[0] = kStartByte;  // const defined by packet_finder.c
   header[1] = length;
   header[2] = msg_type;
   SendBytes(header, 3);
@@ -103,11 +90,10 @@ int8_t QSerialInterface::SendPacket(uint8_t msg_type, uint8_t *data, uint16_t le
   footer[1] = crc >> 8;
   SendBytes(footer, 2);
 
-  return(1);
+  return (1);
 }
 
-int8_t QSerialInterface::SendBytes(uint8_t *bytes, uint16_t length)
-{
+int8_t QSerialInterface::SendBytes(uint8_t* bytes, uint16_t length) {
   uint16_t length_temp = 0;
   uint8_t* location_temp;
   int8_t ret = 0;
@@ -116,28 +102,23 @@ int8_t QSerialInterface::SendBytes(uint8_t *bytes, uint16_t length)
   location_temp = tx_bipbuf.Reserve(length, length_temp);
 
   // If there's room, do the copy
-  if(length == length_temp)
-  {
-    memcpy(location_temp, bytes, length_temp);   // do copy
+  if (length == length_temp) {
+    memcpy(location_temp, bytes, length_temp);  // do copy
     tx_bipbuf.Commit(length_temp);
     ret = 1;
-  }
-  else
-  {
-    tx_bipbuf.Commit(0); // Call the restaurant, cancel the reservations
+  } else {
+    tx_bipbuf.Commit(0);  // Call the restaurant, cancel the reservations
   }
 
   return ret;
 }
 
-int8_t QSerialInterface::GetTxBytes(uint8_t* data_out, uint8_t& length_out)
-{
+int8_t QSerialInterface::GetTxBytes(uint8_t* data_out, uint8_t& length_out) {
   uint16_t length_temp;
   uint8_t* location_temp;
 
   location_temp = tx_bipbuf.GetContiguousBlock(length_temp);
-  if(length_temp)
-  {
+  if (length_temp) {
     memcpy(data_out, location_temp, length_temp);
     length_out = length_temp;
     tx_bipbuf.DecommitBlock(length_temp);
@@ -151,49 +132,45 @@ int8_t QSerialInterface::GetTxBytes(uint8_t* data_out, uint8_t& length_out)
   return 0;
 }
 
-void QSerialInterface::SendNow()
-{
-  //local variables
+void QSerialInterface::SendNow() {
+  // local variables
   uint8_t write_communication_buffer[256];
   uint8_t write_communication_length;
 
-  QSerialInterface::GetTxBytes(write_communication_buffer,write_communication_length);
+  QSerialInterface::GetTxBytes(write_communication_buffer, write_communication_length);
 
-  QByteArray ba = QByteArray(reinterpret_cast<char*>(write_communication_buffer), (int)(write_communication_length));
+  QByteArray ba = QByteArray(reinterpret_cast<char*>(write_communication_buffer),
+                             (int)(write_communication_length));
 
   ser_port_->write(ba);
   ser_port_->waitForBytesWritten(-1);
 }
 
-void QSerialInterface::ReadMsg(CommunicationInterface& com, uint8_t* data, uint8_t length)
-{
+void QSerialInterface::ReadMsg(CommunicationInterface& com, uint8_t* data, uint8_t length) {
   // I currently don't support being talked to
 }
 
-int QSerialInterface::GetRawBytes()
-{
+int QSerialInterface::GetRawBytes() {
   // I'm not supported yet
   return 0;
 }
 
-void QSerialInterface::Flush()
-{
-  uint8_t *rx_data;// temporary pointer to received type+data bytes
-  uint8_t rx_length = 1; // number of received type+data bytes
+void QSerialInterface::Flush() {
+  uint8_t* rx_data;       // temporary pointer to received type+data bytes
+  uint8_t rx_length = 1;  // number of received type+data bytes
 
-  while(rx_length > 0)
-  {
+  while (rx_length > 0) {
     GetBytes();
     rx_length = 0;
-    while(PeekPacket(&rx_data,&rx_length))
-    {
+    while (PeekPacket(&rx_data, &rx_length)) {
       DropPacket();
     }
   }
 }
 
-QSerialInterface::~QSerialInterface()
-{
-  ser_port_->close();
+QSerialInterface::~QSerialInterface() {
+  if (ser_port_->isOpen()) {
+    ser_port_->close();
+  }
   delete ser_port_;
 }
