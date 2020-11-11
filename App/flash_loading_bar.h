@@ -17,6 +17,7 @@ class FlashLoadingBar : public Schmi::LoadingBarInterface {
   void EndLoadingBar() override;
 
  private:
+  bool started_check_ = false;
   QProgressBar* flash_progress_bar_;
   uint64_t total_num_bytes_ = 0;
 };
