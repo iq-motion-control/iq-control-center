@@ -10,9 +10,7 @@ void FlashLoader::Init() {
   return;
 }
 
-bool FlashLoader::InitUsart() {
-  return stm32_->InitUsart();
-}
+bool FlashLoader::InitUsart() { return stm32_->InitUsart(); }
 
 bool FlashLoader::Flash(bool init_usart, bool global_erase) {
   if (init_usart) {
@@ -36,7 +34,7 @@ bool FlashLoader::Flash(bool init_usart, bool global_erase) {
     return 0;
   }
 
-  if (CheckMemory()) {
+  if (!CheckMemory()) {
     return 0;
   }
 
@@ -62,7 +60,7 @@ bool FlashLoader::Flash(uint16_t* page_codes, const uint16_t& num_of_pages, bool
     return 0;
   }
 
-  if (CheckMemory()) {
+  if (!CheckMemory()) {
     return 0;
   }
 
@@ -147,12 +145,11 @@ bool FlashLoader::CheckMemory() {
   return 1;
 }
 
-bool FlashLoader::CompareBinaryAndMemory(uint8_t* memory_buffer, uint8_t* binary_buffer, const uint16_t& num_bytes) {
+bool FlashLoader::CompareBinaryAndMemory(uint8_t* memory_buffer, uint8_t* binary_buffer,
+                                         const uint16_t& num_bytes) {
   for (int ii = 0; ii < num_bytes; ii++) {
     if (memory_buffer[ii] != binary_buffer[ii]) {
-      Schmi::Error err = {
-          "CheckBytes",
-          "Bytes do not match", ii};
+      Schmi::Error err = {"CheckBytes", "Bytes do not match", ii};
       err_->Init(err);
       err_->DisplayAndDie();
       return 0;
@@ -173,7 +170,8 @@ uint16_t FlashLoader::CheckNumBytesToWrite(const uint64_t& bytes_left) {
   return num_bytes_to_write;
 }
 
-void FlashLoader::UpdateBinaryBytesData(BinaryBytesData& binary_bytes_data, const uint16_t& num_bytes) {
+void FlashLoader::UpdateBinaryBytesData(BinaryBytesData& binary_bytes_data,
+                                        const uint16_t& num_bytes) {
   binary_bytes_data.current_byte_pos += num_bytes;
   binary_bytes_data.current_memory_address += num_bytes;
   binary_bytes_data.bytes_left -= num_bytes;

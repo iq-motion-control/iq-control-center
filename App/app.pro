@@ -31,7 +31,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=1 \
-           PATCH=0
+           PATCH=1
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
