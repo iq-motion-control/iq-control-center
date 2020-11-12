@@ -73,7 +73,8 @@ void Firmware::FlashClicked() {
     bool boot_mode = false;
     while (!boot_mode) {
       boot_mode = fl.InitUsart();
-      if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(2000)) {
+      if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
+        throw QString("COULD NOT INIT UART FROM BOOT MODE");
         break;
       };
     }
@@ -93,13 +94,19 @@ bool Firmware::BootMode() {
       if (!sys_map_["system_control_client"]->Set(*ser, std::string("reboot_boot_loader")))
         throw QString("COULDN'T REBOOT: please reconnect or try again");
       ser->SendNow();
-      QString success_message = "BOOT MODE SET SUCCESSFULLY";
-      iv.label_message->setText(success_message);
 
-      //      delete and unconnects port
+      iv.label_message->setText("Waiting for motor to go in BootMode");
+      // If you delete the port too fast, the ftdi chip will die before bytes were sent.
+      QTime dieTime = QTime::currentTime().addMSecs(500);
+      while (QTime::currentTime() < dieTime) {
+        //        QCoreApplication::processEvents();
+      }
+
+      // delete and unconnects port
       delete ser->ser_port_;
       iv.pcon->SetPortConnection(0);
       emit iv.pcon->LostConnection();
+      QCoreApplication::processEvents();
 
     } catch (const QString &e) {
       iv.label_message->setText(e);

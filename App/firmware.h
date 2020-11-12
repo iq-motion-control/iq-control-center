@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QProgressBar>
 #include <QStandardPaths>
+#include <QTime>
 #include <QVector>
 
 #include "IQ_api/client.hpp"
