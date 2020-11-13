@@ -11,9 +11,10 @@
 
 namespace Schmi {
 
-//All these values are from the AN3155 file
+// All these values are from the AN3155 file
 namespace CMD {
-const uint8_t USART_INIT[2] = {0x7F, 0x00};  //added dummy 0x00 byte so all commands are 2 bytes long
+const uint8_t USART_INIT[2] = {0x7F,
+                               0x00};  // added dummy 0x00 byte so all commands are 2 bytes long
 const uint8_t ACK = 0x79;
 const uint8_t NACK = 0x1F;
 const uint8_t GET[2] = {0x01, 0xFE};
@@ -54,7 +55,8 @@ class Stm32 {
   bool GetID(uint16_t& id);
 
   // The max value of num_bytes_to_read = 256
-  bool ReadMemory(uint8_t* bytes_read_buffer, const uint16_t num_bytes_to_read, const uint32_t& address);
+  bool ReadMemory(uint8_t* bytes_read_buffer, const uint16_t num_bytes_to_read,
+                  const uint32_t& address);
 
   bool GoToAddress(const uint32_t& address);
 
@@ -85,7 +87,8 @@ class Stm32 {
 
   bool SendCmd(const uint8_t* cmd);
 
-  bool SendMessage(uint8_t* message, const size_t& message_length, const uint16_t& ack_read_timeout_ms = 500);
+  bool SendMessage(uint8_t* message, const size_t& message_length,
+                   const uint16_t& ack_read_timeout_ms = 500);
   bool SendBytes(uint8_t* buffer, const size_t& buffer_length);
   bool CheckForAck(const uint16_t& ack_read_timeout_ms = 500);
 

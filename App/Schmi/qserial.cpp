@@ -49,7 +49,6 @@ int QSerial::Read(uint8_t* buffer, const uint16_t& num_bytes, const uint16_t& ti
   SerialReadData read_data = {buffer, num_bytes};
   try {
     std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-
     while (read_data.bytes_left) {
       if (std::chrono::steady_clock::now() - start > std::chrono::milliseconds(timeout_ms)) {
         std::stringstream err_message;
@@ -57,7 +56,7 @@ int QSerial::Read(uint8_t* buffer, const uint16_t& num_bytes, const uint16_t& ti
         throw Schmi::StdException(err_message.str());
       }
 
-      qser_port_->waitForReadyRead(100);
+      qser_port_->waitForReadyRead(10);
       qint64 num_bytes_read =
           qser_port_->read(reinterpret_cast<char*>(read_data.buffer), read_data.bytes_left);
 
