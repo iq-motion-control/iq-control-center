@@ -5,7 +5,7 @@
   {
     "style": 1,
     "min_build_number": 20,
-    "name": "speed-1"
+    "name": "speed-2"
   },
   {
     "style": 2,
@@ -15,6 +15,6 @@
   {
     "style": 4,
     "min_build_number": 8,
-    "name": "stepdir-4"
+    "name": "stepdir-2"
   }
 ]

@@ -10,11 +10,11 @@
   {
     "style": 2,
     "min_build_number": 15,
-    "name": "servo-2"
+    "name": "servo-1" 
   },
   {
     "style": 4,
     "min_build_number": 15,
-    "name": "stepdir-4"
+    "name": "stepdir-1"
   }
 ]

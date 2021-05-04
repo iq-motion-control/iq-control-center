@@ -23,6 +23,10 @@ RC_ICONS = icons/IQ.ico
 macx {
 ICON = icons/IQ.icns
 }
+
+unix {
+ICON = icons/IQ.icns
+}
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -38,6 +42,10 @@ DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
 }
 macx {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
+}
+
+unix {
+DEFINES += MAINTENANCETOOL_PATH=\\\"maintenancetool\\\"
 }
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

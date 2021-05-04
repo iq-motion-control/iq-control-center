@@ -128,11 +128,11 @@ void FrameTesting::SetValue() {
       client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first, value_);
       iv.pcon->GetQSerialInterface()->SendNow();
       if (IsZero(value_, 0.00001)) {
-        QString success_message = label_->text() + " SUCCESSFULLY SET TO " + QString::number(0);
+        QString success_message = label_->text() + " succesfully set to " + QString::number(0);
         iv.label_message->setText(success_message);
       } else {
         QString success_message =
-            label_->text() + " SUCCESSFULLY SET TO " + QString::number(value_);
+            label_->text() + " succesfully set to " + QString::number(value_);
         iv.label_message->setText(success_message);
       }
     } catch (const QString& e) {
