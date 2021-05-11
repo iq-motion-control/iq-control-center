@@ -47,7 +47,7 @@ void PortConnection::SetPortConnection(bool state) {
 void PortConnection::ConnectMotor() {
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
-      QString message = "CONNECTING . . . ";
+      QString message = "Connecting . . . ";
       ui_->header_error_label->setText(message);
       ui_->header_error_label->repaint();
 
@@ -90,7 +90,7 @@ void PortConnection::ConnectMotor() {
         ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
         SetPortConnection(1);
-        QString message = "MOTOR CONNECTED SUCCESSFULLY";
+        QString message = "Motor connected Successfully";
         ui_->header_error_label->setText(message);
 
         emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number);
@@ -118,7 +118,7 @@ void PortConnection::TimerTimeout() {
     if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
       delete ser_->ser_port_;
       SetPortConnection(0);
-      QString error_message = "SERIAL PORT DISCONNECTED";
+      QString error_message = "Serial Port Disconnected";
       ui_->header_error_label->setText(error_message);
       emit LostConnection();
     }
@@ -129,7 +129,7 @@ void PortConnection::PortError(QSerialPort::SerialPortError error) {
   if (error == 9) {
     SetPortConnection(0);
     delete ser_->ser_port_;
-    QString error_message = "SERIAL PORT DECONNECTED";
+    QString error_message = "Serial Port Disconnected";
     ui_->header_error_label->setText(error_message);
     emit LostConnection();
   }

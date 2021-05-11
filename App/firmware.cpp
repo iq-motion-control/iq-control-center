@@ -50,7 +50,7 @@ void Firmware::FlashClicked() {
   QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
   if (firmware_bin_path_.isEmpty()) {
-    QString err_message = "NO FIRMWARE BINARY SELECTED";
+    QString err_message = "No Firmware Binary Selected";
     iv.label_message->setText(err_message);
     return;
   }
@@ -74,7 +74,7 @@ void Firmware::FlashClicked() {
     while (!boot_mode) {
       boot_mode = fl.InitUsart();
       if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-        throw QString("COULD NOT INIT UART FROM BOOT MODE");
+        throw QString("Could Not Init UART From Boot Mode");
         break;
       };
     }
@@ -113,7 +113,7 @@ bool Firmware::BootMode() {
       return 0;
     }
   } else {
-    QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
+    QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
     return 0;
   }

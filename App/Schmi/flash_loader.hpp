@@ -40,7 +40,7 @@ class FlashLoader {
 
  private:
   const uint32_t START_ADDRESS_ = 0x08000000;
-  const uint16_t PAGE_SIZE_ = 2000;
+  const uint16_t PAGE_SIZE_ = 2000; // [NOTE] WHAT IS THIS and where is it used
 
   SerialInterface* ser_;
   BinaryFileInterface* bin_;

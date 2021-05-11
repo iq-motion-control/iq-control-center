@@ -31,7 +31,7 @@
 #include "home.h"
 #include "tab.h"
 #include "tab_populator.h"
-#include "updater.hpp"
+//#include "updater.hpp"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
@@ -55,6 +55,10 @@ class MainWindow : public QMainWindow {
 
   std::map<std::string, std::shared_ptr<Tab>> tab_map_;
 
+  QProcess *process;
+
+  void AutoCheckUpdate();
+
  private slots:
   void on_pushButton_home_clicked();
 
@@ -70,6 +74,10 @@ class MainWindow : public QMainWindow {
 
   void ShowMotorSavedValues();
 
+  void updater();
+
+  void readOutput();
+
   void ClearTabs();
 
   void SetDefaults(Json::Value defaults);
@@ -80,6 +88,7 @@ class MainWindow : public QMainWindow {
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   TabPopulator *tab_populator;
+
 };
 
 #endif  // MAINWINDOW_H

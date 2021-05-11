@@ -44,7 +44,7 @@ Json::Value TabPopulator::OpenAndLoadJsonFile(const QString &file_path) {
     my_json_value = LoadJsonFile(my_file);
     my_file.close();
   } else {
-    throw QString("RESOURCE FILE MISSING, UPDATE APP");
+    throw QString("Resource File Missing, Update App");
   }
   return my_json_value;
 }
@@ -65,7 +65,7 @@ void TabPopulator::FindFirmwareIndex(const int &firmware_style) {
       return;
     }
   }
-  throw QString("FIRMWARE STYLE NOT HANDLED");
+  throw QString("Firmware Style Not Handled");
 }
 
 void TabPopulator::GetAndDisplayFirmwareHardwareName() {

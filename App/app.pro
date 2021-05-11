@@ -7,7 +7,7 @@
 QT       += core gui widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 QT += serialport
-QT += autoupdatergui
+#QT += autoupdatergui
 
 TARGET = "IQ Control Center"
 TEMPLATE = app
@@ -45,7 +45,7 @@ DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
 }
 
 unix {
-DEFINES += MAINTENANCETOOL_PATH=\\\"maintenancetool\\\"
+DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool\\\"
 }
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -90,7 +90,7 @@ SOURCES += \
     custom_combo_box.cpp \
     frame_button.cpp \
     tab_populator.cpp \
-    updater.cpp
+#    updater.cpp
 
 HEADERS += \
     Schmi/binary_file_interface.hpp \
@@ -135,7 +135,7 @@ HEADERS += \
     custom_double_spinbox.h \
     custom_combo_box.h \
     tab_populator.h \
-    updater.hpp
+#    updater.hpp
 
 FORMS += \
         mainwindow.ui
