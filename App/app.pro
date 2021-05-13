@@ -34,8 +34,8 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=1 \
-           PATCH=2
+           MINOR=2 \
+           PATCH=0
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -90,7 +90,7 @@ SOURCES += \
     custom_combo_box.cpp \
     frame_button.cpp \
     tab_populator.cpp \
-#    updater.cpp
+
 
 HEADERS += \
     Schmi/binary_file_interface.hpp \
@@ -135,7 +135,6 @@ HEADERS += \
     custom_double_spinbox.h \
     custom_combo_box.h \
     tab_populator.h \
-#    updater.hpp
 
 FORMS += \
         mainwindow.ui

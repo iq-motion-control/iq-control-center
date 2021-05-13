@@ -6,7 +6,7 @@
 namespace Schmi {
 
 struct BytesData {
-  uint16_t num_bytes;
+  uint32_t num_bytes;
   uint32_t starting_byte;
 };
 

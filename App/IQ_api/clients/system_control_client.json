@@ -21,7 +21,8 @@
                 {"type_idn":5, "descriptor":"time",               "sub_idn":15, "format":"f", "unit":"s"   },
                 {"type_idn":5, "descriptor":"firmware",           "sub_idn":16, "format":"I", "unit":""    },
                 {"type_idn":5, "descriptor":"hardware",           "sub_idn":17, "format":"I", "unit":""    },
-                {"type_idn":5, "descriptor":"electronics",        "sub_idn":18, "format":"I", "unit":""    }
+                {"type_idn":5, "descriptor":"electronics",        "sub_idn":18, "format":"I", "unit":""    },
+                {"type_idn":5, "descriptor":"firmware_valid",     "sub_idn":19, "format":"B", "unit":""    }
             ]
 }
 ]

@@ -23,6 +23,7 @@
 
 #include <QMainWindow>
 #include <QObject>
+#include <QMessageBox>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include "qserial_interface.h"

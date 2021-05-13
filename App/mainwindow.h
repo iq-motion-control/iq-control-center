@@ -23,15 +23,12 @@
 
 #include <QBoxLayout>
 #include <QMainWindow>
-//#include <QtAutoUpdaterGui/UpdateController>
-//#include <QtAutoUpdaterGui/UpdateButton>
 
 #include "defaults.h"
 #include "firmware.h"
 #include "home.h"
 #include "tab.h"
 #include "tab_populator.h"
-//#include "updater.hpp"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"

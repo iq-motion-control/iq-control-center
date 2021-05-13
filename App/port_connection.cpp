@@ -55,6 +55,7 @@ void PortConnection::ConnectMotor() {
 
       uint32_t firmware_value = 0;
       uint32_t hardware_value = 0;
+      int firmware_valid = 0;
       int hardware_type = 1;
       int firmware_style = 1;
       int firmware_build_number = 0;
@@ -76,11 +77,16 @@ void PortConnection::ConnectMotor() {
                           hardware_value)) {
           if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                              firmware_value))
-            throw QString("CONNECTION ERROR: please check selected port or reconnect IQ module");
+            throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
           hardware_type = (hardware_value >> 16);
           firmware_style = (firmware_value >> 20);
           firmware_build_number = (firmware_value & ((1 << 20) - 1));
+          if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
+                            firmware_valid))
+            throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
         }
+
+
 
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
@@ -92,6 +98,18 @@ void PortConnection::ConnectMotor() {
         SetPortConnection(1);
         QString message = "Motor connected Successfully";
         ui_->header_error_label->setText(message);
+
+        if(!firmware_valid){
+          QMessageBox msgBox;
+          msgBox.setWindowTitle("WARNING!");
+          msgBox.setText(
+              "Invalid Firmware has been loaded onto the Connected IQ Module\n\n"
+              "Please Flash valid Firmware to avoid damage such as fires or explosions"
+              "to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
+          msgBox.setStandardButtons(QMessageBox::Ok);
+          msgBox.setDefaultButton(QMessageBox::Ok);
+          msgBox.exec();
+        }
 
         emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number);
         emit FindSavedValues();
