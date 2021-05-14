@@ -1,0 +1,14 @@
+<Packages>
+    <ApplicationName>IQ Control Center</ApplicationName>
+    <ApplicationVersion>1.0.0</ApplicationVersion>
+    <Package>
+        <Name>com.iq_motion_control.iq_control_center</Name>
+        <Title>IQ Control Center</Title>
+        <Description>An app to control and change the settings of your IQ module</Description>
+        <Version>1.1.2</Version>
+        <LastUpdateDate></LastUpdateDate>
+        <InstallDate>2021-04-29</InstallDate>
+        <Size>40528083</Size>
+        <Checkable>true</Checkable>
+    </Package>
+</Packages>

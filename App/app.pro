@@ -40,13 +40,17 @@ DEFINES += MAJOR=1 \
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
 }
+
 macx {
-DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
+DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/maintenancetool\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
 }
 
 unix {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
