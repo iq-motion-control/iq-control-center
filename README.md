@@ -30,13 +30,12 @@ When you have QT installed, just choose Open Project and select IQControlCenter.
 
 ## Troubleshooting
 
-On Windows, we've noticed issues with updating from 1.1.0 and below. Updating from 1.1.2 is working as intended. 
+We've noticed issues with some users connecting to our servers when attempting to update to 1.1.2. If you are experiencing this issue and it's not related to a firewall, please submit an Issue Ticket via Github.
 
-If you are experiencing this issue, please submit an Issue Ticket via Github. If the issue requires immediate action, you can also completely uninstall IQ Control Center by **deleting** the root application folder and downloading the [v1.2.0 installer](https://github.com/iq-motion-control/iq-control-center/releases/tag/v1.2.0) _(*See Note Below)_
+Alternatively, we have provided an offline installer with binaries included. [v1.2.0 installer](https://github.com/iq-motion-control/iq-control-center/releases/tag/v1.2.0) _(*See Note Below)_
 
-**Notes:* 
-* *The Root Application Folder "IQ Control Center" is more than likely located in Program Files(x86)*
-* *Make sure to save any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
+**Notes:*  
+* *Make sure to transfer any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
 
 
 ## Deployment
