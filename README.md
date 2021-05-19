@@ -13,27 +13,52 @@ If you are looking to play with the source code or compile from source continue 
 
 ### Prerequisites
 
-- QT 5.13
-- MacOS sdk 10.14
+- QT 5.15.x
+- MacOS sdk 10.14 (minimum)
 - Windows 10
-- [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4) v2.1.5-4 (for build qt 5.13)
+- Linux Ubuntu 20.04 (Built and Compiled on)
 
-Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)
+### v1.2.0 Release Notes
+With v1.2.0, we've removed [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4). We now point directly to the QTInstaller Maintencetool for updating within the App.
 
-Here is a [link](https://github.com/Skycoder42/QtAutoUpdater/tree/2.1.5-4) to the right version of QTAutoupdater and the readme explains how to install it (use the maintenance tool).
+Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download-qt-installer)
+
 
 ### Installing
 
 When you have QT installed, just choose Open Project and select IQControlCenter.pro file !
 
-## Running
+## Troubleshooting
 
-QT normally compiles and create an executable in a different directory that where the source code is located. You have to make sure to have the Resource folder in the same directory of your executable after you compiled the project on QT Creator. You will still be able to run the Control Center without the Resource Folder in the same directory but the tabs won't populate when you connect a motor.
+On Windows, we've noticed issues with updating from 1.1.0 and below. Updating from 1.1.2 is working as intended. 
+
+If you are experiencing this issue, please submit an Issue Ticket via Github. If the issue requires immediate action, you can also completely uninstall IQ Control Center by **deleting** the root application folder and downloading the [v1.2.0 installer](https://github.com/iq-motion-control/iq-control-center/releases/tag/v1.2.0) _(*See Note Below)_
+
+**Notes:* 
+* *The Root Application Folder "IQ Control Center" is more than likely located in Program Files(x86)*
+* *Make sure to save any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
+
 
 ## Deployment
 
 Deployment of this app can be done on any platform thanks to QT. If you would like more information on how to do this please follow the following link [QT deployement](https://doc.qt.io/qt-5/deployment.html)
 
+Currently there isn't an option for cross-deployment, so you'll need can only deploy on the same system as your target.
+
+|  System | Deployment Tool                                                               |
+|:-------:|-------------------------------------------------------------------------------|
+| Windows |  [windeployqt](https://doc.qt.io/qt-5/macos-deployment.html)			      |
+| Mac     |  [macdeployqt](https://doc.qt.io/qt-5/macos-deployment.html)   			  	  |  
+| Linux   |  [linuxdeployqt*](https://github.com/probonopd/linuxdeployqt/releases/tag/5)  |
+
+**Note: We are using version 5 of linuxdeployqt due to compatibility issues with newer linux distros. You can read more about the issue [here](https://github.com/probonopd/linuxdeployqt/issues/340)*
+
+
+```
+Windows Deployment Example:
+
+C:\Qt\5.15.2\mingw81_32\bin> windeployqt \path\to\.exe
+```
 
 ## Contributing
 
@@ -43,9 +68,10 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/iq-motion-control/iq-control-center/tags) or the [releases on this repository](https://github.com/iq-motion-control/iq-control-center/releases).
 
-## Authors
+## Authors & Maintainers
 
 * **Raphael Van Hoffelen** 
+* **Malik B. Parker**
 
 See also the list of [contributors](contributors.md) who participated in this project
 
