@@ -1,9 +1,0 @@
-************************************* Invoked: Fri May 14 10:53:00 2021
-[0] Arguments: ./maintenancetool
-[10] Failure to read packages from /Users/iqmotioncontrol/Documents/control-center-app/components.xml.
-[10] Critical: Operations missing for installed packages ()
-[10] Critical: Orphaned operations ("com.iq_motion_control.iq_control_center")
-[10] Critical: Your installation seems to be corrupted. Please consider re-installing from scratch, remove the packages from components.xml which operations are missing, or reinstall the packages.
-[9255] Failure to read packages from /Users/iqmotioncontrol/Documents/control-center-app/components.xml.
-[11395] Failure to read packages from /Users/iqmotioncontrol/Documents/control-center-app/components.xml.
-[11396] Failure to read packages from /Users/iqmotioncontrol/Documents/control-center-app/components.xml.

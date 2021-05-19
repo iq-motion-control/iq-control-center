@@ -12,14 +12,14 @@ If you are looking to play with the source code or compile from source continue 
 
 ### Prerequisites
 
-- QT 5.13
-- MacOS sdk 10.14
+- QT 5.15.x
+- MacOS sdk 10.14 (minimum)
 - Windows 10
-- [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4) v2.1.5-4 (for build qt 5.13)
+- With v1.2.0, we've removed [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4) as seems like a unsupported repo. We now point directly to the QTInstaller Maintencetool for updating within the App.
 
 Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download?hsCtaTracking=c80600ba-f2ea-45ed-97ef-6949c1c4c236%7C643bd8f4-2c59-4c4c-ba1a-4aaa05b51086)
 
-Here is a [link](https://github.com/Skycoder42/QtAutoUpdater/tree/2.1.5-4) to the right version of QTAutoupdater and the readme explains how to install it (use the maintenance tool).
+~~Here is a [link](https://github.com/Skycoder42/QtAutoUpdater/tree/2.1.5-4) to the right version of QTAutoupdater and the readme explains how to install it (use the maintenance tool)~~
 
 ### Installing
 
@@ -29,10 +29,10 @@ When you have QT installed, just choose Open Project and select IQControlCenter.
 
 Deployment of this app can be done on any platform thanks to QT. If you would like more information on how to do this please follow the following link [QT deployement](https://doc.qt.io/qt-5/deployment.html)
 
-I Recommend using the windeplouqt and macdeployqt tools
+I Recommend using the windeployqt, macdeployqt, and linuxdeployqt tools
 
 ```
-C:\Qt\5.13.0\mingw73_64\bin> windeployqt \path\to\.exe
+C:\Qt\5.15.2\mingw81_32\bin> windeployqt \path\to\.exe
 ```
 
 ## Contributing
