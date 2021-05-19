@@ -26,8 +26,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->stackedWidget->setCurrentIndex(0);
   ui->pushButton_home->setChecked(1);
 
-  Updater *update = new Updater(ui, parent);
-  update->ConnectUpdater();
+
+  // Check the server for updates
+  AutoCheckUpdate();
+
+  // Connect the Help Buttons to the maintenance tool
+  connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
 
   QString gui_version =
       QString::number(MAJOR) + "." + QString::number(MINOR) + "." + QString::number(PATCH);
@@ -53,8 +57,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
     tab_populator = new TabPopulator(ui, &tab_map_);
-    connect(iv.pcon, SIGNAL(TypeStyleFound(int, int, int)), tab_populator,
-            SLOT(PopulateTabs(int, int, int)));
+    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator,
+            SLOT(PopulateTabs(int,int,int)));
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
@@ -80,6 +84,53 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_pushButton_home_clicked() { ui->stackedWidget->setCurrentIndex(0); }
+
+void MainWindow::AutoCheckUpdate(){
+    process = new QProcess(parent());
+    QDir exe = QDir(QCoreApplication::applicationDirPath());
+    QString file = exe.absoluteFilePath(MAINTENANCETOOL_PATH);
+    QStringList arguments;
+    arguments << MAINTENANCETOOL_FLAGS;
+//    qDebug() << file << " " << arguments << "\n";
+    process->start(file, arguments);
+    connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(readOutput()));
+   // connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
+//    while(!process->waitForFinished(1)){
+//        qDebug() << process->readLine() << "\n";
+//        qDebug() << "Error: " << process->readAllStandardError() << "\n";
+//    }
+}
+
+void MainWindow::updater() {
+    process = new QProcess(parent());
+    QDir exe = QDir(QCoreApplication::applicationDirPath());
+    QString file = exe.absoluteFilePath(MAINTENANCETOOL_PATH);
+    QStringList arguments;
+    arguments << "";
+    process->start(file, arguments);
+    connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+}
+
+void MainWindow::readOutput() {
+    std::string data;
+    std::string error;
+
+    data.append(process->readAllStandardOutput());
+    error.append(process->readAllStandardError());
+
+//    qDebug() << data.c_str();
+
+    if((data.find("no updates available") != std::string::npos) || (error.find("no updates available") != std::string::npos)){
+        ui->header_error_label->setText("No Updates Available");
+    }
+    else if ((data.find("<updates>") != std::string::npos) || (error.find("<updates>") != std::string::npos)){
+        ui->header_error_label->setText("Updates Are Available! Please Click the Installer Tab");
+    }
+    else{
+        ui->header_error_label->setText("Error Checking For Updates!");
+    }
+    delete process;
+}
 
 void MainWindow::on_pushButton_general_clicked() { ui->stackedWidget->setCurrentIndex(1); }
 
@@ -113,7 +164,7 @@ void MainWindow::ShowMotorSavedValues() {
       tab.second->CheckSavedValues();
     }
   } else {
-    QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
+    QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
   }
 }
@@ -137,17 +188,17 @@ void MainWindow::SetDefaults(Json::Value defaults) {
           tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
           tab_map_[tab_descriptor]->CheckSavedValues();
         } else {
-          QString error_message = "WRONG DEFAULT SETTINGS SELECTED";
+          QString error_message = "Wrong Default Settings Selected";
           iv.label_message->setText(error_message);
           return;
         }
       }
     }
-    QString success_message = "DEFAULT SETTINGS VALUE SAVED";
+    QString success_message = "Default Settings Value Saved";
     iv.label_message->setText(success_message);
     return;
   } else {
-    QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
+    QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
     return;
   }

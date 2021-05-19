@@ -5,8 +5,8 @@
 #include <QObject>
 #include <QDebug>
 #include "ui_mainwindow.h"
-#include <QtAutoUpdaterGui/UpdateController>
-#include <QtAutoUpdaterGui/UpdateButton>
+//#include <QtAutoUpdaterGui/UpdateController>
+//#include <QtAutoUpdaterGui/UpdateButton>
 
 class Updater: public QObject
 {

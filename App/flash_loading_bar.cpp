@@ -31,6 +31,6 @@ void FlashLoadingBar::UpdateLoadingBar(const uint64_t& bytes_left) {
 };
 
 void FlashLoadingBar::EndLoadingBar() {
-  iv.label_message->setText("FLASHING SUCCESSFUL");
+  iv.label_message->setText("Flashing Successful");
   started_check_ = false;
 };

@@ -36,7 +36,7 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
     Json::parseFromStream(json.rbuilder, iss, &JSON, &errs);
     myfile.close();
   } else {
-    throw QString("RESOURCE FILE MISSING, UPDATE RESOURCE FOLDER");
+    throw QString("Resource File Missing, Update Resource Folder");
   }
 
   uint8_t file_size = JSON.size();

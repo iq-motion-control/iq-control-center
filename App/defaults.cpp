@@ -75,7 +75,7 @@ Json::Value DefaultValueFromJson(const QString &file_name, const QString &folder
   }
   else
   {
-    throw QString("RESOURCE FILE MISSING, UPDATE RESOURCE FOLDER");
+    throw QString("Resrouce File Missing, Update Resource Folder");
   }
   return JSON;
 }

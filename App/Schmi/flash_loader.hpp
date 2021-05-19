@@ -19,7 +19,7 @@ const uint16_t MAX_NUM_PAGES_TO_ERASE = 512;
 
 class FlashLoader {
  public:
-  const uint16_t MAX_WRITE_SIZE = 256;
+  const uint32_t MAX_WRITE_SIZE = 256;
 
   FlashLoader(SerialInterface* ser, BinaryFileInterface* bin, ErrorHandlerInterface* err,
               LoadingBarInterface* bar)
@@ -40,7 +40,7 @@ class FlashLoader {
 
  private:
   const uint32_t START_ADDRESS_ = 0x08000000;
-  const uint16_t PAGE_SIZE_ = 2000;
+  const uint32_t PAGE_SIZE_ = 2048; // [NOTE] WHAT IS THIS and where is it used
 
   SerialInterface* ser_;
   BinaryFileInterface* bin_;
@@ -59,7 +59,7 @@ class FlashLoader {
   bool CompareBinaryAndMemory(uint8_t* memory_buffer, uint8_t* binary_buffer,
                               const uint16_t& num_bytes);
 
-  uint16_t CheckNumBytesToWrite(const uint64_t& bytes_left);
+  uint16_t CheckNumBytesToWrite(const uint32_t& bytes_left);
 
   void UpdateBinaryBytesData(BinaryBytesData& binary_bytes_data, const uint16_t& num_bytes);
 };

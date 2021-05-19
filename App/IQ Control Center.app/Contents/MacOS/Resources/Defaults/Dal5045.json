@@ -1,0 +1,52 @@
+[
+  {
+    "descriptor": "general_speed-1",
+    "Entries": [
+      {
+        "descriptor": "Mode",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "descriptor": "tuning_speed-1",
+    "Entries": [
+      {
+        "descriptor": "Max Volts",
+        "value": 21
+      },
+      {
+        "descriptor": "Max Velocity",
+        "value": 3294
+      },
+      {
+        "descriptor": "Velocity Kp",
+        "value": 0.001
+      },
+      {
+        "descriptor": "Velocity Ki",
+        "value": 0
+      },
+      {
+        "descriptor": "Velocity Kd",
+        "value": 0
+      },
+      {
+        "descriptor": "Velocity FF0",
+        "value": 0
+      },
+      {
+        "descriptor": "Velocity FF1",
+        "value": 0.0043
+      },
+      {
+        "descriptor": "Velocity FF2",
+        "value": 2.50E-07
+      }
+    ]
+  },
+  {
+    "descriptor": "advance_speed-1",
+    "Entries": []
+  }
+]

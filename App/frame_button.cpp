@@ -89,7 +89,7 @@ void FrameButton::SetValue() {
       iv.label_message->setText(e);
     }
   } else {
-    QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
+    QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
   }
 }

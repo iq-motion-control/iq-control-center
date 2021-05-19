@@ -7,7 +7,7 @@
 QT       += core gui widgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 QT += serialport
-QT += autoupdatergui
+#QT += autoupdatergui
 
 TARGET = "IQ Control Center"
 TEMPLATE = app
@@ -23,6 +23,10 @@ RC_ICONS = icons/IQ.ico
 macx {
 ICON = icons/IQ.icns
 }
+
+unix {
+ICON = icons/IQ.icns
+}
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -30,15 +34,24 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=1 \
-           PATCH=2
+           MINOR=2 \
+           PATCH=0
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
+
 macx {
-DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app\\\"
+DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/maintenancetool\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
 }
+
+unix {
+DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
+}
+
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -82,7 +95,7 @@ SOURCES += \
     custom_combo_box.cpp \
     frame_button.cpp \
     tab_populator.cpp \
-    updater.cpp
+
 
 HEADERS += \
     Schmi/binary_file_interface.hpp \
@@ -127,7 +140,6 @@ HEADERS += \
     custom_double_spinbox.h \
     custom_combo_box.h \
     tab_populator.h \
-    updater.hpp
 
 FORMS += \
         mainwindow.ui
