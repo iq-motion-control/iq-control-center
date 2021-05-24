@@ -37,6 +37,19 @@ If you are experiencing this issue, please submit an Issue Ticket via Github. If
 * *The Root Application Folder "IQ Control Center" is more than likely located in Program Files(x86)*
 * *Make sure to save any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
 
+## PreDeployment Workflow 
+
+1. Choose a system of preference to build and test on:
+    - This should be where they heavy code lifting should be done. I personally prefer linux.
+    - Why?: To keep track of code changes and keep a consistent analysis method. Change one variable at a time (Imagine changing systems mid build! Get it working on one system first then move to the next.)
+2. Before deploying on the first system, there's a few basics tests that must work (It would be nice to automate these in the future one day):
+
+|                    Test                    |                                                            Details                                                             |
+| :----------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------ |
+| Connect to each IQ Motor (Public Releases) | -Vertiq 8108 150Kv <br> -Vertiq2306 220Kv <br> -Vertiq2306 2200Kv                                                              |
+|      Connects to Installer/Repository      | -On startup, shows message about updates in header <br> - Clicking on Installer->"Check for Updates" launches installer window |
+|       Motor is able to be controlled       | -In testing tab, be able to move the motor                                                                                     |
+|      Able to flash each motor module       | -Flash software onto the motors and go to testing tab to make sure it works                                                    |
 
 ## Deployment
 
