@@ -4,11 +4,33 @@
 
 This is all the source code used to create and run the IQ Control Center.
 
+
 ## Getting Started
 
 If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows and Mac. 
   
 If you are looking to play with the source code or compile from source continue reading !
+
+## Cloning this Repo
+
+This repo uses a submodule called 'Schmi' (the flashing portion of Control Center) and will return as an empty folder if you clone this repo without the `--recursive` flag. Please run this command when cloning this repo.
+Clone the repo and all submodules within it:  
+
+
+``` shell
+git clone --recursive <repo-url>
+```
+
+### Already cloned the repo without the recursive flag?
+
+Run the following:  
+
+
+``` shell
+git submodule update --init
+```
+
+
 
 ### Prerequisites
 
