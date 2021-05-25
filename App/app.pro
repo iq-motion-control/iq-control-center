@@ -62,12 +62,12 @@ CONFIG += static
 
 
 SOURCES += \
-    Schmi/binary_file_std.cpp \
-    Schmi/flash_loader.cpp \
-    Schmi/loading_bar_std.cpp \
-    Schmi/qerror_handler.cpp \
-    Schmi/qserial.cpp \
-    Schmi/stm32.cpp \
+    schmi/src/binary_file_std.cpp \
+    schmi/src/flash_loader.cpp \
+    schmi/src/loading_bar_std.cpp \
+    schmi/src/qerror_handler.cpp \
+    schmi/src/qserial.cpp \
+    schmi/src/stm32.cpp \
     flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -98,17 +98,17 @@ SOURCES += \
 
 
 HEADERS += \
-    Schmi/binary_file_interface.hpp \
-    Schmi/binary_file_std.hpp \
-    Schmi/error_handler_interface.hpp \
-    Schmi/flash_loader.hpp \
-    Schmi/loading_bar_interface.hpp \
-    Schmi/loading_bar_std.hpp \
-    Schmi/qerror_handler.hpp \
-    Schmi/qserial.h \
-    Schmi/serial_interface.hpp \
-    Schmi/std_exception.hpp \
-    Schmi/stm32.hpp \
+    schmi/include/Schmi/binary_file_interface.hpp \
+    schmi/include/Schmi/binary_file_std.hpp \
+    schmi/include/Schmi/error_handler_interface.hpp \
+    schmi/include/Schmi/flash_loader.hpp \
+    schmi/include/Schmi/loading_bar_interface.hpp \
+    schmi/include/Schmi/loading_bar_std.hpp \
+    schmi/include/Schmi/qerror_handler.hpp \
+    schmi/include/Schmi/qserial.h \
+    schmi/include/Schmi/serial_interface.hpp \
+    schmi/include/Schmi/std_exception.hpp \
+    schmi/include/Schmi/stm32.hpp \
     flash_loading_bar.h \
     frame_button.h \
         mainwindow.h \

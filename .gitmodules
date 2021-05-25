@@ -1,0 +1,3 @@
+[submodule "App/schmi"]
+	path = App/schmi
+	url = https://mparker25@bitbucket.org/iqcontrol/schmi.git

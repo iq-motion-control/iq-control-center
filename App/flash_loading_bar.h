@@ -3,7 +3,7 @@
 
 #include <QProgressBar>
 
-#include "Schmi/loading_bar_interface.hpp"
+#include "schmi/include/Schmi/loading_bar_interface.hpp"
 #include "main.h"
 
 class FlashLoadingBar : public Schmi::LoadingBarInterface {

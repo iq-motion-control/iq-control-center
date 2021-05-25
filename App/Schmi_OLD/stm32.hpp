@@ -13,8 +13,7 @@ namespace Schmi {
 
 // All these values are from the AN3155 file
 namespace CMD {
-const uint8_t USART_INIT[2] = {0x7F,
-                               0x00};  // added dummy 0x00 byte so all commands are 2 bytes long
+const uint8_t USART_INIT[2] = {0x7F, 0x00};  // added dummy 0x00 byte so all commands are 2 bytes long
 const uint8_t ACK = 0x79;
 const uint8_t NACK = 0x1F;
 const uint8_t GET[2] = {0x01, 0xFE};
