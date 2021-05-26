@@ -39,7 +39,7 @@ DEFINES += MAJOR=1 \
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
-DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
 }
 
 macx {
