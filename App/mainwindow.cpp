@@ -91,14 +91,8 @@ void MainWindow::AutoCheckUpdate(){
     QString file = exe.absoluteFilePath(MAINTENANCETOOL_PATH);
     QStringList arguments;
     arguments << MAINTENANCETOOL_FLAGS;
-//    qDebug() << file << " " << arguments << "\n";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(readOutput()));
-   // connect(process, SIGNAL(readyReadStandardOutput()), this, SLOT(readOutput()));
-//    while(!process->waitForFinished(1)){
-//        qDebug() << process->readLine() << "\n";
-//        qDebug() << "Error: " << process->readAllStandardError() << "\n";
-//    }
 }
 
 void MainWindow::updater() {
@@ -117,8 +111,6 @@ void MainWindow::readOutput() {
 
     data.append(process->readAllStandardOutput());
     error.append(process->readAllStandardError());
-
-//    qDebug() << data.c_str();
 
     if((data.find("no updates available") != std::string::npos) || (error.find("no updates available") != std::string::npos)){
         ui->header_error_label->setText("No Updates Available");
