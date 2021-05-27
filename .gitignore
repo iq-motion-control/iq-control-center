@@ -42,7 +42,7 @@ dist/
 #Mac
 *__MACOSX/
 *.DS_Store
-*IQ.app/
+*.app
 
 #Windows
 *release/
