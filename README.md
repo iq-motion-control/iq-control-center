@@ -1,5 +1,4 @@
-![tag](https://img.shields.io/github/v/tag/iq-motion-control/iq-control-center)
-![release](https://img.shields.io/github/release/iq-motion-control/iq-control-center/all.svg)
+![Release Version](https://img.shields.io/badge/Release-v1.2.1-green)
 
 # IQ Control Center
 
@@ -7,9 +6,27 @@ This is all the source code used to create and run the IQ Control Center.
 
 ## Getting Started
 
-If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows and Mac. 
+If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows, Mac, and Linux.
   
-If you are looking to play with the source code or compile from source continue reading !
+If you are looking to play with the source code or compile from source continue reading!
+
+## Cloning this Repo
+
+This repo uses a submodule called 'Schmi' (the flashing portion of Control Center) and will return as an empty folder if you clone this repo without the `--recursive` flag. Please run this command when cloning this repo.
+
+Clone the repo and all submodules within it:  
+
+``` shell
+git clone --recursive <repo-url>
+```
+
+### Already cloned the repo without the recursive flag?
+
+Run the following:  
+
+``` shell
+git submodule update --init
+```
 
 ### Prerequisites
 
@@ -17,7 +34,7 @@ If you are looking to play with the source code or compile from source continue 
 - MacOS sdk 10.14 (minimum)
 - Windows 10
 - Linux Ubuntu 20.04 (Built and Compiled on)
-
+  
 ### v1.2.0 Release Notes
 With v1.2.0, we've removed [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4). We now point directly to the QTInstaller Maintencetool for updating within the App.
 
@@ -30,13 +47,27 @@ When you have QT installed, just choose Open Project and select IQControlCenter.
 
 ## Troubleshooting
 
-We've noticed issues with some users connecting to our servers when attempting to update to 1.1.2. If you are experiencing this issue and it's not related to a firewall, please submit an Issue Ticket via Github.
+On Windows, we've noticed issues with updating from 1.1.0 and below. Updating from 1.1.2 is working as intended. 
 
-Alternatively, we have provided an offline installer with binaries included. [v1.2.0 installer](https://github.com/iq-motion-control/iq-control-center/releases/tag/v1.2.0) _(*See Note Below)_
+If you are experiencing this issue, please submit an Issue Ticket via Github. If the issue requires immediate action, you can also completely uninstall IQ Control Center by **deleting** the root application folder and downloading the [v1.2.0 installer](https://github.com/iq-motion-control/iq-control-center/releases/tag/v1.2.0) _(*See Note Below)_
 
-**Notes:*  
-* *Make sure to transfer any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
+**Notes:* 
+* *The Root Application Folder "IQ Control Center" is more than likely located in Program Files(x86)*
+* *Make sure to save any custom resource files you may have added. If you haven't receieved any resource files from IQ Motion Control Engineers, chances are this doesn't apply to you and you can safely delete the root folder*
 
+## PreDeployment Workflow 
+
+1. Choose a system of preference to build and test on:
+    - This should be where they heavy code lifting should be done. I personally prefer linux.
+    - Why?: To keep track of code changes and keep a consistent analysis method. Change one variable at a time (Imagine changing systems mid build! Get it working on one system first then move to the next.)
+2. Before deploying on the first system, there's a few basics tests that must work (It would be nice to automate these in the future one day):
+
+|                    Test                    |                                                            Details                                                             |
+| :----------------------------------------: | ------------------------------------------------------------------------------------------------------------------------------ |
+| Connect to each IQ Motor (Public Releases) | -Vertiq 8108 150Kv <br> -Vertiq2306 220Kv <br> -Vertiq2306 2200Kv                                                              |
+|      Connects to Installer/Repository      | -On startup, shows message about updates in header <br> - Clicking on Installer->"Check for Updates" launches installer window |
+|       Motor is able to be controlled       | -In testing tab, be able to move the motor                                                                                     |
+|      Able to flash each motor module       | -Flash software onto the motors and go to testing tab to make sure it works                                                    |
 
 ## Deployment
 
