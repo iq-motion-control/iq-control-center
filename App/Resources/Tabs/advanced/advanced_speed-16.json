@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "advanced_speed-1",
+    "descriptor": "advanced_vertiq_8108",
     "Entries": [
       {
         "type_idn": 50,
@@ -60,8 +60,8 @@
         "format": "f",
         "unit": "",
         "frame_type": 2,
-        "maximum": 1,
-        "minimum": -1,
+        "maximum": 1000,
+        "minimum": -1000,
         "single_step": 0.01,
         "decimal": 2
       },
@@ -134,6 +134,19 @@
         "format": "n",
         "unit": "",
         "frame_type": 5
+      },
+      {
+        "type_idn": 83,
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "info": "Lumped thermal conductivity term.  Higher numbers models more cooling from a spinning propeller.  You should increase this number if you increase the propeller blade pitch (proportionally is a good first guess).  Use '0.0' if no propeller is installed.  A good first guess for the Vertiq8108 is y = 0.00314*pitch (inches per rotation).",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "W/(K*sqrt(rad/s)",
+        "frame_type": 2,
+        "maximum": 0.100,
+        "minimum": 0,
+        "single_step": 0.001,
+        "decimal": 3
       }
     ]
   }

@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "tuning_speed-1",
+    "descriptor": "tuning_vertiq_8108",
     "Entries": [
       {
         "type_idn": 60,
@@ -10,7 +10,7 @@
         "format": "f",
         "unit": "V",
         "frame_type": 2,
-        "maximum": 25.2,
+        "maximum": 48.0,
         "minimum": -0.01,
         "single_step": 0.01,
         "nan": true,
@@ -140,6 +140,25 @@
         "minimum": 1,
         "decimal": 0,
         "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "UAVCAN Zero Behavior",
+        "info": "Determines how the motor reacts to receiving a zero setpoint from a UAVCAN Raw Command.",
+        "sub_idn": 2,
+        "format": "I",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Coast",
+          "Brake",
+		  "Normal Controller"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
       }
     ]
   }

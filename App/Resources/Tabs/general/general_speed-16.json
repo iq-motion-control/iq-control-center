@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "general_speed-1",
+    "descriptor": "general_vertiq_8108",
     "Entries": [
       {
         "type_idn": 60,
@@ -121,7 +121,7 @@
       },
       {
         "type_idn": 80,
-        "descriptor": "UAVCAN Node Index",
+        "descriptor": "UAVCAN ESC Index",
         "info": "The ESC index used to identify this motor when ESC commands are set on the UAVCAN bus. Each ESC/motor on the bus needs a unique index to identify what commands are intended for it. The counting of these indexes starts from 0, so typically when integrating with a flight controller motor 1 will have an ESC index of 0, motor 2 will have an ESC index of 1, etc. The ESC indexes start at 0, and go up to 19. The exact ordering to use with the ESC indexes will depend on how your controller numbers and orders its motors.",
         "sub_idn": 1,
         "format": "I",
