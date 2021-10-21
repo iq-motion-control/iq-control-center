@@ -1,4 +1,4 @@
-![Release Version](https://img.shields.io/badge/Release-v1.2.1-green)
+![Release Version](https://img.shields.io/badge/Release-v1.2.2-green)
 
 # IQ Control Center
 
