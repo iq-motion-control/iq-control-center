@@ -100,7 +100,7 @@ void MainWindow::updater() {
     QDir exe = QDir(QCoreApplication::applicationDirPath());
     QString file = exe.absoluteFilePath(MAINTENANCETOOL_PATH);
     QStringList arguments;
-    arguments << "";
+    arguments << "--su";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 }
@@ -116,7 +116,7 @@ void MainWindow::readOutput() {
         ui->header_error_label->setText("No Updates Available");
     }
     else if ((data.find("<updates>") != std::string::npos) || (error.find("<updates>") != std::string::npos)){
-        ui->header_error_label->setText("Updates Are Available! Please Click the Installer Tab");
+        ui->header_error_label->setText("UPDATE AVAILABLE: CLICK MENU IN TOP LEFT");
     }
     else{
         ui->header_error_label->setText("Error Checking For Updates!");

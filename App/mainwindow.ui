@@ -1406,8 +1406,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>626</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1839,8 +1839,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>702</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1915,8 +1915,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1076</width>
-                <height>702</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2157,8 +2157,8 @@ p, li { white-space: pre-wrap; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
              </widget>
@@ -2191,7 +2191,7 @@ p, li { white-space: pre-wrap; }
    </property>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Installer</string>
+     <string>Menu</string>
     </property>
     <addaction name="actionCheck_for_Updates"/>
    </widget>
