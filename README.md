@@ -30,7 +30,7 @@ git submodule update --init
 
 ### Prerequisites
 
-- QT 5.15.x
+- QT 5.15.2
 - MacOS sdk 10.14 (minimum)
 - Windows 10
 - Linux Ubuntu 20.04 (Built and Compiled on)
@@ -38,8 +38,14 @@ git submodule update --init
 ### v1.2.0 Release Notes
 With v1.2.0, we've removed [QtAutoupdaterGui](https://github.com/Skycoder42/QtAutoUpdater/releases/tag/2.1.5-4). We now point directly to the QTInstaller Maintencetool for updating within the App.
 
-Here is the link to download QT creator IDE for free : [QT Creator](https://www.qt.io/download-qt-installer)
+### Installing Qt and Qt Creator
+Download the Qt installer here [QT installer](https://www.qt.io/download-qt-installer)
 
+1. Create an account in the installer
+2. In Installation Folder, click on Custom build and select the following:
+  * Qt 5.15.2
+  * Qt Installer Framework 4.2
+  
 
 ### Installing
 
