@@ -128,7 +128,20 @@
           7,
           8
         ]
-      }
+      },
+	  {
+        "type_idn": 59,
+        "descriptor": "Maximum Angular Velocity",
+        "info": "Sets the maximum angular speed the motor will move at when moving to a position.",
+        "sub_idn": 18,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 2,
+        "maximum": 10000,
+        "minimum": -10000,
+        "decimal": 2,
+        "single_step": 0.1
+	  }
     ]
   }
 ]

@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "general_servo-2",
+    "descriptor": "general_vertiq_8108_position",
     "Entries": [
       {
         "type_idn": 59,
@@ -34,10 +34,10 @@
         "nan": true
       },
       {
-        "type_idn": 71,
-        "descriptor": "Anticogging",
+        "type_idn": 79,
+        "descriptor": "Anticogging Pro",
 	      "info": "This electrically cancels cogging torque to make your motor smoother.",
-        "sub_idn": 2,
+        "sub_idn": 0,
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
@@ -141,7 +141,7 @@
         "minimum": -10000,
         "decimal": 2,
         "single_step": 0.1
-	  }
+      }
     ]
   }
 ]
