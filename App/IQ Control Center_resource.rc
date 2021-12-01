@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\IQMalik\\Documents\\control-center-app\\App\\icons\\IQ.ico"
+IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\fkumm\\control-center-app\\App\\icons\\IQ.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
