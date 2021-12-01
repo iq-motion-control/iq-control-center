@@ -43,8 +43,15 @@ Download the Qt installer here [QT installer](https://www.qt.io/download-qt-inst
 
 1. Create an account in the installer
 2. In Installation Folder, click on Custom build and select the following:
-  * Qt 5.15.2
-  * Qt Installer Framework 4.2
+    * Qt 5.15.2
+    * Qt Installer Framework 4.1 or above
+
+    (Windows Specific)
+    * MinGW 7.3 and above (Both 32 and 64 bit)
+    * Qt Creator 5.0.3 CDB Debugger Support
+    * Debugging Tools for Windows
+    * CMake 3.21.1 64-bit
+    * Ninja 1.10.2
   
 
 ### Installing
