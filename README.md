@@ -96,6 +96,8 @@ Currently there isn't an option for cross-deployment, so you'll need can only de
 
 **Note: We are using version 5 of linuxdeployqt due to compatibility issues with newer linux distros. You can read more about the issue [here](https://github.com/probonopd/linuxdeployqt/issues/340)*
 
+1. Download the .appImage file
+2. Move the .appImage to the Qt gcc bin directory
 
 ```
 Windows Deployment Example:
