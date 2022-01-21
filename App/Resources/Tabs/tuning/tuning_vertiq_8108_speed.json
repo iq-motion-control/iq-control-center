@@ -14,7 +14,7 @@
         "minimum": -0.1,
         "single_step": 0.1,
         "nan": true,
-        "decimal": 2
+        "decimal": 1
       },
       {
         "type_idn": 60,
