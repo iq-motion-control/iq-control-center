@@ -54,6 +54,7 @@
         "frame_type": 1,
         "list_name": [
           "Autodetect",
+          "Hobby Disabled",
           "Standard PWM",
           "OneShot125",
           "OneShot42",
@@ -65,7 +66,7 @@
         ],
         "list_value": [
           255,
-          0,
+          254,
           1,
           2,
           3,
@@ -132,6 +133,5 @@
         "decimal": 0,
         "single_step": 1
       }
-    ]
   }
 ]

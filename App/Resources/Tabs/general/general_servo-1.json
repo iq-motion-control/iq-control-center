@@ -100,13 +100,14 @@
       {
         "type_idn": 76,
         "descriptor": "Communication",
-        "info": "These are standard hobby communication methods. Match your module's communication method with your controller's communication method.",
+        "info": "These are standard hobby communication methods. Match your module's communication method with your flight controller's communication method.",
         "sub_idn": 0,
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
         "list_name": [
           "Autodetect",
+          "Hobby Disabled",
           "Standard PWM",
           "OneShot125",
           "OneShot42",
@@ -118,7 +119,7 @@
         ],
         "list_value": [
           255,
-          0,
+          254,
           1,
           2,
           3,
