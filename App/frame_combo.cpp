@@ -139,8 +139,11 @@ void FrameCombo::GetSavedValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
-                         saved_value_))
-        throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+                         saved_value_)){
+        std::string error_start = "";
+        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str() + ", please try again";
+        throw QString(error_string.c_str());
+      }
 
       int key = 0;
       for (auto &i : index_value_) {

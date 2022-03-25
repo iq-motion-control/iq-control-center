@@ -4,17 +4,17 @@
   },
   {
     "style": 1,
-    "min_build_number": 24,
+    "min_build_number": 26,
     "name": "speed-1"
   },
   {
     "style": 2,
-    "min_build_number": 17,
+    "min_build_number": 18,
     "name": "servo-1" 
   },
   {
     "style": 4,
-    "min_build_number": 17,
+    "min_build_number": 18,
     "name": "stepdir-1"
   }
 ]
