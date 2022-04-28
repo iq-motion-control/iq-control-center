@@ -19,6 +19,8 @@
 */
 
 #include "frame_combo.h"
+#include <QTextStream>
+#include<QDebug>
 
 FrameCombo::FrameCombo(QWidget *parent, Client *client,
                        std::pair<std::string, ClientEntryAbstract *> client_entry,
@@ -71,6 +73,9 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
                 QString(":/res/info_icon.png"));
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
+
+  //Initialize the value
+  value_ = index_value_[combo_box_->currentIndex()];
 }
 
 void FrameCombo::ShowInfo() {
@@ -120,9 +125,12 @@ void FrameCombo::SetBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
+      qInfo() << "Starting Save Attempt";
+      qInfo() << "Client Entry: " << (client_entry_.first).c_str();
+      qInfo() << "Value: " << value_ << "\n";
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
                               0.05f, value_))
-        throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+        throw QString("COULDN'T SAVE VALUE: get absolutely owned scrub");
       iv.label_message->setText(QString("Value Saved Successfully"));
       saved_value_ = value_;
       RemoveStarFromLabel();
@@ -154,6 +162,7 @@ void FrameCombo::GetSavedValue() {
       }
       int combo_box_index = key;
       combo_box_->setCurrentIndex(combo_box_index);
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
