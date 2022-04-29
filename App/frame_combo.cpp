@@ -19,8 +19,6 @@
 */
 
 #include "frame_combo.h"
-#include <QTextStream>
-#include<QDebug>
 
 FrameCombo::FrameCombo(QWidget *parent, Client *client,
                        std::pair<std::string, ClientEntryAbstract *> client_entry,
@@ -127,7 +125,7 @@ void FrameCombo::SaveValue() {
     try {
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
                               0.05f, value_))
-        throw QString("COULDN'T SAVE VALUE: get absolutely owned scrub");
+        throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
       iv.label_message->setText(QString("Value Saved Successfully"));
       saved_value_ = value_;
       RemoveStarFromLabel();
@@ -159,7 +157,6 @@ void FrameCombo::GetSavedValue() {
       }
       int combo_box_index = key;
       combo_box_->setCurrentIndex(combo_box_index);
-
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
