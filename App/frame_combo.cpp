@@ -125,9 +125,6 @@ void FrameCombo::SetBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      qInfo() << "Starting Save Attempt";
-      qInfo() << "Client Entry: " << (client_entry_.first).c_str();
-      qInfo() << "Value: " << value_ << "\n";
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
                               0.05f, value_))
         throw QString("COULDN'T SAVE VALUE: get absolutely owned scrub");
