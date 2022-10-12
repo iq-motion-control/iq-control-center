@@ -58,9 +58,10 @@ Json::Value TabPopulator::LoadJsonFile(QFile &my_file) {
 }
 
 void TabPopulator::FindFirmwareIndex(const int &firmware_style) {
+  uint32_t rawFirmwareStyle = (firmware_style & 0xfff00000) >> 20; 
   uint32_t num_of_firmware_styles = firmware_styles_.size();
   for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
-    if (firmware_style == firmware_styles_[ii]["style"].asInt()) {
+    if (rawFirmwareStyle == firmware_styles_[ii]["style"].asInt()) {
       firmware_index_ = ii;
       return;
     }
@@ -87,6 +88,7 @@ void TabPopulator::DisplayFirmwareHardwareName() {
   ui_->label_hardware_name->setText(harwdware_display_name);
 }
 
+//This is going to need to be redefined to read the new incoming value. Works fine for now though. 
 void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number) {
   if (firmware_build_number < firmware_styles_[firmware_index_]["min_build_number"].asInt()) {
     DisplayUpdateFirmwareWarning();

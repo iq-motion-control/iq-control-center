@@ -22,7 +22,8 @@
                 {"type_idn":5, "descriptor":"firmware",           "sub_idn":16, "format":"I", "unit":""    },
                 {"type_idn":5, "descriptor":"hardware",           "sub_idn":17, "format":"I", "unit":""    },
                 {"type_idn":5, "descriptor":"electronics",        "sub_idn":18, "format":"I", "unit":""    },
-                {"type_idn":5, "descriptor":"firmware_valid",     "sub_idn":19, "format":"B", "unit":""    }
+                {"type_idn":5, "descriptor":"firmware_valid",     "sub_idn":19, "format":"B", "unit":""    },
+                {"type_idn":5, "descriptor":"versioning_style",   "sub_idn":20, "format":"B", "unit":""    }
             ]
 }
 ]

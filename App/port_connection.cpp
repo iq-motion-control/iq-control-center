@@ -60,6 +60,13 @@ void PortConnection::ConnectMotor() {
       int firmware_style = 1;
       int firmware_build_number = 0;
 
+      int firmware_version_style = USING_OLD_VERSIONING; 
+
+      //Update the firmware build number to work with Major, Minor, Patch
+      int firmware_build_major = 0;
+      int firmware_build_minor = 0;
+      int firmware_build_patch = 0;
+
       ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
         if (!ser_->ser_port_->open(QIODevice::ReadWrite))
@@ -76,23 +83,45 @@ void PortConnection::ConnectMotor() {
         if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
                           hardware_value)) {
           if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
-                             firmware_value))
+                             firmware_value)) //This grabs the raw 32 bits of firmware value
             throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
           hardware_type = (hardware_value >> 16);
-          firmware_style = (firmware_value >> 20);
-          firmware_build_number = (firmware_value & ((1 << 20) - 1));
+          firmware_style = (firmware_value >> 20); //Style is the top 12 bits
+
+          //We need to print different firmware versions depending on if we are using the new or old format
+          if (GetEntryReply(*ser_, sys_map_["system_control_client"], "versioning_style", 5, 0.05f,
+                          firmware_version_style)){
+              //If we got a response and we're using the new format
+              if(firmware_version_style == USING_NEW_VERSIONING){
+                firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> 14;
+                firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
+                firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
+
+                firmware_build_number = firmware_build_patch;
+
+              }else{
+
+                 firmware_build_number = (firmware_value & ((1 << 20) - 1));
+              
+              }
+            }
+
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                             firmware_valid))
             throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
         }
 
-
-
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
 
-        QString firmware_build_number_string = QString::number(firmware_build_number);
-
+        QString firmware_build_number_string;
+        
+        if(firmware_version_style == USING_NEW_VERSIONING){
+          firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
+        }else{
+          firmware_build_number_string = QString::number(firmware_build_number);
+        }
+        
         ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
         SetPortConnection(1);
@@ -111,7 +140,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number);
+        emit TypeStyleFound(hardware_type_, firmware_value, firmware_build_number);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);

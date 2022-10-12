@@ -1,0 +1,13 @@
+[
+  {
+    "hardware_name": "This is not a real motor."
+  },
+  {
+    "style": 1,
+    "min_major": 0,
+    "min_minor": 0,
+    "min_patch": 5,
+    "name": "fakeMotor1"
+  }
+
+]
