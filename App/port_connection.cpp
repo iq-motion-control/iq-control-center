@@ -89,6 +89,7 @@ void PortConnection::ConnectMotor() {
           firmware_style = (firmware_value >> 20); //Style is the top 12 bits
 
           //We need to print different firmware versions depending on if we are using the new or old format
+          //So, if we don't get a reply about this at all, the client entry doesn't exist, and we know to process it the old way
           if (GetEntryReply(*ser_, sys_map_["system_control_client"], "versioning_style", 5, 0.05f,
                           firmware_version_style)){
               //If we got a response and we're using the new format
@@ -100,12 +101,16 @@ void PortConnection::ConnectMotor() {
                 //The value that gets passed to the tab_populator
                 //We want to send the raw firmware value and let the tab populator do the decoding itself. This lets us send fewer things between the functions
                 firmware_build_number = firmware_value;
-
+              //We got a response, but we're still using the old format
               }else{
 
                  firmware_build_number = (firmware_value & ((1 << 20) - 1));
               
               }
+              //We didn't get a response. Therefore, the firmware is on an older version. Take the old value
+            }else{
+              firmware_version_style = 0; 
+              firmware_build_number = (firmware_value & ((1 << 20) - 1));
             }
 
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
