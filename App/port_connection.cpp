@@ -97,7 +97,9 @@ void PortConnection::ConnectMotor() {
                 firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
                 firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
 
-                firmware_build_number = firmware_build_patch;
+                //The value that gets passed to the tab_populator
+                //We want to send the raw firmware value and let the tab populator do the decoding itself. This lets us send fewer things between the functions
+                firmware_build_number = firmware_value;
 
               }else{
 
@@ -140,7 +142,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_value, firmware_build_number);
+        emit TypeStyleFound(hardware_type_, firmware_value, firmware_build_number, firmware_version_style);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);

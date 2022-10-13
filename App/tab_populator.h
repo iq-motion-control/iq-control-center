@@ -48,7 +48,7 @@ class TabPopulator : public QObject {
   void GetFirmwareHardwareName();
   void DisplayFirmwareHardwareName();
 
-  void CheckMinFirmwareBuildNumber(const int &firmware_build_number);
+  void CheckMinFirmwareBuildNumber(const int &firmware_build_number, const int &firmware_versioning_style);
   void DisplayUpdateFirmwareWarning();
 
   void CreateTabFrames();
@@ -61,7 +61,7 @@ class TabPopulator : public QObject {
  signals:
 
  public slots:
-  void PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number);
+  void PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number, int firmware_versioning_style);
 };
 
 #endif  // TAB_POPULATOR_HPP

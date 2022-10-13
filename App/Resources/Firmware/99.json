@@ -1,13 +1,19 @@
 [
   {
-    "hardware_name": "This is not a real motor."
+    "hardware_name": "fake device"
   },
   {
     "style": 1,
-    "min_major": 0,
-    "min_minor": 0,
-    "min_patch": 5,
-    "name": "fakeMotor1"
+    "min_build_number": 5,
+    "min_major_build": 5,
+    "min_minor_build": 0,
+    "min_patch_build": 5,
+    "name": "fake_device_speed"
+  },
+  {
+    "style": 2,
+    "min_build_number": 2,
+    "name": "fake_device_servo"
   }
-
+  
 ]

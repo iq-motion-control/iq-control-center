@@ -62,8 +62,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Find the Firmware Version, Firmware Style, and Hardware Style
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
     tab_populator = new TabPopulator(ui, &tab_map_);
-    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator,
-            SLOT(PopulateTabs(int,int,int)));
+
+    //I believe that this calls the TypeStyleFound emitted from port_connection.cpp. This puts hardware_type_, firmware_value_, and firmware_build_number_ into the ints
+    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int, int)), tab_populator,
+            SLOT(PopulateTabs(int,int,int, int)));
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 

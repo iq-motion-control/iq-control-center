@@ -22,11 +22,11 @@
 TabPopulator::TabPopulator(Ui::MainWindow *ui, std::map<std::string, std::shared_ptr<Tab>> *tab_map)
     : ui_(ui), tab_map_(tab_map) {}
 
-void TabPopulator::PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number) {
+void TabPopulator::PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number, int firmware_versioning_style) {
   LoadFirmwareStylesFromHardwareType(hardware_type);
   FindFirmwareIndex(firmware_style);
   GetAndDisplayFirmwareHardwareName();
-  CheckMinFirmwareBuildNumber(firmware_build_number);
+  CheckMinFirmwareBuildNumber(firmware_build_number, firmware_versioning_style);
   CreateTabFrames();
 }
 
@@ -58,7 +58,7 @@ Json::Value TabPopulator::LoadJsonFile(QFile &my_file) {
 }
 
 void TabPopulator::FindFirmwareIndex(const int &firmware_style) {
-  uint32_t rawFirmwareStyle = (firmware_style & 0xfff00000) >> 20; 
+  int rawFirmwareStyle = (firmware_style & 0xfff00000) >> 20; 
   uint32_t num_of_firmware_styles = firmware_styles_.size();
   for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
     if (rawFirmwareStyle == firmware_styles_[ii]["style"].asInt()) {
@@ -88,11 +88,25 @@ void TabPopulator::DisplayFirmwareHardwareName() {
   ui_->label_hardware_name->setText(harwdware_display_name);
 }
 
-//This is going to need to be redefined to read the new incoming value. Works fine for now though. 
-void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number) {
-  if (firmware_build_number < firmware_styles_[firmware_index_]["min_build_number"].asInt()) {
-    DisplayUpdateFirmwareWarning();
+void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number, const int &firmware_versioning_style) {
+  //Check if we are using the new format of versioning we need to check the major, minor, and patch for failure
+  if(firmware_versioning_style == USING_NEW_VERSIONING){
+    //firmware_build_number holds the raw 32 bits of firmware information goodness
+    int firmware_build_major = (firmware_build_number & MAJOR_VERSION_MASK) >> 14;
+    int firmware_build_minor = (firmware_build_number & MINOR_VERSION_MASK) >> 7;
+    int firmware_build_patch = firmware_build_number & PATCH_VERSION_MASK;
+
+    if(firmware_build_major < firmware_styles_[firmware_index_]["min_major_build"].asInt() || 
+       firmware_build_minor < firmware_styles_[firmware_index_]["min_minor_build"].asInt() ||
+       firmware_build_patch < firmware_styles_[firmware_index_]["min_patch_build"].asInt()){
+        DisplayUpdateFirmwareWarning();
+       }
+  }else{
+    if (firmware_build_number < firmware_styles_[firmware_index_]["min_build_number"].asInt()) {
+      DisplayUpdateFirmwareWarning();
+    }
   }
+
   return;
 }
 
