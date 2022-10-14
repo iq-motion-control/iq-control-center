@@ -109,7 +109,6 @@ class PortConnection : public QObject {
   uint8_t obj_id_;
   int firmware_style_;
   int hardware_type_;
-  int firmware_build_number_;
 };
 
 #endif  // CONNECTION_HPP

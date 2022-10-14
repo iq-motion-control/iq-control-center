@@ -91,8 +91,6 @@ void PortConnection::ConnectMotor() {
           firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
           firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
 
-          firmware_build_number_ = firmware_value;
-
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                             firmware_valid))
             throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
@@ -121,7 +119,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number_);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
