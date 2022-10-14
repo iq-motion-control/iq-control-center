@@ -50,16 +50,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->header_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::PortComboBoxIndexChanged);
 
-    //Connect button
+    //Connect "connect button" with the port connection module so that we can connect to the motor on button press
     connect(ui->header_connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
 
-    //Baud Rate dropdown
+    //Baud Rate dropdown connect with actual baud rate for communication
     connect(ui->header_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
 
-    //Find the Firmware Version, Firmware Style, and Hardware Style
+    //Connect a lost connection with the motor to clearing all tabs in the window
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
     tab_populator = new TabPopulator(ui, &tab_map_);
 
