@@ -58,10 +58,9 @@ Json::Value TabPopulator::LoadJsonFile(QFile &my_file) {
 }
 
 void TabPopulator::FindFirmwareIndex(const int &firmware_style) {
-  int rawFirmwareStyle = (firmware_style & 0xfff00000) >> 20; 
   uint32_t num_of_firmware_styles = firmware_styles_.size();
   for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
-    if (rawFirmwareStyle == firmware_styles_[ii]["style"].asInt()) {
+    if (firmware_style == firmware_styles_[ii]["style"].asInt()) {
       firmware_index_ = ii;
       return;
     }

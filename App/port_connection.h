@@ -88,7 +88,6 @@ class PortConnection : public QObject {
 
   void FindSavedValues();
 
-  //We need 2 versions of this function, one that 
   void TypeStyleFound(int, int, int, int);
 
   void LostConnection();

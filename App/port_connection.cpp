@@ -147,7 +147,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_value, firmware_build_number, firmware_version_style);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number, firmware_version_style);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
