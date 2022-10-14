@@ -58,9 +58,6 @@ void PortConnection::ConnectMotor() {
       int firmware_valid = 0;
       int hardware_type = 1;
       int firmware_style = 1;
-      int firmware_build_number = 0;
-
-      int firmware_version_style = USING_OLD_VERSIONING; 
 
       //Update the firmware build number to work with Major, Minor, Patch
       int firmware_build_major = 0;
@@ -83,35 +80,18 @@ void PortConnection::ConnectMotor() {
         if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
                           hardware_value)) {
           if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
-                             firmware_value)) //This grabs the raw 32 bits of firmware value
+                             firmware_value))
             throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
+
+          //Firmware value holds the raw 32 bits of firmware information
           hardware_type = (hardware_value >> 16);
-          firmware_style = (firmware_value >> 20); //Style is the top 12 bits
+          firmware_style = (firmware_value >> 20);
 
-          //We need to print different firmware versions depending on if we are using the new or old format
-          //So, if we don't get a reply about this at all, the client entry doesn't exist, and we know to process it the old way
-          if (GetEntryReply(*ser_, sys_map_["system_control_client"], "versioning_style", 5, 0.05f,
-                          firmware_version_style)){
-              //If we got a response and we're using the new format
-              if(firmware_version_style == USING_NEW_VERSIONING){
-                firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> 14;
-                firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
-                firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
+          firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> 14;
+          firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
+          firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
 
-                //The value that gets passed to the tab_populator
-                //We want to send the raw firmware value and let the tab populator do the decoding itself. This lets us send fewer things between the functions
-                firmware_build_number = firmware_value;
-              //We got a response, but we're still using the old format
-              }else{
-
-                 firmware_build_number = (firmware_value & ((1 << 20) - 1));
-              
-              }
-              //We didn't get a response. Therefore, the firmware is on an older version. Take the old value
-            }else{
-              firmware_version_style = 0; 
-              firmware_build_number = (firmware_value & ((1 << 20) - 1));
-            }
+          firmware_build_number_ = firmware_value;
 
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                             firmware_valid))
@@ -120,17 +100,9 @@ void PortConnection::ConnectMotor() {
 
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
-        firmware_build_number_ = firmware_build_number;
-        firmware_version_style_ = firmware_version_style;
 
-        QString firmware_build_number_string;
-        
-        if(firmware_version_style == USING_NEW_VERSIONING){
-          firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
-        }else{
-          firmware_build_number_string = QString::number(firmware_build_number);
-        }
-        
+        QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
+
         ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
         SetPortConnection(1);
@@ -149,7 +121,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number_, firmware_version_style_);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number_);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);

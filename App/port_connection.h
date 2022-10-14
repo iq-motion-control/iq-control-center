@@ -35,8 +35,7 @@
 #include <QMetaEnum>
 #include <QMetaObject>
 
-#define USING_NEW_VERSIONING 1
-#define USING_OLD_VERSIONING 0
+
 #define MAJOR_VERSION_MASK 0x000fc000
 #define MINOR_VERSION_MASK 0x00003f80
 #define PATCH_VERSION_MASK 0x7f
@@ -88,7 +87,7 @@ class PortConnection : public QObject {
 
   void FindSavedValues();
 
-  void TypeStyleFound(int, int, int, int);
+  void TypeStyleFound(int, int, int);
 
   void LostConnection();
 
@@ -111,7 +110,6 @@ class PortConnection : public QObject {
   int firmware_style_;
   int hardware_type_;
   int firmware_build_number_;
-  int firmware_version_style_;
 };
 
 #endif  // CONNECTION_HPP
