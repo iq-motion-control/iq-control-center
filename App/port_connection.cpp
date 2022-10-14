@@ -120,6 +120,8 @@ void PortConnection::ConnectMotor() {
 
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
+        firmware_build_number_ = firmware_build_number;
+        firmware_version_style_ = firmware_version_style;
 
         QString firmware_build_number_string;
         
@@ -147,7 +149,7 @@ void PortConnection::ConnectMotor() {
           msgBox.exec();
         }
 
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number, firmware_version_style);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_build_number_, firmware_version_style_);
         emit FindSavedValues();
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
