@@ -31,9 +31,7 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  //Create an instance of a MainWindow object. This is what really runs the program 
-  //See mainwindow.cpp for more details
   MainWindow w; 
-  w.show(); //Turn on the application
+  w.show();
   return a.exec();
 }
