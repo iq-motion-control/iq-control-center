@@ -122,7 +122,7 @@
         "format": "I",
         "unit": "bps",
         "frame_type": 2,
-        "maximum": 115200,
+        "maximum": 921600,
         "minimum": 9600,
         "single_step": 105600
       },
