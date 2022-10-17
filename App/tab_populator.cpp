@@ -88,7 +88,7 @@ void TabPopulator::DisplayFirmwareHardwareName() {
 }
 
 void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number) {
-  //firmware_build_number holds the raw 32 bits of firmware information goodness
+  //firmware_build_number holds the raw 32 bits of firmware information
   //(style - 12 bits) | (major - 6) | (minor - 7) | (patch - 7)
   int firmware_build_major = (firmware_build_number & MAJOR_VERSION_MASK) >> 14;
   int firmware_build_minor = (firmware_build_number & MINOR_VERSION_MASK) >> 7;
