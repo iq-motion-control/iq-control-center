@@ -11,7 +11,9 @@
   },
   {
     "style": 2,
-    "min_build_number": 2,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 2,
     "name": "vertiq_8108_servo"
   }
   
