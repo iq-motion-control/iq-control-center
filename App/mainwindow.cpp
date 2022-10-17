@@ -54,6 +54,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->header_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
+    //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
+    //to reduce the number of clicks the user has to make in order to connect with the motor
+    ui->header_baudrate_combo_box->setCurrentIndex(1); //Set first shown value to 115200
+    iv.pcon->BaudrateComboBoxIndexChanged(1); //Actually select the value as 115200 
 
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
     tab_populator = new TabPopulator(ui, &tab_map_);
