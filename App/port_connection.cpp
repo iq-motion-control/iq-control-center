@@ -87,8 +87,8 @@ void PortConnection::ConnectMotor() {
           hardware_type = (hardware_value >> 16);
           firmware_style = (firmware_value >> 20);
 
-          firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> 14;
-          firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> 7;
+          firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
+          firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
           firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
 
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
