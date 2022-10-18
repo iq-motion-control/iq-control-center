@@ -94,10 +94,20 @@ void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number)
   int firmware_build_minor = (firmware_build_number & MINOR_VERSION_MASK) >> 7;
   int firmware_build_patch = firmware_build_number & PATCH_VERSION_MASK;
 
-  if(firmware_build_major < firmware_styles_[firmware_index_]["min_major_build"].asInt() ||
-      firmware_build_minor < firmware_styles_[firmware_index_]["min_minor_build"].asInt() ||
-      firmware_build_patch < firmware_styles_[firmware_index_]["min_patch_build"].asInt()){
+  //Check each of the values, if major or minor are above the minimum version, assume we are good to go
+  if(firmware_build_major > firmware_styles_[firmware_index_]["min_major_build"].asInt()){
+        return;
+  }else if((firmware_build_major == firmware_styles_[firmware_index_]["min_major_build"].asInt()) &&
+            firmware_build_minor > firmware_styles_[firmware_index_]["min_minor_build"].asInt()){
+        return;
+  }
 
+  //If the major and minor are less than than or equal to their build go here
+  if(firmware_build_major < firmware_styles_[firmware_index_]["min_major_build"].asInt()){
+      DisplayUpdateFirmwareWarning();
+  }else if(firmware_build_minor < firmware_styles_[firmware_index_]["min_minor_build"].asInt()){
+      DisplayUpdateFirmwareWarning();
+  }else if(firmware_build_patch < firmware_styles_[firmware_index_]["min_patch_build"].asInt()){
       DisplayUpdateFirmwareWarning();
   }
 
