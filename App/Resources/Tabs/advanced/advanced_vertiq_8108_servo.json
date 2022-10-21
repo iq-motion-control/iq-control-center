@@ -124,7 +124,7 @@
         "frame_type": 2,
         "maximum": 921600,
         "minimum": 9600,
-        "single_step": 105600
+        "single_step": 9600
       },
       {
         "type_idn": 11,
