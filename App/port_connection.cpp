@@ -184,7 +184,8 @@ void PortConnection::BaudrateComboBoxIndexChanged(int index) {
 
 void PortConnection::FindBaudrates() {
   ui_->header_baudrate_combo_box->clear();
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("921600"), QSerialPort::Baud921600); 
+  //QSerialPort only goes up to 115200, and its a back-end library, not part of our project, so best not to modify it. Add our own extra baud rate enum to port_connection to cover this and future cases
+  ui_->header_baudrate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
