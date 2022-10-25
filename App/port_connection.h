@@ -35,9 +35,21 @@
 #include <QMetaEnum>
 #include <QMetaObject>
 
+
+#define MAJOR_VERSION_MASK 0x000fc000
+#define MINOR_VERSION_MASK 0x00003f80
+#define PATCH_VERSION_MASK 0x7f
+
+#define MAJOR_VERSION_SHIFT 14
+#define MINOR_VERSION_SHIFT 7
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:
+  enum ExtraBaudRate{
+    Baud921600 = 921600
+  };
+
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}

@@ -71,6 +71,9 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
                 QString(":/res/info_icon.png"));
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
+
+  //Initialize the value
+  value_ = index_value_[combo_box_->currentIndex()];
 }
 
 void FrameCombo::ShowInfo() {

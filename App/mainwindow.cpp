@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   // Connect the Help Buttons to the maintenance tool
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
 
+  //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
       QString::number(MAJOR) + "." + QString::number(MINOR) + "." + QString::number(PATCH);
   ui->label_gui_version_value->setText(gui_version);
@@ -44,19 +45,30 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
     timer->start(1000);
 
+    //Find available COM ports and display options in the PORT tab
     connect(ui->header_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
     connect(ui->header_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::PortComboBoxIndexChanged);
 
+    //Connect "connect button" with the port connection module so that we can connect to the motor on button press
     connect(ui->header_connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
 
+    //Baud Rate dropdown connect with actual baud rate for communication
     connect(ui->header_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
+    //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
+    //to reduce the number of clicks the user has to make in order to connect with the motor
+    int index115200 = ui->header_baudrate_combo_box->findText("115200"); 
+    ui->header_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
+    iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200 
 
+    //Connect a lost connection with the motor to clearing all tabs in the window
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
     tab_populator = new TabPopulator(ui, &tab_map_);
+
+    //Connects values between the tab populator and port connection. In this case, we are connecting firmware style, hardware type, firmware build, and firmware versioning style
     connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator,
             SLOT(PopulateTabs(int,int,int)));
 
