@@ -45,7 +45,7 @@ DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
 
 macx {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/maintenancetool\\\"
-DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
 
 unix {
