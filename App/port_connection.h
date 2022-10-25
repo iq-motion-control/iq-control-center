@@ -46,6 +46,10 @@
 class PortConnection : public QObject {
   Q_OBJECT
  public:
+  enum ExtraBaudRate{
+    Baud921600 = 921600
+  };
+
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}
