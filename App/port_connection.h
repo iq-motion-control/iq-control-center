@@ -32,6 +32,8 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include "qserial_extended.hpp"
+
 #include <QMetaEnum>
 #include <QMetaObject>
 
@@ -54,14 +56,16 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
+  bool CheckIfInBootLoader();
+
   void SetPortConnection(bool state);
   void FindBaudrates();
 
   bool GetConnectionState() { return connection_state_; }
   void SetConnectionState(const bool &setter) { connection_state_ = setter; }
 
-  QSerialInterface *GetQSerialInterface() { return ser_; }
-  void SetQSerialInterface(QSerialInterface *setter) { ser_ = setter; }
+  QSerialExtended *GetQSerialInterface() { return ser_; }
+  void SetQSerialInterface(QSerialExtended *setter) { ser_ = setter; }
 
   uint8_t GetObjId() { return obj_id_; }
   void SetObjId(const uint8_t &setter) { obj_id_ = setter; }
@@ -111,7 +115,7 @@ class PortConnection : public QObject {
   QMovie *loader_movie_;
 
   bool connection_state_;
-  QSerialInterface *ser_;
+  QSerialExtended *ser_;
 
   uint8_t obj_id_;
   int firmware_style_;

@@ -19,6 +19,8 @@
 */
 
 #include "port_connection.h"
+#include "schmi/include/Schmi/qserial.h"
+
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
@@ -64,15 +66,32 @@ void PortConnection::ConnectMotor() {
       int firmware_build_minor = 0;
       int firmware_build_patch = 0;
 
-      ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
+      ser_ = new QSerialExtended(selected_port_name_, selected_baudrate_);
       try {
-        if (!ser_->ser_port_->open(QIODevice::ReadWrite))
-          throw QString("CONNECTION ERROR: could not open serial port");
 
-        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f,
-                           obj_id_))
-          throw QString(
-              "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+        //Try to open the serial port in general
+        if (!ser_->ser_port_->open(QIODevice::ReadWrite)){
+          throw QString("CONNECTION ERROR: could not open serial port");
+        }
+
+        //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
+        if(CheckIfInBootLoader()){
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Bootloader Warning");
+            msgBox.setText(
+                "It appears that your motor is currently in recovery mode. To recover your motor\n"
+                "please select OK");
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            if (msgBox.exec() == QMessageBox::Ok) {
+              ui_->stackedWidget->setCurrentIndex(5);
+            }
+        }
+
+        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
+            //before doing anything try to ping the stm bootloader
+            throw QString(
+            "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+        }
 
         emit ObjIdFound();
 
@@ -191,4 +210,29 @@ void PortConnection::FindBaudrates() {
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
   selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+}
+
+bool PortConnection::CheckIfInBootLoader(){
+    //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
+    //As our guide to know if we are in the bootloader
+
+    //If we have already sent the initial command, we can send any of the commands available in the bootloader
+    //If we get the expected response, we still know we're in the bootloader
+    #define INIT_CMD 0x7f
+    #define ACK 0x79
+    #define NACK 0x1f
+
+    uint8_t sendBuffer[] = {INIT_CMD};
+    uint8_t readBuf[1];
+
+    //Send the first byte the STM32 bootloader expects (0x7f). If we get a response and it's
+    //0x79 then we know we're in the st bootloader
+    //The response can also be a NACK (0x1F) if we send this once the bootloader is already intialized
+    ser_->Write(&sendBuffer[0], 1);
+    ser_->Read(readBuf, 1, 250);
+    if(readBuf[0] == ACK || readBuf[0] == NACK){
+        return true;
+    }
+
+    return false;
 }

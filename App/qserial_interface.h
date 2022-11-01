@@ -47,7 +47,6 @@
 class QSerialInterface: public CommunicationInterface/*, public QObject*/
 {
   public:
-    QSerialPort *ser_port_;
     // Member Variables
     struct PacketFinder pf;        // packet_finder instance
     struct ByteQueue index_queue;              // needed by pf for storing indices
@@ -124,6 +123,8 @@ class QSerialInterface: public CommunicationInterface/*, public QObject*/
     void ReadMsg(CommunicationInterface& com, uint8_t* data, uint8_t length);
 
     void Flush();
+
+    QSerialPort* ser_port_;
 };
 
 #endif // QSERIAL_INTERFACE_H
