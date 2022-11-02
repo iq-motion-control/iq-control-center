@@ -83,7 +83,7 @@ void PortConnection::ConnectMotor() {
                 "please select OK");
             msgBox.setStandardButtons(QMessageBox::Ok);
             if (msgBox.exec() == QMessageBox::Ok) {
-              ui_->stackedWidget->setCurrentIndex(5);
+              ui_->stackedWidget->setCurrentIndex(6); //Go to the recovery page
             }
         }
 
@@ -228,11 +228,14 @@ bool PortConnection::CheckIfInBootLoader(){
     //Send the first byte the STM32 bootloader expects (0x7f). If we get a response and it's
     //0x79 then we know we're in the st bootloader
     //The response can also be a NACK (0x1F) if we send this once the bootloader is already intialized
-    ser_->Write(&sendBuffer[0], 1);
-    ser_->Read(readBuf, 1, 250);
-    if(readBuf[0] == ACK || readBuf[0] == NACK){
-        return true;
+    //Try multiple times to account for any instability (in testing we successfully get a NACK every other try)
+    const int RETRIES = 5;
+    for(int i = 0; i < RETRIES; i++){
+        ser_->Write(&sendBuffer[0], 1);
+        ser_->Read(readBuf, 1, 100);
+        if(readBuf[0] == ACK || readBuf[0] == NACK){
+            return true;
+        }
     }
-
     return false;
 }
