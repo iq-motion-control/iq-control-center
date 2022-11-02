@@ -28,18 +28,11 @@ public:
 
     ~QSerialExtended();
 
-//    int Write(uint8_t* buffer, const uint16_t& buffer_length);
-//    int Read(uint8_t* buffer, const uint16_t& num_bytes, const uint16_t& timeout_ms = 500);
-//    void Init();
-
     QSerialPort* qser_port_;
 
 private:
     QString usb_handle_;
 
-//    void CheckNumBytesWritten(const qint64& num_bytes_written, const uint16_t& buffer_length);
-//    void CheckNumBytesRead(const qint64& num_bytes_read);
-//    void UpdateSerialReadData(SerialReadData& read_data, const qint64& num_bytes_read);
 };
 
 #endif // QSERIALEXTENDED_HPP
