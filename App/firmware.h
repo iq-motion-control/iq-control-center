@@ -45,7 +45,7 @@
 class Firmware : public QObject {
   Q_OBJECT
  public:
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button);
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
 
  private:
   QString firmware_folder_dir_name_ = "";
@@ -53,7 +53,12 @@ class Firmware : public QObject {
   std::map<std::string, Client *> sys_map_;
   QProgressBar *flash_progress_bar_;
   QPushButton *firmware_binary_button_;
+
+  QProgressBar *recover_progress_bar_;
+  QPushButton *recover_binary_button_;
+
   QString firmware_bin_path_;
+  QString recovery_bin_path_;
 
   bool BootMode();
 
@@ -62,6 +67,8 @@ class Firmware : public QObject {
  public slots:
   void FlashClicked();
   void SelectFirmwareClicked();
+  void SelectRecoveryClicked();
+  void RecoverClicked();
 };
 
 #endif  // FIRMWARE_H

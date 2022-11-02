@@ -24,6 +24,8 @@ public:
     {
     };
 
+    ~QSerialExtended();
+
     int Write(uint8_t* buffer, const uint16_t& buffer_length);
     int Read(uint8_t* buffer, const uint16_t& num_bytes, const uint16_t& timeout_ms = 500);
     void Init();

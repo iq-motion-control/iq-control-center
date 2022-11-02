@@ -76,6 +76,8 @@ void PortConnection::ConnectMotor() {
 
         //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
         if(CheckIfInBootLoader()){
+            recovery_port_name_ = selected_port_name_;
+            ser_->qser_port_->close();
             QMessageBox msgBox;
             msgBox.setWindowTitle("Bootloader Warning");
             msgBox.setText(

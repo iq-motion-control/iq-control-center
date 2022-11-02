@@ -77,6 +77,7 @@ class PortConnection : public QObject {
   void SetHardwareType(const int &setter) { hardware_type_ = setter; }
 
   QString GetSelectedPortName() { return selected_port_name_; }
+  QString GetRecoveryPortName() { return recovery_port_name_; }
 
  public slots:
 
@@ -104,18 +105,20 @@ class PortConnection : public QObject {
 
  private:
   Ui::MainWindow *ui_;
+  QSerialExtended *ser_;
 
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
 
   std::vector<QString> ports_names_;
   QString selected_port_name_;
+  QString recovery_port_name_;
   qint32 selected_baudrate_;
 
   QMovie *loader_movie_;
 
   bool connection_state_;
-  QSerialExtended *ser_;
+//  QSerialExtended *ser_;
 
   uint8_t obj_id_;
   int firmware_style_;

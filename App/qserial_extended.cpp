@@ -69,5 +69,14 @@ void QSerialExtended::UpdateSerialReadData(SerialReadData& read_data, const qint
     read_data.buffer += num_bytes_read;
 
     return;
-  }
+}
+
+//Deconstructor
+QSerialExtended::~QSerialExtended(){
+    if(qser_port_->isOpen()){
+        qser_port_->close();
+    }
+
+    delete qser_port_;
+}
 
