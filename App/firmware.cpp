@@ -129,16 +129,6 @@ void Firmware::RecoverClicked(){
 
       fl.Init();
 
-//      std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
-//      bool boot_mode = false;
-//      while (!boot_mode) {
-//        boot_mode = fl.InitUsart();
-//        if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-//          throw QString("Could Not Init UART From Boot Mode");
-//          break;
-//        };
-//      }
-
       bool init_usart = false;
       fl.Flash(init_usart);
 

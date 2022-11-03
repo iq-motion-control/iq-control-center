@@ -226,6 +226,10 @@ bool PortConnection::CheckIfInBootLoader(){
     uint8_t sendBuffer[] = {INIT_CMD};
     uint8_t readBuf[1];
 
+    //We want to flash at 115200 Baud always. So let's ping the bootloader at 115200
+    //so that we init to the right value when we go to the flash loader
+    ser_->ser_port_->setBaudRate(Schmi::SerialConst::BAUD_RATE);
+
     //Send the first byte the STM32 bootloader expects (0x7f). If we get a response and it's
     //0x79 then we know we're in the st bootloader
     //The response can also be a NACK (0x1F) if we send this once the bootloader is already intialized
@@ -238,5 +242,7 @@ bool PortConnection::CheckIfInBootLoader(){
             return true;
         }
     }
+    //If we didn't get a response, reset to the baud rate we had when we called this
+    ser_->ser_port_->setBaudRate(selected_baudrate_);
     return false;
 }
