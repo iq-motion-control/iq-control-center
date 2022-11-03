@@ -79,13 +79,15 @@ void PortConnection::ConnectMotor() {
             recovery_port_name_ = selected_port_name_;
             ser_->ser_port_->close();
             QMessageBox msgBox;
-            msgBox.setWindowTitle("Bootloader Warning");
+            msgBox.setWindowTitle("Recovery Mode Recognized");
             msgBox.setText(
-                "It appears that your motor is currently in recovery mode. To recover your motor\n"
-                "please select OK");
-            msgBox.setStandardButtons(QMessageBox::Ok);
-            if (msgBox.exec() == QMessageBox::Ok) {
-              ui_->stackedWidget->setCurrentIndex(6); //Go to the recovery page
+                "It appears that your motor is currently in recovery mode.\n"
+                "Would you like to recover your motor now?");
+            msgBox.setStandardButtons(QMessageBox::Yes);
+            msgBox.addButton(QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::No);
+            if (msgBox.exec() == QMessageBox::Yes) {
+              ui_->stackedWidget->setCurrentIndex(6);
             }
         }
 
