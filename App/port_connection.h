@@ -103,7 +103,6 @@ class PortConnection : public QObject {
 
  private:
   Ui::MainWindow *ui_;
-  QSerialInterface *ser_;
 
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
@@ -116,6 +115,7 @@ class PortConnection : public QObject {
   QMovie *loader_movie_;
 
   bool connection_state_;
+  QSerialInterface *ser_;
 
   uint8_t obj_id_;
   int firmware_style_;

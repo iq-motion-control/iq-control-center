@@ -90,7 +90,6 @@ void PortConnection::ConnectMotor() {
         }
 
         if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
-            //before doing anything try to ping the stm bootloader
             throw QString(
             "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
         }
