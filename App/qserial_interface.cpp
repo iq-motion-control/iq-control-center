@@ -21,7 +21,7 @@
 #include "qserial_interface.h"
 
 #include <iostream>
-QSerialInterface::QSerialInterface(const QString& dev, const qint32& baud_rate) {
+QSerialInterface::QSerialInterface(const QString& dev, const qint32& baud_rate){
   InitBQ(&index_queue, pf_index_data, SERIAL_PF_INDEX_DATA_SIZE);
   InitPacketFinder(&pf, &index_queue);
   tx_bipbuf = BipBuffer(tx_buffer, SERIAL_TX_BUFFER_SIZE);
@@ -31,6 +31,7 @@ QSerialInterface::QSerialInterface(const QString& dev, const qint32& baud_rate) 
   ser_port_->setDataBits(QSerialPort::Data8);
   ser_port_->setParity(QSerialPort::NoParity);
   ser_port_->setStopBits(QSerialPort::OneStop);
+  LinkSerialPort(ser_port_);
 }
 
 int8_t QSerialInterface::GetBytes() {

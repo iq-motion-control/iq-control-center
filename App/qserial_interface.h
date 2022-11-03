@@ -31,6 +31,8 @@
 #include "IQ_api/crc_helper.h"
 #include "string.h" // for memcpy
 
+#include "schmi/include/Schmi/qserial.h"
+
 #include "QString"
 #include "QSerialPort"
 
@@ -44,7 +46,7 @@
   #define SERIAL_RX_BUFFER_SIZE 65535 //256
 #endif
 
-class QSerialInterface: public CommunicationInterface/*, public QObject*/
+class QSerialInterface: public CommunicationInterface, public Schmi::QSerial/*, public QObject*/
 {
   public:
     // Member Variables
@@ -60,7 +62,7 @@ class QSerialInterface: public CommunicationInterface/*, public QObject*/
     int GetRawBytes();
 
     // Default Constructor
-    QSerialInterface(const QString &dev, const qint32 &baud_rate = 115200);
+    QSerialInterface(const QString& dev, const qint32& baud_rate = 115200);
     ~QSerialInterface();
 
     /*******************************************************************************

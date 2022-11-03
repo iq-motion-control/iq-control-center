@@ -66,7 +66,7 @@ void PortConnection::ConnectMotor() {
       int firmware_build_minor = 0;
       int firmware_build_patch = 0;
 
-      ser_ = new QSerialExtended(selected_port_name_, selected_baudrate_);
+      ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
 
         //Try to open the serial port in general
@@ -77,7 +77,7 @@ void PortConnection::ConnectMotor() {
         //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
         if(CheckIfInBootLoader()){
             recovery_port_name_ = selected_port_name_;
-            ser_->qser_port_->close();
+            ser_->ser_port_->close();
             QMessageBox msgBox;
             msgBox.setWindowTitle("Bootloader Warning");
             msgBox.setText(
