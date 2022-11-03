@@ -49,6 +49,7 @@
 class QSerialInterface: public CommunicationInterface, public Schmi::QSerial/*, public QObject*/
 {
   public:
+    QSerialPort* ser_port_;
     // Member Variables
     struct PacketFinder pf;        // packet_finder instance
     struct ByteQueue index_queue;              // needed by pf for storing indices
@@ -62,7 +63,7 @@ class QSerialInterface: public CommunicationInterface, public Schmi::QSerial/*, 
     int GetRawBytes();
 
     // Default Constructor
-    QSerialInterface(const QString& dev, const qint32& baud_rate = 115200);
+    QSerialInterface(const QString &dev, const qint32 &baud_rate = 115200);
     ~QSerialInterface();
 
     /*******************************************************************************
@@ -125,8 +126,6 @@ class QSerialInterface: public CommunicationInterface, public Schmi::QSerial/*, 
     void ReadMsg(CommunicationInterface& com, uint8_t* data, uint8_t length);
 
     void Flush();
-
-    QSerialPort* ser_port_;
 };
 
 #endif // QSERIAL_INTERFACE_H
