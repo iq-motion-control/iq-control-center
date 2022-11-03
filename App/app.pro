@@ -63,7 +63,6 @@ CONFIG += static
 
 
 SOURCES += \
-    qserial_extended.cpp \
     schmi/src/binary_file_std.cpp \
     schmi/src/flash_loader.cpp \
     schmi/src/loading_bar_std.cpp \
@@ -100,7 +99,6 @@ SOURCES += \
 
 
 HEADERS += \
-    qserial_extended.hpp \
     schmi/include/Schmi/binary_file_interface.hpp \
     schmi/include/Schmi/binary_file_std.hpp \
     schmi/include/Schmi/error_handler_interface.hpp \
