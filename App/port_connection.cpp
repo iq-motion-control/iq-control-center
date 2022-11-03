@@ -27,6 +27,10 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(n
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
 }
 
+void PortConnection::ResetToTopPage(){
+    ui_->stackedWidget->setCurrentIndex(0);
+}
+
 void PortConnection::SetPortConnection(bool state) {
   if (state) {
     connection_state_ = 1;

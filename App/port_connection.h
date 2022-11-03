@@ -77,6 +77,8 @@ class PortConnection : public QObject {
   QString GetSelectedPortName() { return selected_port_name_; }
   QString GetRecoveryPortName() { return recovery_port_name_; }
 
+  void ResetToTopPage();
+
  public slots:
 
   void ConnectMotor();

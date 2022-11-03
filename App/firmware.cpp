@@ -132,6 +132,8 @@ void Firmware::RecoverClicked(){
       bool init_usart = false;
       fl.Flash(init_usart);
 
+      iv.pcon->ResetToTopPage();
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
