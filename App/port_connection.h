@@ -78,6 +78,7 @@ class PortConnection : public QObject {
   QString GetRecoveryPortName() { return recovery_port_name_; }
 
   void ResetToTopPage();
+  int GetCurrentTab();
 
  public slots:
 

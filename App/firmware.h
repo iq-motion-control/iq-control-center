@@ -65,10 +65,8 @@ class Firmware : public QObject {
  signals:
 
  public slots:
+  void SelectBinaryClicked();
   void FlashClicked();
-  void SelectFirmwareClicked();
-  void SelectRecoveryClicked();
-  void RecoverClicked();
 };
 
 #endif  // FIRMWARE_H

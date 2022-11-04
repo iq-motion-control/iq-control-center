@@ -31,6 +31,10 @@ void PortConnection::ResetToTopPage(){
     ui_->stackedWidget->setCurrentIndex(0);
 }
 
+int PortConnection::GetCurrentTab(){
+    return ui_->stackedWidget->currentIndex();
+}
+
 void PortConnection::SetPortConnection(bool state) {
   if (state) {
     connection_state_ = 1;
