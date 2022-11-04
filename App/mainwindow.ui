@@ -1176,7 +1176,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -2281,7 +2281,7 @@ QComboBox:on, QComboBox:off {
              <property name="styleSheet">
               <string notr="true">QProgressBar{color:rgb(175,175,175);text-align: right;margin-right: 2em;}
 
-QProgressBar::chunk {background: rgb(21,145,255);width: 10px;margin:1;};
+QProgressBar::chunk {background: rgb(1, 150, 250);width: 10px;margin:1;};
 
 </string>
              </property>
@@ -2810,7 +2810,7 @@ QPushButton:pressed {
              <property name="styleSheet">
               <string notr="true">QProgressBar{color:rgb(175,175,175);text-align: right;margin-right: 2em;}
 
-QProgressBar::chunk {background: rgb(21,145,255);width: 10px;margin:1;};
+QProgressBar::chunk {background: rgb(1, 150, 250);width: 10px;margin:1;};
 
 </string>
              </property>
