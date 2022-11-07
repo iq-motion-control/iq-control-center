@@ -27,8 +27,6 @@ Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binar
 }
 
 void Firmware::SelectBinaryClicked() {
-    const int FIRMWARE_TAB = 4;
-    const int RECOVERY_TAB = 6;
 
     int currentTab = iv.pcon->GetCurrentTab();
 
@@ -65,8 +63,6 @@ void Firmware::SelectBinaryClicked() {
 }
 
 void Firmware::FlashClicked() {
-    const int FIRMWARE_TAB = 4;
-    const int RECOVERY_TAB = 6;
 
     int currentTab = iv.pcon->GetCurrentTab();
     QString selected_port_name;

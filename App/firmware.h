@@ -42,6 +42,9 @@
 
 #include "main.h"
 
+#define FIRMWARE_TAB 4
+#define RECOVERY_TAB 6
+
 class Firmware : public QObject {
   Q_OBJECT
  public:
