@@ -97,6 +97,8 @@ void PortConnection::ConnectMotor() {
             if (msgBox.exec() == QMessageBox::Yes) {
               ui_->stackedWidget->setCurrentIndex(6);
             }
+
+            throw QString("Recovery Detected");
         }
 
         if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){

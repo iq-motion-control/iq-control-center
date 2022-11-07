@@ -37,31 +37,30 @@ void Firmware::SelectBinaryClicked() {
         QFileDialog dialog;
         dialog.setFileMode(QFileDialog::ExistingFile);
 
+        QPushButton * buttonInUse;
+
         QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
+        //Get the path to the file we want to use
+        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary"), desktop_dir,
+                                                          tr("Binary (*.bin)"));
+        //Pick which button we want to use
         if(currentTab == FIRMWARE_TAB){
-            firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary"), desktop_dir,
-                                                              tr("Binary (*.bin)"));
-            if (firmware_bin_path_.isEmpty()) {
-              firmware_binary_button_->setText("Select Firmware Binary (\".bin\")");
-            } else {
-              QFileInfo info(firmware_bin_path_);
-              firmware_binary_button_->setText(info.fileName());
-            }
+            buttonInUse = firmware_binary_button_;
         }else if(currentTab == RECOVERY_TAB){
-            recovery_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary"), desktop_dir,
-                                                              tr("Binary (*.bin)"));
-            if (recovery_bin_path_.isEmpty()) {
-              recover_binary_button_->setText("Select Firmware Binary (\".bin\")");
-            } else {
-              QFileInfo info(recovery_bin_path_);
-              recover_binary_button_->setText(info.fileName());
-            }
+            buttonInUse = recover_binary_button_;
+        }
+
+        if (firmware_bin_path_.isEmpty()) {
+          buttonInUse->setText("Select Firmware Binary (\".bin\")");
+        } else {
+          QFileInfo info(firmware_bin_path_);
+          buttonInUse->setText(info.fileName());
         }
 
     }//try
-    catch (const QString &e) {
-    iv.label_message->setText(e);
+        catch (const QString &e) {
+        iv.label_message->setText(e);
     }//catch
 }
 
@@ -74,24 +73,19 @@ void Firmware::FlashClicked() {
 
     if(currentTab == FIRMWARE_TAB){
         selected_port_name = iv.pcon->GetSelectedPortName();
-
-        if (firmware_bin_path_.isEmpty()) {
-            QString err_message = "No Firmware Binary Selected";
-            iv.label_message->setText(err_message);
-            return;
-        }
-
-        if (!BootMode()) {
-            return;
-        }
-
     }else if(currentTab == RECOVERY_TAB){
         selected_port_name = iv.pcon->GetRecoveryPortName();
+    }
 
-        if (recovery_bin_path_.isEmpty()) {
-          QString err_message = "No Firmware Binary Selected";
-          iv.label_message->setText(err_message);
-          return;
+    if (firmware_bin_path_.isEmpty()) {
+        QString err_message = "No Firmware Binary Selected";
+        iv.label_message->setText(err_message);
+        return;
+    }
+
+    if(currentTab == FIRMWARE_TAB){
+        if (!BootMode()) {
+            return;
         }
     }
 
