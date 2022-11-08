@@ -46,7 +46,7 @@ void Firmware::SelectFirmwareClicked() {
     //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
     //Change the order of the tr() to change the default
     firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
-                                                      tr("Binary (*.bin) ;; Zip (*.zip)"));
+                                                      tr("Zip (*.zip) ;; Binary (*.bin)"));
 
     //Check if it's empty. If it is do nothing and keep displaying the text
     //If we picked a bin file, process it as we always have
@@ -58,6 +58,21 @@ void Firmware::SelectFirmwareClicked() {
         QFileInfo info(firmware_bin_path_);
         firmware_binary_button_->setText(info.fileName());
 
+        //Pop up a warning window about dangers of flashing a binary
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("WARNING!");
+        msgBox.setText(
+            "Flashing an incorrect binary can cause damage to your motor. Are you sure you want to continue?");
+
+        msgBox.setStandardButtons(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        if(msgBox.exec() == QMessageBox::No){
+            firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+            firmware_bin_path_ = "";
+            return;
+        }
     }else if(firmware_bin_path_.contains(".zip")){
         //extract the archive, then we can treat it normally as a folder
         JlCompress extract_tool;
@@ -130,44 +145,48 @@ void Firmware::FlashClicked() {
     return;
   }
 
-  //Right now this is hard coded to new_json_mockup but must change to grab whatever the json is called!!
-  QJsonArray expectedMotorInfo = ArrayFromJson(extract_path_ + "/new_json_mockup.json");
+  //We only want to check on the json information if we know that there is a json to check. This only happens
+  //if the extract_path_ variable isnt ""
+  if(extract_path_ != ""){
+      //Right now this is hard coded to new_json_mockup but must change to grab whatever the json is called!!
+      QJsonArray expectedMotorInfo = ArrayFromJson(extract_path_ + "/new_json_mockup.json");
 
-  //Grabbing data from the first entry (hardare and electronics type)
-  QJsonObject safetyObj = expectedMotorInfo.at(0).toObject();
-  int toFlashElectronicsType = safetyObj.value("to_flash_electronics_type").toInt();
-  int toFlashHardwareType = safetyObj.value("to_flash_hardware_type").toInt();
+      //Grabbing data from the first entry (hardare and electronics type)
+      QJsonObject safetyObj = expectedMotorInfo.at(0).toObject();
+      int toFlashElectronicsType = safetyObj.value("to_flash_electronics_type").toInt();
+      int toFlashHardwareType = safetyObj.value("to_flash_hardware_type").toInt();
 
-  //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
-  //A wrong value could be a mismatched Kv or incorrect motor type
-  if((toFlashElectronicsType != iv.pcon->GetElectronicsType()) || (toFlashHardwareType != iv.pcon->GetHardwareType())){
+      //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
+      //A wrong value could be a mismatched Kv or incorrect motor type
+      if((toFlashElectronicsType != iv.pcon->GetElectronicsType()) || (toFlashHardwareType != iv.pcon->GetHardwareType())){
 
-      QString current_path = QCoreApplication::applicationDirPath();
-      QString hardware_type_file_path =
-          current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
-      //Get the hardware type name from the resource files
-      //This is the type of motor people should download for
-      QString hardwareName = GetHardwareTypeFromJson(ArrayFromJson(hardware_type_file_path));
+          QString current_path = QCoreApplication::applicationDirPath();
+          QString hardware_type_file_path =
+              current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
+          //Get the hardware type name from the resource files
+          //This is the type of motor people should download for
+          QString hardwareName = GetHardwareTypeFromJson(ArrayFromJson(hardware_type_file_path));
 
-      QString errorType;
-      if(toFlashElectronicsType != iv.pcon->GetElectronicsType()){
-          errorType = "Firmware is for the wrong Electronics Type";
-      }else{
-          errorType = "Firmware is for the wrong Hardware Type";
-      }
+          QString errorType;
+          if(toFlashElectronicsType != iv.pcon->GetElectronicsType()){
+              errorType = "Firmware is for the wrong Electronics Type";
+          }else{
+              errorType = "Firmware is for the wrong Hardware Type";
+          }
 
-      QMessageBox msgBox;
-      msgBox.setWindowTitle("WARNING!");
-      msgBox.setText(
-          "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-          "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error: " + errorType);
+          QMessageBox msgBox;
+          msgBox.setWindowTitle("WARNING!");
+          msgBox.setText(
+              "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+              "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error: " + errorType);
 
-      msgBox.setStandardButtons(QMessageBox::Ok);
-      msgBox.setDefaultButton(QMessageBox::Ok);
-      if(msgBox.exec() == QMessageBox::Ok){
-          return;
-      }
-  }
+          msgBox.setStandardButtons(QMessageBox::Ok);
+          msgBox.setDefaultButton(QMessageBox::Ok);
+          if(msgBox.exec() == QMessageBox::Ok){
+              return;
+        }
+    }
+}
 
   if (!BootMode()) {
     return;

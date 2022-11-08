@@ -54,7 +54,7 @@ class Firmware : public QObject {
   QProgressBar *flash_progress_bar_;
   QPushButton *firmware_binary_button_;
   QString firmware_bin_path_;
-  QString extract_path_;
+  QString extract_path_ = "";
 
   QJsonArray OpenResourceFile();
   QJsonArray ArrayFromJson(QString pathToJson);
