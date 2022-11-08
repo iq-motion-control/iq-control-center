@@ -56,7 +56,6 @@ class Firmware : public QObject {
   QString firmware_bin_path_;
   QString extract_path_ = "";
 
-  QJsonArray OpenResourceFile();
   QJsonArray ArrayFromJson(QString pathToJson);
   QString GetHardwareTypeFromJson(QJsonArray array);
 

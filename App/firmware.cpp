@@ -96,25 +96,6 @@ void Firmware::SelectFirmwareClicked() {
   }
 }
 
-QJsonArray Firmware::OpenResourceFile(){
-//Read the resource file for the motor connected
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString hardware_type_file_path =
-        current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
-
-    //Read and close the json file
-    QFile resourceJson;
-    resourceJson.setFileName(hardware_type_file_path);
-    //Grab all of the data from the json
-    resourceJson.open(QIODevice::ReadOnly);
-    QString resourceInfo = resourceJson.readAll();
-    resourceJson.close();
-
-    //Read the data stored in the json as a json document
-    QJsonDocument resourceDoc = QJsonDocument::fromJson(resourceInfo.toUtf8());
-    return resourceDoc.array();
-}
-
 QJsonArray Firmware::ArrayFromJson(QString pathToJson){
     //If we have a file ready to flash, we need to reference the json to make sure that the firmware we picked
     //Is meant for the hardware connected
