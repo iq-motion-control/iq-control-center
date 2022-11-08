@@ -58,6 +58,8 @@ void PortConnection::ConnectMotor() {
       int firmware_valid = 0;
       int hardware_type = 1;
       int firmware_style = 1;
+      int electronics_value = 1;
+      int electronics_type = 1;
 
       //Update the firmware build number to work with Major, Minor, Patch
       int firmware_build_major = 0;
@@ -79,13 +81,17 @@ void PortConnection::ConnectMotor() {
         // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
         if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
                           hardware_value)) {
-          if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
+          if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                              firmware_value))
+              if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+                                electronics_value))
             throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
 
           //Firmware value holds the raw 32 bits of firmware information
+          //This information comes from the Product ID Convention sheet
           hardware_type = (hardware_value >> 16);
           firmware_style = (firmware_value >> 20);
+          electronics_type = electronics_value >> 16;
 
           firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
           firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
@@ -98,6 +104,7 @@ void PortConnection::ConnectMotor() {
 
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
+        electronics_type_ = electronics_type;
 
         QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
 

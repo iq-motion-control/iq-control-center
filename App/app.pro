@@ -145,6 +145,11 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+CMAKE_CXXFLAGS += -std=gnu++14
+INCLUDEPATH += "C:\Users\jorda\Documents\ZipPack\include"
+LIBS += -L"C:\Users\jorda\Documents\ZipPack\lib"
+LIBS += -lquazip -lz
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -153,6 +158,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resource.qrc \
     clients.qrc
+
+
 
 #LIBS += -framework CoreFoundation
 

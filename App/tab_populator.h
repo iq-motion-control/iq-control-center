@@ -57,7 +57,7 @@ class TabPopulator : public QObject {
 
  public:
   TabPopulator(Ui::MainWindow *ui, std::map<std::string, std::shared_ptr<Tab>> *tab_map);
-
+  QString GetHardwareType() { return QString::fromStdString(hardware_name_);}
  signals:
 
  public slots:

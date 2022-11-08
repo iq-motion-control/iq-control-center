@@ -72,6 +72,8 @@ class PortConnection : public QObject {
   int GetHardwareType() { return hardware_type_; }
   void SetHardwareType(const int &setter) { hardware_type_ = setter; }
 
+  int GetElectronicsType() { return electronics_type_; }
+
   QString GetSelectedPortName() { return selected_port_name_; }
 
  public slots:
@@ -116,6 +118,7 @@ class PortConnection : public QObject {
   uint8_t obj_id_;
   int firmware_style_;
   int hardware_type_;
+  int electronics_type_;
 };
 
 #endif  // CONNECTION_HPP
