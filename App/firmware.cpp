@@ -59,11 +59,13 @@ void Firmware::SelectFirmwareClicked() {
         firmware_binary_button_->setText(info.fileName());
 
         //Pop up a warning window about dangers of flashing a binary
-
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
         msgBox.setText(
-            "Flashing an incorrect binary can cause damage to your motor. Are you sure you want to continue?");
+            "Flashing raw binary files is very dangerous. If you flash firmware "
+            "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
+            "you risk seriously damaging or breaking your motor. "
+            "Continue at your own risk.\nAre you sure you wish to continue?");
 
         msgBox.setStandardButtons(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
@@ -80,7 +82,7 @@ void Firmware::SelectFirmwareClicked() {
         extract_path_ = qApp->applicationDirPath() + "/flash_dir";
         extract_tool.extractDir(firmware_bin_path_, extract_path_);
 
-        //This prints the full path to the folder. Might need to do some work to get it to
+        //This displays the full path to the folder. Might need to do some work to get it to
         //Match what info.fileName does now
         //Set the button text to the folder that the user put in
         firmware_binary_button_->setText(firmware_bin_path_);
@@ -88,7 +90,16 @@ void Firmware::SelectFirmwareClicked() {
         //In the background, use the extracted directory
         //For testing right now, just use the combined.bin.
         //Later on I need to figure out how to present the different options for how to flash
-        firmware_bin_path_ = extract_path_ + "/combined.bin";
+        //Check that there is a file that we expect in the extracted repo
+
+        //For right now I am hard coding this to handle a main.bin or a combined.bin
+        //The next task is to set this up to work with the booloader stuff with all of the sections
+        QDir firmwareDir(extract_path_);
+        if(firmwareDir.exists("combined.bin")){
+            firmware_bin_path_ = extract_path_ + "/combined.bin";
+        }else if(firmwareDir.exists("main.bin")){
+            firmware_bin_path_ = extract_path_ + "/main.bin";
+        }
     }
 
   } catch (const QString &e) {
@@ -117,6 +128,19 @@ QString Firmware::GetHardwareTypeFromJson(QJsonArray array){
     return array.at(0).toObject().value("hardware_name").toString();
 }
 
+QString Firmware::GetInformationJson(QString pathToFolder){
+    QDir curDir(pathToFolder);
+    QStringList filesInFolder = curDir.entryList();
+
+    for(int i = 0; i < filesInFolder.size(); i++){
+        if(filesInFolder.at(i).contains(".json")){
+            return curDir.filePath(filesInFolder.at(i));
+        }
+    }
+
+    return "";
+}
+
 void Firmware::FlashClicked() {
   QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
@@ -129,8 +153,10 @@ void Firmware::FlashClicked() {
   //We only want to check on the json information if we know that there is a json to check. This only happens
   //if the extract_path_ variable isnt ""
   if(extract_path_ != ""){
-      //Right now this is hard coded to new_json_mockup but must change to grab whatever the json is called!!
-      QJsonArray expectedMotorInfo = ArrayFromJson(extract_path_ + "/new_json_mockup.json");
+      //We are only ever going to have one json per released zip
+      //Use that to find the one to grab the data from
+      //GetInformationJson will always grab out the json file contained in the zip folder we provided
+      QJsonArray expectedMotorInfo = ArrayFromJson(GetInformationJson(extract_path_));
 
       //Grabbing data from the first entry (hardare and electronics type)
       QJsonObject safetyObj = expectedMotorInfo.at(0).toObject();

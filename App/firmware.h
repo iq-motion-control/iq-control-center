@@ -58,6 +58,7 @@ class Firmware : public QObject {
 
   QJsonArray ArrayFromJson(QString pathToJson);
   QString GetHardwareTypeFromJson(QJsonArray array);
+  QString GetInformationJson(QString pathToFolder);
 
   bool CheckHardwareAndElectronics();
 
