@@ -49,7 +49,7 @@ void Firmware::SelectFirmwareClicked() {
                                                       tr("Zip (*.zip) ;; Binary (*.bin)"));
 
     //Check if it's empty. If it is do nothing and keep displaying the text
-    //If we picked a bin file, process it as we always have
+    //If we picked a bin file, process it as we always have, but flash a warning
     //If we picked a zip folder, use quazip
     if (firmware_bin_path_.isEmpty()) {
       firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
@@ -65,22 +65,22 @@ void Firmware::SelectFirmwareClicked() {
             "Flashing raw binary files is very dangerous. If you flash firmware "
             "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
             "you risk seriously damaging or breaking your motor. "
-            "Continue at your own risk.\nAre you sure you wish to continue?");
+            "Continue at your own risk.\nAre you positive you wish to continue?");
 
         msgBox.setStandardButtons(QMessageBox::Yes);
         msgBox.addButton(QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
+        //If you pick no, reset to the init state
         if(msgBox.exec() == QMessageBox::No){
             firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
             firmware_bin_path_ = "";
             return;
         }
     }else if(firmware_bin_path_.contains(".zip")){
+
+        metadata_handler_ = new MetadataHandler(iv.pcon);
         //extract the archive, then we can treat it normally as a folder
-        JlCompress extract_tool;
-        //Extract to wherever we're running the project right now
-        extract_path_ = qApp->applicationDirPath() + "/flash_dir";
-        extract_tool.extractDir(firmware_bin_path_, extract_path_);
+        metadata_handler_->ExtractMetadata(firmware_bin_path_);
 
         //This displays the full path to the folder. Might need to do some work to get it to
         //Match what info.fileName does now
@@ -94,12 +94,7 @@ void Firmware::SelectFirmwareClicked() {
 
         //For right now I am hard coding this to handle a main.bin or a combined.bin
         //The next task is to set this up to work with the booloader stuff with all of the sections
-        QDir firmwareDir(extract_path_);
-        if(firmwareDir.exists("combined.bin")){
-            firmware_bin_path_ = extract_path_ + "/combined.bin";
-        }else if(firmwareDir.exists("main.bin")){
-            firmware_bin_path_ = extract_path_ + "/main.bin";
-        }
+        firmware_bin_path_ = metadata_handler_->GetBinPath();
     }
 
   } catch (const QString &e) {
@@ -107,89 +102,77 @@ void Firmware::SelectFirmwareClicked() {
   }
 }
 
-QJsonArray Firmware::ArrayFromJson(QString pathToJson){
-    //If we have a file ready to flash, we need to reference the json to make sure that the firmware we picked
-    //Is meant for the hardware connected
-    QFile jsonFile;
-    jsonFile.setFileName(pathToJson); //It is called this for right now. It needs to have a name set somewhere else
-                                                                   //So it's not hard coded
-    //Grab all of the data from the json
-    jsonFile.open(QIODevice::ReadOnly);
-    QString val = jsonFile.readAll();
-    jsonFile.close();
-
-    //Read the data stored in the json as a json document
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(val.toUtf8());
-    //Our json stores each entry contained within an array
-    return jsonDoc.array();
-}
-
-QString Firmware::GetHardwareTypeFromJson(QJsonArray array){
-    return array.at(0).toObject().value("hardware_name").toString();
-}
-
-QString Firmware::GetInformationJson(QString pathToFolder){
-    QDir curDir(pathToFolder);
-    QStringList filesInFolder = curDir.entryList();
-
-    for(int i = 0; i < filesInFolder.size(); i++){
-        if(filesInFolder.at(i).contains(".json")){
-            return curDir.filePath(filesInFolder.at(i));
-        }
-    }
-
-    return "";
-}
-
 void Firmware::FlashClicked() {
   QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
+  //Don't move forward if there is there's no binary selected or no motor connected
   if (firmware_bin_path_.isEmpty()) {
     QString err_message = "No Firmware Binary Selected";
     iv.label_message->setText(err_message);
     return;
+  }else if(iv.pcon->GetConnectionState() != 1){
+      QString error_message = "No Motor Connected, Please Connect Motor";
+      iv.label_message->setText(error_message);
+      return;
   }
 
   //We only want to check on the json information if we know that there is a json to check. This only happens
   //if the extract_path_ variable isnt ""
-  if(extract_path_ != ""){
+  if(metadata_handler_->GetExtractPath() != ""){
+
+      //If there isn't a metadata json, throw a warning message and stop them from moving forward
+      if(metadata_handler_->GetMetadataJsonPath() == ""){
+          //Pop up a warning window about dangers of flashing a binary
+          QMessageBox msgBox;
+          msgBox.setWindowTitle("File Error!");
+          msgBox.setText(
+              "It appears you are trying to use an archive not provided from Vertiq. "
+              "Please go to vertiq.co and redownload the correct archive for your motor.");
+
+          msgBox.setStandardButtons(QMessageBox::Ok);
+          //If you pick no, reset to the init state
+          if(msgBox.exec() == QMessageBox::Ok){
+              firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+              firmware_bin_path_ = "";
+              metadata_handler_->Reset();
+              return;
+          }
+      }
+
       //We are only ever going to have one json per released zip
       //Use that to find the one to grab the data from
-      //GetInformationJson will always grab out the json file contained in the zip folder we provided
-      QJsonArray expectedMotorInfo = ArrayFromJson(GetInformationJson(extract_path_));
-
-      //Grabbing data from the first entry (hardare and electronics type)
-      QJsonObject safetyObj = expectedMotorInfo.at(0).toObject();
-      int toFlashElectronicsType = safetyObj.value("to_flash_electronics_type").toInt();
-      int toFlashHardwareType = safetyObj.value("to_flash_hardware_type").toInt();
+      metadata_handler_->ReadMetadata();
 
       //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
       //A wrong value could be a mismatched Kv or incorrect motor type
-      if((toFlashElectronicsType != iv.pcon->GetElectronicsType()) || (toFlashHardwareType != iv.pcon->GetHardwareType())){
+      if(!(metadata_handler_->CheckHardwareAndElectronics())){
 
+          //We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+          //the tab_populator's version of the resource files. So, we need to grab them ourself
           QString current_path = QCoreApplication::applicationDirPath();
           QString hardware_type_file_path =
               current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
           //Get the hardware type name from the resource files
           //This is the type of motor people should download for
-          QString hardwareName = GetHardwareTypeFromJson(ArrayFromJson(hardware_type_file_path));
+          //Hardware name is something like "vertiq 8108 150Kv"
+          QString hardwareName = metadata_handler_->ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
 
+          //Determine which thing they have wrong
           QString errorType;
-          if(toFlashElectronicsType != iv.pcon->GetElectronicsType()){
-              errorType = "Firmware is for the wrong Electronics Type";
-          }else{
-              errorType = "Firmware is for the wrong Hardware Type";
-          }
+          errorType = metadata_handler_->GetErrorType();
 
           QMessageBox msgBox;
           msgBox.setWindowTitle("WARNING!");
           msgBox.setText(
               "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-              "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error: " + errorType);
+              "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
 
           msgBox.setStandardButtons(QMessageBox::Ok);
           msgBox.setDefaultButton(QMessageBox::Ok);
           if(msgBox.exec() == QMessageBox::Ok){
+              firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+              firmware_bin_path_ = "";
+              metadata_handler_->Reset();
               return;
         }
     }
@@ -223,8 +206,7 @@ void Firmware::FlashClicked() {
     fl.Flash(init_usart);
 
     //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-    QDir dir(qApp->applicationDirPath() + "/flash_dir");
-    dir.removeRecursively();
+    metadata_handler_->Reset();
 
   } catch (const QString &e) {
     iv.label_message->setText(e);
