@@ -76,6 +76,7 @@ void Firmware::SelectFirmwareClicked() {
             firmware_bin_path_ = "";
             return;
         }
+    //If you want to use a zip dir
     }else if(firmware_bin_path_.contains(".zip")){
 
         metadata_handler_ = new MetadataHandler(iv.pcon);
@@ -87,130 +88,163 @@ void Firmware::SelectFirmwareClicked() {
         //Set the button text to the folder that the user put in
         firmware_binary_button_->setText(firmware_bin_path_);
 
-        //In the background, use the extracted directory
-        //For testing right now, just use the combined.bin.
-        //Later on I need to figure out how to present the different options for how to flash
-        //Check that there is a file that we expect in the extracted repo
+        //If there isn't a metadata json, throw a warning message and stop them from moving forward
+        if(metadata_handler_->GetMetadataJsonPath() == ""){
+            //Pop up a warning window about dangers of flashing a binary
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("File Error!");
+            msgBox.setText(
+                "It appears you are trying to use an archive not provided from Vertiq. "
+                "Please go to vertiq.co and redownload the correct archive for your motor.");
 
-        //For right now I am hard coding this to handle a main.bin or a combined.bin
-        //The next task is to set this up to work with the booloader stuff with all of the sections
-        firmware_bin_path_ = metadata_handler_->GetBinPath();
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            //If you pick no, reset to the init state
+            if(msgBox.exec() == QMessageBox::Ok){
+                firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+                firmware_bin_path_ = "";
+                metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+                return;
+            }
+        }
+
+        //We are only ever going to have one json per released zip
+        //Use that to find the one to grab the data from
+        metadata_handler_->ReadMetadata();
+
+        //We now have access to the firmware types that this package supports. Hide flash buttons that we don't support
+        QStringList flashTypes = metadata_handler_->GetFlashTypes();
+        QStringList binTypes = metadata_handler_->GetBinariesInFolder();
+        //This is going to need to update as we change the names of the entries
+        //The final name will probably be something like "vertiq8108_150kv_speed_app"
+        //So we still need to just look for app, just adds an extra step of grabbing each string and looking for the substr
+        if(flashTypes.contains("app") && binTypes.contains("app.bin")){
+            iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+        }
+        if(flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin")){
+            iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
+        }
+        if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
+            iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+        }
+        if(flashTypes.contains("boot") && binTypes.contains("boot.bin")){
+            iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+        }
     }
 
   } catch (const QString &e) {
     iv.label_message->setText(e);
   }
+}
+
+bool Firmware::CheckPathAndConnection(){
+    //Don't move forward if there is there's no binary selected or no motor connected
+    if (firmware_bin_path_.isEmpty()) {
+      QString err_message = "No Firmware Binary Selected";
+      iv.label_message->setText(err_message);
+      return true;
+    }else if(iv.pcon->GetConnectionState() != 1){
+        QString error_message = "No Motor Connected, Please Connect Motor";
+        iv.label_message->setText(error_message);
+        return true;
+    }
+
+    return false;
+}
+
+bool Firmware::FlashHardwareElectronicsWarning(){
+    //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
+    //A wrong value could be a mismatched Kv or incorrect motor type
+    if(!(metadata_handler_->CheckHardwareAndElectronics())){
+
+        //We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+        //the tab_populator's version of the resource files. So, we need to grab them ourself
+        QString current_path = QCoreApplication::applicationDirPath();
+        QString hardware_type_file_path =
+            current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
+        //Get the hardware type name from the resource files
+        //This is the type of motor people should download for
+        //Hardware name is something like "vertiq 8108 150Kv"
+        QString hardwareName = metadata_handler_->ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+
+        //Determine which thing they have wrong
+        QString errorType;
+        errorType = metadata_handler_->GetErrorType();
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("WARNING!");
+        msgBox.setText(
+            "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+            "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        if(msgBox.exec() == QMessageBox::Ok){
+            firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+            firmware_bin_path_ = "";
+            metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Firmware::FlashClicked() {
-  QString seletected_port_name = iv.pcon->GetSelectedPortName();
+    //After you click Flash Combined, set the binary path to the combined binary
+    //Check that you have a good file and are connected to a motor
+    //Check that the hardware and electronics are correct
+    //Flash the motor
+  firmware_bin_path_ = metadata_handler_->GetCombinedBinPath();
 
-  //Don't move forward if there is there's no binary selected or no motor connected
-  if (firmware_bin_path_.isEmpty()) {
-    QString err_message = "No Firmware Binary Selected";
-    iv.label_message->setText(err_message);
-    return;
-  }else if(iv.pcon->GetConnectionState() != 1){
-      QString error_message = "No Motor Connected, Please Connect Motor";
-      iv.label_message->setText(error_message);
+  if(CheckPathAndConnection()){
       return;
   }
 
-  //We only want to check on the json information if we know that there is a json to check. This only happens
-  //if the extract_path_ variable isnt ""
-  if(metadata_handler_->GetExtractPath() != ""){
+  if(FlashHardwareElectronicsWarning()){
+      return;
+  }
 
-      //If there isn't a metadata json, throw a warning message and stop them from moving forward
-      if(metadata_handler_->GetMetadataJsonPath() == ""){
-          //Pop up a warning window about dangers of flashing a binary
-          QMessageBox msgBox;
-          msgBox.setWindowTitle("File Error!");
-          msgBox.setText(
-              "It appears you are trying to use an archive not provided from Vertiq. "
-              "Please go to vertiq.co and redownload the correct archive for your motor.");
-
-          msgBox.setStandardButtons(QMessageBox::Ok);
-          //If you pick no, reset to the init state
-          if(msgBox.exec() == QMessageBox::Ok){
-              firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
-              firmware_bin_path_ = "";
-              metadata_handler_->Reset();
-              return;
-          }
-      }
-
-      //We are only ever going to have one json per released zip
-      //Use that to find the one to grab the data from
-      metadata_handler_->ReadMetadata();
-
-      //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
-      //A wrong value could be a mismatched Kv or incorrect motor type
-      if(!(metadata_handler_->CheckHardwareAndElectronics())){
-
-          //We have access to the Port Connection's electronics type and hardware type, but we do not have access to
-          //the tab_populator's version of the resource files. So, we need to grab them ourself
-          QString current_path = QCoreApplication::applicationDirPath();
-          QString hardware_type_file_path =
-              current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
-          //Get the hardware type name from the resource files
-          //This is the type of motor people should download for
-          //Hardware name is something like "vertiq 8108 150Kv"
-          QString hardwareName = metadata_handler_->ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
-
-          //Determine which thing they have wrong
-          QString errorType;
-          errorType = metadata_handler_->GetErrorType();
-
-          QMessageBox msgBox;
-          msgBox.setWindowTitle("WARNING!");
-          msgBox.setText(
-              "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-              "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
-
-          msgBox.setStandardButtons(QMessageBox::Ok);
-          msgBox.setDefaultButton(QMessageBox::Ok);
-          if(msgBox.exec() == QMessageBox::Ok){
-              firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
-              firmware_bin_path_ = "";
-              metadata_handler_->Reset();
-              return;
-        }
-    }
+  uint32_t combinedStart = metadata_handler_->GetStartingMemoryFromType("combined");
+  FlashFirmware(combinedStart);
 }
 
-  if (!BootMode()) {
-    return;
-  }
+void Firmware::FlashFirmware(uint32_t startingPoint){
+    QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
-  try {
-    Schmi::ErrorHandlerStd error;
-    Schmi::BinaryFileStd bin(firmware_bin_path_.toStdString());
-    Schmi::QSerial ser(seletected_port_name);
-    FlashLoadingBar bar(flash_progress_bar_);
-
-    Schmi::FlashLoader fl(&ser, &bin, &error, &bar);
-
-    fl.Init();
-
-    std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
-    bool boot_mode = false;
-    while (!boot_mode) {
-      boot_mode = fl.InitUsart();
-      if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-        throw QString("Could Not Init UART From Boot Mode");
-        break;
-      };
+    if (!BootMode()) {
+      return;
     }
 
-    bool init_usart = false;
-    fl.Flash(init_usart);
+    try {
+      Schmi::ErrorHandlerStd error;
+      Schmi::BinaryFileStd bin(firmware_bin_path_.toStdString());
+      Schmi::QSerial ser(seletected_port_name);
+      FlashLoadingBar bar(flash_progress_bar_);
 
-    //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-    metadata_handler_->Reset();
+      Schmi::FlashLoader fl(&ser, &bin, &error, &bar);
 
-  } catch (const QString &e) {
-    iv.label_message->setText(e);
-  }
+      fl.Init();
+
+      std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
+      bool boot_mode = false;
+      while (!boot_mode) {
+        boot_mode = fl.InitUsart();
+        if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
+          throw QString("Could Not Init UART From Boot Mode");
+          break;
+        };
+      }
+
+      bool init_usart = false;
+      bool global_erase = false;
+      fl.Flash(init_usart, global_erase, startingPoint);
+
+      //We are now done with the extracted directory that we made. We should delete it to avoid any issues
+      metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+
+    } catch (const QString &e) {
+      iv.label_message->setText(e);
+    }
 }
 
 bool Firmware::BootMode() {

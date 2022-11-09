@@ -84,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button);
 
     connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
+
     connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
             SLOT(SelectFirmwareClicked()));
 
@@ -159,6 +160,13 @@ void MainWindow::on_pushButton_advanced_clicked() {
 
 void MainWindow::on_pushButton_firmware_clicked() {
   ui->flash_progress_bar->reset();
+
+  //Make all of the flash buttons invisible
+  ui->flash_app_button->setVisible(false);
+  ui->flash_boot_button->setVisible(false);
+  ui->flash_button->setVisible(false);
+  ui->flash_upgrade_button->setVisible(false);
+
   ui->stackedWidget->setCurrentIndex(4);
 }
 

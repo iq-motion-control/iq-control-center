@@ -59,6 +59,9 @@ class Firmware : public QObject {
   QString extract_path_ = "";
 
   bool BootMode();
+  void FlashFirmware(uint32_t startingPoint);
+  bool CheckPathAndConnection();
+  bool FlashHardwareElectronicsWarning();
 
   MetadataHandler * metadata_handler_;
 

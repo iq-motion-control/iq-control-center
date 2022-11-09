@@ -12,6 +12,9 @@
 #include <QJsonObject>
 
 #include "port_connection.h"
+#include "flash_type.hpp"
+
+#define MAX_FLASH_TYPES 4
 
 class MetadataHandler
 {
@@ -32,7 +35,7 @@ public:
      * @brief GetBinPath Returns the path to a binary file in the extracted folder
      * @return The path
      */
-    QString GetBinPath();
+    QString GetCombinedBinPath();
 
     /**
      * @brief ArrayFromJson Creates a array of json information from a json document
@@ -75,12 +78,33 @@ public:
     /**
      * @brief Reset Reset all values to 0 and delete the extracted file if it exists
      */
-    void Reset();
+    void Reset(Ui::MainWindow * mainWindow);
 
     /**
      * @brief ReadMetadata Places all of the information into the metadata_array_
      */
     void ReadMetadata();
+
+    /**
+     * @brief GetFlashTypes Returns a list of strings of flashes that are available
+     * @return the list
+     */
+    QStringList GetFlashTypes();
+
+    /**
+     * @brief BinariesInFolder Returns the names of the binary files contained in the folder
+     * @return
+     */
+    void FindBinariesInFolder();
+
+    /**
+     * @brief GetStartingMemoryFromType Given a type of binary you want to flash, return the starting memory location of that section
+     * @param type The type of binary you want to use
+     * @return The starting memory location
+     */
+    uint16_t GetStartingMemoryFromType(QString type);
+
+    QStringList GetBinariesInFolder(){ return binaries_in_folder_; }
 
 private:
     QString extract_path_ = "";
@@ -90,6 +114,16 @@ private:
 
     int to_flash_electronics_type_;
     int to_flash_hardware_type_;
+
+    //Var to hold the actual number of entries in the "allowed flashing" json entry
+    int allowed_flashing_size_;
+    FlashType* flash_types_[MAX_FLASH_TYPES];
+
+    QString firmware_style_;
+
+    QDir *metadata_dir_;
+
+    QStringList binaries_in_folder_;
 };
 
 #endif // METADATAHANDLER_HPP
