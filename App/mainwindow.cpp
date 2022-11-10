@@ -81,11 +81,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->default_pushbutton, SIGNAL(clicked()), def, SLOT(LoadDefaultValues()));
     connect(def, SIGNAL(SaveDefaultValues(Json::Value)), this, SLOT(SetDefaults(Json::Value)));
 
-    Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button);
+    Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
 
     connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
     connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
-            SLOT(SelectFirmwareClicked()));
+            SLOT(SelectBinaryClicked()));
+
+    //Connect pressing the Recover file button with the firmware SelectRecoveryClicked to allow picking a file
+    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectBinaryClicked()));
+
+    //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
+    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
 
   } catch (const QString &e) {
     ui->header_error_label->setText(e);

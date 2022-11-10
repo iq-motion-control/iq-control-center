@@ -31,6 +31,7 @@ QSerialInterface::QSerialInterface(const QString& dev, const qint32& baud_rate) 
   ser_port_->setDataBits(QSerialPort::Data8);
   ser_port_->setParity(QSerialPort::NoParity);
   ser_port_->setStopBits(QSerialPort::OneStop);
+  LinkSerialPort(ser_port_);
 }
 
 int8_t QSerialInterface::GetBytes() {

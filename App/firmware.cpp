@@ -20,71 +20,108 @@
 
 #include "firmware.h"
 
-Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button)
-    : flash_progress_bar_(flash_progress_bar), firmware_binary_button_(firmware_binary_button) {
+Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button)
+    : flash_progress_bar_(flash_progress_bar), firmware_binary_button_(firmware_binary_button),
+      recover_progress_bar_(recover_progress_bar), recover_binary_button_(recover_binary_button){
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
 }
 
-void Firmware::SelectFirmwareClicked() {
-  try {
-    iv.label_message->clear();
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::ExistingFile);
+void Firmware::SelectBinaryClicked() {
 
-    QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary"), desktop_dir,
-                                                      tr("Binary (*.bin)"));
-    if (firmware_bin_path_.isEmpty()) {
-      firmware_binary_button_->setText("Select Firmware Binary (\".bin\")");
-    } else {
-      QFileInfo info(firmware_bin_path_);
-      firmware_binary_button_->setText(info.fileName());
-    }
+    int currentTab = iv.pcon->GetCurrentTab();
 
-  } catch (const QString &e) {
-    iv.label_message->setText(e);
-  }
+    try {
+        iv.label_message->clear();
+        QFileDialog dialog;
+        dialog.setFileMode(QFileDialog::ExistingFile);
+
+        QPushButton * buttonInUse;
+
+        QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+        //Get the path to the file we want to use
+        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary"), desktop_dir,
+                                                          tr("Binary (*.bin)"));
+        //Pick which button we want to use
+        if(currentTab == FIRMWARE_TAB){
+            buttonInUse = firmware_binary_button_;
+        }else if(currentTab == RECOVERY_TAB){
+            buttonInUse = recover_binary_button_;
+        }
+
+        if (firmware_bin_path_.isEmpty()) {
+          buttonInUse->setText("Select Firmware Binary (\".bin\")");
+        } else {
+          QFileInfo info(firmware_bin_path_);
+          buttonInUse->setText(info.fileName());
+        }
+
+    }//try
+        catch (const QString &e) {
+        iv.label_message->setText(e);
+    }//catch
 }
 
 void Firmware::FlashClicked() {
-  QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
-  if (firmware_bin_path_.isEmpty()) {
-    QString err_message = "No Firmware Binary Selected";
-    iv.label_message->setText(err_message);
-    return;
-  }
+    int currentTab = iv.pcon->GetCurrentTab();
+    QString selected_port_name;
 
-  if (!BootMode()) {
-    return;
-  }
-
-  try {
-    Schmi::ErrorHandlerStd error;
-    Schmi::BinaryFileStd bin(firmware_bin_path_.toStdString());
-    Schmi::QSerial ser(seletected_port_name);
-    FlashLoadingBar bar(flash_progress_bar_);
-
-    Schmi::FlashLoader fl(&ser, &bin, &error, &bar);
-
-    fl.Init();
-
-    std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
-    bool boot_mode = false;
-    while (!boot_mode) {
-      boot_mode = fl.InitUsart();
-      if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-        throw QString("Could Not Init UART From Boot Mode");
-        break;
-      };
+    if(currentTab == FIRMWARE_TAB){
+        selected_port_name = iv.pcon->GetSelectedPortName();
+    }else if(currentTab == RECOVERY_TAB){
+        selected_port_name = iv.pcon->GetRecoveryPortName();
     }
 
-    bool init_usart = false;
-    fl.Flash(init_usart);
+    if (firmware_bin_path_.isEmpty()) {
+        QString err_message = "No Firmware Binary Selected";
+        iv.label_message->setText(err_message);
+        return;
+    }
 
-  } catch (const QString &e) {
-    iv.label_message->setText(e);
-  }
+    if(currentTab == FIRMWARE_TAB){
+        if (!BootMode()) {
+            return;
+        }
+    }
+
+    try {
+        Schmi::ErrorHandlerStd error;
+        Schmi::BinaryFileStd bin(firmware_bin_path_.toStdString());
+        Schmi::QSerial ser(selected_port_name);
+        FlashLoadingBar flashBar(flash_progress_bar_);
+        FlashLoadingBar recoverBar(recover_progress_bar_);
+
+        if(currentTab == FIRMWARE_TAB){
+            Schmi::FlashLoader fl(&ser, &bin, &error, &flashBar);
+
+            fl.Init();
+            std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
+            bool boot_mode = false;
+            while (!boot_mode) {
+              boot_mode = fl.InitUsart();
+              if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
+                throw QString("Could Not Init UART From Boot Mode");
+                break;
+              };
+            }
+
+            bool init_usart = false;
+            fl.Flash(init_usart);
+        }
+
+        if(currentTab == RECOVERY_TAB){
+            Schmi::FlashLoader fl(&ser, &bin, &error, &recoverBar);
+
+            fl.Init();
+            bool init_usart = false;
+            fl.Flash(init_usart);
+            iv.pcon->ResetToTopPage();
+        }
+
+    } catch (const QString &e) {
+        iv.label_message->setText(e);
+    }
 }
 
 bool Firmware::BootMode() {
