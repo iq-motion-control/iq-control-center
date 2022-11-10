@@ -133,25 +133,25 @@
       </property>
       <property name="styleSheet">
        <string notr="true">QFrame#header_frame {
-	color:  rgb(175, 175, 175);
-	background-color: rgb(60, 60, 60);
+    color:  rgb(175, 175, 175);
+    background-color: rgb(60, 60, 60);
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: rgb(50, 50, 50);
 }
 
 QLabel {
-	border-bottom: 0px solid black
+    border-bottom: 0px solid black
 }
 
 QComboBox {
-	color: rgb(175, 175, 175);
-	border-bottom: 1px solid rgb(175, 175, 175);    
-	border-radius: 0px;
+    color: rgb(175, 175, 175);
+    border-bottom: 1px solid rgb(175, 175, 175);    
+    border-radius: 0px;
     padding: 3px 20px 3px 3px;
     selection-color: rgb(1, 150, 250);
-	background: transparent;
-	padding: 2px
+    background: transparent;
+    padding: 2px
 }
 
 QComboBox::drop-down {
@@ -161,13 +161,13 @@ QComboBox::drop-down {
     border-left-style: solid;
     border-top-right-radius: 3px; /* same radius as the QComboBox */
     border-bottom-right-radius: 3px;
-	background: transparent;
-	image: url(:/res/down_arrow_icon.png);
+    background: transparent;
+    image: url(:/res/down_arrow_icon.png);
 }
 
 QComboBox:hover {
     border: 1px solid transparent;
-	border-bottom: 1px solid rgb(200, 200, 200);
+    border-bottom: 1px solid rgb(200, 200, 200);
 }
 
 QComboBox:on, QComboBox:off {
@@ -175,25 +175,25 @@ QComboBox:on, QComboBox:off {
 }
 
 QPushButton {
-	background: rgb(60, 60, 60);
-	color: rgb(175, 175, 175);
-	text-align: center;
+    background: rgb(60, 60, 60);
+    color: rgb(175, 175, 175);
+    text-align: center;
 }
 
 
 
 QPushButton:hover{
-	color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
 }
 
 QPushButton:pressed {
-	color: rgb(1, 150, 250);
-	border-style: outset;
+    color: rgb(1, 150, 250);
+    border-style: outset;
 }
 
 QPushButton:checked {
-	color: rgb(1, 150, 250);
-	border-style: outset;
+    color: rgb(1, 150, 250);
+    border-style: outset;
     border-left: 2px solid rgb(1, 150, 250);
     min-width: 10em;
     padding: 6px;
@@ -442,12 +442,12 @@ QPushButton:checked {
       </property>
       <property name="styleSheet">
        <string notr="true">QFrame#status_frame {
-	background-color: rgb(70, 70, 70);
-	margin: 0px;
+    background-color: rgb(70, 70, 70);
+    margin: 0px;
 }
 
 QLabel {
-	color: rgb(173, 177, 178)
+    color: rgb(173, 177, 178)
 }
 
 
@@ -647,35 +647,35 @@ color: white</string>
       </property>
       <property name="styleSheet">
        <string notr="true">QFrame {
-	background-color: rgb(70, 70, 70);
-	margin: 0px;
-	border-bottom: 1px solid rgb(50, 50, 50);
+    background-color: rgb(70, 70, 70);
+    margin: 0px;
+    border-bottom: 1px solid rgb(50, 50, 50);
 }
 
 QPushButton {
-	color: rgb(175, 175, 175);
-	text-align: left;
+    color: rgb(175, 175, 175);
+    text-align: left;
 }
 
 QPushButton:hover {
-	color: rgb(185, 185, 185);
-	border-style: outset;
+    color: rgb(185, 185, 185);
+    border-style: outset;
     border-width: 0px;
     min-width: 10em;
     padding: 6px;
 }
 
 QPushButton:pressed {
-	color: rgb(1, 150, 250);
-	border-style: outset;
+    color: rgb(1, 150, 250);
+    border-style: outset;
     border-width: 0px;
     min-width: 10em;
     padding: 6px;
 }
 
 QPushButton:checked {
-	color: rgb(1, 150, 250);
-	border-style: outset;
+    color: rgb(1, 150, 250);
+    border-style: outset;
     border-left: 2px solid rgb(1, 150, 250);
     min-width: 10em;
     padding: 6px;
@@ -1115,88 +1115,88 @@ QPushButton:checked {
       </property>
       <property name="styleSheet">
        <string notr="true">QWidget#page_home {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QWidget#page_general {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QWidget#page_tuning {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QWidget#page_testing {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QWidget#page_advanced {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QWidget#page_firmware {
-	border-left: 1px solid rgb(50, 50, 50);
-	border-right: 1px solid rgb(50, 50, 50);
-	background-color: rgb(80, 80, 80);
+    border-left: 1px solid rgb(50, 50, 50);
+    border-right: 1px solid rgb(50, 50, 50);
+    background-color: rgb(80, 80, 80);
 }
 
 QLabel {
-	color: rgb(175, 175, 175)
+    color: rgb(175, 175, 175)
 }
 
 QWidget#widget_home {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 
 QWidget#general_widget {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 QWidget#advanced_widget {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 QWidget#firmware_widget {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 QWidget#tuning_widget {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 QWidget#testing_widget {
-	background-color: rgb(70, 70, 70);
+    background-color: rgb(70, 70, 70);
 }
 
 QWidget#general_scroll_area{
-	background-color: rgb(70,70,70);
+    background-color: rgb(70,70,70);
 }
 
 QWidget#tuning_scroll_area{
-	background-color: rgb(70,70,70);
+    background-color: rgb(70,70,70);
 }
 
 QWidget#advanced_scroll_area{
-	background-color: rgb(70,70,70);
+    background-color: rgb(70,70,70);
 }
 
 QWidget#testing_scroll_area{
-	background-color: rgb(70,70,70);
+    background-color: rgb(70,70,70);
 }
 
 QScrollArea {
-	border: 0px
+    border: 0px
 }
 
 QScrollBar:vertical {
@@ -1258,11 +1258,11 @@ QScrollBar::handle:vertical {
             <widget class="QTextEdit" name="textEdit_home_connect_steps">
              <property name="styleSheet">
               <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: transparent;
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
+    color: rgb(175, 175, 175);
+    background-color: transparent;
+    padding: 10px;
+    line-height: 400%;
+    border: 0px;
 }</string>
              </property>
              <property name="readOnly">
@@ -1634,34 +1634,34 @@ hr { height: 1px; border-width: 0; }
           </property>
           <property name="styleSheet">
            <string notr="true">QFrame#pre_setting_frame {
-	background: rgb(70, 70, 70);
-	border:0px;
+    background: rgb(70, 70, 70);
+    border:0px;
 }
 
 QPushButton {
-	background: rgb(60, 60, 60);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
+    background: rgb(60, 60, 60);
+    height: 30px;
+    border: 0px solid rgb(175, 175, 175);
+    border-radius: 8px
 }
 
 QPushButton:hover {
-	background: rgb(50, 50, 50);
+    background: rgb(50, 50, 50);
 }
 
 QPushButton:pressed {
-	background: rgb(100, 100, 100)
+    background: rgb(100, 100, 100)
 }
 
 QComboBox {
-	color: rgb(175, 175, 175);
-	border-bottom: 1px solid rgb(175, 175, 175);    
-	border-radius: 0px;
+    color: rgb(175, 175, 175);
+    border-bottom: 1px solid rgb(175, 175, 175);    
+    border-radius: 0px;
     padding: 3px 20px 3px 3px;
     min-width: 10em;
     selection-color: rgb(1, 150, 250);
-	background: transparent;
-	padding: 2px
+    background: transparent;
+    padding: 2px
 }
 
 QComboBox::drop-down {
@@ -1671,13 +1671,13 @@ QComboBox::drop-down {
     border-left-style: solid;
     border-top-right-radius: 3px; /* same radius as the QComboBox */
     border-bottom-right-radius: 3px;
-	background: transparent;
-	image: url(:/res/down_arrow_icon.png)
+    background: transparent;
+    image: url(:/res/down_arrow_icon.png)
 }
 
 QComboBox:hover {
     border: 1px solid transparent;
-	border-bottom: 1px solid rgb(200, 200, 200);
+    border-bottom: 1px solid rgb(200, 200, 200);
 }
 
 QComboBox:on, QComboBox:off {
@@ -1959,11 +1959,11 @@ QComboBox:on, QComboBox:off {
              </property>
              <property name="styleSheet">
               <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: transparent;
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
+    color: rgb(175, 175, 175);
+    background-color: transparent;
+    padding: 10px;
+    line-height: 400%;
+    border: 0px;
 }</string>
              </property>
              <property name="readOnly">
@@ -2040,22 +2040,22 @@ hr { height: 1px; border-width: 0; }
              </property>
              <property name="styleSheet">
               <string notr="true">QFrame#boot_mode_frame {
-	border: 0px;
+    border: 0px;
 }
 
 QPushButton {
-	background: rgb(60, 60, 60);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
+    background: rgb(60, 60, 60);
+    height: 30px;
+    border: 0px solid rgb(175, 175, 175);
+    border-radius: 8px
 }
 
 QPushButton:hover {
-	background: rgb(50, 50, 50);
+    background: rgb(50, 50, 50);
 }
 
 QPushButton:pressed {
-	background: rgb(100, 100, 100)
+    background: rgb(100, 100, 100)
 }
 </string>
              </property>
