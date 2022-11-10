@@ -63,6 +63,7 @@ CONFIG += static
 
 
 SOURCES += \
+    flash_type.cpp \
     metadata_handler.cpp \
     schmi/src/binary_file_std.cpp \
     schmi/src/flash_loader.cpp \
@@ -100,6 +101,7 @@ SOURCES += \
 
 
 HEADERS += \
+    flash_type.hpp \
     metadata_handler.hpp \
     schmi/include/Schmi/binary_file_interface.hpp \
     schmi/include/Schmi/binary_file_std.hpp \

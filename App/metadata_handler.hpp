@@ -32,10 +32,11 @@ public:
     void ExtractMetadata(QString pathToMetadata);
 
     /**
-     * @brief GetBinPath Returns the path to a binary file in the extracted folder
+     * @brief GetPathToCorrectBin Returns the path to the bin associated with the type of flash requested
+     * @param binTypeRequested String describing the type of flash requested
      * @return The path
      */
-    QString GetCombinedBinPath();
+    QString GetPathToCorrectBin(QString binTypeRequested);
 
     /**
      * @brief ArrayFromJson Creates a array of json information from a json document
@@ -102,7 +103,7 @@ public:
      * @param type The type of binary you want to use
      * @return The starting memory location
      */
-    uint16_t GetStartingMemoryFromType(QString type);
+    uint32_t GetStartingMemoryFromType(QString type);
 
     QStringList GetBinariesInFolder(){ return binaries_in_folder_; }
 
@@ -124,6 +125,31 @@ private:
     QDir *metadata_dir_;
 
     QStringList binaries_in_folder_;
+
+    /**
+     * @brief GetBinPath Returns the path to a binary file in the extracted folder
+     * @return The path
+     */
+    QString GetCombinedBinPath();
+
+    /**
+     * @brief GetBootBinPath Get the path to the binary file in the metadata
+     * @return The path
+     */
+    QString GetBootBinPath();
+
+    /**
+     * @brief GetAppBinPath Returns the path to the App binary in the metadata
+     * @return The path
+     */
+    QString GetAppBinPath();
+
+    /**
+     * @brief GetUpgradeBinPath Returns the path to the Upgrade binary in the metadata
+     * @return The path
+     */
+    QString GetUpgradeBinPath();
+
 };
 
 #endif // METADATAHANDLER_HPP

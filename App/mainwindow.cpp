@@ -83,7 +83,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button);
 
-    connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
+    connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
+    connect(ui->flash_boot_button, SIGNAL(clicked()), firm, SLOT(FlashBootClicked()));
+    connect(ui->flash_app_button, SIGNAL(clicked()), firm, SLOT(FlashAppClicked()));
+    connect(ui->flash_upgrade_button, SIGNAL(clicked()), firm, SLOT(FlashUpgradeClicked()));
+
 
     connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
             SLOT(SelectFirmwareClicked()));

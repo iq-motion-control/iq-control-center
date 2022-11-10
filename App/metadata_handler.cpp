@@ -16,6 +16,7 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
 QString MetadataHandler::GetCombinedBinPath(){
     QString firmware_bin_path = "";
 
+    //ALL OF THESE WILL HAVE TO UPDATE TO SEE IF IT JUST CONTAINS COMBINED (VERTIQ_8108_SPEED_COMBINED.BIN)
     if(metadata_dir_->exists("combined.bin")){
         firmware_bin_path = extract_path_ + "/combined.bin";
     }else if(metadata_dir_->exists("main.bin")){
@@ -23,6 +24,51 @@ QString MetadataHandler::GetCombinedBinPath(){
     }
 
     return firmware_bin_path;
+}
+
+QString MetadataHandler::GetBootBinPath(){
+    QString firmware_bin_path = "";
+
+    if(metadata_dir_->exists("boot.bin")){
+        firmware_bin_path = extract_path_ + "/boot.bin";
+    }
+
+    return firmware_bin_path;
+}
+
+QString MetadataHandler::GetAppBinPath(){
+    QString firmware_bin_path = "";
+
+    if(metadata_dir_->exists("app.bin")){
+        firmware_bin_path = extract_path_ + "/app.bin";
+    }
+
+    return firmware_bin_path;
+}
+
+QString MetadataHandler::GetUpgradeBinPath(){
+    QString firmware_bin_path = "";
+
+    if(metadata_dir_->exists("upgrade.bin")){
+        firmware_bin_path = extract_path_ + "/upgrade.bin";
+    }
+
+    return firmware_bin_path;
+}
+
+QString MetadataHandler::GetPathToCorrectBin(QString binTypeRequested){
+
+    if(binTypeRequested == "combined"){
+        return GetCombinedBinPath();
+    }else if(binTypeRequested == "boot"){
+        return GetBootBinPath();
+    }else if(binTypeRequested == "app"){
+        return GetAppBinPath();
+    }else if(binTypeRequested == "upgrade"){
+        return GetUpgradeBinPath();
+    }
+
+    return "";
 }
 
 QJsonArray MetadataHandler::ArrayFromJson(QString pathToJson){
@@ -64,7 +110,7 @@ QString MetadataHandler::GetErrorType(){
 
     //Message if there is an electronics type error
     QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(pcon_->GetElectronicsType())
-                                        + " and got " + errorType.number(to_flash_electronics_type_);
+                                        + " and got " + errorType.number(1);
     //Message if there is a hardware error
     QString hardwareError = "Firmware is for the wrong Hardware Type. Expected " + errorType.number(pcon_->GetHardwareType())
             + " and got " + errorType.number(to_flash_hardware_type_);
@@ -148,10 +194,11 @@ QString MetadataHandler::GetExtractPath(){
     return extract_path_;
 }
 
-uint16_t MetadataHandler::GetStartingMemoryFromType(QString type){
+uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
     for(int i = 0; i < allowed_flashing_size_; i++){
         if(flash_types_[i]->GetType() == type){
-            return flash_types_[i]->GetStart().toUInt(nullptr, 16);
+            uint32_t flashStart = flash_types_[i]->GetStart().toUInt(nullptr, 16);
+            return flashStart;
         }
     }
 

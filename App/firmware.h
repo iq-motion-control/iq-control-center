@@ -44,6 +44,8 @@
 
 #include "main.h"
 
+#define DEFAULT_STARTING_LOCATION_ 0x08000000
+
 class Firmware : public QObject {
   Q_OBJECT
  public:
@@ -58,17 +60,25 @@ class Firmware : public QObject {
   QString firmware_bin_path_;
   QString extract_path_ = "";
 
+  QString type_flash_requested_ = "";
+
   bool BootMode();
   void FlashFirmware(uint32_t startingPoint);
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning();
 
   MetadataHandler * metadata_handler_;
+  bool using_metadata_ = false;
 
  signals:
 
  public slots:
   void FlashClicked();
+
+  void FlashCombinedClicked();
+  void FlashBootClicked();
+  void FlashAppClicked();
+  void FlashUpgradeClicked();
   void SelectFirmwareClicked();
 };
 

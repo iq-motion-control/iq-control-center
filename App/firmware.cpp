@@ -76,9 +76,14 @@ void Firmware::SelectFirmwareClicked() {
             firmware_bin_path_ = "";
             return;
         }
+
+        //If you want to move forward, make the flash button available
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+        iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+
     //If you want to use a zip dir
     }else if(firmware_bin_path_.contains(".zip")){
-
+        using_metadata_ = true;
         metadata_handler_ = new MetadataHandler(iv.pcon);
         //extract the archive, then we can treat it normally as a folder
         metadata_handler_->ExtractMetadata(firmware_bin_path_);
@@ -125,6 +130,7 @@ void Firmware::SelectFirmwareClicked() {
         }
         if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
             iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
         }
         if(flashTypes.contains("boot") && binTypes.contains("boot.bin")){
             iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
@@ -189,23 +195,49 @@ bool Firmware::FlashHardwareElectronicsWarning(){
     return false;
 }
 
+void Firmware::FlashCombinedClicked(){
+    type_flash_requested_ = "combined";
+    FlashClicked();
+}
+
+void Firmware::FlashBootClicked() {
+    type_flash_requested_= "boot";
+    FlashClicked();
+}
+
+void Firmware::FlashAppClicked(){
+    type_flash_requested_ = "app";
+    FlashClicked();
+}
+
+void Firmware::FlashUpgradeClicked() {
+    type_flash_requested_= "upgrade";
+    FlashClicked();
+}
+
 void Firmware::FlashClicked() {
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct
     //Flash the motor
-  firmware_bin_path_ = metadata_handler_->GetCombinedBinPath();
+    uint32_t startingMemoryLocation = DEFAULT_STARTING_LOCATION_;
 
-  if(CheckPathAndConnection()){
-      return;
-  }
+    //Only do this check if actaully have metadata to look at
+    if(using_metadata_){
+       firmware_bin_path_ = metadata_handler_->GetPathToCorrectBin(type_flash_requested_);
+       if(FlashHardwareElectronicsWarning()){
+           return;
+       }
 
-  if(FlashHardwareElectronicsWarning()){
-      return;
-  }
+       startingMemoryLocation = metadata_handler_->GetStartingMemoryFromType(type_flash_requested_);
 
-  uint32_t combinedStart = metadata_handler_->GetStartingMemoryFromType("combined");
-  FlashFirmware(combinedStart);
+    }
+
+    if(CheckPathAndConnection()){
+        return;
+    }
+
+    FlashFirmware(startingMemoryLocation);
 }
 
 void Firmware::FlashFirmware(uint32_t startingPoint){
@@ -240,7 +272,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
       fl.Flash(init_usart, global_erase, startingPoint);
 
       //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-      metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+      if(using_metadata_){
+        metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+      }
 
     } catch (const QString &e) {
       iv.label_message->setText(e);

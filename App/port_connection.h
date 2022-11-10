@@ -76,6 +76,8 @@ class PortConnection : public QObject {
 
   QString GetSelectedPortName() { return selected_port_name_; }
 
+  Ui::MainWindow* GetMainWindowAccess() { return ui_;}
+
  public slots:
 
   void ConnectMotor();
