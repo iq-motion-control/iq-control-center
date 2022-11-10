@@ -1,0 +1,13 @@
+[
+  {
+    "hardware_name": "Vertiq Communication Device"
+  },
+  {
+    "style": 1,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 0,
+    "name": "vertiq_comms_device"
+  }
+  
+]

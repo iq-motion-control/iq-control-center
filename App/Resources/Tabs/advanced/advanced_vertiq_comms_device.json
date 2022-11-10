@@ -1,0 +1,19 @@
+[
+  {
+    "descriptor": "advanced_vertiq_8108",
+    "Entries": [
+      {
+        "type_idn": 5,
+        "descriptor": "Module ID",
+        "info": "Change this to bus multiple motors on a single serial line. Each motor must have a unique ID.",
+        "sub_idn": 14,
+        "format": "B",
+        "unit": "ID",
+        "frame_type": 2,
+        "maximum": 63,
+        "minimum": 0,
+        "single_step": 1
+      }    
+    ]
+  }
+]
