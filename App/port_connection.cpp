@@ -55,6 +55,7 @@ void PortConnection::ConnectMotor() {
 
       uint32_t firmware_value = 0;
       uint32_t hardware_value = 0;
+      uint8_t applications_on_motor = 0;
       int firmware_valid = 0;
       int hardware_type = 1;
       int firmware_style = 1;
@@ -85,7 +86,7 @@ void PortConnection::ConnectMotor() {
                              firmware_value))
               if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
                                 electronics_value))
-            throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
+                     throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
 
           //Firmware value holds the raw 32 bits of firmware information
           //This information comes from the Product ID Convention sheet
@@ -124,6 +125,15 @@ void PortConnection::ConnectMotor() {
           msgBox.setStandardButtons(QMessageBox::Ok);
           msgBox.setDefaultButton(QMessageBox::Ok);
           msgBox.exec();
+        }
+
+        //If we have valid firmware, check what applications are on the motor to use later with populating flash buttons
+        //If you don't get a response, this motor doesn't know how to deal with this entry. Give back 0
+        if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "apps_present", 5, 0.05f,
+                          applications_on_motor)){
+            applications_present_on_motor_ = 0;
+        }else{
+            applications_present_on_motor_ = applications_on_motor;
         }
 
         emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value);

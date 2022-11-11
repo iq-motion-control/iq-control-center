@@ -45,6 +45,9 @@
 #include "main.h"
 
 #define DEFAULT_STARTING_LOCATION_ 0x08000000
+#define BOOT_PRESENT_MASK 0b100
+#define UPGRADE_PRESENT_MASK 0b010
+#define APP_PRESENT_MASK 0b001
 
 class Firmware : public QObject {
   Q_OBJECT
@@ -66,6 +69,7 @@ class Firmware : public QObject {
   void FlashFirmware(uint32_t startingPoint);
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning();
+  void UpdateFlashButtons();
 
   MetadataHandler * metadata_handler_;
   bool using_metadata_ = false;

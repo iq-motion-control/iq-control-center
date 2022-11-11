@@ -35,108 +35,129 @@ Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binar
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
 }
 
+void Firmware::UpdateFlashButtons(){
+    //We now have access to the firmware types that this package supports. Hide flash buttons that we don't support
+    QStringList flashTypes = metadata_handler_->GetFlashTypes();
+    QStringList binTypes = metadata_handler_->GetBinariesInFolder();
+
+    //This is going to need to update as we change the names of the entries
+    //The final name will probably be something like "vertiq8108_150kv_speed_app"
+    //So we still need to just look for app, just adds an extra step of grabbing each string and looking for the substr
+    //Talk to the motor and ask what sections it currently has.
+    //If we don't get a response (0), only allow combined
+    //If we get 1, only allow combined (only app is present)
+    //If we get 5, allow app, boot, and combined (we don't have DroneCAN upgrade)
+    //If we get 7, allow all
+    uint8_t apps_present = iv.pcon->GetAppsPresent();
+    //If you aren't currently connected to a motor, don't want to present any options at all. We stop you from trying to flash anyway
+    //But it doesn't automatically update the options if you select the file and then connect
+    bool boot_present = apps_present & BOOT_PRESENT_MASK;
+    bool upgrade_present = apps_present & UPGRADE_PRESENT_MASK;
+    bool app_present = apps_present & APP_PRESENT_MASK;
+
+    if(flashTypes.contains("app") && binTypes.contains("app.bin") && app_present){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+    }
+    if(flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present){
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
+    }
+    if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+        iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+    }
+    if(flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present){
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+    }
+}
+
 void Firmware::SelectFirmwareClicked() {
   try {
-    iv.label_message->clear();
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::AnyFile);
+    if(iv.pcon->GetConnectionState() != false){
+        iv.label_message->clear();
+        QFileDialog dialog;
+        dialog.setFileMode(QFileDialog::AnyFile);
 
-    QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+        QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
-    //Change the order of the tr() to change the default
-    firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
-                                                      tr("Zip (*.zip) ;; Binary (*.bin)"));
+        //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
+        //Change the order of the tr() to change the default
+        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
+                                                          tr("Zip (*.zip) ;; Binary (*.bin)"));
 
-    //Check if it's empty. If it is do nothing and keep displaying the text
-    //If we picked a bin file, process it as we always have, but flash a warning
-    //If we picked a zip folder, use quazip
-    if (firmware_bin_path_.isEmpty()) {
-      firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+        //Check if it's empty. If it is do nothing and keep displaying the text
+        //If we picked a bin file, process it as we always have, but flash a warning
+        //If we picked a zip folder, use quazip
+        if (firmware_bin_path_.isEmpty()) {
+          firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
 
-    } else if(firmware_bin_path_.contains(".bin")){
-        QFileInfo info(firmware_bin_path_);
-        firmware_binary_button_->setText(info.fileName());
+        } else if(firmware_bin_path_.contains(".bin")){
+            QFileInfo info(firmware_bin_path_);
+            firmware_binary_button_->setText(info.fileName());
 
-        //Pop up a warning window about dangers of flashing a binary
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("WARNING!");
-        msgBox.setText(
-            "Flashing raw binary files is very dangerous. If you flash firmware "
-            "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
-            "you risk seriously damaging or breaking your motor. "
-            "Continue at your own risk.\nAre you positive you wish to continue?");
-
-        msgBox.setStandardButtons(QMessageBox::Yes);
-        msgBox.addButton(QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::No);
-        //If you pick no, reset to the init state
-        if(msgBox.exec() == QMessageBox::No){
-            firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
-            firmware_bin_path_ = "";
-            return;
-        }
-
-        //If you want to move forward, make the flash button available
-        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-        iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
-
-    //If you want to use a zip dir
-    }else if(firmware_bin_path_.contains(".zip")){
-        using_metadata_ = true;
-        metadata_handler_ = new MetadataHandler(iv.pcon);
-        //extract the archive, then we can treat it normally as a folder
-        metadata_handler_->ExtractMetadata(firmware_bin_path_);
-
-        //This displays the full path to the folder. Might need to do some work to get it to
-        //Match what info.fileName does now
-        //Set the button text to the folder that the user put in
-        firmware_binary_button_->setText(firmware_bin_path_);
-
-        //If there isn't a metadata json, throw a warning message and stop them from moving forward
-        if(metadata_handler_->GetMetadataJsonPath() == ""){
             //Pop up a warning window about dangers of flashing a binary
             QMessageBox msgBox;
-            msgBox.setWindowTitle("File Error!");
+            msgBox.setWindowTitle("WARNING!");
             msgBox.setText(
-                "It appears you are trying to use an archive not provided from Vertiq. "
-                "Please go to vertiq.co and redownload the correct archive for your motor.");
+                "Flashing raw binary files is very dangerous. If you flash firmware "
+                "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
+                "you risk seriously damaging or breaking your motor. "
+                "Continue at your own risk.\nAre you positive you wish to continue?");
 
-            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.setStandardButtons(QMessageBox::Yes);
+            msgBox.addButton(QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::No);
             //If you pick no, reset to the init state
-            if(msgBox.exec() == QMessageBox::Ok){
+            if(msgBox.exec() == QMessageBox::No){
                 firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
                 firmware_bin_path_ = "";
-                metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
                 return;
             }
-        }
 
-        //We are only ever going to have one json per released zip
-        //Use that to find the one to grab the data from
-        metadata_handler_->ReadMetadata();
-
-        //We now have access to the firmware types that this package supports. Hide flash buttons that we don't support
-        QStringList flashTypes = metadata_handler_->GetFlashTypes();
-        QStringList binTypes = metadata_handler_->GetBinariesInFolder();
-        //This is going to need to update as we change the names of the entries
-        //The final name will probably be something like "vertiq8108_150kv_speed_app"
-        //So we still need to just look for app, just adds an extra step of grabbing each string and looking for the substr
-        if(flashTypes.contains("app") && binTypes.contains("app.bin")){
-            iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
-        }
-        if(flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin")){
-            iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
-        }
-        if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
+            //If you want to move forward, make the flash button available
             iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
-        }
-        if(flashTypes.contains("boot") && binTypes.contains("boot.bin")){
-            iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
-        }
-    }
+            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
 
+        //If you want to use a zip dir
+        }else if(firmware_bin_path_.contains(".zip")){
+            using_metadata_ = true;
+            metadata_handler_ = new MetadataHandler(iv.pcon);
+            //extract the archive, then we can treat it normally as a folder
+            metadata_handler_->ExtractMetadata(firmware_bin_path_);
+
+            //This displays the full path to the folder. Might need to do some work to get it to
+            //Match what info.fileName does now
+            //Set the button text to the folder that the user put in
+            firmware_binary_button_->setText(firmware_bin_path_);
+
+            //If there isn't a metadata json, throw a warning message and stop them from moving forward
+            if(metadata_handler_->GetMetadataJsonPath() == ""){
+                //Pop up a warning window about dangers of flashing a binary
+                QMessageBox msgBox;
+                msgBox.setWindowTitle("File Error!");
+                msgBox.setText(
+                    "It appears you are trying to use an archive not provided from Vertiq. "
+                    "Please go to vertiq.co and redownload the correct archive for your motor.");
+
+                msgBox.setStandardButtons(QMessageBox::Ok);
+                //If you pick no, reset to the init state
+                if(msgBox.exec() == QMessageBox::Ok){
+                    firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+                    firmware_bin_path_ = "";
+                    metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+                    return;
+                }
+            }
+
+            //We are only ever going to have one json per released zip
+            //Use that to find the one to grab the data from
+            metadata_handler_->ReadMetadata();
+
+            UpdateFlashButtons();
+        }
+    }else{
+        QString error_message = "No Motor Connected, Please Connect Motor Before Selecting Firmware";
+        iv.label_message->setText(error_message);
+    }
   } catch (const QString &e) {
     iv.label_message->setText(e);
   }

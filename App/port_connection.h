@@ -74,6 +74,8 @@ class PortConnection : public QObject {
 
   int GetElectronicsType() { return electronics_type_; }
 
+  uint8_t GetAppsPresent() { return applications_present_on_motor_; }
+
   QString GetSelectedPortName() { return selected_port_name_; }
 
   Ui::MainWindow* GetMainWindowAccess() { return ui_;}
@@ -121,6 +123,7 @@ class PortConnection : public QObject {
   int firmware_style_;
   int hardware_type_;
   int electronics_type_;
+  uint8_t applications_present_on_motor_;
 };
 
 #endif  // CONNECTION_HPP
