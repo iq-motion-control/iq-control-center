@@ -470,21 +470,46 @@ QLabel {
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="8" column="1">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_hardware_name">
+         <property name="text">
+          <string/>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_bootloader">
+         <property name="text">
+          <string>Bootloader Version</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>6</width>
-           <height>10</height>
-          </size>
+         <property name="indent">
+          <number>25</number>
          </property>
-        </spacer>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_gui_version_value">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_firmware_name">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
        </item>
        <item row="5" column="0">
         <widget class="QLabel" name="label_firmware_2">
@@ -495,6 +520,21 @@ QLabel {
          </property>
          <property name="text">
           <string>Firmware Style</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_gui_version">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>GUI Version</string>
          </property>
          <property name="indent">
           <number>25</number>
@@ -563,45 +603,6 @@ color: white</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="label_firmware_name">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_gui_version">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string>GUI Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_gui_version_value">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_firmware_build_value">
          <property name="font">
@@ -630,8 +631,41 @@ color: white</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
-        <widget class="QLabel" name="label_hardware_name">
+       <item row="10" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_upgrader">
+         <property name="text">
+          <string>Upgrader Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLabel" name="label_bootloader_value">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="label_upgrader_value">
          <property name="text">
           <string/>
          </property>
@@ -2148,9 +2182,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2175,18 +2209,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>39</green>
-                      <blue>40</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2357,9 +2391,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2384,18 +2418,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>39</green>
-                      <blue>40</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2566,9 +2600,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2593,18 +2627,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>39</green>
-                      <blue>40</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2769,63 +2803,63 @@ QPushButton:pressed {
                    <colorrole role="WindowText">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>218</red>
-                      <green>218</green>
-                      <blue>218</blue>
+                      <red>175</red>
+                      <green>175</green>
+                      <blue>175</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Text">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>218</red>
-                      <green>218</green>
-                      <blue>218</blue>
+                      <red>175</red>
+                      <green>175</green>
+                      <blue>175</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="ButtonText">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>218</red>
-                      <green>218</green>
-                      <blue>218</blue>
+                      <red>175</red>
+                      <green>175</green>
+                      <blue>175</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>39</green>
-                      <blue>40</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>38</red>
-                      <green>38</green>
-                      <blue>38</blue>
+                      <red>60</red>
+                      <green>60</green>
+                      <blue>60</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="PlaceholderText">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>128</red>
-                      <green>128</green>
-                      <blue>129</blue>
+                      <red>175</red>
+                      <green>175</green>
+                      <blue>175</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2888,9 +2922,9 @@ QPushButton:pressed {
                    <colorrole role="PlaceholderText">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>128</red>
-                      <green>128</green>
-                      <blue>129</blue>
+                      <red>175</red>
+                      <green>175</green>
+                      <blue>175</blue>
                      </color>
                     </brush>
                    </colorrole>

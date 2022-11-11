@@ -43,6 +43,13 @@
 #define MAJOR_VERSION_SHIFT 14
 #define MINOR_VERSION_SHIFT 7
 
+#define BOOT_MAJOR_MASK 0xf800
+#define BOOT_MINOR_MASK 0x07C0
+#define BOOT_PATCH_MASK 0x003f
+
+#define BOOT_MAJOR_SHIFT 11
+#define BOOT_MINOR_SHIFT 6
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:

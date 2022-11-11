@@ -39,6 +39,8 @@ void PortConnection::SetPortConnection(bool state) {
     ui_->label_firmware_build_value->setText(QString(""));
     ui_->label_firmware_name->setText(QString(""));
     ui_->label_hardware_name->setText(QString(""));
+    ui_->label_bootloader_value->setText(QString(""));
+    ui_->label_upgrader_value->setText(QString(""));
 
     ui_->header_connect_button->setText("CONNECT");
   }
@@ -61,11 +63,23 @@ void PortConnection::ConnectMotor() {
       int firmware_style = 1;
       int electronics_value = 1;
       int electronics_type = 1;
+      int bootloader_value = 0;
+      int upgrade_value = 0;
 
       //Update the firmware build number to work with Major, Minor, Patch
       int firmware_build_major = 0;
       int firmware_build_minor = 0;
       int firmware_build_patch = 0;
+
+      //Upgrade version has style, major, minor, patch (style is what kind of upgrade)
+      int upgrade_major = 0;
+      int upgrade_minor = 0;
+      int upgrade_patch = 0;
+
+      //Bootloader version
+      int boot_major = 0;
+      int boot_minor = 0;
+      int boot_patch = 0;
 
       ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
@@ -84,8 +98,12 @@ void PortConnection::ConnectMotor() {
                           hardware_value)) {
           if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                              firmware_value))
-              if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
-                                electronics_value))
+              if (GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f,
+                                 bootloader_value))
+                  if (GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f,
+                                     upgrade_value))
+                      if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+                                        electronics_value))
                      throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
 
           //Firmware value holds the raw 32 bits of firmware information
@@ -97,6 +115,14 @@ void PortConnection::ConnectMotor() {
           firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
           firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
           firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
+
+          boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
+          boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
+          boot_patch = bootloader_value & BOOT_PATCH_MASK;
+
+          upgrade_major = (upgrade_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
+          upgrade_minor = (upgrade_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
+          upgrade_patch = upgrade_value & BOOT_PATCH_MASK;
 
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                             firmware_valid))
@@ -110,6 +136,25 @@ void PortConnection::ConnectMotor() {
         QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
 
         ui_->label_firmware_build_value->setText(firmware_build_number_string);
+
+        //If we have a bootloader label its version, otherwise put N/A
+        QString bootloader_version_string = "";
+        if(bootloader_value != 0){
+            bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
+        }else{
+            bootloader_version_string = "N/A";
+        }
+        ui_->label_bootloader_value->setText(bootloader_version_string);
+
+        //If we have an upgrader label its version, otherwise put N/A
+        QString upgrade_version_string = "";
+        if(bootloader_value != 0){
+            upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
+        }else{
+            upgrade_version_string = "N/A";
+        }
+        ui_->label_upgrader_value->setText(upgrade_version_string);
+
 
         SetPortConnection(1);
         QString message = "Motor connected Successfully";

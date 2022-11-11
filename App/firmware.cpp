@@ -57,9 +57,17 @@ void Firmware::UpdateFlashButtons(){
 
     if(flashTypes.contains("app") && binTypes.contains("app.bin") && app_present){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+        QString appMajor = QString::number(metadata_handler_->GetTypesArray(3)->GetMajor());
+        QString appMinor = QString::number(metadata_handler_->GetTypesArray(3)->GetMinor());
+        QString appPatch = QString::number(metadata_handler_->GetTypesArray(3)->GetPatch());
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
     if(flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present){
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
+        QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(2)->GetMajor());
+        QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(2)->GetMinor());
+        QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(2)->GetPatch());
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash App v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
     if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
@@ -67,6 +75,10 @@ void Firmware::UpdateFlashButtons(){
     }
     if(flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present){
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+        QString bootMajor = QString::number(metadata_handler_->GetTypesArray(1)->GetMajor());
+        QString bootMinor = QString::number(metadata_handler_->GetTypesArray(1)->GetMinor());
+        QString bootPatch = QString::number(metadata_handler_->GetTypesArray(1)->GetPatch());
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash App v" + bootMajor + "." + bootMinor + "." + bootPatch);
     }
 }
 
@@ -218,6 +230,7 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
 void Firmware::FlashCombinedClicked(){
     type_flash_requested_ = "combined";
+
     FlashClicked();
 }
 

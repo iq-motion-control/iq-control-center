@@ -105,6 +105,8 @@ public:
      */
     uint32_t GetStartingMemoryFromType(QString type);
 
+    FlashType* GetTypesArray(int i){ return flash_types_[i]; }
+
     QStringList GetBinariesInFolder(){ return binaries_in_folder_; }
 
 private:
