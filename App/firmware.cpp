@@ -115,6 +115,7 @@ void Firmware::SelectFirmwareClicked() {
           firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
 
         } else if(firmware_bin_path_.contains(".bin")){
+            using_metadata_ = false;
             QFileInfo info(firmware_bin_path_);
             firmware_binary_button_->setText(info.fileName());
 
@@ -139,6 +140,10 @@ void Firmware::SelectFirmwareClicked() {
 
             //If you want to move forward, make the flash button available
             iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+            iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(false);
+            iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
+            iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
+
             iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
 
         //If you want to use a zip dir
@@ -242,11 +247,18 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
 void Firmware::FlashCombinedClicked(){
     type_flash_requested_ = "combined";
+    if(using_metadata_){
+        iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
+        iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
+    }
     FlashClicked();
 }
 
 void Firmware::FlashBootClicked() {
     type_flash_requested_= "boot";
+
+    //Save the new boot version to the motor
+    iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
     FlashClicked();
 }
 
@@ -257,6 +269,8 @@ void Firmware::FlashAppClicked(){
 
 void Firmware::FlashUpgradeClicked() {
     type_flash_requested_= "upgrade";
+
+    iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
     FlashClicked();
 }
 
@@ -271,14 +285,6 @@ void Firmware::FlashClicked() {
     //Only do this check if actaully have metadata to look at
     if(using_metadata_){
         //Save the new boot version to the motor
-
-       uint16_t bootLoaderMajor = metadata_handler_->GetTypesArray(1)->GetMajor();
-       uint16_t bootLoaderMinor = metadata_handler_->GetTypesArray(1)->GetMinor();
-       uint16_t bootLoaderPatch = metadata_handler_->GetTypesArray(1)->GetPatch();
-       uint16_t bootloaderVersion =  ((bootLoaderMajor & 0x1f) << 11) | ((bootLoaderMinor & 0x1f) << 6) | ((bootLoaderPatch & 0x3f));
-
-       iv.pcon->SaveNewBootloaderVersion(bootloaderVersion);
-
        firmware_bin_path_ = metadata_handler_->GetPathToCorrectBin(type_flash_requested_);
        if(FlashHardwareElectronicsWarning()){
            return;

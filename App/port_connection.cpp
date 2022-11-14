@@ -98,13 +98,13 @@ void PortConnection::ConnectMotor() {
                           hardware_value)) {
           if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                              firmware_value))
-              if (GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f,
+              if(GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+                                electronics_value))
+                 if (GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f,
                                  bootloader_value))
-                  if (GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f,
+                    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f,
                                      upgrade_value))
-                      if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
-                                        electronics_value))
-                     throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
+                        throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
 
           //Firmware value holds the raw 32 bits of firmware information
           //This information comes from the Product ID Convention sheet
@@ -149,7 +149,7 @@ void PortConnection::ConnectMotor() {
 
         //If we have an upgrader label its version, otherwise put N/A
         QString upgrade_version_string = "";
-        if(bootloader_value != 0){
+        if(upgrade_value != 0){
             upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
         }else{
             upgrade_version_string = "N/A";
@@ -167,7 +167,7 @@ void PortConnection::ConnectMotor() {
           msgBox.setText(
               "Invalid Firmware has been loaded onto the Connected IQ Module\n\n"
               "Please Flash valid Firmware to avoid damage such as fires or explosions"
-              "to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
+              " to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
           msgBox.setStandardButtons(QMessageBox::Ok);
           msgBox.setDefaultButton(QMessageBox::Ok);
           msgBox.exec();
@@ -259,4 +259,9 @@ void PortConnection::FindBaudrates() {
 void PortConnection::SaveNewBootloaderVersion(uint16_t newVersion){
     int val = newVersion;
     SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, val);
+}
+
+void PortConnection::SaveNewUpgraderVersion(uint16_t newVersion){
+    int val = newVersion;
+    SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, val);
 }

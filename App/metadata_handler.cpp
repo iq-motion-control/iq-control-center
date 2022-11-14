@@ -205,6 +205,22 @@ uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
     return 0;
 }
 
+uint16_t MetadataHandler::GetUpgradeVersion(){
+    //We are flashing a new bootloader so tell the motor that it should update its value
+    uint16_t upgradeMajor = GetTypesArray(UPGRADE_INDEX)->GetMajor();
+    uint16_t upgradeMinor = GetTypesArray(UPGRADE_INDEX)->GetMinor();
+    uint16_t upgradePatch = GetTypesArray(UPGRADE_INDEX)->GetPatch();
+    return ((upgradeMajor & 0x1f) << 11) | ((upgradeMinor & 0x1f) << 6) | ((upgradePatch & 0x3f));
+}
+
+uint16_t MetadataHandler::GetBootloaderVersion(){
+    //We are flashing a new bootloader so tell the motor that it should update its value
+    uint16_t bootMajor = GetTypesArray(BOOT_INDEX)->GetMajor();
+    uint16_t bootMinor = GetTypesArray(BOOT_INDEX)->GetMinor();
+    uint16_t bootPatch = GetTypesArray(BOOT_INDEX)->GetPatch();
+    return ((bootMajor & 0x1f) << 11) | ((bootMinor & 0x1f) << 6) | ((bootPatch & 0x3f));
+}
+
 void MetadataHandler::Reset(Ui::MainWindow * mainWindow){
     DeleteExtractedFolder();
     extract_path_ = "";

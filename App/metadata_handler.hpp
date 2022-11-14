@@ -15,6 +15,10 @@
 #include "flash_type.hpp"
 
 #define MAX_FLASH_TYPES 4
+#define COMBINED_INDEX 0
+#define BOOT_INDEX 1
+#define UPGRADE_INDEX 2
+
 
 class MetadataHandler
 {
@@ -108,6 +112,9 @@ public:
     FlashType* GetTypesArray(int i){ return flash_types_[i]; }
 
     QStringList GetBinariesInFolder(){ return binaries_in_folder_; }
+
+    uint16_t GetUpgradeVersion();
+    uint16_t GetBootloaderVersion();
 
 private:
     QString extract_path_ = "";

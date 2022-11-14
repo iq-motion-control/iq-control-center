@@ -82,6 +82,8 @@ class PortConnection : public QObject {
   int GetElectronicsType() { return electronics_type_; }
 
   void SaveNewBootloaderVersion(uint16_t newVersion);
+  void SaveNewUpgraderVersion(uint16_t newVersion);
+
 
   uint8_t GetAppsPresent() { return applications_present_on_motor_; }
 
