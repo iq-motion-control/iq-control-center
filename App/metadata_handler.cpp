@@ -110,7 +110,7 @@ QString MetadataHandler::GetErrorType(){
 
     //Message if there is an electronics type error
     QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(pcon_->GetElectronicsType())
-                                        + " and got " + errorType.number(1);
+                                        + " and got " + errorType.number(to_flash_electronics_type_);
     //Message if there is a hardware error
     QString hardwareError = "Firmware is for the wrong Hardware Type. Expected " + errorType.number(pcon_->GetHardwareType())
             + " and got " + errorType.number(to_flash_hardware_type_);

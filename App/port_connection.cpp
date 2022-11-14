@@ -201,10 +201,6 @@ void PortConnection::ConnectMotor() {
   }
 }
 
-void PortConnection::SetBootloaderVersion(){
-    SetVerifyEntry(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_version_);
-}
-
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
     uint8_t obj_id;
@@ -258,4 +254,9 @@ void PortConnection::FindBaudrates() {
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
   ui_->header_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
   selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+}
+
+void PortConnection::SaveNewBootloaderVersion(uint16_t newVersion){
+    int val = newVersion;
+    SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, val);
 }

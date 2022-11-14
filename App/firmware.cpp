@@ -242,7 +242,6 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
 void Firmware::FlashCombinedClicked(){
     type_flash_requested_ = "combined";
-
     FlashClicked();
 }
 
@@ -271,6 +270,15 @@ void Firmware::FlashClicked() {
 
     //Only do this check if actaully have metadata to look at
     if(using_metadata_){
+        //Save the new boot version to the motor
+
+       uint16_t bootLoaderMajor = metadata_handler_->GetTypesArray(1)->GetMajor();
+       uint16_t bootLoaderMinor = metadata_handler_->GetTypesArray(1)->GetMinor();
+       uint16_t bootLoaderPatch = metadata_handler_->GetTypesArray(1)->GetPatch();
+       uint16_t bootloaderVersion =  ((bootLoaderMajor & 0x1f) << 11) | ((bootLoaderMinor & 0x1f) << 6) | ((bootLoaderPatch & 0x3f));
+
+       iv.pcon->SaveNewBootloaderVersion(bootloaderVersion);
+
        firmware_bin_path_ = metadata_handler_->GetPathToCorrectBin(type_flash_requested_);
        if(FlashHardwareElectronicsWarning()){
            return;
