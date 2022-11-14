@@ -55,25 +55,37 @@ void Firmware::UpdateFlashButtons(){
     bool upgrade_present = apps_present & UPGRADE_PRESENT_MASK;
     bool app_present = apps_present & APP_PRESENT_MASK;
 
-    if(flashTypes.contains("app") && binTypes.contains("app.bin") && app_present){
+    bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present;
+    bool displayUpgrade = flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present;
+    bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present;
+    bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
+
+    if(displayApp){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
-        QString appMajor = QString::number(metadata_handler_->GetTypesArray(3)->GetMajor());
-        QString appMinor = QString::number(metadata_handler_->GetTypesArray(3)->GetMinor());
-        QString appPatch = QString::number(metadata_handler_->GetTypesArray(3)->GetPatch());
+        int appIndex;
+        //If we have an app and no upgrade the index of app in the json is different
+        if(!displayUpgrade){
+            appIndex = 2;
+        }else{
+            appIndex = 3;
+        }
+        QString appMajor = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetMajor());
+        QString appMinor = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetMinor());
+        QString appPatch = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
-    if(flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present){
+    if(displayUpgrade){
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
         QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(2)->GetMajor());
         QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(2)->GetMinor());
         QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(2)->GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
-    if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
+    if(displayCombined){
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
         iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
     }
-    if(flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present){
+    if(displayBoot){
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
         QString bootMajor = QString::number(metadata_handler_->GetTypesArray(1)->GetMajor());
         QString bootMinor = QString::number(metadata_handler_->GetTypesArray(1)->GetMinor());
