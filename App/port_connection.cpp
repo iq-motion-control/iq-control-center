@@ -132,6 +132,7 @@ void PortConnection::ConnectMotor() {
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
         electronics_type_ = electronics_type;
+        bootloader_version_ = bootloader_value;
 
         QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
 
@@ -198,6 +199,10 @@ void PortConnection::ConnectMotor() {
     SetPortConnection(0);
     emit LostConnection();
   }
+}
+
+void PortConnection::SetBootloaderVersion(){
+    SetVerifyEntry(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_version_);
 }
 
 void PortConnection::TimerTimeout() {

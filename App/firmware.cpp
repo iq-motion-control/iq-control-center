@@ -67,7 +67,7 @@ void Firmware::UpdateFlashButtons(){
         QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(2)->GetMajor());
         QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(2)->GetMinor());
         QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(2)->GetPatch());
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash App v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
     if(flashTypes.contains("combined") && binTypes.contains("combined.bin")){
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
@@ -78,7 +78,7 @@ void Firmware::UpdateFlashButtons(){
         QString bootMajor = QString::number(metadata_handler_->GetTypesArray(1)->GetMajor());
         QString bootMinor = QString::number(metadata_handler_->GetTypesArray(1)->GetMinor());
         QString bootPatch = QString::number(metadata_handler_->GetTypesArray(1)->GetPatch());
-        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash App v" + bootMajor + "." + bootMinor + "." + bootPatch);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootMajor + "." + bootMinor + "." + bootPatch);
     }
 }
 
@@ -250,6 +250,7 @@ void Firmware::FlashUpgradeClicked() {
 }
 
 void Firmware::FlashClicked() {
+
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct

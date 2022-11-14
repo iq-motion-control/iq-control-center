@@ -81,6 +81,8 @@ class PortConnection : public QObject {
 
   int GetElectronicsType() { return electronics_type_; }
 
+  void SetBootloaderVersion();
+
   uint8_t GetAppsPresent() { return applications_present_on_motor_; }
 
   QString GetSelectedPortName() { return selected_port_name_; }
@@ -130,6 +132,7 @@ class PortConnection : public QObject {
   int firmware_style_;
   int hardware_type_;
   int electronics_type_;
+  uint16_t bootloader_version_;
   uint8_t applications_present_on_motor_;
 };
 
