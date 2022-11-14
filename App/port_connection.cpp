@@ -98,12 +98,9 @@ void PortConnection::ConnectMotor() {
                           hardware_value)) {
           if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                              firmware_value))
-              if(GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+              if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
                                 electronics_value))
-                 if (GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f,
-                                 bootloader_value))
-                    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f,
-                                     upgrade_value))
+
                         throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
 
           //Firmware value holds the raw 32 bits of firmware information
@@ -115,15 +112,11 @@ void PortConnection::ConnectMotor() {
           firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
           firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
           firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
+          //Create a string in the 'x.x.x' format
+          QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
+          ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
-          boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
-          boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
-          boot_patch = bootloader_value & BOOT_PATCH_MASK;
-
-          upgrade_major = (upgrade_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
-          upgrade_minor = (upgrade_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
-          upgrade_patch = upgrade_value & BOOT_PATCH_MASK;
-
+          //Check to see if the firmware is valid
           if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                             firmware_valid))
             throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
@@ -132,29 +125,7 @@ void PortConnection::ConnectMotor() {
         firmware_style_ = firmware_style;
         hardware_type_ = hardware_type;
         electronics_type_ = electronics_type;
-        bootloader_version_ = bootloader_value;
 
-        QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
-
-        ui_->label_firmware_build_value->setText(firmware_build_number_string);
-
-        //If we have a bootloader label its version, otherwise put N/A
-        QString bootloader_version_string = "";
-        if(bootloader_value != 0){
-            bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
-        }else{
-            bootloader_version_string = "N/A";
-        }
-        ui_->label_bootloader_value->setText(bootloader_version_string);
-
-        //If we have an upgrader label its version, otherwise put N/A
-        QString upgrade_version_string = "";
-        if(upgrade_value != 0){
-            upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
-        }else{
-            upgrade_version_string = "N/A";
-        }
-        ui_->label_upgrader_value->setText(upgrade_version_string);
 
 
         SetPortConnection(1);
@@ -182,6 +153,40 @@ void PortConnection::ConnectMotor() {
             applications_present_on_motor_ = applications_on_motor;
         }
 
+        //Grab the bootloader and upgrade versions if they exist
+        GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_value);
+        GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
+
+        //Parse out the important data
+        boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
+        boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
+        boot_patch = bootloader_value & BOOT_PATCH_MASK;
+
+        upgrade_major = (upgrade_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
+        upgrade_minor = (upgrade_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
+        upgrade_patch = upgrade_value & BOOT_PATCH_MASK;
+
+        bootloader_version_ = bootloader_value;
+
+        //If we have a bootloader label its version, otherwise put N/A
+        QString bootloader_version_string = "";
+        if(bootloader_value != 0){
+            bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
+        }else{
+            bootloader_version_string = "N/A";
+        }
+        ui_->label_bootloader_value->setText(bootloader_version_string);
+
+        //If we have an upgrader label its version, otherwise put N/A
+        QString upgrade_version_string = "";
+        if(upgrade_value != 0){
+            upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
+        }else{
+            upgrade_version_string = "N/A";
+        }
+        ui_->label_upgrader_value->setText(upgrade_version_string);
+
+        //Send out the hardware and firmware values to other modules of Control Center
         emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value);
         emit FindSavedValues();
       } catch (const QString &e) {
