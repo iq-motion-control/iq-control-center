@@ -84,7 +84,6 @@ class Firmware : public QObject {
  signals:
 
  public slots:
-  void SelectBinaryClicked();
   void FlashClicked();
 
   void FlashCombinedClicked();

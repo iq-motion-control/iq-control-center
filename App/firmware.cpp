@@ -30,8 +30,9 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
-Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button)
-    : flash_progress_bar_(flash_progress_bar), firmware_binary_button_(firmware_binary_button) {
+Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button)
+    : flash_progress_bar_(flash_progress_bar), firmware_binary_button_(firmware_binary_button),
+      recover_progress_bar_(recover_progress_bar), recover_binary_button_(recover_binary_button){
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
 }
 
@@ -55,8 +56,12 @@ void Firmware::UpdateFlashButtons(){
     bool upgrade_present = apps_present & UPGRADE_PRESENT_MASK;
     bool app_present = apps_present & APP_PRESENT_MASK;
 
-    bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present;
+    //Logic to determine which flash options to present
+    //App should only show up as an option if there is both an app and boot on the motor (means it's partitioned)
+    bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present && boot_present;
+    //Upgrade should only appear if there is an upgrade already there to upgrade
     bool displayUpgrade = flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present;
+    //Boot should only appear if there is a boot already there to upgrade
     bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present;
     bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
 
@@ -95,11 +100,17 @@ void Firmware::UpdateFlashButtons(){
 }
 
 void Firmware::SelectFirmwareClicked() {
+
+  int currentTab = iv.pcon->GetCurrentTab();
   try {
-    if(iv.pcon->GetConnectionState() != false){
+    //I only want to give people the option to choose a firmware if they're in recovery, or have a motor connected
+      //The UI can get wonky if you can select it whenever
+    if(iv.pcon->GetConnectionState() != false || currentTab == RECOVERY_TAB){
         iv.label_message->clear();
         QFileDialog dialog;
         dialog.setFileMode(QFileDialog::AnyFile);
+
+        QPushButton * buttonInUse;
 
         QString desktop_dir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
@@ -107,17 +118,23 @@ void Firmware::SelectFirmwareClicked() {
         //Change the order of the tr() to change the default
         firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
                                                           tr("Zip (*.zip) ;; Binary (*.bin)"));
+        //Pick which button we want to use
+        if(currentTab == FIRMWARE_TAB){
+            buttonInUse = firmware_binary_button_;
+        }else if(currentTab == RECOVERY_TAB){
+            buttonInUse = recover_binary_button_;
+        }
 
         //Check if it's empty. If it is do nothing and keep displaying the text
         //If we picked a bin file, process it as we always have, but flash a warning
         //If we picked a zip folder, use quazip
         if (firmware_bin_path_.isEmpty()) {
-          firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+          buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
 
         } else if(firmware_bin_path_.contains(".bin")){
             using_metadata_ = false;
             QFileInfo info(firmware_bin_path_);
-            firmware_binary_button_->setText(info.fileName());
+            buttonInUse->setText(info.fileName());
 
             //Pop up a warning window about dangers of flashing a binary
             QMessageBox msgBox;
@@ -133,7 +150,7 @@ void Firmware::SelectFirmwareClicked() {
             msgBox.setDefaultButton(QMessageBox::No);
             //If you pick no, reset to the init state
             if(msgBox.exec() == QMessageBox::No){
-                firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+                buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
                 firmware_bin_path_ = "";
                 return;
             }
@@ -156,7 +173,7 @@ void Firmware::SelectFirmwareClicked() {
             //This displays the full path to the folder. Might need to do some work to get it to
             //Match what info.fileName does now
             //Set the button text to the folder that the user put in
-            firmware_binary_button_->setText(firmware_bin_path_);
+            buttonInUse->setText(firmware_bin_path_);
 
             //If there isn't a metadata json, throw a warning message and stop them from moving forward
             if(metadata_handler_->GetMetadataJsonPath() == ""){
@@ -170,7 +187,7 @@ void Firmware::SelectFirmwareClicked() {
                 msgBox.setStandardButtons(QMessageBox::Ok);
                 //If you pick no, reset to the init state
                 if(msgBox.exec() == QMessageBox::Ok){
-                    firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
+                    buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
                     firmware_bin_path_ = "";
                     metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
                     return;
@@ -181,7 +198,11 @@ void Firmware::SelectFirmwareClicked() {
             //Use that to find the one to grab the data from
             metadata_handler_->ReadMetadata();
 
-            UpdateFlashButtons();
+            //If we aren't in recovery, present only the options that can be safely flashed.
+            //Only giving combined option from recovery mode
+            if(currentTab == FIRMWARE_TAB){
+                UpdateFlashButtons();
+            }
         }
     }else{
         QString error_message = "No Motor Connected, Please Connect Motor Before Selecting Firmware";
@@ -193,12 +214,14 @@ void Firmware::SelectFirmwareClicked() {
 }
 
 bool Firmware::CheckPathAndConnection(){
+    int curTab = iv.pcon->GetCurrentTab();
     //Don't move forward if there is there's no binary selected or no motor connected
     if (firmware_bin_path_.isEmpty()) {
       QString err_message = "No Firmware Binary Selected";
       iv.label_message->setText(err_message);
       return true;
-    }else if(iv.pcon->GetConnectionState() != 1){
+      //Motor is disconnected when we reach this point of a recovery
+    }else if(iv.pcon->GetConnectionState() != 1 && curTab != RECOVERY_TAB){
         QString error_message = "No Motor Connected, Please Connect Motor";
         iv.label_message->setText(error_message);
         return true;
@@ -246,8 +269,10 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 }
 
 void Firmware::FlashCombinedClicked(){
+    int curTab = iv.pcon->GetCurrentTab();
     type_flash_requested_ = "combined";
-    if(using_metadata_){
+    //Recovery tab has no idea how to save something
+    if(using_metadata_ && curTab != RECOVERY_TAB){
         iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
         iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
     }
@@ -276,18 +301,23 @@ void Firmware::FlashUpgradeClicked() {
 
 void Firmware::FlashClicked() {
 
+    int curTab = iv.pcon->GetCurrentTab();
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct
     //Flash the motor
     uint32_t startingMemoryLocation = DEFAULT_STARTING_LOCATION_;
 
-    //Only do this check if actaully have metadata to look at
+    //Only do this check if actaully have metadata to look at and we're not in recovery
+    //(Recovery doesn't know anything about the hardware or electronics)
     if(using_metadata_){
         //Save the new boot version to the motor
        firmware_bin_path_ = metadata_handler_->GetPathToCorrectBin(type_flash_requested_);
-       if(FlashHardwareElectronicsWarning()){
-           return;
+
+       if( curTab != RECOVERY_TAB){
+           if(FlashHardwareElectronicsWarning()){
+               return;
+           }
        }
 
        startingMemoryLocation = metadata_handler_->GetStartingMemoryFromType(type_flash_requested_);
@@ -302,35 +332,61 @@ void Firmware::FlashClicked() {
 }
 
 void Firmware::FlashFirmware(uint32_t startingPoint){
-    QString seletected_port_name = iv.pcon->GetSelectedPortName();
 
-    if (!BootMode()) {
-      return;
+    int currentTab = iv.pcon->GetCurrentTab();
+    QString selected_port_name;
+
+    //Grab the correct port name
+    if(currentTab == FIRMWARE_TAB){
+        selected_port_name = iv.pcon->GetSelectedPortName();
+    }else if(currentTab == RECOVERY_TAB){
+        selected_port_name = iv.pcon->GetRecoveryPortName();
+    }
+
+    //only try to go into boot mode if we are trying to flash new firmware from a motor not in recovery
+    if(currentTab == FIRMWARE_TAB){
+        if (!BootMode()) {
+            return;
+        }
     }
 
     try {
       Schmi::ErrorHandlerStd error;
       Schmi::BinaryFileStd bin(firmware_bin_path_.toStdString());
-      Schmi::QSerial ser(seletected_port_name);
-      FlashLoadingBar bar(flash_progress_bar_);
+      Schmi::QSerial ser(selected_port_name);
+      FlashLoadingBar flashBar(flash_progress_bar_);
+      FlashLoadingBar recoverBar(recover_progress_bar_);
 
-      Schmi::FlashLoader fl(&ser, &bin, &error, &bar);
+      Schmi::FlashLoader * fl;
 
-      fl.Init();
+      if(currentTab == FIRMWARE_TAB){
+          fl = new Schmi::FlashLoader(&ser, &bin, &error, &flashBar);
+      }else if(currentTab == RECOVERY_TAB){
+          fl = new Schmi::FlashLoader(&ser, &bin, &error, &recoverBar);
+      }
 
-      std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
-      bool boot_mode = false;
-      while (!boot_mode) {
-        boot_mode = fl.InitUsart();
-        if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-          throw QString("Could Not Init UART From Boot Mode");
-          break;
-        };
+      fl->Init();
+
+      if(currentTab == FIRMWARE_TAB){
+          std::chrono::steady_clock::time_point time_start = std::chrono::steady_clock::now();
+          bool boot_mode = false;
+          while (!boot_mode) {
+            boot_mode = fl->InitUsart();
+            if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
+              throw QString("Could Not Init UART From Boot Mode");
+              break;
+            };
+          }
       }
 
       bool init_usart = false;
       bool global_erase = false;
-      fl.Flash(init_usart, global_erase, startingPoint);
+      fl->Flash(init_usart, global_erase, startingPoint);
+
+      //We don't want people to hang out in the recovery page. so don't let them
+      if(currentTab == RECOVERY_TAB){
+          iv.pcon->ResetToTopPage();
+      }
 
       //We are now done with the extracted directory that we made. We should delete it to avoid any issues
       if(using_metadata_){
@@ -339,9 +395,6 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
 
     } catch (const QString &e) {
         iv.label_message->setText(e);
-    }
-    } catch (const QString &e) {
-      iv.label_message->setText(e);
     }
 }
 

@@ -90,13 +90,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
-            SLOT(SelectBinaryClicked()));
+            SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover file button with the firmware SelectRecoveryClicked to allow picking a file
-    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectBinaryClicked()));
+    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
-    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
+    //Only allow recovery to flash a combined to avoid any more issue
+    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
 
   } catch (const QString &e) {
     ui->header_error_label->setText(e);
