@@ -15,10 +15,15 @@
 #include "flash_type.hpp"
 
 #define MAX_FLASH_TYPES 4
+
+//Defintions for the indices of the different entries in the json
+#define HARDWARE_ELECTRONICS_INDEX 0
+#define FIRMWARE_STYLE_INDEX 2
+
+//Definitions for the indices of the firmware flashing information
 #define COMBINED_INDEX 0
 #define BOOT_INDEX 1
 #define UPGRADE_INDEX 2
-
 
 class MetadataHandler
 {
@@ -109,31 +114,88 @@ public:
      */
     uint32_t GetStartingMemoryFromType(QString type);
 
+    /**
+     * @brief GetTypesArray Returns a pointer to a FlashType object from the instances stored in the metadata
+     * @param i the index of the value you want
+     * @return A pointer to a FlashType object
+     */
     FlashType* GetTypesArray(int i){ return flash_types_[i]; }
 
+    /**
+     * @brief GetBinariesInFolder Returns a list of the bin files present in the zip
+     * @return The list
+     */
     QStringList GetBinariesInFolder(){ return binaries_in_folder_; }
 
+    /**
+     * @brief GetUpgradeVersion Returns the version of the upgrader in the zip
+     * @return the raw version value
+     */
     uint16_t GetUpgradeVersion();
+
+    /**
+     * @brief GetBootloaderVersion Returns the raw value of the version of the bootloader in the zip
+     * @return the raw version value
+     */
     uint16_t GetBootloaderVersion();
 
 private:
+
+    ////////////////////////////////
+    /// Private Variables
+
+    /**
+     * @brief extract_path_ The path to the extracted folder from the zip input
+     */
     QString extract_path_ = "";
+
+    /**
+     * @brief pcon_ A pointer to the port connection object used throughout the project
+     */
     PortConnection * pcon_;
 
+    /**
+     * @brief metadata_array_ stores the information from the metadata json
+     */
     QJsonArray metadata_array_;
 
+    /**
+     * @brief to_flash_electronics_type_ The type of electronics that this metadata expects to flash
+     */
     int to_flash_electronics_type_;
+
+    /**
+     * @brief to_flash_hardware_type_ The type of hardware that this metadata expects to flash
+     */
     int to_flash_hardware_type_;
 
-    //Var to hold the actual number of entries in the "allowed flashing" json entry
+    /**
+     * @brief allowed_flashing_size_ The number of different styles of flash that can be performed based on this archive
+     */
     int allowed_flashing_size_;
+
+    /**
+     * @brief flash_types_ An array that stores all of the information for how to flash each section
+     */
     FlashType* flash_types_[MAX_FLASH_TYPES];
 
+    /**
+     * @brief firmware_style_ Holds the style of firmware in this archive (speed, servo, etc.)
+     */
     QString firmware_style_;
 
+    /**
+     * @brief metadata_dir_ A pointer to the directory holding the metadata
+     */
     QDir *metadata_dir_;
 
+    /**
+     * @brief binaries_in_folder_ A list of the binaries stored in the archive
+     */
     QStringList binaries_in_folder_;
+
+    /////////////////////
+    /// Private functions
 
     /**
      * @brief GetBinPath Returns the path to a binary file in the extracted folder

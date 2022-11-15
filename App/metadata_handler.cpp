@@ -16,7 +16,6 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
 QString MetadataHandler::GetCombinedBinPath(){
     QString firmware_bin_path = "";
 
-    //ALL OF THESE WILL HAVE TO UPDATE TO SEE IF IT JUST CONTAINS COMBINED (VERTIQ_8108_SPEED_COMBINED.BIN)
     if(metadata_dir_->exists("combined.bin")){
         firmware_bin_path = extract_path_ + "/combined.bin";
     }else if(metadata_dir_->exists("main.bin")){
@@ -148,10 +147,9 @@ void MetadataHandler::ReadMetadata(){
     }
 
     //Third entry is firmware style
-    firmware_style_ = metadata_array_.at(2).toObject().value("firmware style").toString();
+    firmware_style_ = metadata_array_.at(FIRMWARE_STYLE_INDEX).toObject().value("firmware style").toString();
     //Last entry is version data and release
 
-    //EXTEND THIS TO GRAB ALL OF THE IMPORTANT THINGS
     FindBinariesInFolder();
 }
 

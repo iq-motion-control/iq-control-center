@@ -163,8 +163,4 @@ RESOURCES += \
     resource.qrc \
     clients.qrc
 
-
-
 #LIBS += -framework CoreFoundation
-
-

@@ -41,15 +41,19 @@ void Firmware::UpdateFlashButtons(){
     QStringList flashTypes = metadata_handler_->GetFlashTypes();
     QStringList binTypes = metadata_handler_->GetBinariesInFolder();
 
-    //This is going to need to update as we change the names of the entries
-    //The final name will probably be something like "vertiq8108_150kv_speed_app"
-    //So we still need to just look for app, just adds an extra step of grabbing each string and looking for the substr
-    //Talk to the motor and ask what sections it currently has.
-    //If we don't get a response (0), only allow combined
-    //If we get 1, only allow combined (only app is present)
-    //If we get 5, allow app, boot, and combined (we don't have DroneCAN upgrade)
-    //If we get 7, allow all
+    /**
+     * This is going to need to update as we change the names of the entries
+     * in time, consider upgrading to a name format such as: "vertiq8108_150kv_speed_app"
+     * So we still need to just look for app, just adds an extra step of grabbing each string and looking for the substr
+    */
+
+    /**
+     * Talk to the motor and ask what sections it currently has.
+     * Depending on the current state of the motor, only display certain
+     * flash options with the buttons
+     */
     uint8_t apps_present = iv.pcon->GetAppsPresent();
+
     //If you aren't currently connected to a motor, don't want to present any options at all. We stop you from trying to flash anyway
     //But it doesn't automatically update the options if you select the file and then connect
     boot_present_ = apps_present & BOOT_PRESENT_MASK;
@@ -57,14 +61,25 @@ void Firmware::UpdateFlashButtons(){
     app_present_ = apps_present & APP_PRESENT_MASK;
 
     //Logic to determine which flash options to present
+    //flashTypes holds the information about what sections are allowed to be flashed according to the json metadata
+    //binTypes holds the information about what binary files are contained in the zip
+
     //App should only show up as an option if there is both an app and boot on the motor (means it's partitioned)
     bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present_ && boot_present_;
+
     //Upgrade should only appear if there is an upgrade already there to upgrade
     bool displayUpgrade = flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present_;
+
     //Boot should only appear if there is a boot already there to upgrade
     bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present_;
+
+    //Always unless there is a serious problem with our release
     bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
 
+    /**
+     * Depending on the results of the logic above, we choose which buttons to make available to the user
+     * Each button (excluding combined) gets its version as well as type for what it will flash
+     */
     if(displayApp){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
         //If we have an app and no upgrade the index of app in the json is different
@@ -78,32 +93,41 @@ void Firmware::UpdateFlashButtons(){
         QString appPatch = QString::number(metadata_handler_->GetTypesArray(app_index_)->GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
+
     if(displayUpgrade){
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
-        QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(2)->GetMajor());
-        QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(2)->GetMinor());
-        QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(2)->GetPatch());
+        QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetMajor());
+        QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetMinor());
+        QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
+
+    if(displayBoot){
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+        QString bootMajor = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetMajor());
+        QString bootMinor = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetMinor());
+        QString bootPatch = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetPatch());
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootMajor + "." + bootMinor + "." + bootPatch);
+    }
+
     if(displayCombined){
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
         iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
     }
-    if(displayBoot){
-        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
-        QString bootMajor = QString::number(metadata_handler_->GetTypesArray(1)->GetMajor());
-        QString bootMinor = QString::number(metadata_handler_->GetTypesArray(1)->GetMinor());
-        QString bootPatch = QString::number(metadata_handler_->GetTypesArray(1)->GetPatch());
-        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootMajor + "." + bootMinor + "." + bootPatch);
-    }
+
 }
 
 void Firmware::SelectFirmwareClicked() {
 
   int currentTab = iv.pcon->GetCurrentTab();
   try {
-    //I only want to give people the option to choose a firmware if they're in recovery, or have a motor connected
-      //The UI can get wonky if you can select it whenever
+
+    /**
+     * When a motor enters recovery mode, it loses connection with the control center. Therefore, without this
+     * additional logic, a motor in recovery mode wouldn't be allowed to select a recovery file.
+     * This stops you from being able to choose a file unless you are connected to a motor or are in recovery. This
+     * helps us avoid some weird UI things.
+     */
     if(iv.pcon->GetConnectionState() != false || currentTab == RECOVERY_TAB){
         iv.label_message->clear();
         QFileDialog dialog;
