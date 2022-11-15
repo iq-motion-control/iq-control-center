@@ -61,6 +61,8 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
+  bool CheckIfInBootLoader();
+
   void SetPortConnection(bool state);
   void FindBaudrates();
 
@@ -88,6 +90,10 @@ class PortConnection : public QObject {
   uint8_t GetAppsPresent() { return applications_present_on_motor_; }
 
   QString GetSelectedPortName() { return selected_port_name_; }
+  QString GetRecoveryPortName() { return recovery_port_name_; }
+
+  void ResetToTopPage();
+  int GetCurrentTab();
 
   Ui::MainWindow* GetMainWindowAccess() { return ui_;}
 
@@ -123,6 +129,7 @@ class PortConnection : public QObject {
 
   std::vector<QString> ports_names_;
   QString selected_port_name_;
+  QString recovery_port_name_;
   qint32 selected_baudrate_;
 
   QMovie *loader_movie_;

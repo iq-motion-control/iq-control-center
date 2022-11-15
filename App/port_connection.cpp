@@ -19,10 +19,20 @@
 */
 
 #include "port_connection.h"
+#include "schmi/include/Schmi/qserial.h"
+
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
+}
+
+void PortConnection::ResetToTopPage(){
+    ui_->stackedWidget->setCurrentIndex(0);
+}
+
+int PortConnection::GetCurrentTab(){
+    return ui_->stackedWidget->currentIndex();
 }
 
 void PortConnection::SetPortConnection(bool state) {
@@ -83,13 +93,35 @@ void PortConnection::ConnectMotor() {
 
       ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
-        if (!ser_->ser_port_->open(QIODevice::ReadWrite))
-          throw QString("CONNECTION ERROR: could not open serial port");
 
-        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f,
-                           obj_id_))
-          throw QString(
-              "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+        //Try to open the serial port in general
+        if (!ser_->ser_port_->open(QIODevice::ReadWrite)){
+          throw QString("CONNECTION ERROR: could not open serial port");
+        }
+
+        //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
+        if(CheckIfInBootLoader()){
+            recovery_port_name_ = selected_port_name_;
+            ser_->ser_port_->close();
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Recovery Mode Recognized");
+            msgBox.setText(
+                "It appears that your motor is currently in recovery mode.\n"
+                "Would you like to recover your motor now?");
+            msgBox.setStandardButtons(QMessageBox::Yes);
+            msgBox.addButton(QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::No);
+            if (msgBox.exec() == QMessageBox::Yes) {
+              ui_->stackedWidget->setCurrentIndex(6);
+            }
+
+            throw QString("Recovery Detected");
+        }
+
+        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
+            throw QString(
+            "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+        }
 
         emit ObjIdFound();
 
@@ -269,4 +301,38 @@ void PortConnection::SaveNewBootloaderVersion(uint16_t newVersion){
 void PortConnection::SaveNewUpgraderVersion(uint16_t newVersion){
     int val = newVersion;
     SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, val);
+}
+
+bool PortConnection::CheckIfInBootLoader(){
+    //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
+    //As our guide to know if we are in the bootloader
+
+    //If we have already sent the initial command, we can send any of the commands available in the bootloader
+    //If we get the expected response, we still know we're in the bootloader
+    #define INIT_CMD 0x7f
+    #define ACK 0x79
+    #define NACK 0x1f
+
+    uint8_t sendBuffer[] = {INIT_CMD};
+    uint8_t readBuf[1];
+
+    //We want to flash at 115200 Baud always. So let's ping the bootloader at 115200
+    //so that we init to the right value when we go to the flash loader
+    ser_->ser_port_->setBaudRate(Schmi::SerialConst::BAUD_RATE);
+
+    //Send the first byte the STM32 bootloader expects (0x7f). If we get a response and it's
+    //0x79 then we know we're in the st bootloader
+    //The response can also be a NACK (0x1F) if we send this once the bootloader is already intialized
+    //Try multiple times to account for any instability (in testing we successfully get a NACK every other try)
+    const int RETRIES = 5;
+    for(int i = 0; i < RETRIES; i++){
+        ser_->Write(&sendBuffer[0], 1);
+        ser_->Read(readBuf, 1, 100);
+        if(readBuf[0] == ACK || readBuf[0] == NACK){
+            return true;
+        }
+    }
+    //If we didn't get a response, reset to the baud rate we had when we called this
+    ser_->ser_port_->setBaudRate(selected_baudrate_);
+    return false;
 }

@@ -48,11 +48,13 @@
 #define BOOT_PRESENT_MASK 0b100
 #define UPGRADE_PRESENT_MASK 0b010
 #define APP_PRESENT_MASK 0b001
+#define FIRMWARE_TAB 4
+#define RECOVERY_TAB 6
 
 class Firmware : public QObject {
   Q_OBJECT
  public:
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button);
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
 
  private:
   QString firmware_folder_dir_name_ = "";
@@ -60,10 +62,15 @@ class Firmware : public QObject {
   std::map<std::string, Client *> sys_map_;
   QProgressBar *flash_progress_bar_;
   QPushButton *firmware_binary_button_;
+
+  QProgressBar *recover_progress_bar_;
+  QPushButton *recover_binary_button_;
+
   QString firmware_bin_path_;
   QString extract_path_ = "";
 
   QString type_flash_requested_ = "";
+  QString recovery_bin_path_;
 
   bool BootMode();
   void FlashFirmware(uint32_t startingPoint);
@@ -77,6 +84,7 @@ class Firmware : public QObject {
  signals:
 
  public slots:
+  void SelectBinaryClicked();
   void FlashClicked();
 
   void FlashCombinedClicked();

@@ -12,66 +12,9 @@
   </property>
   <property name="palette">
    <palette>
-    <active>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </active>
-    <inactive>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </inactive>
-    <disabled>
-     <colorrole role="Text">
-      <brush brushstyle="SolidPattern">
-       <color alpha="255">
-        <red>128</red>
-        <green>128</green>
-        <blue>128</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>14</red>
-        <green>98</green>
-        <blue>175</blue>
-       </color>
-      </brush>
-     </colorrole>
-    </disabled>
+    <active/>
+    <inactive/>
+    <disabled/>
    </palette>
   </property>
   <property name="mouseTracking">
@@ -117,19 +60,10 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="0" colspan="2">
-     <widget class="QFrame" name="header_frame">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>60</height>
-       </size>
+    <item row="1" column="0">
+     <widget class="QFrame" name="list_frame">
+      <property name="mouseTracking">
+       <bool>false</bool>
       </property>
       <property name="styleSheet">
        <string notr="true">QFrame#header_frame {
@@ -189,522 +123,6 @@ QPushButton:hover{
 QPushButton:pressed {
     color: rgb(1, 150, 250);
     border-style: outset;
-}
-
-QPushButton:checked {
-    color: rgb(1, 150, 250);
-    border-style: outset;
-    border-left: 2px solid rgb(1, 150, 250);
-    min-width: 10em;
-    padding: 6px;
-}
-</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
-      </property>
-      <property name="midLineWidth">
-       <number>0</number>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>10</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_control_center">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>230</width>
-           <height>20</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="resource.qrc">:/res/IQ_gui_header2.png</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>43</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="header_error_label">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>425</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">color: rgb(175, 175, 175)</string>
-         </property>
-         <property name="text">
-          <string>SELECT A PORT AND CONNECT A MOTOR</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>50</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(175, 175, 175)</string>
-         </property>
-         <property name="text">
-          <string>BAUD RATE:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="header_baudrate_combo_box">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>100</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLabel" name="label_3">
-         <property name="styleSheet">
-          <string notr="true">color: rgb(175, 175, 175)</string>
-         </property>
-         <property name="text">
-          <string>PORT:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="CustomComboBox" name="header_combo_box">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="header_connect_button">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true"/>
-         </property>
-         <property name="text">
-          <string>CONNECT</string>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="loader_label">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QFrame" name="status_frame">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>275</width>
-        <height>275</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QFrame#status_frame {
-    background-color: rgb(70, 70, 70);
-    margin: 0px;
-}
-
-QLabel {
-    color: rgb(173, 177, 178)
-}
-
-
-
-</string>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
-      </property>
-      <layout class="QGridLayout" name="gridLayout">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item row="6" column="1">
-        <widget class="QLabel" name="label_hardware_name">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QLabel" name="label_bootloader">
-         <property name="text">
-          <string>Bootloader Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_gui_version_value">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="label_firmware_name">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_firmware_2">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string>Firmware Style</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_gui_version">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string>GUI Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label_status_header">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <family>Lato</family>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(60, 60, 60);
-color: white</string>
-         </property>
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;INFORMATION&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="margin">
-          <number>0</number>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>2</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_firmware_build">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string>Firmware Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="label_firmware_build_value">
-         <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_hardware_style">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Hardware Style</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="10" column="1">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>6</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_upgrader">
-         <property name="text">
-          <string>Upgrader Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="1">
-        <widget class="QLabel" name="label_bootloader_value">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="1">
-        <widget class="QLabel" name="label_upgrader_value">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QFrame" name="list_frame">
-      <property name="mouseTracking">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QFrame {
-    background-color: rgb(70, 70, 70);
-    margin: 0px;
-    border-bottom: 1px solid rgb(50, 50, 50);
-}
-
-QPushButton {
-    color: rgb(175, 175, 175);
-    text-align: left;
-}
-
-QPushButton:hover {
-    color: rgb(185, 185, 185);
-    border-style: outset;
-    border-width: 0px;
-    min-width: 10em;
-    padding: 6px;
-}
-
-QPushButton:pressed {
-    color: rgb(1, 150, 250);
-    border-style: outset;
-    border-width: 0px;
-    min-width: 10em;
-    padding: 6px;
 }
 
 QPushButton:checked {
@@ -1137,6 +555,698 @@ QPushButton:checked {
       </layout>
      </widget>
     </item>
+    <item row="2" column="0">
+     <widget class="QFrame" name="status_frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>275</width>
+        <height>275</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame#status_frame {
+    background-color: rgb(70, 70, 70);
+    margin: 0px;
+}
+
+QLabel {
+    color: rgb(173, 177, 178)
+}
+
+
+
+</string>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_hardware_name">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_bootloader">
+         <property name="text">
+          <string>Bootloader Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_gui_version_value">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_firmware_name">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_firmware_2">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Firmware Style</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_gui_version">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>GUI Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QLabel" name="label_status_header">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Lato</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(60, 60, 60);
+color: white</string>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;INFORMATION&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <property name="indent">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>2</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_firmware_build">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Firmware Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_firmware_build_value">
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_hardware_style">
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Hardware Style</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_upgrader">
+         <property name="text">
+          <string>Upgrader Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QLabel" name="label_bootloader_value">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="label_upgrader_value">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QFrame" name="header_frame">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>60</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame#header_frame {
+	color:  rgb(175, 175, 175);
+	background-color: rgb(60, 60, 60);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(50, 50, 50);
+}
+
+QLabel {
+	border-bottom: 0px solid black
+}
+
+QComboBox {
+	color: rgb(175, 175, 175);
+	border-bottom: 1px solid rgb(175, 175, 175);    
+	border-radius: 0px;
+    padding: 3px 20px 3px 3px;
+    selection-color: rgb(1, 150, 250);
+	background: transparent;
+	padding: 2px
+}
+
+QComboBox::drop-down {
+    width: 20px; /*changes size of arrow icon section and also changes size of drop down menu*/
+    border-left-width: 0px;  /*adjusts border of arrow icon section*/
+    border-left-color: blue;
+    border-left-style: solid;
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+	background: transparent;
+	image: url(:/res/down_arrow_icon.png);
+}
+
+QComboBox:hover {
+    border: 1px solid transparent;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+QComboBox:on, QComboBox:off {
+    color: rgb(60, 60, 60)
+}
+
+QPushButton {
+    color: rgb(175, 175, 175);
+    text-align: left;
+}
+
+QPushButton:hover {
+    color: rgb(185, 185, 185);
+    border-style: outset;
+    border-width: 0px;
+    min-width: 10em;
+    padding: 6px;
+}
+
+QPushButton:pressed {
+    color: rgb(1, 150, 250);
+    border-style: outset;
+    border-width: 0px;
+    min-width: 10em;
+    padding: 6px;
+}
+
+QPushButton:checked {
+    color: rgb(1, 150, 250);
+    border-style: outset;
+    border-left: 2px solid rgb(1, 150, 250);
+    min-width: 10em;
+    padding: 6px;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_control_center">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>230</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="resource.qrc">:/res/IQ_gui_header2.png</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>43</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="header_error_label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>425</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="PlaceholderText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>175</red>
+               <green>175</green>
+               <blue>175</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <family>MS Shell Dlg 2</family>
+           <pointsize>12</pointsize>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(175, 175, 175)</string>
+         </property>
+         <property name="text">
+          <string>SELECT A PORT AND CONNECT A MOTOR</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(175, 175, 175)</string>
+         </property>
+         <property name="text">
+          <string>BAUD RATE:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="header_baudrate_combo_box">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>100</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>30</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(175, 175, 175)</string>
+         </property>
+         <property name="text">
+          <string>PORT:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="CustomComboBox" name="header_combo_box">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="header_connect_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string>CONNECT</string>
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="loader_label">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item row="1" column="1" rowspan="2">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="font">
@@ -1184,6 +1294,12 @@ QWidget#page_firmware {
     background-color: rgb(80, 80, 80);
 }
 
+QWidget#page_recovery {
+	border-left: 1px solid rgb(50, 50, 50);
+	border-right: 1px solid rgb(50, 50, 50);
+	background-color: rgb(80, 80, 80);
+}
+
 QLabel {
     color: rgb(175, 175, 175)
 }
@@ -1203,6 +1319,10 @@ QWidget#advanced_widget {
 
 QWidget#firmware_widget {
     background-color: rgb(70, 70, 70);
+}
+
+QWidget#recover_widget{
+	background-color: rgb(70, 70, 70);
 }
 
 QWidget#tuning_widget {
@@ -1266,6 +1386,97 @@ QScrollBar::handle:vertical {
          <height>16777208</height>
         </size>
        </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -1282,8 +1493,105 @@ QScrollBar::handle:vertical {
         <property name="bottomMargin">
          <number>24</number>
         </property>
+        <property name="horizontalSpacing">
+         <number>7</number>
+        </property>
         <item row="1" column="0">
          <widget class="QWidget" name="widget_home" native="true">
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -1385,7 +1693,7 @@ hr { height: 1px; border-width: 0; }
         <property name="bottomMargin">
          <number>24</number>
         </property>
-        <item row="1" column="0">
+        <item row="0" column="0" rowspan="2" colspan="2">
          <widget class="QLabel" name="label_general">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1724,19 +2032,7 @@ QComboBox:on, QComboBox:off {
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
-           <property name="leftMargin">
-            <number>20</number>
-           </property>
-           <property name="topMargin">
-            <number>11</number>
-           </property>
-           <property name="rightMargin">
-            <number>20</number>
-           </property>
-           <property name="bottomMargin">
-            <number>11</number>
-           </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
             <widget class="QLabel" name="default_label">
              <property name="font">
@@ -1968,6 +2264,97 @@ QComboBox:on, QComboBox:off {
        </layout>
       </widget>
       <widget class="QWidget" name="page_firmware">
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
        <layout class="QGridLayout" name="gridLayout_5">
         <property name="leftMargin">
          <number>24</number>
@@ -1983,6 +2370,97 @@ QComboBox:on, QComboBox:off {
         </property>
         <item row="0" column="0">
          <widget class="QWidget" name="firmware_widget" native="true">
+          <property name="palette">
+           <palette>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
+           </palette>
+          </property>
           <layout class="QGridLayout" name="gridLayout_12">
            <item row="0" column="0">
             <widget class="QTextEdit" name="textEdit_reflash_steps">
@@ -2978,24 +3456,14 @@ QPushButton:pressed {
          <number>24</number>
         </property>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_advanced">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QLabel" name="label_2">
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
            </font>
           </property>
           <property name="text">
-           <string>ADVANCED **please use caution** </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <string>Recovery</string>
           </property>
          </widget>
         </item>

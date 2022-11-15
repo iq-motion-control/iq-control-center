@@ -338,6 +338,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
       }
 
     } catch (const QString &e) {
+        iv.label_message->setText(e);
+    }
+    } catch (const QString &e) {
       iv.label_message->setText(e);
     }
 }
