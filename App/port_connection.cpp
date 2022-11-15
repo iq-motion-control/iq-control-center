@@ -194,9 +194,9 @@ void PortConnection::ConnectMotor() {
         boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
         boot_patch = bootloader_value & BOOT_PATCH_MASK;
 
-        upgrade_major = (upgrade_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
-        upgrade_minor = (upgrade_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
-        upgrade_patch = upgrade_value & BOOT_PATCH_MASK;
+        upgrade_major = (upgrade_value & UPGRADE_MAJOR_MASK) >> UPGRADE_MAJOR_SHIFT;
+        upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
+        upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
 
         bootloader_version_ = bootloader_value;
 
