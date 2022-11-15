@@ -52,31 +52,30 @@ void Firmware::UpdateFlashButtons(){
     uint8_t apps_present = iv.pcon->GetAppsPresent();
     //If you aren't currently connected to a motor, don't want to present any options at all. We stop you from trying to flash anyway
     //But it doesn't automatically update the options if you select the file and then connect
-    bool boot_present = apps_present & BOOT_PRESENT_MASK;
-    bool upgrade_present = apps_present & UPGRADE_PRESENT_MASK;
-    bool app_present = apps_present & APP_PRESENT_MASK;
+    boot_present_ = apps_present & BOOT_PRESENT_MASK;
+    upgrade_present_ = apps_present & UPGRADE_PRESENT_MASK;
+    app_present_ = apps_present & APP_PRESENT_MASK;
 
     //Logic to determine which flash options to present
     //App should only show up as an option if there is both an app and boot on the motor (means it's partitioned)
-    bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present && boot_present;
+    bool displayApp = flashTypes.contains("app") && binTypes.contains("app.bin") && app_present_ && boot_present_;
     //Upgrade should only appear if there is an upgrade already there to upgrade
-    bool displayUpgrade = flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present;
+    bool displayUpgrade = flashTypes.contains("upgrade") && binTypes.contains("upgrade.bin") && upgrade_present_;
     //Boot should only appear if there is a boot already there to upgrade
-    bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present;
+    bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present_;
     bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
 
     if(displayApp){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
-        int appIndex;
         //If we have an app and no upgrade the index of app in the json is different
-        if(!displayUpgrade){
-            appIndex = 2;
+        if(!flashTypes.contains("upgrade")){
+            app_index_ = 2;
         }else{
-            appIndex = 3;
+            app_index_ = 3;
         }
-        QString appMajor = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetMajor());
-        QString appMinor = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetMinor());
-        QString appPatch = QString::number(metadata_handler_->GetTypesArray(appIndex)->GetPatch());
+        QString appMajor = QString::number(metadata_handler_->GetTypesArray(app_index_)->GetMajor());
+        QString appMinor = QString::number(metadata_handler_->GetTypesArray(app_index_)->GetMinor());
+        QString appPatch = QString::number(metadata_handler_->GetTypesArray(app_index_)->GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
     if(displayUpgrade){
@@ -320,7 +319,15 @@ void Firmware::FlashClicked() {
            }
        }
 
-       startingMemoryLocation = metadata_handler_->GetStartingMemoryFromType(type_flash_requested_);
+       //Extra checking. If we only have app and boot, but our json tells us we have all 3, make the app's starting
+       //Location equal to the combined instead
+
+       //If we want an app flash, there is no upgrader on the motor, and the app is in the 3rd index of the flash types of the json
+       if((type_flash_requested_ == "app") && !upgrade_present_ && (app_index_ == 3)){
+            startingMemoryLocation = metadata_handler_->GetStartingMemoryFromType("upgrade");
+       }else{
+            startingMemoryLocation = metadata_handler_->GetStartingMemoryFromType(type_flash_requested_);
+       }
 
     }
 

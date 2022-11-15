@@ -80,6 +80,12 @@ class Firmware : public QObject {
 
   MetadataHandler * metadata_handler_;
   bool using_metadata_ = false;
+  //The app index can change depending on what's in the json
+  int app_index_;
+
+  bool boot_present_;
+  bool upgrade_present_;
+  bool app_present_;
 
  signals:
 

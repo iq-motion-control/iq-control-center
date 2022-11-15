@@ -195,6 +195,7 @@ QString MetadataHandler::GetExtractPath(){
 }
 
 uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
+
     for(int i = 0; i < allowed_flashing_size_; i++){
         if(flash_types_[i]->GetType() == type){
             uint32_t flashStart = flash_types_[i]->GetStart().toUInt(nullptr, 16);
