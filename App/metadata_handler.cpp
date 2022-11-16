@@ -224,6 +224,7 @@ void MetadataHandler::Reset(Ui::MainWindow * mainWindow){
     DeleteExtractedFolder();
     extract_path_ = "";
     mainWindow->flash_progress_bar->reset();
+    mainWindow->recovery_progress->reset();
     mainWindow->flash_boot_button->setVisible(false);
     mainWindow->flash_app_button->setVisible(false);
     mainWindow->flash_button->setVisible(false);

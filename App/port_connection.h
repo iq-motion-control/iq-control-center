@@ -220,6 +220,12 @@ class PortConnection : public QObject {
   void LostConnection();
 
  private:
+  void DisplayRecoveryMessage();
+  void DisplayInvalidFirmwareMessage();
+  void GetDeviceInformationResponses();
+  int GetFirmwareValid();
+  void GetBootAndUpgradeInformation();
+
   Ui::MainWindow *ui_;
 
   std::string clients_folder_path_ = ":/IQ_api/clients/";
@@ -236,6 +242,7 @@ class PortConnection : public QObject {
   QSerialInterface *ser_;
 
   uint8_t obj_id_;
+  int firmware_value_;
   int firmware_style_;
   int hardware_type_;
   int electronics_type_;

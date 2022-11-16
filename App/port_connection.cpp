@@ -65,31 +65,7 @@ void PortConnection::ConnectMotor() {
 
       connection_state_ = 0;
 
-      uint32_t firmware_value = 0;
-      uint32_t hardware_value = 0;
-      uint8_t applications_on_motor = 0;
       int firmware_valid = 0;
-      int hardware_type = 1;
-      int firmware_style = 1;
-      int electronics_value = 1;
-      int electronics_type = 1;
-      int bootloader_value = 0;
-      int upgrade_value = 0;
-
-      //Update the firmware build number to work with Major, Minor, Patch
-      int firmware_build_major = 0;
-      int firmware_build_minor = 0;
-      int firmware_build_patch = 0;
-
-      //Upgrade version has style, major, minor, patch (style is what kind of upgrade)
-      int upgrade_major = 0;
-      int upgrade_minor = 0;
-      int upgrade_patch = 0;
-
-      //Bootloader version
-      int boot_major = 0;
-      int boot_minor = 0;
-      int boot_patch = 0;
 
       ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
@@ -101,126 +77,30 @@ void PortConnection::ConnectMotor() {
 
         //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
         if(CheckIfInBootLoader()){
-            recovery_port_name_ = selected_port_name_;
-            ser_->ser_port_->close();
-            QMessageBox msgBox;
-            msgBox.setWindowTitle("Recovery Mode Recognized");
-            msgBox.setText(
-                "It appears that your motor is currently in recovery mode.\n"
-                "Would you like to recover your motor now?");
-            msgBox.setStandardButtons(QMessageBox::Yes);
-            msgBox.addButton(QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::No);
-            if (msgBox.exec() == QMessageBox::Yes) {
-              ui_->stackedWidget->setCurrentIndex(6);
-            }
-
-            throw QString("Recovery Detected");
+            DisplayRecoveryMessage();
         }
 
-        if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
-            throw QString(
-            "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
-        }
+        //Get firmware and hardware information
+        GetDeviceInformationResponses();
 
-        emit ObjIdFound();
-
-        // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
-        if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
-                          hardware_value)) {
-          if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
-                             firmware_value))
-              if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
-                                electronics_value))
-
-                        throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
-
-          //Firmware value holds the raw 32 bits of firmware information
-          //This information comes from the Product ID Convention sheet
-          hardware_type = (hardware_value >> 16);
-          firmware_style = (firmware_value >> 20);
-          electronics_type = electronics_value >> 16;
-
-          firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
-          firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
-          firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
-          //Create a string in the 'x.x.x' format
-          QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
-          ui_->label_firmware_build_value->setText(firmware_build_number_string);
-
-          //Check to see if the firmware is valid
-          if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
-                            firmware_valid))
-            throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
-        }
-
-        firmware_style_ = firmware_style;
-        hardware_type_ = hardware_type;
-        electronics_type_ = electronics_type;
-
-
+        //Check if the firmware is valid
+        firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
         QString message = "Motor connected Successfully";
         ui_->header_error_label->setText(message);
 
         if(!firmware_valid){
-          QMessageBox msgBox;
-          msgBox.setWindowTitle("WARNING!");
-          msgBox.setText(
-              "Invalid Firmware has been loaded onto the Connected IQ Module\n\n"
-              "Please Flash valid Firmware to avoid damage such as fires or explosions"
-              " to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
-          msgBox.setStandardButtons(QMessageBox::Ok);
-          msgBox.setDefaultButton(QMessageBox::Ok);
-          msgBox.exec();
+            DisplayInvalidFirmwareMessage();
         }
 
-        //If we have valid firmware, check what applications are on the motor to use later with populating flash buttons
-        //If you don't get a response, this motor doesn't know how to deal with this entry. Give back 0
-        if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "apps_present", 5, 0.05f,
-                          applications_on_motor)){
-            applications_present_on_motor_ = 0;
-        }else{
-            applications_present_on_motor_ = applications_on_motor;
-        }
-
-        //Grab the bootloader and upgrade versions if they exist
-        GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_value);
-        GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
-
-        //Parse out the important data
-        boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
-        boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
-        boot_patch = bootloader_value & BOOT_PATCH_MASK;
-
-        upgrade_major = (upgrade_value & UPGRADE_MAJOR_MASK) >> UPGRADE_MAJOR_SHIFT;
-        upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
-        upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
-
-        bootloader_version_ = bootloader_value;
-
-        //If we have a bootloader label its version, otherwise put N/A
-        QString bootloader_version_string = "";
-        if(bootloader_value != 0){
-            bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
-        }else{
-            bootloader_version_string = "N/A";
-        }
-        ui_->label_bootloader_value->setText(bootloader_version_string);
-
-        //If we have an upgrader label its version, otherwise put N/A
-        QString upgrade_version_string = "";
-        if(upgrade_value != 0){
-            upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
-        }else{
-            upgrade_version_string = "N/A";
-        }
-        ui_->label_upgrader_value->setText(upgrade_version_string);
+        //Get information about what firmware is on the motor
+        GetBootAndUpgradeInformation();
 
         //Send out the hardware and firmware values to other modules of Control Center
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value);
+        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
         emit FindSavedValues();
+
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
         delete ser_->ser_port_;
@@ -237,6 +117,162 @@ void PortConnection::ConnectMotor() {
     emit LostConnection();
   }
 }
+
+void PortConnection::DisplayRecoveryMessage(){
+    recovery_port_name_ = selected_port_name_;
+    ser_->ser_port_->close();
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Recovery Mode Recognized");
+    msgBox.setText(
+        "It appears that your motor is currently in recovery mode.\n"
+        "Would you like to recover your motor now?");
+    msgBox.setStandardButtons(QMessageBox::Yes);
+    msgBox.addButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    if (msgBox.exec() == QMessageBox::Yes) {
+      ui_->stackedWidget->setCurrentIndex(6);
+    }
+
+    throw QString("Recovery Detected");
+}
+
+void PortConnection::GetDeviceInformationResponses(){
+    uint32_t hardware_value = 0;
+    uint32_t firmware_value = 0;
+    int electronics_value = 1;
+
+    int hardware_type = 1;
+    int firmware_style = 1;
+    int electronics_type = 1;
+
+    //Update the firmware build number to work with Major, Minor, Patch
+    int firmware_build_major = 0;
+    int firmware_build_minor = 0;
+    int firmware_build_patch = 0;
+
+    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
+        throw QString(
+        "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
+    }
+
+    emit ObjIdFound();
+
+    // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
+    if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
+                      hardware_value)){
+      if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
+                         firmware_value)){
+          if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+                            electronics_value)){
+
+                    throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
+            }
+        }
+     }
+
+    //Firmware value holds the raw 32 bits of firmware information
+    //This information comes from the Product ID Convention sheet
+    hardware_type = (hardware_value >> 16);
+    firmware_style = (firmware_value >> 20);
+    electronics_type = electronics_value >> 16;
+
+    firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
+    firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
+    firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
+
+    //Create a string in the 'x.x.x' format
+    QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
+    ui_->label_firmware_build_value->setText(firmware_build_number_string);
+
+    firmware_value_ = firmware_value;
+    firmware_style_ = firmware_style;
+    hardware_type_ = hardware_type;
+    electronics_type_ = electronics_type;
+}
+
+int PortConnection::GetFirmwareValid(){
+    int firmware_valid;
+    //Check to see if the firmware is valid
+    if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
+                      firmware_valid)){
+      throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
+    }
+
+    return firmware_valid;
+}
+
+void PortConnection::GetBootAndUpgradeInformation(){
+
+    uint8_t applications_on_motor = 0;
+
+    //Upgrade version has style, major, minor, patch (style is what kind of upgrade)
+    int upgrade_value = 0;
+    int upgrade_major = 0;
+    int upgrade_minor = 0;
+    int upgrade_patch = 0;
+
+    //Bootloader version
+    int bootloader_value = 0;
+    int boot_major = 0;
+    int boot_minor = 0;
+    int boot_patch = 0;
+
+    //If we have valid firmware, check what applications are on the motor to use later with populating flash buttons
+    //If you don't get a response, this motor doesn't know how to deal with this entry. Give back 0
+    if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "apps_present", 5, 0.05f,
+                      applications_on_motor)){
+        applications_present_on_motor_ = 0;
+    }else{
+        applications_present_on_motor_ = applications_on_motor;
+    }
+
+    //Grab the bootloader and upgrade versions if they exist
+    GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_value);
+    GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
+
+    //Parse out the important data
+    boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
+    boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
+    boot_patch = bootloader_value & BOOT_PATCH_MASK;
+
+    upgrade_major = (upgrade_value & UPGRADE_MAJOR_MASK) >> UPGRADE_MAJOR_SHIFT;
+    upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
+    upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
+
+    bootloader_version_ = bootloader_value;
+
+    //If we have a bootloader label its version, otherwise put N/A
+    QString bootloader_version_string = "";
+    if(bootloader_value != 0){
+        bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
+    }else{
+        bootloader_version_string = "N/A";
+    }
+    ui_->label_bootloader_value->setText(bootloader_version_string);
+
+    //If we have an upgrader label its version, otherwise put N/A
+    QString upgrade_version_string = "";
+    if(upgrade_value != 0){
+        upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
+    }else{
+        upgrade_version_string = "N/A";
+    }
+    ui_->label_upgrader_value->setText(upgrade_version_string);
+}
+
+void PortConnection::DisplayInvalidFirmwareMessage(){
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("WARNING!");
+    msgBox.setText(
+        "Invalid Firmware has been loaded onto the Connected IQ Module\n\n"
+        "Please Flash valid Firmware to avoid damage such as fires or explosions"
+        " to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.exec();
+}
+
+
 
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
