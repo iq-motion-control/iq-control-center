@@ -79,6 +79,7 @@ class Firmware : public QObject {
   void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
+  QString GetHardwareNameFromResources();
 
   MetadataHandler * metadata_handler_;
   bool using_metadata_ = false;

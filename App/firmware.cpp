@@ -268,15 +268,7 @@ bool Firmware::FlashHardwareElectronicsWarning(){
     //A wrong value could be a mismatched Kv or incorrect motor type
     if(!(metadata_handler_->CheckHardwareAndElectronics())){
 
-        //We have access to the Port Connection's electronics type and hardware type, but we do not have access to
-        //the tab_populator's version of the resource files. So, we need to grab them ourself
-        QString current_path = QCoreApplication::applicationDirPath();
-        QString hardware_type_file_path =
-            current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
-        //Get the hardware type name from the resource files
-        //This is the type of motor people should download for
-        //Hardware name is something like "vertiq 8108 150Kv"
-        QString hardwareName = metadata_handler_->ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+        QString hardwareName = GetHardwareNameFromResources();
 
         //Determine which thing they have wrong
         QString errorType;
@@ -299,6 +291,20 @@ bool Firmware::FlashHardwareElectronicsWarning(){
     }
 
     return false;
+}
+
+QString Firmware::GetHardwareNameFromResources(){
+    //We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+    //the tab_populator's version of the resource files. So, we need to grab them ourself
+    QString current_path = QCoreApplication::applicationDirPath();
+    QString hardware_type_file_path =
+        current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
+    //Get the hardware type name from the resource files
+    //This is the type of motor people should download for
+    //Hardware name is something like "vertiq 8108 150Kv"
+    QString hardwareName = metadata_handler_->ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+
+    return hardwareName;
 }
 
 void Firmware::FlashCombinedClicked(){
