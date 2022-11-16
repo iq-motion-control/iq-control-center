@@ -77,6 +77,8 @@ class Firmware : public QObject {
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning();
   void UpdateFlashButtons();
+  void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
+  void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
 
   MetadataHandler * metadata_handler_;
   bool using_metadata_ = false;
