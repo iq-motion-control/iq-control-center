@@ -131,7 +131,7 @@ void Firmware::SelectFirmwareClicked() {
     if(iv.pcon->GetConnectionState() != false || currentTab == RECOVERY_TAB){
         iv.label_message->clear();
         QFileDialog dialog;
-        dialog.setFileMode(QFileDialog::AnyFile);
+        dialog.setFileMode(QFileDialog::ExistingFile);
 
         QPushButton * buttonInUse;
 
