@@ -223,8 +223,11 @@ uint16_t MetadataHandler::GetBootloaderVersion(){
 void MetadataHandler::Reset(Ui::MainWindow * mainWindow){
     DeleteExtractedFolder();
     extract_path_ = "";
+    mainWindow->flash_progress_bar->reset();
     mainWindow->flash_boot_button->setVisible(false);
     mainWindow->flash_app_button->setVisible(false);
     mainWindow->flash_button->setVisible(false);
     mainWindow->flash_upgrade_button->setVisible(false);
+    mainWindow->select_firmware_binary_button->setText("Select Firmware (\".bin\") or (\".zip\")");
+    mainWindow->select_recovery_bin_button->setText("Select Firmware (\".bin\") or (\".zip\")");
 }
