@@ -167,7 +167,7 @@ void MainWindow::on_pushButton_advanced_clicked() {
   if (msgBox.exec() == QMessageBox::Yes) {
     ui->stackedWidget->setCurrentIndex(5);
   }else{
-      ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->setCurrentIndex(0);
   }
 }
 
