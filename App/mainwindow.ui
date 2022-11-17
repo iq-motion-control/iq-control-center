@@ -1208,7 +1208,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -2097,93 +2097,9 @@ QComboBox:on, QComboBox:off {
       <widget class="QWidget" name="page_firmware">
        <property name="palette">
         <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
+         <active/>
+         <inactive/>
+         <disabled/>
         </palette>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -2275,9 +2191,10 @@ hr { height: 1px; border-width: 0; }
               <bool>false</bool>
              </property>
              <property name="styleSheet">
-              <string notr="true">QProgressBar{background-color:rgb(0,0,0);text-align: right;margin-right: 2em;}
+              <string notr="true">QProgressBar{color:rgb(175,175,175);text-align: right;margin-right: 2em;}
 
 QProgressBar::chunk {background: rgb(1, 150, 250);width: 3px;margin:1;};
+
 </string>
              </property>
              <property name="maximum">
@@ -2882,7 +2799,7 @@ QPushButton:pressed {
              <property name="styleSheet">
               <string notr="true">QProgressBar{color:rgb(175,175,175);text-align: right;margin-right: 2em;}
 
-QProgressBar::chunk {background: rgb(1, 150, 250);width: 10px;margin:1;};
+QProgressBar::chunk {background: rgb(1, 150, 250);width: 3px;margin:1;};
 
 </string>
              </property>

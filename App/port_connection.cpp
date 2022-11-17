@@ -130,6 +130,8 @@ void PortConnection::DisplayRecoveryMessage(){
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     if (msgBox.exec() == QMessageBox::Yes) {
+      ui_->pushButton_firmware->setChecked(false);
+      ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(6);
     }
 

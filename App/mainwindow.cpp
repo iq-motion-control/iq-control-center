@@ -168,6 +168,8 @@ void MainWindow::on_pushButton_advanced_clicked() {
     ui->stackedWidget->setCurrentIndex(5);
   }else{
     ui->stackedWidget->setCurrentIndex(0);
+    ui->pushButton_advanced->setChecked(false);
+    ui->pushButton_home->setChecked(true);
   }
 }
 
