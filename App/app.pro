@@ -149,10 +149,25 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-CMAKE_CXXFLAGS += -std=gnu++14
-INCLUDEPATH += "C:\Users\jorda\Documents\ZipPack\include"
-LIBS += -L"C:\Users\jorda\Documents\ZipPack\lib"
-LIBS += -lquazip -lz
+#if using the 32 bit kit use the 32 bit quazip build
+#if using the 64 bit kit use the 64 bit quazip build
+CONFIG("win32-g++"){
+    CMAKE_CXXFLAGS += -std=gnu++14
+
+    #if 32 bit build
+    contains(QT_ARCH, i386){
+        INCLUDEPATH += "C:\Users\jorda\Documents\ZipPack\include"
+        LIBS += -L"C:\Users\jorda\Documents\ZipPack\lib"
+    }
+    ##64 bit build
+    else{
+        INCLUDEPATH += "C:\ZipPack_64bit\include"
+        LIBS += -L"C:\ZipPack_64bit\lib"
+    }
+
+
+    LIBS += -lquazip -lz
+}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
