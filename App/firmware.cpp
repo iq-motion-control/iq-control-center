@@ -73,7 +73,8 @@ void Firmware::UpdateFlashButtons(){
     //Boot should only appear if there is a boot already there to upgrade
     bool displayBoot = flashTypes.contains("boot") && binTypes.contains("boot.bin") && boot_present_;
 
-    //Always unless there is a serious problem with our release
+    //Always unless there is a serious problem with our release, or we decide that we want to release separate binaries in differenet zips
+    //This system gives us the flexability to release whatever we want in the zip as long as it has a json to go along with it
     bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
 
     /**
