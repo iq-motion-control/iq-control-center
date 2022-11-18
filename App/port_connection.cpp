@@ -112,10 +112,20 @@ void PortConnection::ConnectMotor() {
       SetPortConnection(0);
     }
   } else if (connection_state_ == 1) {
+    ClearFirmwareChoices();
     delete ser_->ser_port_;
     SetPortConnection(0);
     emit LostConnection();
   }
+}
+
+void PortConnection::ClearFirmwareChoices(){
+    ui_->flash_boot_button->setVisible(false);
+    ui_->flash_app_button->setVisible(false);
+    ui_->flash_button->setVisible(false);
+    ui_->flash_upgrade_button->setVisible(false);
+    ui_->select_firmware_binary_button->setText("Select Firmware (\".bin\") or (\".zip\")");
+    ui_->select_recovery_bin_button->setText("Select Firmware (\".bin\") or (\".zip\")");
 }
 
 void PortConnection::DisplayRecoveryMessage(){

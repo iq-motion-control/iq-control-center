@@ -158,7 +158,7 @@ void MainWindow::on_pushButton_advanced_clicked() {
   QMessageBox msgBox;
   msgBox.setWindowTitle("WARNING!");
   msgBox.setText(
-      "Changing settings in the Advanced tab could compromise the safety features IQ has put in "
+      "Changing settings in the Advanced tab could compromise the safety features that Vertiq has put in "
       "place. Please use extreme caution.\n\nI understand that changing settings in this tab could "
       "result in the damage or destruction of my motor.");
   msgBox.setStandardButtons(QMessageBox::Yes);

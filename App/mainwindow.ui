@@ -1208,7 +1208,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1447,8 +1447,8 @@ QScrollBar::handle:vertical {
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! Vertiq created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals for more detailed instructions. Those can be found at https://www.vertiq.co/support.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;docs-internal-guid-7ed3529b-7fff-41c2-a12f-6fcef6f42a04&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;W&lt;/span&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;elcome! Vertiq created this interface to allow users to change module settings and perform basic tests. Below are instructions on how to connect your module and change settings. Please see the instruction manual, datasheets, and programming manuals found at &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;https://www.vertiq.co/support for more detailed instructions.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Lato'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Connect Your Module:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -1462,7 +1462,7 @@ hr { height: 1px; border-width: 0; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 5: In the top bar, select the correct port (check your device manager)&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button&lt;/span&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt;&quot;&gt;Step 6: Click the &amp;quot;Connect&amp;quot; button. You should see a message stating, &amp;quot;Motor connected Successfully&amp;quot; in the top bar as well as information about your motor in the Information box &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -2097,9 +2097,93 @@ QComboBox:on, QComboBox:off {
       <widget class="QWidget" name="page_firmware">
        <property name="palette">
         <palette>
-         <active/>
-         <inactive/>
-         <disabled/>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+          <colorrole role="Window">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>80</red>
+             <green>80</green>
+             <blue>80</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
         </palette>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
@@ -2119,9 +2203,93 @@ QComboBox:on, QComboBox:off {
          <widget class="QWidget" name="firmware_widget" native="true">
           <property name="palette">
            <palette>
-            <active/>
-            <inactive/>
-            <disabled/>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
            </palette>
           </property>
           <layout class="QGridLayout" name="gridLayout_12">
@@ -2150,17 +2318,17 @@ QComboBox:on, QComboBox:off {
 p, li { white-space: pre-wrap; }
 hr { height: 1px; border-width: 0; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lato'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware on the module, please follow the instructions below. Visit our instruction manual for more detailed instructions at https://www.vertiq.co/support.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf; background-color:transparent;&quot;&gt;To flash new firmware onto your module, please follow the instructions below. Visit our instruction manual for more detailed instructions at https://www.vertiq.co/support.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download the firmware archive (&amp;quot;.zip&amp;quot;) for your device from the Vertiq website.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download the firmware archive (&amp;quot;.zip&amp;quot;) for your device from the Vertiq website, https://vertiq.co.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware archive (&amp;quot;.zip&amp;quot;). You may also provide a binary (&amp;quot;.bin&amp;quot;) file, but this is not recommended, and is very dangerous. Your file's path should appear inside of the button.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 3: Connect your module to the GUI&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 4: You will see up to four options for flashing your motor: Flash Combined, Flash Boot (flash the proprietary bootloader), Flash Upgrade (flash the proprietary DroneCAN upgrade section), and Flash App (flash the main application that runs the motor). Only firmware that is safe to flash will appear. Combined includes the boot, upgrade (if applicable), and application sections. Select your choice. Your motor will disconnect.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 4: You will see up to four options for flashing your motor: Flash Combined, Flash Boot (flash the proprietary bootloader), Flash Upgrade (flash the proprietary DroneCAN upgrade section), and Flash App (flash the main application that runs the motor). Only firmware that is safe to flash will appear if you are using an archive supplied by Vertiq. Combined includes the boot, upgrade (if applicable), and application sections. Select your choice. Your motor will disconnect.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;***** Note: If you are unsure what to flash, please only use the Flash Combined option *****&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;

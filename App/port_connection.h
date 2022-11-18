@@ -225,6 +225,7 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+  void ClearFirmwareChoices();
 
   Ui::MainWindow *ui_;
 
