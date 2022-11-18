@@ -209,6 +209,8 @@ class PortConnection : public QObject {
 
   void BaudrateComboBoxIndexChanged(int index);
 
+  void ClearFirmwareChoices();
+
  signals:
 
   void ObjIdFound();
@@ -225,7 +227,6 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
-  void ClearFirmwareChoices();
 
   Ui::MainWindow *ui_;
 
