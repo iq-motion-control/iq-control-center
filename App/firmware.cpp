@@ -178,8 +178,6 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     //extract the archive, then we can treat it normally as a folder
     metadata_handler_->ExtractMetadata(firmware_bin_path_);
 
-    //This displays the full path to the folder. Might need to do some work to get it to
-    //Match what info.fileName does now
     //Set the button text to the folder that the user put in
     buttonInUse->setText(firmware_bin_path_);
 
