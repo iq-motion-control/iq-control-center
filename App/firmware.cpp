@@ -294,7 +294,6 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
 QString Firmware::GetHardwareNameFromResources(){
 
-
     /**
      * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
      * the tab_populator's version of the resource files. So, we need to grab them ourself
