@@ -156,15 +156,14 @@ CONFIG("win32-g++"){
 
     #if 32 bit build
     contains(QT_ARCH, i386){
-        INCLUDEPATH += "C:\Users\jorda\Documents\ZipPack\include"
-        LIBS += -L"C:\Users\jorda\Documents\ZipPack\lib"
+        INCLUDEPATH += "ZipPack/include"
+        LIBS += -L"ZipPack/lib"
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:\ZipPack_64bit\include"
-        LIBS += -L"C:\ZipPack_64bit\lib"
+        INCLUDEPATH += "ZipPack_64bit/include"
+        LIBS += -L"ZipPack_64bit/lib"
     }
-
 
     LIBS += -lquazip -lz
 }
