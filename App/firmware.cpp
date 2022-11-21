@@ -221,10 +221,10 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     QMessageBox msgBox;
     msgBox.setWindowTitle("WARNING!");
     msgBox.setText(
-        "Flashing raw binary files is very dangerous. If you flash firmware "
+        "As flashing raw binaries can be dangerous, we strongly advise using a provided archive if available. If you flash firmware "
         "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
-        "you risk seriously damaging or breaking your motor. "
-        "Continue at your own risk.\nAre you positive you wish to continue?");
+        "you risk seriously damaging or breaking your motor."
+        "\nAre you sure you would like to continue?");
 
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);

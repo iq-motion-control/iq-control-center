@@ -286,8 +286,6 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
     msgBox.exec();
 }
 
-
-
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
     uint8_t obj_id;
