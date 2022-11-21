@@ -131,13 +131,13 @@ public:
      * @brief GetUpgradeVersion Returns the version of the upgrader in the zip
      * @return the raw version value
      */
-    uint16_t GetUpgradeVersion();
+    uint32_t GetUpgradeVersion();
 
     /**
      * @brief GetBootloaderVersion Returns the raw value of the version of the bootloader in the zip
      * @return the raw version value
      */
-    uint16_t GetBootloaderVersion();
+    uint32_t GetBootloaderVersion();
 
 private:
 

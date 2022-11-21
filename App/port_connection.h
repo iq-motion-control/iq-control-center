@@ -43,19 +43,21 @@
 #define MAJOR_VERSION_SHIFT 14
 #define MINOR_VERSION_SHIFT 7
 
-#define BOOT_MAJOR_MASK 0xf800
-#define BOOT_MINOR_MASK 0x07C0
-#define BOOT_PATCH_MASK 0x003f
+#define BOOT_MAJOR_MASK 0xffC00000
+#define BOOT_MINOR_MASK 0x003ff000
+#define BOOT_PATCH_MASK 0x00000fff
 
-#define BOOT_MAJOR_SHIFT 11
-#define BOOT_MINOR_SHIFT 6
+#define BOOT_MAJOR_SHIFT 22
+#define BOOT_MINOR_SHIFT 12
 
-#define UPGRADE_MAJOR_MASK 0xf800
-#define UPGRADE_MINOR_MASK 0x07C0
-#define UPGRADE_PATCH_MASK 0x003f
+#define UPGRADE_STYLE_MASK 0xfff00000
+#define UPGRADE_MAJOR_MASK 0x000fC000
+#define UPGRADE_MINOR_MASK 0x00003f80
+#define UPGRADE_PATCH_MASK 0x0000007f
 
-#define UPGRADE_MAJOR_SHIFT 11
-#define UPGRADE_MINOR_SHIFT 6
+#define UPGRADE_STYLE_SHIFT 20
+#define UPGRADE_MAJOR_SHIFT 14
+#define UPGRADE_MINOR_SHIFT 7
 
 class PortConnection : public QObject {
   Q_OBJECT
@@ -152,13 +154,23 @@ class PortConnection : public QObject {
    * @brief SaveNewBootloaderVersion Sends a command to the motor to save the bootloader version being flashed
    * @param newVersion the raw value of the bootloader version
    */
-  void SaveNewBootloaderVersion(uint16_t newVersion);
+  void SaveNewBootloaderVersion(uint32_t newVersion);
 
   /**
    * @brief SaveNewUpgraderVersion Sends a command to the motor to save the upgrader version being flashed
    * @param newVersion the raw value of the upgrader version
    */
-  void SaveNewUpgraderVersion(uint16_t newVersion);
+  void SaveNewUpgraderVersion(uint32_t newVersion);
+
+  /**
+   * @brief ResetBootVersionKey Tells the motor whether or not to used the stored boot value
+   */
+  void ResetBootVersionKey();
+
+  /**
+   * @brief ResetUpgradeVersionKey Tells the motor whether or not to use the stored upgrader value
+   */
+  void ResetUpgradeVersionKey();
 
   /**
    * @brief GetAppsPresent Returns 3 bits stored at the bottom of this byte that indicate which sections are on the motor

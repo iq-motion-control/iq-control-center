@@ -100,7 +100,8 @@ void Firmware::UpdateFlashButtons(){
         QString upgradeMajor = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetMajor());
         QString upgradeMinor = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetMinor());
         QString upgradePatch = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetPatch());
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
+        QString upgradeStyle = QString::number(metadata_handler_->GetTypesArray(UPGRADE_INDEX)->GetStyle());
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
 
     if(displayBoot){
@@ -325,7 +326,6 @@ void Firmware::FlashCombinedClicked(){
 
 void Firmware::FlashBootClicked() {
     type_flash_requested_= "boot";
-
     //Save the new boot version to the motor
     iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
     FlashClicked();
@@ -338,7 +338,6 @@ void Firmware::FlashAppClicked(){
 
 void Firmware::FlashUpgradeClicked() {
     type_flash_requested_= "upgrade";
-
     iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
     FlashClicked();
 }

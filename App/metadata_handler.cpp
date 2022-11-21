@@ -143,7 +143,8 @@ void MetadataHandler::ReadMetadata(){
         QJsonObject obj(allowedFlashingArray.at(i).toObject());
         flash_types_[i] = new FlashType(obj.value("type").toString(), obj.value("start").toString(),
                                         obj.value("length").toInt(), obj.value("major").toInt(),
-                                        obj.value("minor").toInt(), obj.value("patch").toInt());
+                                        obj.value("minor").toInt(), obj.value("patch").toInt(),
+                                        obj.value("style").toInt());
     }
 
     //Third entry is firmware style
@@ -204,20 +205,22 @@ uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
     return 0;
 }
 
-uint16_t MetadataHandler::GetUpgradeVersion(){
+uint32_t MetadataHandler::GetUpgradeVersion(){
     //We are flashing a new bootloader so tell the motor that it should update its value
-    uint16_t upgradeMajor = GetTypesArray(UPGRADE_INDEX)->GetMajor();
-    uint16_t upgradeMinor = GetTypesArray(UPGRADE_INDEX)->GetMinor();
-    uint16_t upgradePatch = GetTypesArray(UPGRADE_INDEX)->GetPatch();
-    return ((upgradeMajor & 0x1f) << 11) | ((upgradeMinor & 0x1f) << 6) | ((upgradePatch & 0x3f));
+    uint32_t upgradeMajor = GetTypesArray(UPGRADE_INDEX)->GetMajor();
+    uint32_t upgradeMinor = GetTypesArray(UPGRADE_INDEX)->GetMinor();
+    uint32_t upgradePatch = GetTypesArray(UPGRADE_INDEX)->GetPatch();
+    uint32_t upgradeStyle = GetTypesArray(UPGRADE_INDEX)->GetPatch();
+
+    return (((upgradeStyle & 0xfff) << 20) | (upgradeMajor & 0x3f) << 14) | ((upgradeMinor & 0x7f) << 7) | ((upgradePatch & 0x7f));
 }
 
-uint16_t MetadataHandler::GetBootloaderVersion(){
+uint32_t MetadataHandler::GetBootloaderVersion(){
     //We are flashing a new bootloader so tell the motor that it should update its value
-    uint16_t bootMajor = GetTypesArray(BOOT_INDEX)->GetMajor();
-    uint16_t bootMinor = GetTypesArray(BOOT_INDEX)->GetMinor();
-    uint16_t bootPatch = GetTypesArray(BOOT_INDEX)->GetPatch();
-    return ((bootMajor & 0x1f) << 11) | ((bootMinor & 0x1f) << 6) | ((bootPatch & 0x3f));
+    uint32_t bootMajor = GetTypesArray(BOOT_INDEX)->GetMajor();
+    uint32_t bootMinor = GetTypesArray(BOOT_INDEX)->GetMinor();
+    uint32_t bootPatch = GetTypesArray(BOOT_INDEX)->GetPatch();
+    return ((((bootMajor & 0x3ff) << 22) | (bootMinor & 0x3ff) << 12) | (bootPatch & 0xfff));
 }
 
 void MetadataHandler::Reset(Ui::MainWindow * mainWindow){

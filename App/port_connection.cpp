@@ -219,6 +219,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //Upgrade version has style, major, minor, patch (style is what kind of upgrade)
     int upgrade_value = 0;
+    int upgrade_style = 0;
     int upgrade_major = 0;
     int upgrade_minor = 0;
     int upgrade_patch = 0;
@@ -247,6 +248,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
     boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
     boot_patch = bootloader_value & BOOT_PATCH_MASK;
 
+    upgrade_style = (upgrade_value & UPGRADE_STYLE_MASK) >> UPGRADE_STYLE_SHIFT;
     upgrade_major = (upgrade_value & UPGRADE_MAJOR_MASK) >> UPGRADE_MAJOR_SHIFT;
     upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
     upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
@@ -265,7 +267,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
     if(upgrade_value != 0){
-        upgrade_version_string = QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
+        upgrade_version_string = QString::number(upgrade_style) + "." + QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
     }else{
         upgrade_version_string = "N/A";
     }
@@ -341,12 +343,12 @@ void PortConnection::FindBaudrates() {
   selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
 }
 
-void PortConnection::SaveNewBootloaderVersion(uint16_t newVersion){
+void PortConnection::SaveNewBootloaderVersion(uint32_t newVersion){
     int val = newVersion;
     SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, val);
 }
 
-void PortConnection::SaveNewUpgraderVersion(uint16_t newVersion){
+void PortConnection::SaveNewUpgraderVersion(uint32_t newVersion){
     int val = newVersion;
     SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, val);
 }
