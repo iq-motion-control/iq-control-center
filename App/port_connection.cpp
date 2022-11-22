@@ -278,9 +278,9 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
     QMessageBox msgBox;
     msgBox.setWindowTitle("WARNING!");
     msgBox.setText(
-        "Invalid Firmware has been loaded onto the Connected IQ Module\n\n"
-        "Please Flash valid Firmware to avoid damage such as fires or explosions"
-        " to the IQ Module. \n\nValid Firmware can be found at www.iq-control.com/support");
+        "Invalid firmware has been loaded onto the connected IQ Module\n\n"
+        "Please flash valid firmware to avoid damage (such as fires or explosions)"
+        " to the IQ Module. \n\nValid Firmware can be found at www.vertiq.co/support");
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.exec();
