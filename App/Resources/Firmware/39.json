@@ -1,0 +1,20 @@
+[
+  {
+    "hardware_name": "Vertiq 8108 245kv"
+  },
+  {
+    "style": 1,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 5,
+    "name": "vertiq_8108_speed"
+  },
+  {
+    "style": 2,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 2,
+    "name": "vertiq_8108_servo"
+  }
+  
+]
