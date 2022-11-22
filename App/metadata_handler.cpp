@@ -210,7 +210,7 @@ uint32_t MetadataHandler::GetUpgradeVersion(){
     uint32_t upgradeMajor = GetTypesArray(UPGRADE_INDEX)->GetMajor();
     uint32_t upgradeMinor = GetTypesArray(UPGRADE_INDEX)->GetMinor();
     uint32_t upgradePatch = GetTypesArray(UPGRADE_INDEX)->GetPatch();
-    uint32_t upgradeStyle = GetTypesArray(UPGRADE_INDEX)->GetPatch();
+    uint32_t upgradeStyle = GetTypesArray(UPGRADE_INDEX)->GetStyle();
 
     return (((upgradeStyle & 0xfff) << 20) | (upgradeMajor & 0x3f) << 14) | ((upgradeMinor & 0x7f) << 7) | ((upgradePatch & 0x7f));
 }
