@@ -217,10 +217,11 @@ uint32_t MetadataHandler::GetUpgradeVersion(){
 
 uint32_t MetadataHandler::GetBootloaderVersion(){
     //We are flashing a new bootloader so tell the motor that it should update its value
+    uint32_t bootStyle = GetTypesArray(BOOT_INDEX)->GetStyle();
     uint32_t bootMajor = GetTypesArray(BOOT_INDEX)->GetMajor();
     uint32_t bootMinor = GetTypesArray(BOOT_INDEX)->GetMinor();
     uint32_t bootPatch = GetTypesArray(BOOT_INDEX)->GetPatch();
-    return ((((bootMajor & 0x3ff) << 22) | (bootMinor & 0x3ff) << 12) | (bootPatch & 0xfff));
+    return (((bootStyle & 0xfff) << 20) | ((bootMajor & 0x7f) << 14) |((bootMinor & 0x7f) << 7) | bootPatch);
 }
 
 void MetadataHandler::Reset(Ui::MainWindow * mainWindow){

@@ -106,10 +106,11 @@ void Firmware::UpdateFlashButtons(){
 
     if(displayBoot){
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+        QString bootStyle = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetStyle());
         QString bootMajor = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetMajor());
         QString bootMinor = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetMinor());
         QString bootPatch = QString::number(metadata_handler_->GetTypesArray(BOOT_INDEX)->GetPatch());
-        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootMajor + "." + bootMinor + "." + bootPatch);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
     }
 
     if(displayCombined){

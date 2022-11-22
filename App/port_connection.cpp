@@ -226,6 +226,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //Bootloader version
     int bootloader_value = 0;
+    int boot_style = 0;
     int boot_major = 0;
     int boot_minor = 0;
     int boot_patch = 0;
@@ -244,6 +245,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
     GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
 
     //Parse out the important data
+    boot_style = (bootloader_value & BOOT_STYLE_MASK) >> BOOT_STYLE_SHIFT;
     boot_major = (bootloader_value & BOOT_MAJOR_MASK) >> BOOT_MAJOR_SHIFT;
     boot_minor = (bootloader_value & BOOT_MINOR_MASK) >> BOOT_MINOR_SHIFT;
     boot_patch = bootloader_value & BOOT_PATCH_MASK;
@@ -258,7 +260,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
     //If we have a bootloader label its version, otherwise put N/A
     QString bootloader_version_string = "";
     if(bootloader_value != 0){
-        bootloader_version_string = QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
+        bootloader_version_string = QString::number(boot_style) + "." + QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
     }else{
         bootloader_version_string = "N/A";
     }
