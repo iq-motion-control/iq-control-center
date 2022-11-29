@@ -315,20 +315,12 @@ QString Firmware::GetHardwareNameFromResources(){
 }
 
 void Firmware::FlashCombinedClicked(){
-    int curTab = iv.pcon->GetCurrentTab();
     type_flash_requested_ = "combined";
-    //Recovery tab has no idea how to save something
-    if(using_metadata_ && curTab != RECOVERY_TAB){
-        iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
-        iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
-    }
     FlashClicked();
 }
 
 void Firmware::FlashBootClicked() {
     type_flash_requested_= "boot";
-    //Save the new boot version to the motor
-    iv.pcon->SaveNewBootloaderVersion(metadata_handler_->GetBootloaderVersion());
     FlashClicked();
 }
 
@@ -339,7 +331,6 @@ void Firmware::FlashAppClicked(){
 
 void Firmware::FlashUpgradeClicked() {
     type_flash_requested_= "upgrade";
-    iv.pcon->SaveNewUpgraderVersion(metadata_handler_->GetUpgradeVersion());
     FlashClicked();
 }
 

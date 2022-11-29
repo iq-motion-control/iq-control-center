@@ -343,16 +343,6 @@ void PortConnection::FindBaudrates() {
   selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
 }
 
-void PortConnection::SaveNewBootloaderVersion(uint32_t newVersion){
-    int val = newVersion;
-    SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, val);
-}
-
-void PortConnection::SaveNewUpgraderVersion(uint32_t newVersion){
-    int val = newVersion;
-    SetVerifyEntrySave(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, val);
-}
-
 bool PortConnection::CheckIfInBootLoader(){
     //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
     //As our guide to know if we are in the bootloader
