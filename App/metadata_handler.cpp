@@ -10,7 +10,15 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     //Extract to wherever we're running the project right now
     extract_path_ = qApp->applicationDirPath() + "/flash_dir";
     metadata_dir_ = new QDir(extract_path_);
-    extract_tool.extractDir(firmware_bin_path_, extract_path_);
+    QStringList files = extract_tool.extractDir(firmware_bin_path_, extract_path_);
+    qDebug() << files;
+//    QStringList files = metadata_dir_->entryList();
+
+    for(int i = 0; i < files.length(); i++){
+        QFileInfo file(files[i]);
+        bool readable = file.isReadable();
+        qDebug() << readable;
+    }
 }
 
 QString MetadataHandler::GetCombinedBinPath(){
