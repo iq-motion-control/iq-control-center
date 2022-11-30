@@ -168,14 +168,32 @@ CONFIG("win32-g++"){
     LIBS += -lquazip -lz
 }
 
-CONFIG("linux-g++"){
-    CMAKE_CXXFLAGS += -std=gnu++14
+#unix{
 
-    INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
-    LIBS += -L"/home/iq/ZipPack_Linux/lib"
+#    macx{
+#        CMAKE_CXXFLAGS += -std=gnu++14
 
-    LIBS += -lquazip -lz
-}
+#        INCLUDEPATH += "/Users/iqmotioncontrol/ZipPack_Mac/include"
+#        LIBS += -L"/Users/iqmotioncontrol/ZipPack_Mac/lib"
+
+#        LIBS += -lquazip -lz
+#    }
+#    else{
+#        CMAKE_CXXFLAGS += -std=gnu++14
+
+#        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
+#        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+
+#        LIBS += -lquazip -lz
+#    }
+#}
+
+CMAKE_CXXFLAGS += -std=gnu++14
+
+INCLUDEPATH += "/Users/iqmotioncontrol/ZipPack_Mac/include"
+LIBS += -L"/Users/iqmotioncontrol/ZipPack_Mac/lib"
+
+LIBS += -lquazip -lz
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
