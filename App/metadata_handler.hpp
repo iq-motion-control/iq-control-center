@@ -6,6 +6,8 @@
 
 #include <QFile>
 
+#include <QStandardPaths>
+
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
