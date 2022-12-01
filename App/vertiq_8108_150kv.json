@@ -9,7 +9,7 @@
 			{
 				"type": "combined",
 				"start": "0x08000000",
-				"length": 256000,
+				"length": 118784,
 				"style": 0,
 				"major": 0,
 				"minor": 0,
