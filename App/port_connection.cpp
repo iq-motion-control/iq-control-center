@@ -218,14 +218,14 @@ void PortConnection::GetBootAndUpgradeInformation(){
     uint8_t applications_on_motor = 0;
 
     //Upgrade version has style, major, minor, patch (style is what kind of upgrade)
-    int upgrade_value = 0;
+    int upgrade_value = -1;
     int upgrade_style = 0;
     int upgrade_major = 0;
     int upgrade_minor = 0;
     int upgrade_patch = 0;
 
     //Bootloader version
-    int bootloader_value = 0;
+    int bootloader_value = -1;
     int boot_style = 0;
     int boot_major = 0;
     int boot_minor = 0;
@@ -255,11 +255,9 @@ void PortConnection::GetBootAndUpgradeInformation(){
     upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
     upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
 
-    bootloader_version_ = bootloader_value;
-
     //If we have a bootloader label its version, otherwise put N/A
     QString bootloader_version_string = "";
-    if(bootloader_value != 0){
+    if(bootloader_value != -1){
         bootloader_version_string = QString::number(boot_style) + "." + QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
     }else{
         bootloader_version_string = "N/A";
@@ -268,7 +266,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
-    if(upgrade_value != 0){
+    if(upgrade_value != -1){
         upgrade_version_string = QString::number(upgrade_style) + "." + QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
     }else{
         upgrade_version_string = "N/A";

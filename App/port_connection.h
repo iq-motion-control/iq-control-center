@@ -262,7 +262,6 @@ class PortConnection : public QObject {
   int firmware_style_;
   int hardware_type_;
   int electronics_type_;
-  uint16_t bootloader_version_;
   uint8_t applications_present_on_motor_;
 };
 
