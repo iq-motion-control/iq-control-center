@@ -63,6 +63,8 @@ CONFIG += static
 
 
 SOURCES += \
+    flash_type.cpp \
+    metadata_handler.cpp \
     schmi/src/binary_file_std.cpp \
     schmi/src/flash_loader.cpp \
     schmi/src/loading_bar_std.cpp \
@@ -99,6 +101,8 @@ SOURCES += \
 
 
 HEADERS += \
+    flash_type.hpp \
+    metadata_handler.hpp \
     schmi/include/Schmi/binary_file_interface.hpp \
     schmi/include/Schmi/binary_file_std.hpp \
     schmi/include/Schmi/error_handler_interface.hpp \
@@ -145,6 +149,46 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+#if using the 32 bit kit use the 32 bit quazip build
+#if using the 64 bit kit use the 64 bit quazip build
+CONFIG("win32-g++"){
+    CMAKE_CXXFLAGS += -std=gnu++14
+
+    #if 32 bit build
+    contains(QT_ARCH, i386){
+        INCLUDEPATH += "ZipPack/include"
+        LIBS += -L"ZipPack/lib"
+    }
+    ##64 bit build
+    else{
+        INCLUDEPATH += "ZipPack_64bit/include"
+        LIBS += -L"ZipPack_64bit/lib"
+    }
+
+    LIBS += -lquazip -lz
+}
+
+unix{
+
+    macx{
+        CMAKE_CXXFLAGS += -std=gnu++14
+
+        INCLUDEPATH += "/Users/iqmotioncontrol/ZipPack_Mac/include"
+        LIBS += -L"/Users/iqmotioncontrol/ZipPack_Mac/lib"
+
+        LIBS += -lquazip -lz
+    }
+
+    else{
+        CMAKE_CXXFLAGS += -std=gnu++14
+
+        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
+        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+
+        LIBS += -lquazip -lz
+    }
+}
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -155,5 +199,3 @@ RESOURCES += \
     clients.qrc
 
 #LIBS += -framework CoreFoundation
-
-

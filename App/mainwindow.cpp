@@ -83,15 +83,21 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
 
-    connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
+    connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
+    connect(ui->flash_boot_button, SIGNAL(clicked()), firm, SLOT(FlashBootClicked()));
+    connect(ui->flash_app_button, SIGNAL(clicked()), firm, SLOT(FlashAppClicked()));
+    connect(ui->flash_upgrade_button, SIGNAL(clicked()), firm, SLOT(FlashUpgradeClicked()));
+
+
     connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
-            SLOT(SelectBinaryClicked()));
+            SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover file button with the firmware SelectRecoveryClicked to allow picking a file
-    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectBinaryClicked()));
+    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
-    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashClicked()));
+    //Only allow recovery to flash a combined to avoid any more issue
+    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
 
   } catch (const QString &e) {
     ui->header_error_label->setText(e);
@@ -152,7 +158,7 @@ void MainWindow::on_pushButton_advanced_clicked() {
   QMessageBox msgBox;
   msgBox.setWindowTitle("WARNING!");
   msgBox.setText(
-      "Changing settings in the Advanced tab could compromise the safety features IQ has put in "
+      "Changing settings in the Advanced tab could compromise the safety features that Vertiq has put in "
       "place. Please use extreme caution.\n\nI understand that changing settings in this tab could "
       "result in the damage or destruction of my motor.");
   msgBox.setStandardButtons(QMessageBox::Yes);
@@ -160,11 +166,22 @@ void MainWindow::on_pushButton_advanced_clicked() {
   msgBox.setDefaultButton(QMessageBox::No);
   if (msgBox.exec() == QMessageBox::Yes) {
     ui->stackedWidget->setCurrentIndex(5);
+  }else{
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->pushButton_advanced->setChecked(false);
+    ui->pushButton_home->setChecked(true);
   }
 }
 
 void MainWindow::on_pushButton_firmware_clicked() {
   ui->flash_progress_bar->reset();
+
+  //Make all of the flash buttons invisible
+  ui->flash_app_button->setVisible(false);
+  ui->flash_boot_button->setVisible(false);
+  ui->flash_button->setVisible(false);
+  ui->flash_upgrade_button->setVisible(false);
+
   ui->stackedWidget->setCurrentIndex(4);
 }
 

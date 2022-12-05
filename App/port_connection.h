@@ -43,6 +43,24 @@
 #define MAJOR_VERSION_SHIFT 14
 #define MINOR_VERSION_SHIFT 7
 
+#define BOOT_STYLE_MASK 0xfff00000
+#define BOOT_MAJOR_MASK 0x000fC000
+#define BOOT_MINOR_MASK 0x00003f80
+#define BOOT_PATCH_MASK 0x0000007f
+
+#define BOOT_STYLE_SHIFT 20
+#define BOOT_MAJOR_SHIFT 14
+#define BOOT_MINOR_SHIFT 7
+
+#define UPGRADE_STYLE_MASK 0xfff00000
+#define UPGRADE_MAJOR_MASK 0x000fC000
+#define UPGRADE_MINOR_MASK 0x00003f80
+#define UPGRADE_PATCH_MASK 0x0000007f
+
+#define UPGRADE_STYLE_SHIFT 20
+#define UPGRADE_MAJOR_SHIFT 14
+#define UPGRADE_MINOR_SHIFT 7
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:
@@ -54,31 +72,142 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
+  /**
+   * @brief CheckIfInBootLoader Checks if the motor is currently in the ST Bootloader
+   * @return true if it is. False if not
+   */
   bool CheckIfInBootLoader();
 
+  /**
+   * @brief SetPortConnection Sets up the connection UI
+   * @param state true if already connected
+   */
   void SetPortConnection(bool state);
+
+  /**
+   * @brief FindBaudrates Adds different baud rates to the dropdown UI
+   */
   void FindBaudrates();
 
+  /**
+   * @brief GetConnectionState Returns the current state of connection
+   * @return true if connected
+   */
   bool GetConnectionState() { return connection_state_; }
+
+  /**
+   * @brief SetConnectionState Sets the current connection state
+   * @param setter
+   */
   void SetConnectionState(const bool &setter) { connection_state_ = setter; }
 
+  /**
+   * @brief GetQSerialInterface Returns the serial interface being used
+   * @return the curent serial interface
+   */
   QSerialInterface *GetQSerialInterface() { return ser_; }
+
+  /**
+   * @brief SetQSerialInterface Sets the serial interface
+   * @param setter
+   */
   void SetQSerialInterface(QSerialInterface *setter) { ser_ = setter; }
 
+  /**
+   * @brief GetObjId
+   * @return
+   */
   uint8_t GetObjId() { return obj_id_; }
+  /**
+   * @brief SetObjId
+   * @param setter
+   */
   void SetObjId(const uint8_t &setter) { obj_id_ = setter; }
 
+  /**
+   * @brief GetFirmwareStyle
+   * @return
+   */
   int GetFirmwareStyle() { return firmware_style_; }
+  /**
+   * @brief SetFirmwareStyle
+   * @param setter
+   */
   void SetFirmwareStyle(const int &setter) { firmware_style_ = setter; }
 
+  /**
+   * @brief GetHardwareType
+   * @return
+   */
   int GetHardwareType() { return hardware_type_; }
+  /**
+   * @brief SetHardwareType
+   * @param setter
+   */
   void SetHardwareType(const int &setter) { hardware_type_ = setter; }
 
+  /**
+   * @brief GetElectronicsType
+   * @return
+   */
+  int GetElectronicsType() { return electronics_type_; }
+
+  /**
+   * @brief SaveNewBootloaderVersion Sends a command to the motor to save the bootloader version being flashed
+   * @param newVersion the raw value of the bootloader version
+   */
+  void SaveNewBootloaderVersion(uint32_t newVersion);
+
+  /**
+   * @brief SaveNewUpgraderVersion Sends a command to the motor to save the upgrader version being flashed
+   * @param newVersion the raw value of the upgrader version
+   */
+  void SaveNewUpgraderVersion(uint32_t newVersion);
+
+  /**
+   * @brief ResetBootVersionKey Tells the motor whether or not to used the stored boot value
+   */
+  void ResetBootVersionKey();
+
+  /**
+   * @brief ResetUpgradeVersionKey Tells the motor whether or not to use the stored upgrader value
+   */
+  void ResetUpgradeVersionKey();
+
+  /**
+   * @brief GetAppsPresent Returns 3 bits stored at the bottom of this byte that indicate which sections are on the motor
+   * @return
+   */
+  uint8_t GetAppsPresent() { return applications_present_on_motor_; }
+
+  /**
+   * @brief GetSelectedPortName Returns a string of the serial port being used
+   * @return
+   */
   QString GetSelectedPortName() { return selected_port_name_; }
+
+  /**
+   * @brief GetRecoveryPortName Returns a string of the serial port to use during recovery
+   * @return
+   */
   QString GetRecoveryPortName() { return recovery_port_name_; }
 
+  /**
+   * @brief ResetToTopPage Resets the control center back to its default state
+   */
   void ResetToTopPage();
+
+  /**
+   * @brief GetCurrentTab returns the current tab being displayed
+   * @return
+   */
   int GetCurrentTab();
+
+  /**
+   * @brief GetMainWindowAccess returns a pointer to the user interface for other modules to use
+   * @return
+   */
+  Ui::MainWindow* GetMainWindowAccess() { return ui_;}
 
  public slots:
 
@@ -94,6 +223,8 @@ class PortConnection : public QObject {
 
   void BaudrateComboBoxIndexChanged(int index);
 
+  void ClearFirmwareChoices();
+
  signals:
 
   void ObjIdFound();
@@ -105,6 +236,12 @@ class PortConnection : public QObject {
   void LostConnection();
 
  private:
+  void DisplayRecoveryMessage();
+  void DisplayInvalidFirmwareMessage();
+  void GetDeviceInformationResponses();
+  int GetFirmwareValid();
+  void GetBootAndUpgradeInformation();
+
   Ui::MainWindow *ui_;
 
   std::string clients_folder_path_ = ":/IQ_api/clients/";
@@ -121,8 +258,11 @@ class PortConnection : public QObject {
   QSerialInterface *ser_;
 
   uint8_t obj_id_;
+  int firmware_value_;
   int firmware_style_;
   int hardware_type_;
+  int electronics_type_;
+  uint8_t applications_present_on_motor_;
 };
 
 #endif  // CONNECTION_HPP
