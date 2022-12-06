@@ -46,7 +46,7 @@ class FrameVariables {
 
   struct ComboFrame {
     std::vector<std::string> list_names;
-    std::vector<int> list_values;
+    std::vector<uint32_t> list_values;
     std::string info;
   };
 
