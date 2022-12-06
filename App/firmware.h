@@ -40,8 +40,14 @@
 
 #include "flash_loading_bar.h"
 
+#include "metadata_handler.hpp"
+
 #include "main.h"
 
+#define DEFAULT_STARTING_LOCATION_ 0x08000000
+#define BOOT_PRESENT_MASK 0b100
+#define UPGRADE_PRESENT_MASK 0b010
+#define APP_PRESENT_MASK 0b001
 #define FIRMWARE_TAB 4
 #define RECOVERY_TAB 6
 
@@ -61,15 +67,39 @@ class Firmware : public QObject {
   QPushButton *recover_binary_button_;
 
   QString firmware_bin_path_;
+  QString extract_path_ = "";
+
+  QString type_flash_requested_ = "";
   QString recovery_bin_path_;
 
   bool BootMode();
+  void FlashFirmware(uint32_t startingPoint);
+  bool CheckPathAndConnection();
+  bool FlashHardwareElectronicsWarning();
+  void UpdateFlashButtons();
+  void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
+  void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
+  QString GetHardwareNameFromResources();
+
+  MetadataHandler * metadata_handler_;
+  bool using_metadata_ = false;
+  //The app index can change depending on what's in the json
+  int app_index_;
+
+  bool boot_present_;
+  bool upgrade_present_;
+  bool app_present_;
 
  signals:
 
  public slots:
-  void SelectBinaryClicked();
   void FlashClicked();
+
+  void FlashCombinedClicked();
+  void FlashBootClicked();
+  void FlashAppClicked();
+  void FlashUpgradeClicked();
+  void SelectFirmwareClicked();
 };
 
 #endif  // FIRMWARE_H
