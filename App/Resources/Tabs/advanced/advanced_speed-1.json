@@ -226,27 +226,6 @@
         "format": "n",
         "unit": "",
         "frame_type": 5
-      },
-      {
-        "type_idn": 80,
-        "descriptor": "DroneCAN Bitrate",
-        "info": "The bitrate used by the CAN bus",
-        "sub_idn": 10,
-        "format": "I",
-        "unit": "bps",
-        "frame_type": 1,
-        "list_name": [
-          "1000000",
-          "500000",
-          "250000",
-          "125000"
-        ],
-        "list_value": [
-          1000000,
-          500000,
-          250000,
-          125000
-        ]
       }
     ]
   }
