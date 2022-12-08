@@ -87,7 +87,7 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       uint8_t list_size = param["list_name"].size();
       for (uint8_t ii = 0; ii < list_size; ++ii) {
         std::string name = param["list_name"][ii].asString();
-        uint8_t value = param["list_value"][ii].asUInt();
+        int value = param["list_value"][ii].asInt();
         frame_variables_ptr->combo_frame_.list_names.push_back(name);
         frame_variables_ptr->combo_frame_.list_values.push_back(value);
       }
