@@ -207,8 +207,11 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     metadata_handler_->ReadMetadata();
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
-    if(FlashHardwareElectronicsWarning()){
-        return;
+    //The recovery tab does not necessarily know about the hardware and electronics
+    if(currentTab != RECOVERY_TAB){
+        if(FlashHardwareElectronicsWarning()){
+            return;
+        }
     }
 
     //If we aren't in recovery, present only the options that can be safely flashed.
