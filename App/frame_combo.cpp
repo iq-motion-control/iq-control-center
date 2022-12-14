@@ -143,9 +143,9 @@ void FrameCombo::GetSavedValue() {
     try {
       if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
                          saved_value_)){
-            std::string error_start = "";
-            std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str() + ", please try again";
-            throw QString(error_string.c_str());
+        std::string error_start = "";
+        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str() + ", please try again";
+        throw QString(error_string.c_str());
       }
 
       int key = 0;
