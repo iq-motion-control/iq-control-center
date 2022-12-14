@@ -206,6 +206,11 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     //Use that to find the one to grab the data from
     metadata_handler_->ReadMetadata();
 
+    //If the wrong type of motor is connect for the selected file, don't let them move forward
+    if(FlashHardwareElectronicsWarning()){
+        return;
+    }
+
     //If we aren't in recovery, present only the options that can be safely flashed.
     //Only giving combined option from recovery mode
     if(currentTab == FIRMWARE_TAB){
@@ -234,6 +239,7 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     if(msgBox.exec() == QMessageBox::No){
         buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
         firmware_bin_path_ = "";
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
         return;
     }
 
@@ -335,8 +341,6 @@ void Firmware::FlashUpgradeClicked() {
 }
 
 void Firmware::FlashClicked() {
-
-    int curTab = iv.pcon->GetCurrentTab();
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct
@@ -348,12 +352,6 @@ void Firmware::FlashClicked() {
     if(using_metadata_){
         //Save the new boot version to the motor
        firmware_bin_path_ = metadata_handler_->GetPathToCorrectBin(type_flash_requested_);
-
-       if( curTab != RECOVERY_TAB){
-           if(FlashHardwareElectronicsWarning()){
-               return;
-           }
-       }
 
        //Extra checking. If we only have app and boot, but our json tells us we have all 3, make the app's starting
        //Location equal to the combined instead
