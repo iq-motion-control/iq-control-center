@@ -143,6 +143,9 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->pushButton_firmware->setChecked(false);
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(6);
+    }else{
+      ui_->pushButton_home->setChecked(true);
+      ui_->stackedWidget->setCurrentIndex(0);
     }
 
     throw QString("Recovery Detected");
