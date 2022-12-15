@@ -143,7 +143,7 @@ void Firmware::SelectFirmwareClicked() {
         //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
         //Change the order of the tr() to change the default
         firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
-                                                          tr("Zip (*.zip) ;; Binary (*.bin)"));
+                                                          tr("Binary (*.bin) ;; Zip (*.zip)"));
         //Pick which button we want to use
         if(currentTab == FIRMWARE_TAB){
             buttonInUse = firmware_binary_button_;
@@ -226,25 +226,25 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     QFileInfo info(firmware_bin_path_);
     buttonInUse->setText(info.fileName());
 
-    //Pop up a warning window about dangers of flashing a binary
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("WARNING!");
-    msgBox.setText(
-        "As flashing raw binaries can be dangerous, we strongly advise using a provided archive if available. If you flash firmware "
-        "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
-        "you risk seriously damaging or breaking your motor."
-        "\nAre you sure you would like to continue?");
+//    //Pop up a warning window about dangers of flashing a binary
+//    QMessageBox msgBox;
+//    msgBox.setWindowTitle("WARNING!");
+//    msgBox.setText(
+//        "As flashing raw binaries can be dangerous, we strongly advise using a provided archive if available. If you flash firmware "
+//        "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
+//        "you risk seriously damaging or breaking your motor."
+//        "\nAre you sure you would like to continue?");
 
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-    //If you pick no, reset to the init state
-    if(msgBox.exec() == QMessageBox::No){
-        buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
-        firmware_bin_path_ = "";
-        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
-        return;
-    }
+//    msgBox.setStandardButtons(QMessageBox::Yes);
+//    msgBox.addButton(QMessageBox::No);
+//    msgBox.setDefaultButton(QMessageBox::No);
+//    //If you pick no, reset to the init state
+//    if(msgBox.exec() == QMessageBox::No){
+//        buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
+//        firmware_bin_path_ = "";
+//        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+//        return;
+//    }
 
     //If you want to move forward, make the flash button available
     iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
