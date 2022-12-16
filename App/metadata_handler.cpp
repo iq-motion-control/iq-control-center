@@ -13,7 +13,7 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
         //Instead put the extracted data into downloads. Will be deleted after a flash
         extract_path_ = QStandardPaths::displayName(QStandardPaths::DownloadLocation) + "/flash_dir";
     #else
-        extract_path_ = qApp->applicationDirPath() + "/flash_dir";
+        extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
     #endif
 
     metadata_dir_ = new QDir(extract_path_);
