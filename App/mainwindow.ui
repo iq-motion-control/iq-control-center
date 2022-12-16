@@ -1208,7 +1208,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1579,8 +1579,8 @@ hr { height: 1px; border-width: 0; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>16</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2000,8 +2000,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2076,8 +2076,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2322,9 +2322,9 @@ hr { height: 1px; border-width: 0; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt; font-weight:600; color:#afafaf;&quot;&gt;Flashing New Firmware:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download the firmware binary (&amp;quot;.bin&amp;quot;) or archive (&amp;quot;.zip&amp;quot;) for your device from the Vertiq website, https://vertiq.co.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your firmware binary (&amp;quot;.bin&amp;quot;) or archive (&amp;quot;.zip&amp;quot;) from the Vertiq website.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware archive (&amp;quot;.zip&amp;quot;). You may also provide a binary (&amp;quot;.bin&amp;quot;) file, but we strongly advise using a provided archive &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:700; color:#afafaf;&quot;&gt;if available&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;. The path of your file should appear underneath the button.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware archive (&amp;quot;.zip&amp;quot;) or binary (&amp;quot;.bin&amp;quot;). If available, we strongly advise using a provided archive. The path of your file should appear underneath the button.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 3: Connect your module to the GUI&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
@@ -2723,8 +2723,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -3007,7 +3007,7 @@ hr { height: 1px; border-width: 0; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 1: Download your firmware binary (&amp;quot;.bin&amp;quot;) or archive (&amp;quot;.zip&amp;quot;) from the Vertiq website.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware archive (&amp;quot;.zip&amp;quot;). You may also provide a binary (&amp;quot;.bin&amp;quot;) file, but we strongly advise using a provided archive&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:700; color:#afafaf;&quot;&gt; if available&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;. The path of your file should appear underneath the button.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 2: Click &amp;quot;Select Firmware&amp;quot; to select your firmware archive (&amp;quot;.zip&amp;quot;) or binary (&amp;quot;.bin&amp;quot;). If available, we strongly advise using a provided archive. The path of your file should appear underneath the button.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#afafaf;&quot;&gt;Step 3: Click Recover&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#afafaf;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
