@@ -23,7 +23,7 @@ In order to run the Control Center, and have access to all features, you must ru
 cd <Path/to/IQ Control Center/executable>
 sudo ./IQ\ Control\ Center
 ```
-  
+-----------------  
 If you are looking to play with the source code or compile from source continue reading!
 
 ## Cloning this Repo
