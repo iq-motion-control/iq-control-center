@@ -9,7 +9,7 @@ This is all the source code used to create and run the IQ Control Center.
 If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows, Mac, and Linux.
 
 ### General Installation Instructions
-- Download the latest precompiled release from the link above.
+- Download the latest precompiled release from the link above
 - Extract the zip archive from your download, and run the application
 - Follow the instructions to complete the installation
 
