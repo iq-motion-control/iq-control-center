@@ -18,7 +18,7 @@ You must add the libxcb-xinerama0 library
 ```
 sudo apt-get install libxcb-xinerama0
 ```
-In order to run the Control Center, and have access to all features, you must run the appplication through the command line as sudo
+In order to run the Control Center, and have access to all features, you must run the application through the command line as sudo
 ```
 cd <Path/to/IQ Control Center/executable>
 sudo ./IQ\ Control\ Center
