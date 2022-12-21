@@ -26,7 +26,7 @@ sudo ./IQ\ Control\ Center
 ```
 
 ### Notes on Mac Installation
-You may receive a warning "'IQControlCenter-mac-x64' cannot be opened because it is from an unidentified developer" with only an OK button
+You may receive a warning "'IQControlCenter-mac-x64' cannot be opened because it is from an unidentified developer" with only an OK button.
 If this is the case, reopen the file while holding down ctrl, and select open anyway
 
 -----------------  
