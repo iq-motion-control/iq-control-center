@@ -24,6 +24,11 @@ When navigating to the correct folder, consider using tab-auto-complete to make 
 cd <Path/to/IQ Control Center/IQ Control Center/> (ex. ~/Downloads/IQ\ Control\ Center/IQ\ Control\ Center)
 sudo ./IQ\ Control\ Center
 ```
+
+### Notes on Mac Installation
+You may receive a warning "'IQControlCenter-mac-x64' cannot be opened because it is from an unidentified developer" with only an OK button
+If this is the case, reopen the file while holding down ctrl, and select open anyway
+
 -----------------  
 If you are looking to play with the source code or compile from source continue reading!
 
