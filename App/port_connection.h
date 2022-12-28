@@ -209,6 +209,16 @@ class PortConnection : public QObject {
    */
   Ui::MainWindow* GetMainWindowAccess() { return ui_;}
 
+  /**
+   * @brief EnableAllButtons enables all of the pushbuttons on the home screen
+   */
+  void EnableAllButtons();
+
+  /**
+   * @brief DisableAllButtons Disables all of the pushbuttons on the home screen
+   */
+  void DisableAllButtons();
+
  public slots:
 
   void ConnectMotor();

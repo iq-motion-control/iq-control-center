@@ -429,6 +429,7 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
 
       //We don't want people to hang out in the recovery page. so don't let them
       if(currentTab == RECOVERY_TAB){
+          iv.pcon->EnableAllButtons();
           iv.pcon->ResetToTopPage();
       }
 

@@ -128,6 +128,24 @@ void PortConnection::ClearFirmwareChoices(){
     ui_->select_recovery_bin_button->setText("Select Firmware (\".bin\") or (\".zip\")");
 }
 
+void PortConnection::DisableAllButtons(){
+    ui_->pushButton_home->setEnabled(false);
+    ui_->pushButton_advanced->setEnabled(false);
+    ui_->pushButton_firmware->setEnabled(false);
+    ui_->pushButton_testing->setEnabled(false);
+    ui_->pushButton_tuning->setEnabled(false);
+    ui_->pushButton_general->setEnabled(false);
+}
+
+void PortConnection::EnableAllButtons(){
+    ui_->pushButton_home->setEnabled(true);
+    ui_->pushButton_advanced->setEnabled(true);
+    ui_->pushButton_firmware->setEnabled(true);
+    ui_->pushButton_testing->setEnabled(true);
+    ui_->pushButton_tuning->setEnabled(true);
+    ui_->pushButton_general->setEnabled(true);
+}
+
 void PortConnection::DisplayRecoveryMessage(){
     recovery_port_name_ = selected_port_name_;
     ser_->ser_port_->close();
@@ -140,8 +158,7 @@ void PortConnection::DisplayRecoveryMessage(){
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     if (msgBox.exec() == QMessageBox::Yes) {
-      ui_->pushButton_firmware->setChecked(false);
-      ui_->pushButton_home->setChecked(true);
+      DisableAllButtons();
       ui_->stackedWidget->setCurrentIndex(6);
     }else{
       ui_->pushButton_home->setChecked(true);

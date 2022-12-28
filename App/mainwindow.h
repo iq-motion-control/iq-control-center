@@ -56,6 +56,9 @@ class MainWindow : public QMainWindow {
 
   void AutoCheckUpdate();
 
+  void EnableAllButtons();
+  void DisableAllButtons();
+
  private slots:
   void on_pushButton_home_clicked();
 
