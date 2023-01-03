@@ -7,7 +7,29 @@ This is all the source code used to create and run the IQ Control Center.
 ## Getting Started
 
 If you just want to use the IQ Control Center please follow this link to the latest [release](https://github.com/iq-motion-control/iq-control-center/releases) where you will find precompiled versions of the IQ Control Center for Windows, Mac, and Linux.
-  
+
+### General Installation Instructions
+- Download the latest precompiled release from the link above
+- Extract the zip archive from your download, and run the application
+- Follow the instructions to complete the installation
+
+### Notes on Linux Installation
+You must add the libxcb-xinerama0 library
+```
+sudo apt-get install libxcb-xinerama0
+```
+In order to run the Control Center, and have access to all features, you must run the application through the command line as sudo
+When navigating to the correct folder, consider using tab-auto-complete to make it easier
+```
+cd <Path/to/IQ Control Center/IQ Control Center/> (ex. ~/Downloads/IQ\ Control\ Center/IQ\ Control\ Center)
+sudo ./IQ\ Control\ Center
+```
+
+### Notes on Mac Installation
+You may receive a warning "'IQControlCenter-mac-x64' cannot be opened because it is from an unidentified developer" with only an OK button.
+If this is the case, reopen the file while holding down ctrl, and select open anyway
+
+-----------------  
 If you are looking to play with the source code or compile from source continue reading!
 
 ## Cloning this Repo
