@@ -107,8 +107,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_pushButton_home_clicked() { ui->stackedWidget->setCurrentIndex(0); }
-
 void MainWindow::AutoCheckUpdate(){
     process = new QProcess(parent());
     QDir exe = QDir(QCoreApplication::applicationDirPath());
@@ -148,41 +146,65 @@ void MainWindow::readOutput() {
     delete process;
 }
 
-void MainWindow::on_pushButton_general_clicked() { ui->stackedWidget->setCurrentIndex(1); }
+void MainWindow::on_pushButton_home_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(0);
+    }
+}
 
-void MainWindow::on_pushButton_tuning_clicked() { ui->stackedWidget->setCurrentIndex(2); }
 
-void MainWindow::on_pushButton_testing_clicked() { ui->stackedWidget->setCurrentIndex(3); }
+void MainWindow::on_pushButton_general_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(1);
+    }
+}
 
-void MainWindow::on_pushButton_advanced_clicked() {
-  QMessageBox msgBox;
-  msgBox.setWindowTitle("WARNING!");
-  msgBox.setText(
-      "Changing settings in the Advanced tab could compromise the safety features that Vertiq has put in "
-      "place. Please use extreme caution.\n\nI understand that changing settings in this tab could "
-      "result in the damage or destruction of my motor.");
-  msgBox.setStandardButtons(QMessageBox::Yes);
-  msgBox.addButton(QMessageBox::No);
-  msgBox.setDefaultButton(QMessageBox::No);
-  if (msgBox.exec() == QMessageBox::Yes) {
-    ui->stackedWidget->setCurrentIndex(5);
-  }else{
-    ui->stackedWidget->setCurrentIndex(0);
-    ui->pushButton_advanced->setChecked(false);
-    ui->pushButton_home->setChecked(true);
-  }
+void MainWindow::on_pushButton_tuning_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(2);
+    }
+}
+
+void MainWindow::on_pushButton_testing_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(3);
+    }
 }
 
 void MainWindow::on_pushButton_firmware_clicked() {
-  ui->flash_progress_bar->reset();
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->flash_progress_bar->reset();
 
-  //Make all of the flash buttons invisible
-  ui->flash_app_button->setVisible(false);
-  ui->flash_boot_button->setVisible(false);
-  ui->flash_button->setVisible(false);
-  ui->flash_upgrade_button->setVisible(false);
+        //Make all of the flash buttons invisible
+        ui->flash_app_button->setVisible(false);
+        ui->flash_boot_button->setVisible(false);
+        ui->flash_button->setVisible(false);
+        ui->flash_upgrade_button->setVisible(false);
 
-  ui->stackedWidget->setCurrentIndex(4);
+        ui->stackedWidget->setCurrentIndex(4);
+    }
+}
+
+void MainWindow::on_pushButton_advanced_clicked() {
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("WARNING!");
+        msgBox.setText(
+         "Changing settings in the Advanced tab could compromise the safety features that Vertiq has put in "
+         "place. Please use extreme caution.\n\nI understand that changing settings in this tab could "
+         "result in the damage or destruction of my motor.");
+        msgBox.setStandardButtons(QMessageBox::Yes);
+        msgBox.addButton(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+
+        if (msgBox.exec() == QMessageBox::Yes) {
+            ui->stackedWidget->setCurrentIndex(5);
+        }else{
+            ui->stackedWidget->setCurrentIndex(0);
+            ui->pushButton_advanced->setChecked(false);
+            ui->pushButton_home->setChecked(true);
+        }
+    }
 }
 
 void MainWindow::ShowMotorSavedValues() {
