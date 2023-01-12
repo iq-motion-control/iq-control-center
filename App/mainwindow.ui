@@ -1208,7 +1208,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1950,7 +1950,7 @@ QComboBox:on, QComboBox:off {
         <property name="bottomMargin">
          <number>24</number>
         </property>
-        <item row="0" column="0">
+        <item row="1" column="0">
          <widget class="QWidget" name="firmware_widget" native="true">
           <property name="palette">
            <palette>
@@ -2351,6 +2351,18 @@ hr { height: 1px; border-width: 0; }
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_firmware">
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>FIRMWARE</string>
+          </property>
          </widget>
         </item>
        </layout>
