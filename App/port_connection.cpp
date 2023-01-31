@@ -277,10 +277,10 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //If the motor does not have a way to report back the boot or upgrade version, it will send back -1
     //If the motor has a way to report back the boot or upgrade, but is not using it, the value will be 0. We should not report 0
-    //If we have a bootloader label its version, otherwise put N/A
     bool bootloader_in_use = ((bootloader_value != -1) && (bootloader_value != 0));
     bool upgrader_in_use = ((upgrade_value != -1) && (upgrade_value != 0));
 
+    //If we have a bootloader label its version, otherwise put N/A
     QString bootloader_version_string = "";
     if(bootloader_in_use){
         bootloader_version_string = QString::number(boot_style) + "." + QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
