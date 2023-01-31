@@ -92,14 +92,15 @@ void PortConnection::ConnectMotor() {
 
         if(!firmware_valid){
             DisplayInvalidFirmwareMessage();
+        //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
+        }else{
+            //Get information about what firmware is on the motor
+            GetBootAndUpgradeInformation();
+
+            //Send out the hardware and firmware values to other modules of Control Center
+            emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+            emit FindSavedValues();
         }
-
-        //Get information about what firmware is on the motor
-        GetBootAndUpgradeInformation();
-
-        //Send out the hardware and firmware values to other modules of Control Center
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
-        emit FindSavedValues();
 
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
