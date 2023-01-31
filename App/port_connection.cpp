@@ -275,9 +275,14 @@ void PortConnection::GetBootAndUpgradeInformation(){
     upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
     upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
 
+    //If the motor does not have a way to report back the boot or upgrade version, it will send back -1
+    //If the motor has a way to report back the boot or upgrade, but is not using it, the value will be 0. We should not report 0
     //If we have a bootloader label its version, otherwise put N/A
+    bool bootloader_in_use = ((bootloader_value != -1) && (bootloader_value != 0));
+    bool upgrader_in_use = ((upgrade_value != -1) && (upgrade_value != 0));
+
     QString bootloader_version_string = "";
-    if(bootloader_value != -1){
+    if(bootloader_in_use){
         bootloader_version_string = QString::number(boot_style) + "." + QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
     }else{
         bootloader_version_string = "N/A";
@@ -286,7 +291,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
-    if(upgrade_value != -1){
+    if(upgrader_in_use){
         upgrade_version_string = QString::number(upgrade_style) + "." + QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
     }else{
         upgrade_version_string = "N/A";
