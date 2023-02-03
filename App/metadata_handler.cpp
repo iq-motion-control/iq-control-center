@@ -8,7 +8,7 @@ MetadataHandler::MetadataHandler(PortConnection * pcon):
 void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     JlCompress extract_tool;
 
-    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 
     metadata_dir_ = new QDir(extract_path_);
     QStringList files = extract_tool.extractDir(firmware_bin_path_, extract_path_);
