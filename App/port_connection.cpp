@@ -80,21 +80,22 @@ void PortConnection::ConnectMotor() {
             DisplayRecoveryMessage();
         }
 
-        //Get firmware and hardware information
-        GetDeviceInformationResponses();
-
         //Check if the firmware is valid
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
-        QString message = "Motor connected Successfully";
+        QString message = "Motor Connected Successfully";
         ui_->header_error_label->setText(message);
 
         if(!firmware_valid){
             DisplayInvalidFirmwareMessage();
+            message = "Motor Connected Successfully, Please Flash Valid Firmware";
+            ui_->header_error_label->setText(message);
+            ui_->label_firmware_build_value->setText("");
         //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
         }else{
             //Get information about what firmware is on the motor
+            GetDeviceInformationResponses();
             GetBootAndUpgradeInformation();
 
             //Send out the hardware and firmware values to other modules of Control Center
