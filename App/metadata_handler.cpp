@@ -15,8 +15,6 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
 
     for(int i = 0; i < files.length(); i++){
         QFileInfo file(files[i]);
-        bool readable = file.isReadable();
-        qDebug() << readable;
     }
 }
 
