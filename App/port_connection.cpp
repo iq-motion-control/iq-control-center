@@ -229,7 +229,7 @@ int PortConnection::GetFirmwareValid(){
     //Check to see if the firmware is valid
     if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
-      throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
+      throw(QString("FIRMWARE ERROR: unable to determine firmware validity, is your module powered on?"));
     }
 
     return firmware_valid;
