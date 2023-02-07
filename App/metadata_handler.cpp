@@ -62,7 +62,7 @@ QString MetadataHandler::GetUpgradeBinPath(){
 
 QString MetadataHandler::GetPathToCorrectBin(QString binTypeRequested){
 
-    if(binTypeRequested == "combined"){
+    if(binTypeRequested == "combined" || binTypeRequested == "main"){
         return GetCombinedBinPath();
     }else if(binTypeRequested == "boot"){
         return GetBootBinPath();
