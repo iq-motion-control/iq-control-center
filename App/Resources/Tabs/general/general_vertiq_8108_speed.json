@@ -183,15 +183,6 @@
       },
 	  {
         "type_idn": 85,
-        "descriptor": "Trigger Stow",
-        "info": "Triggers a stow to test stow angle",
-        "sub_idn": 4,
-        "format": "n",
-        "unit": "",
-        "frame_type": 5
-      },
-	  {
-        "type_idn": 85,
         "descriptor": "Hold Stow",
         "info": "Determines if we should actively hold the stow angle when we have stowed, or coast after reaching our destination.",
         "sub_idn": 8,
@@ -332,7 +323,7 @@
       },
 	  {
         "type_idn": 86,
-        "descriptor": "Disarm Song",
+        "descriptor": "Disarm Song Playback Option",
         "info": "Determines how many times the disarming song will play on a disarm.",
         "sub_idn": 10,
         "format": "B",
@@ -372,7 +363,7 @@
       },
 	  {
         "type_idn": 52,
-        "descriptor": "Timeout Song",
+        "descriptor": "Timeout Song Playback Option",
         "info": "Determines how many times the timeout song will play on a timeout error.",
         "sub_idn": 19,
         "format": "B",
