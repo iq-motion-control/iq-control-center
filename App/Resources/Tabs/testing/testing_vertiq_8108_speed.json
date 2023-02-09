@@ -149,6 +149,15 @@
         "minimum": 0,
         "decimal": 0,
         "single_step": 1
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Trigger Stow",
+        "info": "Triggers a stow to test stow angle",
+        "sub_idn": 4,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }
