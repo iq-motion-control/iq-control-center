@@ -329,9 +329,13 @@ QString Firmware::GetHardwareNameFromResources(){
 }
 
 void Firmware::FlashCombinedClicked(){
-    QStringList flashTypes = metadata_handler_->GetFlashTypes();
-    if(flashTypes.contains("main")){
-        type_flash_requested_ = "main";
+    if(using_metadata_){
+        QStringList flashTypes = metadata_handler_->GetFlashTypes();
+        if(flashTypes.contains("main")){
+            type_flash_requested_ = "main";
+        }else{
+            type_flash_requested_ = "combined";
+        }
     }else{
         type_flash_requested_ = "combined";
     }
