@@ -8,15 +8,13 @@ MetadataHandler::MetadataHandler(PortConnection * pcon):
 void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     JlCompress extract_tool;
 
-    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 
     metadata_dir_ = new QDir(extract_path_);
     QStringList files = extract_tool.extractDir(firmware_bin_path_, extract_path_);
 
     for(int i = 0; i < files.length(); i++){
         QFileInfo file(files[i]);
-        bool readable = file.isReadable();
-        qDebug() << readable;
     }
 }
 
@@ -64,7 +62,7 @@ QString MetadataHandler::GetUpgradeBinPath(){
 
 QString MetadataHandler::GetPathToCorrectBin(QString binTypeRequested){
 
-    if(binTypeRequested == "combined"){
+    if(binTypeRequested == "combined" || binTypeRequested == "main"){
         return GetCombinedBinPath();
     }else if(binTypeRequested == "boot"){
         return GetBootBinPath();

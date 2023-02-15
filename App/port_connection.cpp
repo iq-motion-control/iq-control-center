@@ -80,26 +80,28 @@ void PortConnection::ConnectMotor() {
             DisplayRecoveryMessage();
         }
 
-        //Get firmware and hardware information
-        GetDeviceInformationResponses();
-
         //Check if the firmware is valid
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
-        QString message = "Motor connected Successfully";
+        QString message = "Motor Connected Successfully";
         ui_->header_error_label->setText(message);
 
         if(!firmware_valid){
             DisplayInvalidFirmwareMessage();
+            message = "Motor Connected Successfully. Please Flash Valid Firmware";
+            ui_->header_error_label->setText(message);
+            ui_->label_firmware_build_value->setText("");
+        //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
+        }else{
+            //Get information about what firmware is on the motor
+            GetDeviceInformationResponses();
+            GetBootAndUpgradeInformation();
+
+            //Send out the hardware and firmware values to other modules of Control Center
+            emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+            emit FindSavedValues();
         }
-
-        //Get information about what firmware is on the motor
-        GetBootAndUpgradeInformation();
-
-        //Send out the hardware and firmware values to other modules of Control Center
-        emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
-        emit FindSavedValues();
 
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
@@ -227,7 +229,7 @@ int PortConnection::GetFirmwareValid(){
     //Check to see if the firmware is valid
     if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
-      throw(QString("FIRMWARE ERROR: unable to determine firmware validity"));
+      throw(QString("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?"));
     }
 
     return firmware_valid;
@@ -275,9 +277,14 @@ void PortConnection::GetBootAndUpgradeInformation(){
     upgrade_minor = (upgrade_value & UPGRADE_MINOR_MASK) >> UPGRADE_MINOR_SHIFT;
     upgrade_patch = upgrade_value & UPGRADE_PATCH_MASK;
 
+    //If the motor does not have a way to report back the boot or upgrade version, it will send back -1
+    //If the motor has a way to report back the boot or upgrade, but is not using it, the value will be 0. We should not report 0
+    bool bootloader_in_use = ((bootloader_value != -1) && (bootloader_value != 0));
+    bool upgrader_in_use = ((upgrade_value != -1) && (upgrade_value != 0));
+
     //If we have a bootloader label its version, otherwise put N/A
     QString bootloader_version_string = "";
-    if(bootloader_value != -1){
+    if(bootloader_in_use){
         bootloader_version_string = QString::number(boot_style) + "." + QString::number(boot_major) + "." + QString::number(boot_minor) + "." + QString::number(boot_patch);
     }else{
         bootloader_version_string = "N/A";
@@ -286,7 +293,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
-    if(upgrade_value != -1){
+    if(upgrader_in_use){
         upgrade_version_string = QString::number(upgrade_style) + "." + QString::number(upgrade_major) + "." +QString::number(upgrade_minor) + "." +QString::number(upgrade_patch);
     }else{
         upgrade_version_string = "N/A";

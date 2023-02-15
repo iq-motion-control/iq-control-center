@@ -75,7 +75,8 @@ void Firmware::UpdateFlashButtons(){
 
     //Always unless there is a serious problem with our release, or we decide that we want to release separate binaries in differenet zips
     //This system gives us the flexability to release whatever we want in the zip as long as it has a json to go along with it
-    bool displayCombined = flashTypes.contains("combined") && binTypes.contains("combined.bin");
+    bool displayCombined = (flashTypes.contains("combined") || flashTypes.contains("main")) &&
+                           (binTypes.contains("combined.bin") || binTypes.contains("main.bin"));
 
     /**
      * Depending on the results of the logic above, we choose which buttons to make available to the user
@@ -115,7 +116,11 @@ void Firmware::UpdateFlashButtons(){
 
     if(displayCombined){
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-        iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+        if(flashTypes.contains("main")){
+            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+        }else{
+            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+        }
     }
 
 }
@@ -324,7 +329,13 @@ QString Firmware::GetHardwareNameFromResources(){
 }
 
 void Firmware::FlashCombinedClicked(){
-    type_flash_requested_ = "combined";
+    QStringList flashTypes = metadata_handler_->GetFlashTypes();
+    if(flashTypes.contains("main")){
+        type_flash_requested_ = "main";
+    }else{
+        type_flash_requested_ = "combined";
+    }
+
     FlashClicked();
 }
 
