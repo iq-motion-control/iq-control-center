@@ -89,7 +89,7 @@ void PortConnection::ConnectMotor() {
 
         if(!firmware_valid){
             DisplayInvalidFirmwareMessage();
-            message = "Motor Connected Successfully, Please Flash Valid Firmware";
+            message = "Motor Connected Successfully. Please Flash Valid Firmware";
             ui_->header_error_label->setText(message);
             ui_->label_firmware_build_value->setText("");
         //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
