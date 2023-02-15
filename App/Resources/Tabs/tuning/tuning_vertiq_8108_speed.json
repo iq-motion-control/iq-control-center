@@ -189,6 +189,48 @@
         "minimum": 1,
         "decimal": 0,
         "single_step": 1
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Kp",
+        "info": "The stow angle proportional gain.",
+        "sub_idn": 5,
+        "format": "f",
+        "unit": "V/rad",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Ki",
+        "info": "The stow angle integral gain.",
+        "sub_idn": 6,
+        "format": "f",
+        "unit": "V/(rad*s)",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Kd",
+        "info": "The stow angle differential gain.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "V/(rad/s)",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
       }
     ]
   }
