@@ -64,6 +64,7 @@ CONFIG += static
 
 SOURCES += \
     flash_type.cpp \
+    frame_read_only.cpp \
     metadata_handler.cpp \
     schmi/src/binary_file_std.cpp \
     schmi/src/flash_loader.cpp \
@@ -99,9 +100,9 @@ SOURCES += \
     frame_button.cpp \
     tab_populator.cpp \
 
-
 HEADERS += \
     flash_type.hpp \
+    frame_read_only.h \
     metadata_handler.hpp \
     schmi/include/Schmi/binary_file_interface.hpp \
     schmi/include/Schmi/binary_file_std.hpp \
@@ -156,13 +157,13 @@ CONFIG("win32-g++"){
 
     #if 32 bit build
     contains(QT_ARCH, i386){
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack/include"
+        LIBS += -L"C:/ZipPack/lib"
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack_64bit/include"
+        LIBS += -L"C:/ZipPack_64bit/lib"
     }
 
     LIBS += -lquazip -lz
