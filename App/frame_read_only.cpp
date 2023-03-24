@@ -58,16 +58,16 @@ FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
   spin_box_->setButtonSymbols(QAbstractSpinBox::NoButtons);
   horizontal_layout_->addWidget(spin_box_);
 
-  //Fills the space where a set button would be with empty space
-  empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
-  horizontal_layout_->addItem(empty_slot_spacer_);
-
-  // creates push button default
+  // creates push button get
   push_button_get_ = new QPushButton(this);
   SetPushButton(push_button_get_, size_policy, QString("pushButtonGet"),
                 QString(":/res/default_icon.png"));
   push_button_get_->setToolTip(default_tip_);
   horizontal_layout_->addWidget(push_button_get_);
+
+  //Fills the space where a set button would be with empty space
+  empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+  horizontal_layout_->addItem(empty_slot_spacer_);
 
   // creates pushbutton info
   push_button_info_ = new QPushButton(this);
