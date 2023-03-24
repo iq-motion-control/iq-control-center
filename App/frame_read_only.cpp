@@ -55,6 +55,7 @@ FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
   if (has_nan_) {
     spin_box_->setSpecialValueText(tr("Nan"));
   }
+  spin_box_->setButtonSymbols(QAbstractSpinBox::NoButtons);
   horizontal_layout_->addWidget(spin_box_);
 
   //Fills the space where a set button would be with empty space

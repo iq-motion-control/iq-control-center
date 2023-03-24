@@ -82,7 +82,7 @@ class FrameReadOnly: public Frame
           "	border: 0px solid rgb(175, 175, 175);    \n"
           "	border-radius: 0px;\n"
           "    padding: 5px 5px 5px 5px;\n"
-          "    min-width: 7em;\n"
+          "    min-width: 132px;\n"
           "	color: rgb(175, 175, 175);\n"
           "	background: rgb(60, 60, 60);\n"
           "}\n"
