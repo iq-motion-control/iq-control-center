@@ -41,7 +41,7 @@ class FrameReadOnly: public Frame
     Q_OBJECT
   public:
     FrameReadOnly(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv);
-
+    QSpacerItem *empty_slot_spacer_;
     QPushButton *push_button_get_;
     QDoubleSpinBox *spin_box_;
     QPushButton *push_button_info_;

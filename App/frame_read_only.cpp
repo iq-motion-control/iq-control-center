@@ -57,6 +57,10 @@ FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
   }
   horizontal_layout_->addWidget(spin_box_);
 
+  //Fills the space where a set button would be with empty space
+  empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+  horizontal_layout_->addItem(empty_slot_spacer_);
+
   // creates push button default
   push_button_get_ = new QPushButton(this);
   SetPushButton(push_button_get_, size_policy, QString("pushButtonGet"),
