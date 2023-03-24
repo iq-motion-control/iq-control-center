@@ -71,10 +71,9 @@ class FrameReadOnly: public Frame
     std::pair<std::string, ClientEntryAbstract*> client_entry_;
     QSpacerItem *horizontal_spacer_;
     QLabel *label_;
-    QString save_tip_ = "Saves value to motor";
     QString default_tip_ = "Check saved value on motor";
     QLatin1String style_sheet_ = QLatin1String(
-          "QFrame#frameSpinBox {\n"
+          "QFrame#frameReadOnly {\n"
           "	border: 0px;\n"
           "	border-bottom: 1px solid rgb(50, 50, 50);\n"
           "}\n"
