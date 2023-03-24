@@ -106,6 +106,184 @@
           0,
           1
         ]
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Arm Throttle Upper Limit",
+        "info": "The upper limit of the arming region, in terms of throttle percentage.",
+        "sub_idn": 3,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "default_value": 0.10,
+        "decimal": 4,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Arm Throttle Lower Limit",
+        "info": "The lower limit of the arming region, in terms of throttle percentage.",
+        "sub_idn": 4,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "default_value": 0.05,
+        "decimal": 4,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Disarm Throttle Upper Limit",
+        "info": "The upper limit of the disarming region, in terms of throttle percentage.",
+        "sub_idn": 6,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "default_value": 0.05,
+        "decimal": 4,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Disarm Throttle Lower Limit",
+        "info": "The lower limit of the disarming region, in terms of throttle percentage.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "default_value": 0.00,
+        "decimal": 4,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Arm On Throttle",
+        "info": "Determines if the throttle input will be used to transition to the armed state. When this is set to Do Not Arm On Throttle, throttle messages will not cause the module to arm.",
+        "sub_idn": 2,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Do Not Arm On Throttle",
+          "Arm On Throttle"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Disarm On Throttle",
+        "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disrm On Throttle, throttle messages will not cause the module to disarm.",
+        "sub_idn": 5,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Do Not Disarm On Throttle",
+          "Disarm On Throttle"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Consecutive Arming Throttles to Arm",
+        "info": "The low end of the calibration in us",
+        "sub_idn": 8,
+        "format": "I",
+        "unit": "Throttles",
+        "frame_type": 2,
+        "maximum": 100000,
+        "minimum": 1,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Disarm Behavior",
+        "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+        "sub_idn": 9,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Coast",
+          "0V to Coast",
+		  "0V to Brake"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Disarm Song Playback Option",
+        "info": "Determines how many times the disarming song will play on a disarm.",
+        "sub_idn": 10,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Never Play",
+          "Play Once",
+		  "Play Continuosly"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
+      },
+	  {
+        "type_idn": 52,
+        "descriptor": "Timeout Behavior",
+        "info": "Determines what behavior to perform when a timeout error occurs. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+        "sub_idn": 18,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Coast",
+          "0V to Coast",
+		  "0V to Brake"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
+      },
+	  {
+        "type_idn": 52,
+        "descriptor": "Timeout Song Playback Option",
+        "info": "Determines how many times the timeout song will play on a timeout error.",
+        "sub_idn": 19,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Never Play",
+          "Play Once",
+		  "Play Continuosly"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
       }
     ]
   }
