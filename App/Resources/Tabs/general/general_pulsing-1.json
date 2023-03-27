@@ -1,0 +1,255 @@
+[
+  {
+    "descriptor": "general_pulsing-1",
+    "Entries": [
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Zero Angle",
+        "info": "The encoder angle at which theta is zero.  Adjust this number to change the location of 0 phase when pulsing.",
+        "sub_idn": 0,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 2,
+        "maximum": 6.28,
+        "minimum": -6.28,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 74,
+        "descriptor": "Sample Pulsing Zero Angle",
+        "info": "Samples a new pulsing zero angle based on the current angle",
+        "sub_idn": 15,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+	  {
+        "type_idn": 74,
+        "descriptor": "Pulsing Torque Angle",
+        "info": "The encoder angle at which theta is zero.  Adjust this number to change the location of 0 phase when pulsing.",
+        "sub_idn": 16,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 2,
+        "maximum": 6.28,
+        "minimum": -6.28,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Frequency",
+        "info": "The number of pulses per rotation.",
+        "sub_idn": 1,
+        "format": "B",
+        "unit": "pulse/rot",
+        "frame_type": 2,
+        "maximum": 200,
+        "minimum": 0,
+        "decimal":0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 60,
+        "descriptor": "Motor Direction",
+        "info": "Set the motor's spinning direction (clockwise vs. counter clockwise) and flight mode (2D non-reversible vs. 3D reversible)",
+        "sub_idn": 3,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "uncofigured",
+          "3D counter clockwise",
+          "3D clockwise",
+          "2D counter clockwise",
+          "2D clockwise"
+        ],
+        "list_value": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "Mode",
+        "info": "PWM Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use PWM. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
+        "sub_idn": 0,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "PWM",
+          "Voltage",
+          "Velocity"
+        ],
+        "list_value": [
+          0,
+          1,
+          2
+        ]
+      },
+	  {
+        "type_idn": 88,
+        "descriptor": "Throttle Control Value Index",
+        "info": "",
+        "sub_idn": 2,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+		  "5",
+		  "6",
+		  "7",
+          "8",
+          "9",
+          "10",
+          "11",
+		  "12",
+		  "13",
+		  "14",
+		  "15",
+		  "Unconfigured"
+        ],
+        "list_value": [
+          0,
+          1,
+          2,
+          3,
+          4,
+		  5,
+		  6,
+		  7,
+		  8,
+		  9,
+		  10,
+		  11,
+		  12,
+		  13,
+		  14,
+		  15,
+		  255
+        ]
+      },
+	  {
+        "type_idn": 88,
+        "descriptor": "X Control Value Index",
+        "info": "",
+        "sub_idn": 3,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+		  "5",
+		  "6",
+		  "7",
+          "8",
+          "9",
+          "10",
+          "11",
+		  "12",
+		  "13",
+		  "14",
+		  "15",
+		  "Unconfigured"
+        ],
+        "list_value": [
+          0,
+          1,
+          2,
+          3,
+          4,
+		  5,
+		  6,
+		  7,
+		  8,
+		  9,
+		  10,
+		  11,
+		  12,
+		  13,
+		  14,
+		  15,
+		  255
+        ]
+      },
+	  {
+        "type_idn": 88,
+        "descriptor": "Y Control Value Index",
+        "info": "",
+        "sub_idn": 4,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+		  "5",
+		  "6",
+		  "7",
+          "8",
+          "9",
+          "10",
+          "11",
+		  "12",
+		  "13",
+		  "14",
+		  "15",
+		  "Unconfigured"
+        ],
+        "list_value": [
+          0,
+          1,
+          2,
+          3,
+          4,
+		  5,
+		  6,
+		  7,
+		  8,
+		  9,
+		  10,
+		  11,
+		  12,
+		  13,
+		  14,
+		  15,
+		  255
+        ]
+      },
+	  {
+	  "type_idn": 89,
+        "descriptor": "Pulsing Voltage Mode",
+        "info": "",
+        "sub_idn": 0,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Supply Voltage",
+          "Voltage Limit"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      }
+    ]
+  }
+]
