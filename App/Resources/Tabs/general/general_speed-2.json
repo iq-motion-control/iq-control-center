@@ -110,7 +110,7 @@
 	  {
         "type_idn": 86,
         "descriptor": "Arm Throttle Upper Limit",
-        "info": "The upper limit of the arming region, in terms of throttle percentage.",
+        "info": "The upper limit of the arming region, in terms of the incoming throttle percentage over 100. 0 corresponds to 0% throttle, 1 corresponds to 100% throttle.",
         "sub_idn": 3,
         "format": "f",
         "unit": "",
@@ -124,7 +124,7 @@
 	  {
         "type_idn": 86,
         "descriptor": "Arm Throttle Lower Limit",
-        "info": "The lower limit of the arming region, in terms of throttle percentage.",
+        "info": "The lower limit of the arming region, in terms of the incoming throttle percentage over 100. 0 corresponds to 0% throttle, 1 corresponds to 100% throttle.",
         "sub_idn": 4,
         "format": "f",
         "unit": "",
@@ -138,7 +138,7 @@
 	  {
         "type_idn": 86,
         "descriptor": "Disarm Throttle Upper Limit",
-        "info": "The upper limit of the disarming region, in terms of throttle percentage.",
+        "info": "The upper limit of the disarming region, in terms of the incoming throttle percentage over 100. 0 corresponds to 0% throttle, 1 corresponds to 100% throttle.",
         "sub_idn": 6,
         "format": "f",
         "unit": "",
@@ -152,7 +152,7 @@
 	  {
         "type_idn": 86,
         "descriptor": "Disarm Throttle Lower Limit",
-        "info": "The lower limit of the disarming region, in terms of throttle percentage.",
+        "info": "The lower limit of the disarming region, in terms of the incoming throttle percentage over 100. 0 corresponds to 0% throttle, 1 corresponds to 100% throttle.",
         "sub_idn": 7,
         "format": "f",
         "unit": "",
@@ -200,7 +200,7 @@
 	  {
         "type_idn": 86,
         "descriptor": "Consecutive Arming Throttles to Arm",
-        "info": "The low end of the calibration in us",
+        "info": "The number of consecutive throttles in the arming region required to arm the module. Any throttles that come in outside of the arming region will reset the count.",
         "sub_idn": 8,
         "format": "I",
         "unit": "Throttles",
