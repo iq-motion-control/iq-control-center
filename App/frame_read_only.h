@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 - 2019 IQ Motion Control   	dskart11@gmail.com
+    Copyright 2023 Vertiq   	jordan.leiber@vertiq.co
 
     This file is part of IQ Control Center.
 
