@@ -222,7 +222,7 @@
 	  {
         "type_idn": 89,
         "descriptor": "Pulsing Voltage Limit",
-        "info": "",
+        "info": "The maximum pulsing voltage used when the Pulsing Voltage Mode is set to Voltage Limit",
         "sub_idn": 1,
         "format": "f",
         "unit": "V",
