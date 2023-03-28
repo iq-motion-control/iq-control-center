@@ -57,54 +57,6 @@
         "single_step": 0.001,
         "decimal": 3,
         "nan": true
-      },
-      {
-        "type_idn": 90,
-        "descriptor": "GPIO 1 I/O",
-        "info": "Choose whether GPIO 1 is an input or an output",
-        "sub_idn": 2,
-        "format": "B",
-        "frame_type": 1,
-        "list_name": [
-          "Input",
-          "Output"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-      },
-      {
-        "type_idn": 90,
-        "descriptor": "GPIO 2 I/O",
-        "info": "Choose whether GPIO 1 is an input or an output",
-        "sub_idn": 7,
-        "format": "B",
-        "frame_type": 1,
-        "list_name": [
-          "Input",
-          "Output"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-      },
-      {
-        "type_idn": 90,
-        "descriptor": "GPIO 3 I/O",
-        "info": "Choose whether GPIO 1 is an input or an output",
-        "sub_idn": 12,
-        "format": "B",
-        "frame_type": 1,
-        "list_name": [
-          "Input",
-          "Output"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
       }
     ]
   }
