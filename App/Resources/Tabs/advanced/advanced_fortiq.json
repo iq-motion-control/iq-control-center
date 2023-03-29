@@ -163,7 +163,7 @@
         "type_idn": 90,
         "descriptor": "GPIO Inputs",
         "info": "3 bits represent the current inputs [2:0] where 0 indicates off, 1 indicates on",
-        "sub_idn": 0,
+        "sub_idn": 1,
         "format": "B",
         "unit": "",
         "frame_type": 6,
@@ -175,7 +175,19 @@
       {
         "type_idn": 90,
         "descriptor": "GPIO Mode Register",
-        "info": "Interacts with GPIO mode register. To write, the top bit indicates input/output, and the bottom 7 bits indicate the GPIO. Example, writing 129 makes GPIO1 an output.",
+        "info": "Interacts with GPIO mode register. Each bit corresponds with one GPIO. Setting 0 indicates input, 1 indicates output.",
+        "sub_idn": 0,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Output Register",
+        "info": "Interacts with GPIO output register. Each bit corresponds with one GPIO. Setting 0 indicates output low, 1 indicates output high.",
         "sub_idn": 2,
         "format": "B",
         "unit": "",
@@ -186,22 +198,9 @@
       },
       {
         "type_idn": 90,
-        "descriptor": "GPIO Modes",
-        "info": "3 bits represent the modes [2:0] where 0 indicates input, 1 indicates output",
-        "sub_idn": 4,
-        "format": "B",
-        "unit": "",
-        "frame_type": 6,
-        "maximum": 7,
-        "minimum": 0,
-        "decimal": 0,
-        "single_step": 1
-      },
-      {
-        "type_idn": 90,
-        "descriptor": "GPIO Output Register",
-        "info": "Interacts with GPIO output register. To write, the top bit indicates on or off, and the bottom 7 bits indicate the GPIO. Example, writing 129 sets GPIO1 high.",
-        "sub_idn": 1,
+        "descriptor": "GPIO Use-Pull Register",
+        "info": "Interacts with GPIO Use-Pull register. Each bit corresponds with one GPIO. Setting 0 indicates using no pull, 1 indicates using the pull specified in the Pull-Type register.",
+        "sub_idn": 3,
         "format": "B",
         "unit": "",
         "frame_type": 2,
@@ -211,15 +210,26 @@
       },
       {
         "type_idn": 90,
-        "descriptor": "GPIO Outputs",
-        "info": "3 bits represent the current outputs [2:0] where 0 indicates off, 1 indicates on",
-        "sub_idn": 6,
+        "descriptor": "GPIO Pull-Type Register",
+        "info": "Interacts with GPIO Pull-Type register. Each bit corresponds with one GPIO. If the GPIO's Use-Pull is set high, 0 indicates Pull Down and 1 indicates Pull Up",
+        "sub_idn": 4,
         "format": "B",
         "unit": "",
-        "frame_type": 6,
-        "maximum": 7,
+        "frame_type": 2,
+        "maximum": 255,
         "minimum": 0,
-        "decimal": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Push Pull - Open Drain Register",
+        "info": "Interacts with GPIO Push Pull - Open Drain register. Each bit corresponds with one GPIO. 0 indicates Push Pull, 1 indicates open drain",
+        "sub_idn": 5,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 255,
+        "minimum": 0,
         "single_step": 1
       },
       {
@@ -270,7 +280,7 @@
         "maximum": 1,
         "minimum": 0,
         "single_step": 1
-      },
+      }
     ]
   }
 ]
