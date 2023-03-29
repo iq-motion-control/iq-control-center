@@ -95,7 +95,7 @@
 	  {
         "type_idn": 88,
         "descriptor": "Throttle Control Value Index",
-        "info": "",
+        "info": "This index determines where in a control message from the flight controller the module should look to find the throttle value. The index set here should match the index the flight controller expects to pack throttle commands for this particular module in.",
         "sub_idn": 2,
         "format": "B",
         "unit": "enum",
@@ -142,7 +142,7 @@
 	  {
         "type_idn": 88,
         "descriptor": "X Control Value Index",
-        "info": "",
+        "info": "This index determines where in a control message from the flight controller the module should look to find its X-coordinate value for pulsing. The index set here should match the index the flight controller expects to pack the X-coordinate for this particular module in.",
         "sub_idn": 3,
         "format": "B",
         "unit": "enum",
@@ -189,7 +189,7 @@
 	  {
         "type_idn": 88,
         "descriptor": "Y Control Value Index",
-        "info": "",
+        "info": "This index determines where in a control message from the flight controller the module should look to find its Y-coordinate value for pulsing. The index set here should match the index the flight controller expects to pack the Y-coordinate for this particular module in.",
         "sub_idn": 4,
         "format": "B",
         "unit": "enum",
@@ -236,7 +236,7 @@
 	  {
 	  "type_idn": 89,
         "descriptor": "Pulsing Voltage Mode",
-        "info": "",
+        "info": "This mode determines how the module will decide on its maximum pulsing voltage for scaling incoming pulsing commands. In Supply Voltage mode, the supply voltage is used as the maximum pulsing voltage. In Voltage Limit mode, the pulsing voltage limit set by the user is used as the maximum pulsing voltage.",
         "sub_idn": 0,
         "format": "B",
         "unit": "enum",
