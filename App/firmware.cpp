@@ -34,6 +34,13 @@ Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binar
     : flash_progress_bar_(flash_progress_bar), firmware_binary_button_(firmware_binary_button),
       recover_progress_bar_(recover_progress_bar), recover_binary_button_(recover_binary_button){
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
+
+  //If the Control Center closed or crashed without completing a flash, there may be leftover local metadata files.
+  //Clearing them out on startup so we start with a fresh slate. Make a temporary metadata handler just to clear out any old files.
+  MetadataHandler * temporary_startup_metadata_handler = new MetadataHandler(iv.pcon);
+  temporary_startup_metadata_handler->DeleteExtractedFolder();
+  delete temporary_startup_metadata_handler;
+
 }
 
 void Firmware::UpdateFlashButtons(){
@@ -156,6 +163,12 @@ void Firmware::SelectFirmwareClicked() {
             buttonInUse = recover_binary_button_;
         }
 
+        //Make sure we clear out any old metadata before we try to unpack any new metadata.
+        //The functionality for looking at the metadata and the binaries assumes there is only
+        //one set of metadata and binaries active at any one time, but if the user switches selections
+        //without flashing we could have lingering metadata
+        ResetMetadata();
+
         //Check if it's empty. If it is do nothing and keep displaying the text
         //If we picked a bin file, process it as we always have, but flash a warning
         //If we picked a zip folder, use quazip
@@ -202,7 +215,7 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
         if(msgBox.exec() == QMessageBox::Ok){
             buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
             firmware_bin_path_ = "";
-            metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+            ResetMetadata();
             return;
         }
     }
@@ -300,7 +313,7 @@ bool Firmware::FlashHardwareElectronicsWarning(){
         if(msgBox.exec() == QMessageBox::Ok){
             firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
             firmware_bin_path_ = "";
-            metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+            ResetMetadata();
             return true;
         }
     }
@@ -449,9 +462,7 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
       }
 
       //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-      if(using_metadata_){
-        metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
-      }
+      ResetMetadata();
 
     } catch (const QString &e) {
         iv.label_message->setText(e);
@@ -489,4 +500,14 @@ bool Firmware::BootMode() {
     return 0;
   }
   return 1;
+}
+
+//Clear out our locally stored metadata files and binaries, and mark that we are not currently
+//using any metadata.
+void Firmware::ResetMetadata(){
+    if(using_metadata_){
+      metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+    }
+
+    using_metadata_ = false;
 }

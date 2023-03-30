@@ -3,12 +3,11 @@
 MetadataHandler::MetadataHandler(PortConnection * pcon):
     pcon_(pcon)
 {
+    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 }
 
 void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     JlCompress extract_tool;
-
-    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 
     metadata_dir_ = new QDir(extract_path_);
     QStringList files = extract_tool.extractDir(firmware_bin_path_, extract_path_);
@@ -185,9 +184,12 @@ void MetadataHandler::FindBinariesInFolder(){
 
 void MetadataHandler::DeleteExtractedFolder(){
     //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-    QDir dir(extract_path_);
-    dir.removeRecursively();
-    extract_path_ = "";
+    //If extract path is "", it can delete a lot of files unexpectedly! It should be impossible to wind up
+    //in that case, but checking to be extra careful
+    if(extract_path_ != ""){
+        QDir dir(extract_path_);
+        dir.removeRecursively();
+    }
 }
 
 bool MetadataHandler::CheckHardwareAndElectronics(){
@@ -231,7 +233,6 @@ uint32_t MetadataHandler::GetBootloaderVersion(){
 
 void MetadataHandler::Reset(Ui::MainWindow * mainWindow){
     DeleteExtractedFolder();
-    extract_path_ = "";
     mainWindow->flash_progress_bar->reset();
     mainWindow->recovery_progress->reset();
     pcon_->ClearFirmwareChoices();
