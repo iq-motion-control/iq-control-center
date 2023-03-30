@@ -156,6 +156,10 @@ void Firmware::SelectFirmwareClicked() {
             buttonInUse = recover_binary_button_;
         }
 
+        if(using_metadata_){
+          metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+        }
+
         //Check if it's empty. If it is do nothing and keep displaying the text
         //If we picked a bin file, process it as we always have, but flash a warning
         //If we picked a zip folder, use quazip
