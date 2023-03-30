@@ -156,9 +156,7 @@ void Firmware::SelectFirmwareClicked() {
             buttonInUse = recover_binary_button_;
         }
 
-        if(using_metadata_){
-          metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
-        }
+        ResetMetadata();
 
         //Check if it's empty. If it is do nothing and keep displaying the text
         //If we picked a bin file, process it as we always have, but flash a warning
@@ -206,7 +204,7 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
         if(msgBox.exec() == QMessageBox::Ok){
             buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
             firmware_bin_path_ = "";
-            metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+            ResetMetadata();
             return;
         }
     }
@@ -304,7 +302,7 @@ bool Firmware::FlashHardwareElectronicsWarning(){
         if(msgBox.exec() == QMessageBox::Ok){
             firmware_binary_button_->setText("Select Firmware (\".bin\") or (\".zip\")" );
             firmware_bin_path_ = "";
-            metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+            ResetMetadata();
             return true;
         }
     }
@@ -453,9 +451,7 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
       }
 
       //We are now done with the extracted directory that we made. We should delete it to avoid any issues
-      if(using_metadata_){
-        metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
-      }
+      ResetMetadata();
 
     } catch (const QString &e) {
         iv.label_message->setText(e);
@@ -493,4 +489,12 @@ bool Firmware::BootMode() {
     return 0;
   }
   return 1;
+}
+
+void Firmware::ResetMetadata(){
+    if(using_metadata_){
+      metadata_handler_->Reset(iv.pcon->GetMainWindowAccess());
+    }
+
+    using_metadata_ = false;
 }
