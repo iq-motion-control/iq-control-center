@@ -136,7 +136,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": 0,
-        "decimal":0,
+        "decimal":5,
         "single_step": 0.001
       },
       {
@@ -149,7 +149,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":0,
+        "decimal":5,
         "single_step": 0.001
       },
       {
@@ -162,7 +162,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":0,
+        "decimal":5,
         "single_step": 0.001
       },
       {
@@ -175,7 +175,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":0,
+        "decimal":5,
         "single_step": 0.001
       },
       {
@@ -188,7 +188,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":0,
+        "decimal":5,
         "single_step": 0.001
       },
 	  {
@@ -203,7 +203,7 @@
         "minimum": 0.0,
         "single_step": 0.1,
         "nan": true,
-        "decimal": 1
+        "decimal": 2
       },
       {
         "type_idn": 60,
@@ -229,7 +229,7 @@
         "frame_type": 2,
         "maximum": 25.2,
         "minimum": 0.0,
-        "decimal": 1,
+        "decimal": 2,
         "single_step": 0.1
       }
     ]
