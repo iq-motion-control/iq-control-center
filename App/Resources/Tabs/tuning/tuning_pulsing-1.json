@@ -27,7 +27,7 @@
         "maximum": 1,
         "minimum": -0.00001,
         "single_step": 0.00001,
-        "decimal": 5,
+        "decimal": 8,
         "nan": true
       },
       {
@@ -136,7 +136,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": 0,
-        "decimal":5,
+        "decimal": 8,
         "single_step": 0.001
       },
       {
@@ -149,7 +149,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":5,
+        "decimal": 8,
         "single_step": 0.001
       },
       {
@@ -162,7 +162,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":5,
+        "decimal": 8,
         "single_step": 0.001
       },
       {
@@ -175,7 +175,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":5,
+        "decimal": 8,
         "single_step": 0.001
       },
       {
@@ -188,7 +188,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal":5,
+        "decimal": 8,
         "single_step": 0.001
       },
 	  {
