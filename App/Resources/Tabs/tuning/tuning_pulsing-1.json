@@ -175,7 +175,7 @@
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
-        "decimal": 8,
+        "decimal": 11,
         "single_step": 0.001
       },
       {
