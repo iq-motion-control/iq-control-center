@@ -42,6 +42,7 @@ class FrameTesting : public Frame {
   FrameTesting(QWidget *parent, Client *client,
                std::pair<std::string, ClientEntryAbstract *> client_entry, FrameVariables *fv);
 
+  QSpacerItem *empty_slot_spacer_;
   QPushButton *push_button_set_;
   QPushButton *push_button_info_;
   QDoubleSpinBox *spin_box_;

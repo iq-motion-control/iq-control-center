@@ -55,6 +55,10 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   spin_box_->setSuffix(unit);
   spin_box_->setValue(default_value_);
 
+  //Fills the space where a set button would be with empty space
+  empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+  horizontal_layout_->addItem(empty_slot_spacer_);
+
   // creates push buton set
   push_button_set_ = new QPushButton(this);
   SetPushButton(push_button_set_, size_policy, QString("pushButtonSave"),
