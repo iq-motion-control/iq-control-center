@@ -184,7 +184,7 @@
         "info": "The velocity phase correction factor",
         "sub_idn": 11,
         "format": "f",
-        "unit": "rad/Unknown",
+        "unit": "",
         "frame_type": 2,
         "maximum": 1000,
         "minimum": -1000,
