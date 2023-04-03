@@ -34,10 +34,10 @@
         "nan": true
       },
       {
-        "type_idn": 71,
+        "type_idn": 79,
         "descriptor": "Anticogging",
 	      "info": "This electrically cancels cogging torque to make your motor smoother.",
-        "sub_idn": 2,
+        "sub_idn": 0,
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
