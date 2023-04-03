@@ -42,6 +42,10 @@
       {
         "descriptor": "Velocity FF2",
         "value": 2.50E-07
+      },
+	  {
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "value": 0.0045
       }
     ]
   },
