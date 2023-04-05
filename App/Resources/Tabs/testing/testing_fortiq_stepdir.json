@@ -154,7 +154,7 @@
       },
       {
         "type_idn": 92,
-        "descriptor": "PWM Frequency",
+        "descriptor": "PWM Output Frequency",
         "info": "Sets the PWM frequency",
         "sub_idn": 0,
         "format": "I",
@@ -166,7 +166,7 @@
       },
       {
         "type_idn": 92,
-        "descriptor": "PWM Duty Cycle",
+        "descriptor": "PWM Output Duty Cycle",
         "info": "Sets the PWM duty cycle",
         "sub_idn": 1,
         "format": "B",
@@ -178,7 +178,7 @@
       },
       {
         "type_idn": 92,
-        "descriptor": "PWM Mode",
+        "descriptor": "PWM Output Mode",
         "info": "Sets the PWM mode. 0 indicates that the duty cycle represents the high portion of the PWM cycle, 1 indicates that the duty cycle represents the low portion.",
         "sub_idn": 2,
         "format": "B",
