@@ -187,6 +187,43 @@
         "maximum": 1,
         "minimum": 0,
         "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Inputs",
+        "info": "3 bits represent the current inputs [2:0] where 0 indicates off, 1 indicates on",
+        "sub_idn": 1,
+        "format": "B",
+        "unit": "",
+        "frame_type": 6,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      }
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Output Register",
+        "info": "Interacts with GPIO output register. Each bit corresponds with one GPIO. Setting 0 indicates output low, 1 indicates output high.",
+        "sub_idn": 2,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Addressable - Output",
+        "info": "Interacts with GPIO outputs in an addressed fashion. The 8 bit value indicates the output (high/low) and the pin. The top bit indicates output (0 for low, 1 for high), and the other 7 indicate the pin number. For example, to make GPIO3 ouptut high, write 131",
+        "sub_idn": 7,
+        "format": "B",
+        "unit": "",
+        "frame_type": 4,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
       }
     ]
   }
