@@ -57,7 +57,8 @@
         "single_step": 0.001,
         "decimal": 3,
         "nan": true
-      }      {
+      },
+      {
         "type_idn": 90,
         "descriptor": "GPIO Mode Register",
         "info": "Interacts with GPIO mode register. Each bit corresponds with one GPIO. Setting 0 indicates input, 1 indicates output.",
