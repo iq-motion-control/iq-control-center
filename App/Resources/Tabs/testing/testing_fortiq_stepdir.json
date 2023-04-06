@@ -200,7 +200,7 @@
         "minimum": 0,
         "decimal": 0,
         "single_step": 1
-      }
+      },
       {
         "type_idn": 90,
         "descriptor": "GPIO Output Register",
