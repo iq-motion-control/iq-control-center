@@ -43,6 +43,7 @@ class FrameVariables {
   // 3 = switch
   // 4 = testing
   // 5 = button
+  // 6 = readonly
 
   struct ComboFrame {
     std::vector<std::string> list_names;
@@ -76,11 +77,22 @@ class FrameVariables {
     std::string info;
   };
 
+  struct ReadOnlyFrame {
+      double maximum;
+      double minimum;
+      double single_step;
+      double decimal;
+      std::string unit;
+      bool nan;
+      std::string info;
+  };
+
   ComboFrame combo_frame_;
   SpinFrame spin_frame_;
   SwitchFrame switch_frame_;
   TestingFrame testing_frame_;
   ButtonFrame button_frame_;
+  ReadOnlyFrame read_only_frame_;
 };
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,

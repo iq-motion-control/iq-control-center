@@ -1,5 +1,5 @@
 /*
-    Copyright 2018 - 2019 IQ Motion Control   	dskart11@gmail.com
+    Copyright 2023 Vertiq   	jordan.leiber@vertiq.co
 
     This file is part of IQ Control Center.
 
@@ -18,17 +18,17 @@
 
 */
 
-#include "frame_testing.h"
+#include "frame_read_only.h"
 
-FrameTesting::FrameTesting(QWidget* parent, Client* client,
-                           std::pair<std::string, ClientEntryAbstract*> client_entry,
-                           FrameVariables* fv)
-    : Frame(parent, 4), client_(client), client_entry_(client_entry) {
-  info_ = QString::fromStdString(fv->testing_frame_.info);
-  default_value_ = fv->testing_frame_.default_value;
-  value_ = default_value_;
-
-  setObjectName(QStringLiteral("FrameTesting"));
+FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
+                           std::pair<std::string, ClientEntryAbstract *> client_entry,
+                           FrameVariables *fv)
+    : Frame(parent, 6), client_(client), client_entry_(client_entry) {
+  nan_value_ = fv->read_only_frame_.minimum;
+  has_nan_ = fv->read_only_frame_.nan;
+  single_step_ = fv->read_only_frame_.single_step;
+  info_ = QString::fromStdString(fv->read_only_frame_.info);
+  setObjectName(QStringLiteral("frameReadOnly"));
   setGeometry(QRect(0, 0, 1029, 70));
 
   QSizePolicy size_policy = CreateSizePolicy();
@@ -49,22 +49,25 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   // creates spin_box
   spin_box_ = new QDoubleSpinBox(this);
   SetSpinBox(size_policy, fv);
-  horizontal_layout_->addWidget(spin_box_);
-  QString unit = "   " + QString::fromStdString(fv->testing_frame_.unit);
-  spin_box_->setToolTip(QString::fromStdString(fv->testing_frame_.unit));
+  QString unit = "   " + QString::fromStdString(fv->read_only_frame_.unit);
+  spin_box_->setToolTip(QString::fromStdString(fv->read_only_frame_.unit));
   spin_box_->setSuffix(unit);
-  spin_box_->setValue(default_value_);
+  if (has_nan_) {
+    spin_box_->setSpecialValueText(tr("Nan"));
+  }
+  spin_box_->setButtonSymbols(QAbstractSpinBox::NoButtons);
+  horizontal_layout_->addWidget(spin_box_);
+
+  // creates push button get
+  push_button_get_ = new QPushButton(this);
+  SetPushButton(push_button_get_, size_policy, QString("pushButtonGet"),
+                QString(":/res/default_icon.png"));
+  push_button_get_->setToolTip(default_tip_);
+  horizontal_layout_->addWidget(push_button_get_);
 
   //Fills the space where a set button would be with empty space
   empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
   horizontal_layout_->addItem(empty_slot_spacer_);
-
-  // creates push buton set
-  push_button_set_ = new QPushButton(this);
-  SetPushButton(push_button_set_, size_policy, QString("pushButtonSave"),
-                QString(":/res/save.png"));
-  push_button_set_->setToolTip(set_tip_);
-  horizontal_layout_->addWidget(push_button_set_);
 
   // creates pushbutton info
   push_button_info_ = new QPushButton(this);
@@ -74,12 +77,12 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
 }
 
-void FrameTesting::ShowInfo() {
+void FrameReadOnly::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
   QWhatsThis::showText(globalPos, info_, push_button_info_);
 }
 
-void FrameTesting::SetPushButton(QPushButton* push_button, QSizePolicy size_policy,
+void FrameReadOnly::SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
                                  QString push_button_name, QString icon_file_name) {
   push_button->setObjectName(push_button_name);
   size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
@@ -93,7 +96,7 @@ void FrameTesting::SetPushButton(QPushButton* push_button, QSizePolicy size_poli
   push_button->setFlat(true);
 }
 
-void FrameTesting::SetSpinBox(QSizePolicy size_policy, FrameVariables* fv) {
+void FrameReadOnly::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
   size_policy.setHeightForWidth(spin_box_->sizePolicy().hasHeightForWidth());
   QFont font;
   font.setFamily(QStringLiteral("Lato"));
@@ -105,51 +108,56 @@ void FrameTesting::SetSpinBox(QSizePolicy size_policy, FrameVariables* fv) {
   spin_box_->setAutoFillBackground(false);
   spin_box_->setWrapping(false);
   spin_box_->setFrame(false);
-  spin_box_->setReadOnly(false);
+  spin_box_->setReadOnly(true);
   spin_box_->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
   spin_box_->setAccelerated(false);
   spin_box_->setKeyboardTracking(true);
   spin_box_->setProperty("showGroupSeparator", QVariant(false));
 
-  double maximimum = INT_MAX;
-  double minimum = INT_MIN;
-
-  if (!isnan(fv->testing_frame_.maximum)) {
-    maximimum = fv->testing_frame_.maximum;
-  }
-  if (!isnan(fv->testing_frame_.minimum)) {
-    minimum = fv->testing_frame_.minimum;
-  }
-
-  spin_box_->setRange(minimum, maximimum);
-  spin_box_->setSingleStep(fv->testing_frame_.single_step);
-  spin_box_->setDecimals(fv->testing_frame_.decimal);
+  spin_box_->setRange(fv->read_only_frame_.minimum, fv->read_only_frame_.maximum);
+  spin_box_->setSingleStep(fv->read_only_frame_.single_step);
+  spin_box_->setDecimals(fv->read_only_frame_.decimal);
 }
 
-void FrameTesting::SetValue() {
+void FrameReadOnly::GetSavedReadOnlyValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first, value_);
-      iv.pcon->GetQSerialInterface()->SendNow();
-      if (IsZero(value_, 0.00001)) {
-        QString success_message = label_->text() + " succesfully set to " + QString::number(0);
-        iv.label_message->setText(success_message);
-      } else {
-        QString success_message =
-            label_->text() + " succesfully set to " + QString::number(value_);
-        iv.label_message->setText(success_message);
+      if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f,
+                         saved_value_))
+        throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+      if (has_nan_ && std::isnan(saved_value_)) {
+        saved_value_ = nan_value_;
       }
-    } catch (const QString& e) {
+      spin_box_->setValue(saved_value_);
+    } catch (const QString &e) {
       iv.label_message->setText(e);
     }
   } else {
-    QString error_message = "No Motor Connected, Please Connect Motor";
+    QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
     iv.label_message->setText(error_message);
   }
 }
 
-void FrameTesting::SpinBoxValueChanged(double spin_box_value) { value_ = spin_box_value; }
+void FrameReadOnly::SpinBoxValueChanged(double spin_box_value) {
+  if (has_nan_ && spin_box_value == nan_value_) {
+    value_ = std::numeric_limits<double>::quiet_NaN();
+  } else {
+    value_ = spin_box_value;
+  }
+}
 
-bool FrameTesting::IsZero(double value, double threshold) {
-  return value >= -threshold && value <= threshold;
+void FrameReadOnly::AddStarToLabel() {
+  QString text = label_->text();
+  if (text.back() != "*") {
+    text.append(QString("*"));
+    label_->setText(text);
+  }
+}
+
+void FrameReadOnly::RemoveStarFromLabel() {
+  QString text = label_->text();
+  if (text.back() == "*") {
+    text = text.left(text.length() - 1);
+    label_->setText(text);
+  }
 }

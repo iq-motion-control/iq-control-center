@@ -82,11 +82,22 @@ void Tab::CreateFrames()
           break;
         }
         case 5:
+        {
           FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv);
           gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
           ConnectFrameButton(fb);
           frame_map_[client_entry_descriptor] = fb;
           break;
+        }
+
+        case 6:
+        {
+          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv);
+          gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
+          ConnectFrameReadOnly(fr);
+          frame_map_[client_entry_descriptor] = fr;
+          break;
+        }
       }
       ++frame_vertical_position;
     }
@@ -117,6 +128,16 @@ void Tab::CheckSavedValues()
         if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
            break;
         fsb->GetSavedValue();
+        break;
+      }
+
+      case 6:
+      {
+        FrameReadOnly *fr = nullptr;
+        if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
+            break;
+        fr->GetSavedReadOnlyValue();
+        break;
       }
     }
   }
@@ -180,6 +201,12 @@ void Tab::ConnectFrameTesting(FrameTesting *ft)
 void Tab::ConnectFrameButton(FrameButton *fb)
 {
   connect(fb->push_button_set_, SIGNAL(clicked()), fb, SLOT(SetValue()));
+}
+
+void Tab::ConnectFrameReadOnly(FrameReadOnly *fr)
+{
+    connect(fr->push_button_get_, SIGNAL(clicked()), fr, SLOT(GetSavedReadOnlyValue()));
+    connect(fr->spin_box_, QOverload<double>::of(&QDoubleSpinBox::valueChanged), fr, &FrameReadOnly::SpinBoxValueChanged);
 }
 
 Tab::~Tab()

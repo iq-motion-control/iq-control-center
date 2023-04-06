@@ -137,6 +137,24 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       frame_variables_ptr->button_frame_.info = param["info"].asString();
       break;
     }
+    case 6: {
+        double maximum = NAN;
+        double minimum = NAN;
+        if (!param["maximum"].isNull()) {
+          maximum = param["maximum"].asDouble();
+        }
+        if (!param["minimum"].isNull()) {
+          minimum = param["minimum"].asDouble();
+        }
+        frame_variables_ptr->read_only_frame_.maximum = maximum;
+        frame_variables_ptr->read_only_frame_.minimum = minimum;
+        frame_variables_ptr->read_only_frame_.single_step = param["single_step"].asDouble();
+        frame_variables_ptr->read_only_frame_.decimal = param["decimal"].asDouble();
+        frame_variables_ptr->read_only_frame_.unit = param["unit"].asString();
+        frame_variables_ptr->read_only_frame_.nan = param["nan"].asBool();
+        frame_variables_ptr->read_only_frame_.info = param["info"].asString();
+    break;
+  }
   }
 
   return frame_variables_ptr;

@@ -1,0 +1,159 @@
+[
+  {
+    "descriptor": "tuning_fortiq_stepdir-4",
+    "Entries": [
+      {
+        "type_idn": 59,
+        "descriptor": "Angle Kp",
+        "info": "The angle proportional gain. Helps to correct angle errors. Higher gain means smaller errors and faster response, but can lead to oscillations and overheating.",
+        "sub_idn": 5,
+        "format": "f",
+        "unit": "V/rad",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Angle Ki",
+        "info": "The angle integral gain. Helps to correct steady state angle errors. Higher gain means quicker suppression of steady state errors, but also increased oscillations, overheating, and faster windup.",
+        "sub_idn": 6,
+        "format": "f",
+        "unit": "V/(rad*s)",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.01,
+        "single_step": 0.01,
+        "decimal": 2,
+        "nan": true
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Angle Kd",
+        "info": "The angle derivative gain. Helps to reduce overshoot oscillations. Higher gain means less overshoot from Kp and Ki, but can also introduce higher frequency oscillations and overheating.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "V/(rad/s)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.0001,
+        "single_step": 0.0001,
+        "decimal": 4,
+        "nan": true
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Timeout",
+        "info": "The motor must receive a message within this amount of time. If it does not, it enters coast mode.",
+        "sub_idn": 8,
+        "format": "f",
+        "unit": "s",
+        "frame_type": 2,
+        "maximum": 1000000000,
+        "minimum": 0,
+        "single_step": 0.001,
+        "decimal": 3,
+        "nan": true
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Mode Register",
+        "info": "Interacts with GPIO mode register. Each bit corresponds with one GPIO. Setting 0 indicates input, 1 indicates output.",
+        "sub_idn": 0,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Use-Pull Register",
+        "info": "Interacts with GPIO Use-Pull register. Each bit corresponds with one GPIO. Setting 0 indicates using no pull, 1 indicates using the pull specified in the Pull-Type register.",
+        "sub_idn": 3,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Pull-Type Register",
+        "info": "Interacts with GPIO Pull-Type register. Each bit corresponds with one GPIO. If the GPIO's Use-Pull is set high, 0 indicates Pull Down and 1 indicates Pull Up",
+        "sub_idn": 4,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Push Pull - Open Drain Register",
+        "info": "Interacts with GPIO Push Pull - Open Drain register. Each bit corresponds with one GPIO. 0 indicates Push Pull, 1 indicates open drain",
+        "sub_idn": 5,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Addressable - Mode",
+        "info": "Interacts with GPIO modes in an addressed fashion. The 8 bit value indicates the mode (input/output) and the pin. The top bit indicates mode (0 for input, 1 for output), and the other 7 indicate the pin number. For example, to make GPIO3 an ouptut, write 131",
+        "sub_idn": 6,
+        "format": "B",
+        "unit": "",
+        "frame_type": 4,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Addressable - Use-Pull",
+        "info": "Interacts with GPIO Use-Pulls in an addressed fashion. The 8 bit value indicates the value (true/false) and the pin. The top bit indicates value (0 for false, 1 for true), and the other 7 indicate the pin number. For example, to make GPIO3 use a pull (up or down), write 131",
+        "sub_idn": 8,
+        "format": "B",
+        "unit": "",
+        "frame_type": 4,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Addressable - Pull-Type",
+        "info": "Interacts with GPIO Pull-Types in an addressed fashion. The 8 bit value indicates the pull type (up/down) and the pin. The top bit indicates pull type (0 for down, 1 for up), and the other 7 indicate the pin number. For example, to make GPIO3 pull up, write 131",
+        "sub_idn": 9,
+        "format": "B",
+        "unit": "",
+        "frame_type": 4,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 90,
+        "descriptor": "GPIO Addressable - Push Pull/Open Drain",
+        "info": "Interacts with GPIO Push Pull/Open Drain in an addressed fashion. The 8 bit value indicates the PP/OD value (PP/OD) and the pin. The top bit indicates PP or OD (0 for PP, 1 for OD), and the other 7 indicate the pin number. For example, to make GPIO3 OD, write 131",
+        "sub_idn": 10,
+        "format": "B",
+        "unit": "",
+        "frame_type": 4,
+        "maximum": 255,
+        "minimum": 0,
+        "single_step": 1
+      }
+    ]
+  }
+]
