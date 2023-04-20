@@ -1,0 +1,12 @@
+[
+  {
+    "hardware_name": "Vertiq 4006 770kv"
+  },
+  {
+    "style": 1,
+    "min_major_build": 0,
+    "min_minor_build": 1,
+    "min_patch_build": 0,
+    "name": "vertiq_4006_speed"
+  }
+]
