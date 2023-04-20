@@ -142,6 +142,28 @@
         "minimum": -10000,
         "decimal": 2,
         "single_step": 0.1
+      },
+	  {
+        "type_idn": 59,
+        "descriptor": "Zero Angle",
+        "info": "The zero angle of the module.",
+        "sub_idn": 31,
+        "format": "f",
+        "unit": "rads",
+        "frame_type": 2,
+        "maximum": 3.14,
+        "minimum": -3.14,
+        "single_step": 0.1,
+        "decimal": 2
+      },
+	  {
+        "type_idn": 59,
+        "descriptor": "Sample Zero Angle",
+        "info": "Samples a new zero angle based on the current angle.",
+        "sub_idn": 30,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
       }
     ]
   }
