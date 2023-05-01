@@ -193,9 +193,9 @@ class Client {
 int8_t ParseMsg(uint8_t* rx_data, uint8_t rx_length,
                 const std::map<std::string, ClientEntryAbstract*>& client_entry_map);
 std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std::string& file_name,
-                                               const std::string& folder_path);
+                                               const std::string& folder_path, bool * using_custom_order);
 void CreateClientEntry(uint8_t obj_idn, const Json::Value& param,
                        ClientEntryAbstract*& abstract_entry_ptr);
-void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr);
+void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr, bool * using_custom_order);
 
 #endif

@@ -331,7 +331,7 @@ int8_t ParseMsg(uint8_t* rx_data, uint8_t rx_length,
 }
 
 std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std::string& file_name,
-                                               const std::string& folder_path) {
+                                               const std::string& folder_path, bool * using_custom_order) {
   JsonCpp json;
   Json::Value JSON;
 
@@ -374,7 +374,7 @@ std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std
       uint8_t custom_client_size = json_client.size();
       for (uint8_t j = 0; j < custom_client_size; ++j) {
         Client* client_ptr;
-        CreateClient(obj_idn, json_client[j], client_ptr);
+        CreateClient(obj_idn, json_client[j], client_ptr, using_custom_order);
         client_map[json_client[j]["descriptor"].asString()] = client_ptr;
       }
     }
@@ -382,22 +382,34 @@ std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std
   {
     for (uint8_t i = 0; i < file_size; ++i) {
       Client* client_ptr;
-      CreateClient(obj_idn, JSON[i], client_ptr);
+      CreateClient(obj_idn, JSON[i], client_ptr, using_custom_order);
       client_map[JSON[i]["descriptor"].asString()] = client_ptr;
     }
   }
   return client_map;
 }
 
-void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr) {
+void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr, bool * using_custom_order) {
   std::map<std::string, ClientEntryAbstract*> client_entry_map;
   uint8_t params_size = custom_client["Entries"].size();
+
+  bool custom_order = custom_client["custom_order"].asBool();
+
+  if(using_custom_order != nullptr){
+    *using_custom_order = custom_order;
+  }
+
   for (uint8_t j = 0; j < params_size; ++j) {
     Json::Value entry = custom_client["Entries"][j];
     std::string hello = entry["descriptor"].asString();
     ClientEntryAbstract* entry_ptr;
     CreateClientEntry(obj_idn, custom_client["Entries"][j], entry_ptr);
-    client_entry_map[entry["descriptor"].asString()] = entry_ptr;
+
+    if(!custom_order){
+        client_entry_map[entry["descriptor"].asString()] = entry_ptr;
+    }else{
+        client_entry_map[entry["position"].asString()] = entry_ptr;
+    }
   }
   client_ptr = new Client(obj_idn, client_entry_map);
   return;

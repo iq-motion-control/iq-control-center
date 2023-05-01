@@ -158,13 +158,13 @@ CONFIG("win32-g++"){
 
     #if 32 bit build
     contains(QT_ARCH, i386){
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack/include"
+        LIBS += -L"C:/ZipPack/lib"
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack/include"
+        LIBS += -L"C:/ZipPack/lib"
     }
 
     LIBS += -lquazip -lz

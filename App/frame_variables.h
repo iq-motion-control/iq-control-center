@@ -96,8 +96,8 @@ class FrameVariables {
 };
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
-                                                               const std::string &folder_path);
-std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client);
+                                                               const std::string &folder_path, bool using_custom_order);
+std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client, bool using_custom_order);
 FrameVariables *CreateFrameVariables(const Json::Value &param);
 
 #endif  // FRAME_VARIABLES_H

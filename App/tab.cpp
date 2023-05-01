@@ -25,8 +25,9 @@ Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file)
   parent_(parent),
   clients_folder_path_(client_file[0]),
   client_file_name_(client_file[1]),
-  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_)),
-  frame_variables_map_(FrameVariablesFromJson(client_file_name_, clients_folder_path_))
+  using_custom_order_(false),
+  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_, &using_custom_order_)),
+  frame_variables_map_(FrameVariablesFromJson(client_file_name_, clients_folder_path_, using_custom_order_))
 {
 
 }
@@ -45,6 +46,7 @@ void Tab::CreateFrames()
     {
       std::string client_entry_descriptor = client_entry.first;
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
+
       uint8_t frame_type = fv->frame_type_;
 
       switch(frame_type)

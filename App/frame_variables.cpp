@@ -21,7 +21,8 @@
 #include "frame_variables.h"
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
-                                                               const std::string &folder_path) {
+                                                               const std::string &folder_path,
+                                                               bool using_custom_order) {
   JsonCpp json;
   Json::Value JSON;
   std::map<std::string, FrameVariables *> frame_variables_map;
@@ -55,25 +56,29 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
       }
       uint8_t custom_client_size = json_client.size();
       for (uint8_t j = 0; j < custom_client_size; ++j) {
-        frame_variables_map = CreateFrameVariablesMap(json_client[j]);
+        frame_variables_map = CreateFrameVariablesMap(json_client[j], using_custom_order);
       }
     }
   } else  // file with only one client
   {
     for (uint8_t i = 0; i < file_size; ++i) {
-      frame_variables_map = CreateFrameVariablesMap(JSON[i]);
+      frame_variables_map = CreateFrameVariablesMap(JSON[i], using_custom_order);
     }
   }
   return frame_variables_map;
 }
 
-std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client) {
+std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client, bool using_custom_order) {
   std::map<std::string, FrameVariables *> frame_variables_map;
   uint8_t params_size = custom_client["Entries"].size();
   for (uint8_t j = 0; j < params_size; ++j) {
     Json::Value param = custom_client["Entries"][j];
     FrameVariables *frame_variables = CreateFrameVariables(param);
-    frame_variables_map[param["descriptor"].asString()] = frame_variables;
+    if(!using_custom_order){
+        frame_variables_map[param["descriptor"].asString()] = frame_variables;
+    }else{
+        frame_variables_map[param["position"].asString()] = frame_variables;
+    }
   }
 
   return frame_variables_map;
