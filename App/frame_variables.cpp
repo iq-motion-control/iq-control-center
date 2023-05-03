@@ -77,7 +77,9 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
     if(!using_custom_order){
         frame_variables_map[param["descriptor"].asString()] = frame_variables;
     }else{
-        frame_variables_map[param["position"].asString()] = frame_variables;
+        char position = param["position"].asUInt();
+        std::string position_str(&position, 1);
+        frame_variables_map[position_str] = frame_variables;
     }
   }
 

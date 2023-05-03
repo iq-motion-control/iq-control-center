@@ -397,6 +397,7 @@ void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Clie
 
   uint8_t params_size = custom_client["Entries"].size();
 
+  //Read whether or not this tab has a custom order or if we should just use alphabetical
   bool custom_order = custom_client["custom_order"].asBool();
 
   if(using_custom_order != nullptr){
@@ -413,15 +414,18 @@ void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Clie
     if(!custom_order){
         client_entry_map[entry["descriptor"].asString()] = entry_ptr;
     }else{
+        char position = entry["position"].asUInt();
+        std::string position_str(&position, 1);
+
         //We'll need a map to store the entries we want in the order we want
         //In order to get the correct name with the correct entry, we'll need another map to store the descriptor
-        client_entry_map[entry["position"].asString()] = entry_ptr;
-        local_client_descriptor_map[entry["position"].asString()] = entry_descriptor;
+        client_entry_map[position_str] = entry_ptr;
+        local_client_descriptor_map[position_str] = entry_descriptor;
     }
   }
 
   if(client_descriptor_map != nullptr){
-    client_descriptor_map->swap(local_client_descriptor_map);
+    client_descriptor_map->swap(local_client_descriptor_map); //Bring the descriptor data out of this fxn
   }
 
   client_ptr = new Client(obj_idn, client_entry_map);
