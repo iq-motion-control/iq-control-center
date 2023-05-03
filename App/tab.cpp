@@ -19,6 +19,7 @@
 */
 
 #include "tab.h"
+#include <QDebug>
 
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
   QWidget(parent),
@@ -26,7 +27,8 @@ Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file)
   clients_folder_path_(client_file[0]),
   client_file_name_(client_file[1]),
   using_custom_order_(false),
-  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_, &using_custom_order_)),
+  frame_descriptors_(),
+  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_, &using_custom_order_, &frame_descriptors_)),
   frame_variables_map_(FrameVariablesFromJson(client_file_name_, clients_folder_path_, using_custom_order_))
 {
 
@@ -53,7 +55,7 @@ void Tab::CreateFrames()
       {
         case 1:
         {
-          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv);
+          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
           ConnectFrameCombo(fc);
           frame_map_[client_entry_descriptor] = fc;
@@ -61,7 +63,7 @@ void Tab::CreateFrames()
         }
         case 2:
         {
-          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv);
+          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
           ConnectFrameSpinBox(fsb);
           frame_map_[client_entry_descriptor] = fsb;
@@ -77,7 +79,7 @@ void Tab::CreateFrames()
         }
         case 4:
         {
-          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv);
+          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
           ConnectFrameTesting(ft);
           frame_map_[client_entry_descriptor] = ft;
@@ -85,7 +87,7 @@ void Tab::CreateFrames()
         }
         case 5:
         {
-          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv);
+          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
           ConnectFrameButton(fb);
           frame_map_[client_entry_descriptor] = fb;

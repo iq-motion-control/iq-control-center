@@ -71,6 +71,8 @@ class Tab: public QWidget
     std::string clients_folder_path_;
     std::string client_file_name_;
     bool using_custom_order_;
+    std::map<std::string, std::string> frame_descriptors_;
+
     std::map<std::string, Client*> client_map_;
     std::map<std::string, FrameVariables*> frame_variables_map_;
 };

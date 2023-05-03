@@ -40,7 +40,7 @@ class FrameTesting : public Frame {
   Q_OBJECT
  public:
   FrameTesting(QWidget *parent, Client *client,
-               std::pair<std::string, ClientEntryAbstract *> client_entry, FrameVariables *fv);
+               std::pair<std::string, ClientEntryAbstract *> client_entry, FrameVariables *fv, bool using_custom_order, QString ordered_label);
 
   QSpacerItem *empty_slot_spacer_;
   QPushButton *push_button_set_;
