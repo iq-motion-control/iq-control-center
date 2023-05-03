@@ -71,12 +71,20 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
 std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client, bool using_custom_order) {
   std::map<std::string, FrameVariables *> frame_variables_map;
   uint8_t params_size = custom_client["Entries"].size();
+
+  //go through each param in the entry and grab the correct values out
   for (uint8_t j = 0; j < params_size; ++j) {
+      //Get the param
     Json::Value param = custom_client["Entries"][j];
+    //Find the generic frame vars from the param
     FrameVariables *frame_variables = CreateFrameVariables(param);
+
+    //If you're not using a custom order, use the descriptor as the order (alphabetical)
+    //If you are using a custom order, then you need to use the position parameter
     if(!using_custom_order){
         frame_variables_map[param["descriptor"].asString()] = frame_variables;
     }else{
+        //Raf set everything up to really really like strings. So, we need to convert the json uint into an ascii value -> string
         char position = param["position"].asUInt();
         std::string position_str(&position, 1);
         frame_variables_map[position_str] = frame_variables;
