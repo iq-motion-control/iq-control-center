@@ -1,12 +1,10 @@
 [
   {
     "descriptor": "testing_vertiq_4006_speed",
-    "custom_order": true,
     "Entries": [
       {
         "type_idn": 52,
         "descriptor": "PWM",
-        "position": 2,
         "info": "Sends a PWM command to the motor.  The acceptable range is [-1, 1].  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
         "sub_idn": 3,
         "format": "f",
@@ -20,7 +18,6 @@
       {
         "type_idn": 52,
         "descriptor": "Voltage",
-        "position": 3,
         "info": "Sends a voltage command to the motor.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
         "sub_idn": 4,
         "format": "f",
@@ -34,7 +31,6 @@
       {
         "type_idn": 52,
         "descriptor": "Velocity",
-        "position": 4,
         "info": "Sends a velocity command to the motor.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
         "sub_idn": 5,
         "format": "f",
@@ -48,7 +44,6 @@
       {
         "type_idn": 60,
         "descriptor": "ESC Input",
-        "position": 5,
         "info": "Simulates an input from a flight controller to an ESC.  0 corresponds to 1000us, and 1 corresponds to 2000us.  If the motor spins for a short time then stops and beeps the timeout limit was reached.  Change the timeout to test (and change it back when done).",
         "sub_idn": 1,
         "format": "f",
@@ -62,7 +57,6 @@
       {
         "type_idn": 52,
         "descriptor": "Coast",
-        "position": 0,
         "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity.",
         "sub_idn": 2,
         "format": "n",
@@ -72,7 +66,6 @@
       {
         "type_idn": 52,
         "descriptor": "Brake",
-        "position": 1,
         "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity.",
         "sub_idn": 1,
         "format": "n",
@@ -82,7 +75,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Last Error Code",
-        "position": 7,
         "info": "Reports the error code of the last CAN failure. 0 means no error",
         "sub_idn": 3,
         "format": "B",
@@ -96,7 +88,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Receive Error Counter",
-        "position": 8,
         "info": "Counter that increments with CAN receive errors",
         "sub_idn": 4,
         "format": "B",
@@ -110,7 +101,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Transmit Error Counter",
-        "position": 9,
         "info": "Counter that increments with CAN transmit errors",
         "sub_idn": 5,
         "format": "B",
@@ -124,7 +114,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Bus Off",
-        "position": 10,
         "info": "Bit indicating if the bus turned itself off due to errors. If the bit is 1, the bus is off.",
         "sub_idn": 6,
         "format": "B",
@@ -138,7 +127,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Bus Error Passive Flag",
-        "position": 11,
         "info": "Bit indicating if the error limit to enter passive mode has been reached. 1 means we are past the passive error limit",
         "sub_idn": 7,
         "format": "B",
@@ -152,7 +140,6 @@
 	  {
         "type_idn": 80,
         "descriptor": "CAN Bus Error Warning Flag",
-        "position": 12,
         "info": "Bit indicating if the error warning limit has been reached. 1 indicates we have had enough errors to trigger a warning",
         "sub_idn": 8,
         "format": "B",
@@ -166,7 +153,6 @@
       {
         "type_idn": 85,
         "descriptor": "Trigger Stow",
-        "position": 6,
         "info": "Triggers a stow to test stow angle",
         "sub_idn": 4,
         "format": "n",
