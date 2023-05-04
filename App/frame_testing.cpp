@@ -38,7 +38,6 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   HorizontalLayout();
 
   // makes frame label
-  // makes frame label
   if(using_custom_order){
       label_ = new QLabel(ordered_label, this);
   }else{

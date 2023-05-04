@@ -71,7 +71,7 @@ void Tab::CreateFrames()
         }
         case 3:
         {
-          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry);
+          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
           ConnectFrameSwitch(fs);
 //          frame_map_[client_entry_descriptor] = fs;
@@ -96,7 +96,7 @@ void Tab::CreateFrames()
 
         case 6:
         {
-          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv);
+          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
           ConnectFrameReadOnly(fr);
           frame_map_[client_entry_descriptor] = fr;
