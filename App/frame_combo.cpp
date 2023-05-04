@@ -83,17 +83,6 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
   value_ = index_value_[combo_box_->currentIndex()];
 }
 
-void FrameCombo::UpdateLabel(QLabel * label){
-    // creates size policy for the frame label
-    QSizePolicy size_policy = CreateSizePolicy();
-    SetSettings(size_policy, style_sheet_);
-
-    // makes frame label
-    SetLabel(label, size_policy);
-    horizontal_layout_->addWidget(label_);
-
-}
-
 void FrameCombo::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
   QWhatsThis::showText(globalPos, info_, push_button_info_);

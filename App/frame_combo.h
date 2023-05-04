@@ -48,8 +48,6 @@ class FrameCombo : public Frame {
   QPushButton *push_button_info_;
   int value_;
 
-  void UpdateLabel(QLabel * label);
-
  public slots:
   void SaveValue();
   void GetSavedValue();
