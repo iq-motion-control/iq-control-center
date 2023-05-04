@@ -42,8 +42,9 @@ FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
       label_ = new QLabel(ordered_label, this);
   }else{
     label_ = new QLabel(QString((client_entry.first).c_str()), this);
-  }  SetLabel(label_, size_policy);
+  }
 
+  SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
   // creates spacer
