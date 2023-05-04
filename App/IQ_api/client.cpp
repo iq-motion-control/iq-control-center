@@ -19,7 +19,6 @@
 */
 
 #include "client.hpp"
-#include <QDebug>
 
 int Client::Reply(const uint8_t* data, uint8_t len, const std::string& entry_descriptor) {
   ClientEntryAbstract* abstract_entry_ptr = client_entry_map_.at(entry_descriptor);

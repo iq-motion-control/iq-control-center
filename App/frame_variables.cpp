@@ -86,7 +86,7 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
     }else{
         //Raf set everything up to really really like strings. So, we need to convert the json uint into an ascii value -> string
         char position = param["position"].asUInt();
-        std::string position_str(&position, 1);
+        std::string position_str(&position, POSITION_BYTE_LEN);
         frame_variables_map[position_str] = frame_variables;
     }
   }

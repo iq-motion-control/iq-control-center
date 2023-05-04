@@ -33,6 +33,8 @@
 
 #include <math.h>
 
+#define POSITION_BYTE_LEN 1
+
 class FrameVariables {
  public:
   FrameVariables() {}
