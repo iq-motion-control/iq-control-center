@@ -20,7 +20,7 @@
 
 #include "frame_switch.h"
 
-FrameSwitch::FrameSwitch(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry) :
+FrameSwitch::FrameSwitch(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, bool using_custom_order, QString ordered_label) :
   QWidget(parent),
   frame_(new Frame(parent)),
   client_(client),
@@ -38,7 +38,12 @@ FrameSwitch::FrameSwitch(QWidget *parent, Client* client, std::pair<std::string,
   frame_->HorizontalLayout();
 
   //makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), frame_);
+  if(using_custom_order){
+    label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   frame_->SetLabel(label_, size_policy);
   frame_->horizontal_layout_->addWidget(label_);
 

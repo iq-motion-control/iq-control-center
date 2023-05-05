@@ -40,7 +40,7 @@ class FrameButton : public Frame
 {
     Q_OBJECT
   public:
-    FrameButton(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv);
+    FrameButton(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv, bool using_custom_order, QString ordered_label);
 
     QPushButton *push_button_set_;
     QPushButton *push_button_info_;

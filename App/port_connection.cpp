@@ -24,7 +24,7 @@
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
-  sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_);
+  sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
 }
 
 void PortConnection::ResetToTopPage(){

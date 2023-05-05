@@ -22,7 +22,7 @@
 
 FrameTesting::FrameTesting(QWidget* parent, Client* client,
                            std::pair<std::string, ClientEntryAbstract*> client_entry,
-                           FrameVariables* fv)
+                           FrameVariables* fv, bool using_custom_order, QString ordered_label)
     : Frame(parent, 4), client_(client), client_entry_(client_entry) {
   info_ = QString::fromStdString(fv->testing_frame_.info);
   default_value_ = fv->testing_frame_.default_value;
@@ -38,7 +38,12 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   HorizontalLayout();
 
   // makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  if(using_custom_order){
+      label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 

@@ -22,7 +22,7 @@
 
 FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
                            std::pair<std::string, ClientEntryAbstract *> client_entry,
-                           FrameVariables *fv)
+                           FrameVariables *fv, bool using_custom_order, QString ordered_label)
     : Frame(parent, 6), client_(client), client_entry_(client_entry) {
   nan_value_ = fv->read_only_frame_.minimum;
   has_nan_ = fv->read_only_frame_.nan;
@@ -38,7 +38,12 @@ FrameReadOnly::FrameReadOnly(QWidget *parent, Client *client,
   HorizontalLayout();
 
   // makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  if(using_custom_order){
+      label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
