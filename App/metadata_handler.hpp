@@ -30,11 +30,19 @@
 class MetadataHandler
 {
 public:
+
+    /**
+     * @brief MetadataHandler default constructor. Lets you pass along PortConnection later
+     */
+    MetadataHandler();
+
     /**
      * @brief MetadataHandler Default constructor
      * @param pcon Give access to shared Port Connection object
      */
     MetadataHandler(PortConnection * pcon);
+
+    void Init(PortConnection * pcon);
 
     /**
      * @brief ExtractMetadata Extract the files out of the compressed metadata package

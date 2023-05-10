@@ -1,8 +1,15 @@
 #include "metadata_handler.hpp"
 
+MetadataHandler::MetadataHandler(){}
+
 MetadataHandler::MetadataHandler(PortConnection * pcon):
     pcon_(pcon)
 {
+    extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
+}
+
+void MetadataHandler::Init(PortConnection * pcon){
+    pcon_ = pcon;
     extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 }
 
