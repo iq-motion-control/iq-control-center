@@ -113,27 +113,27 @@ void Firmware::UpdateFlashButtons(){
         }else{
             app_index_ = 3;
         }
-        QString appMajor = QString::number(metadata_handler_.GetTypesArray(app_index_)->GetMajor());
-        QString appMinor = QString::number(metadata_handler_.GetTypesArray(app_index_)->GetMinor());
-        QString appPatch = QString::number(metadata_handler_.GetTypesArray(app_index_)->GetPatch());
+        QString appMajor = QString::number(metadata_handler_.GetTypesArray(app_index_).GetMajor());
+        QString appMinor = QString::number(metadata_handler_.GetTypesArray(app_index_).GetMinor());
+        QString appPatch = QString::number(metadata_handler_.GetTypesArray(app_index_).GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
 
     if(displayUpgrade){
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
-        QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX)->GetMajor());
-        QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX)->GetMinor());
-        QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX)->GetPatch());
-        QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX)->GetStyle());
+        QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMajor());
+        QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMinor());
+        QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetPatch());
+        QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetStyle());
         iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
     }
 
     if(displayBoot){
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
-        QString bootStyle = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX)->GetStyle());
-        QString bootMajor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX)->GetMajor());
-        QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX)->GetMinor());
-        QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX)->GetPatch());
+        QString bootStyle = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetStyle());
+        QString bootMajor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMajor());
+        QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMinor());
+        QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
     }
 

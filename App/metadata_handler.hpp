@@ -129,7 +129,7 @@ public:
      * @param i the index of the value you want
      * @return A pointer to a FlashType object
      */
-    FlashType* GetTypesArray(int i){ return flash_types_[i]; }
+    FlashType GetTypesArray(int i){ return flash_types_[i]; }
 
     /**
      * @brief GetBinariesInFolder Returns a list of the bin files present in the zip
@@ -187,7 +187,7 @@ private:
     /**
      * @brief flash_types_ An array that stores all of the information for how to flash each section
      */
-    FlashType* flash_types_[MAX_FLASH_TYPES];
+    FlashType flash_types_[MAX_FLASH_TYPES];
 
     /**
      * @brief firmware_style_ Holds the style of firmware in this archive (speed, servo, etc.)
@@ -197,7 +197,7 @@ private:
     /**
      * @brief metadata_dir_ A pointer to the directory holding the metadata
      */
-    QDir *metadata_dir_;
+    QDir metadata_dir_;
 
     /**
      * @brief binaries_in_folder_ A list of the binaries stored in the archive
