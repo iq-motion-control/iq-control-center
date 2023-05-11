@@ -67,7 +67,7 @@ void PortConnection::ConnectMotor() {
 
       int firmware_valid = 0;
 
-      ser_.InitSerial(selected_port_name_, selected_baudrate_);// = new QSerialInterface(selected_port_name_, selected_baudrate_);
+      ser_.InitSerial(selected_port_name_, selected_baudrate_);
       try {
 
         //Try to open the serial port in general
