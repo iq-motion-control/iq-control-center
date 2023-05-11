@@ -480,6 +480,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
       //We are now done with the extracted directory that we made. We should delete it to avoid any issues
       ResetMetadata();
 
+      //We're done with the flash loader now
+      delete fl;
+
     } catch (const QString &e) {
         iv.label_message->setText(e);
     }

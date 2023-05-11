@@ -67,11 +67,11 @@ void PortConnection::ConnectMotor() {
 
       int firmware_valid = 0;
 
-      ser_ = new QSerialInterface(selected_port_name_, selected_baudrate_);
+      ser_.InitSerial(selected_port_name_, selected_baudrate_);// = new QSerialInterface(selected_port_name_, selected_baudrate_);
       try {
 
         //Try to open the serial port in general
-        if (!ser_->ser_port_->open(QIODevice::ReadWrite)){
+        if (!ser_.ser_port_->open(QIODevice::ReadWrite)){
           throw QString("CONNECTION ERROR: could not open serial port");
         }
 
@@ -105,7 +105,7 @@ void PortConnection::ConnectMotor() {
 
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
-        delete ser_->ser_port_;
+        delete ser_.ser_port_;
         SetPortConnection(0);
       }
     } else {
@@ -115,7 +115,7 @@ void PortConnection::ConnectMotor() {
     }
   } else if (connection_state_ == 1) {
     ClearFirmwareChoices();
-    delete ser_->ser_port_;
+    delete ser_.ser_port_;
     SetPortConnection(0);
     emit LostConnection();
   }
@@ -150,7 +150,7 @@ void PortConnection::EnableAllButtons(){
 
 void PortConnection::DisplayRecoveryMessage(){
     recovery_port_name_ = selected_port_name_;
-    ser_->ser_port_->close();
+    ser_.ser_port_->close();
     QMessageBox msgBox;
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
@@ -184,7 +184,7 @@ void PortConnection::GetDeviceInformationResponses(){
     int firmware_build_minor = 0;
     int firmware_build_patch = 0;
 
-    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
+    if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id_)){
         throw QString(
         "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
     }
@@ -192,11 +192,11 @@ void PortConnection::GetDeviceInformationResponses(){
     emit ObjIdFound();
 
     // checks if new firmware is avaible, otherwise defaults to speed and hardware type 1;
-    if (GetEntryReply(*ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
+    if (GetEntryReply(ser_, sys_map_["system_control_client"], "hardware", 5, 0.05f,
                       hardware_value)){
-      if (GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
+      if (GetEntryReply(ser_, sys_map_["system_control_client"], "firmware", 5, 0.05f,
                          firmware_value)){
-          if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
+          if(!GetEntryReply(ser_, sys_map_["system_control_client"], "electronics", 5, 0.05f,
                             electronics_value)){
 
                     throw QString("CONNECTION ERROR: please check selected port or reconnect IQ Module");
@@ -227,7 +227,7 @@ void PortConnection::GetDeviceInformationResponses(){
 int PortConnection::GetFirmwareValid(){
     int firmware_valid;
     //Check to see if the firmware is valid
-    if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
+    if(!GetEntryReply(ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
       throw(QString("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?"));
     }
@@ -255,7 +255,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
 
     //If we have valid firmware, check what applications are on the motor to use later with populating flash buttons
     //If you don't get a response, this motor doesn't know how to deal with this entry. Give back 0
-    if(!GetEntryReply(*ser_, sys_map_["system_control_client"], "apps_present", 5, 0.05f,
+    if(!GetEntryReply(ser_, sys_map_["system_control_client"], "apps_present", 5, 0.05f,
                       applications_on_motor)){
         applications_present_on_motor_ = 0;
     }else{
@@ -263,8 +263,8 @@ void PortConnection::GetBootAndUpgradeInformation(){
     }
 
     //Grab the bootloader and upgrade versions if they exist
-    GetEntryReply(*ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_value);
-    GetEntryReply(*ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "bootloader_version", 5, 0.05f, bootloader_value);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "upgrade_version", 5, 0.05f, upgrade_value);
 
     //Parse out the important data
     boot_style = (bootloader_value & BOOT_STYLE_MASK) >> BOOT_STYLE_SHIFT;
@@ -316,8 +316,8 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
     uint8_t obj_id;
-    if (!GetEntryReply(*ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
-      delete ser_->ser_port_;
+    if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
+      delete ser_.ser_port_;
       SetPortConnection(0);
       QString error_message = "Serial Port Disconnected";
       ui_->header_error_label->setText(error_message);
@@ -329,7 +329,7 @@ void PortConnection::TimerTimeout() {
 void PortConnection::PortError(QSerialPort::SerialPortError error) {
   if (error == 9) {
     SetPortConnection(0);
-    delete ser_->ser_port_;
+    delete ser_.ser_port_;
     QString error_message = "Serial Port Disconnected";
     ui_->header_error_label->setText(error_message);
     emit LostConnection();
@@ -383,7 +383,7 @@ bool PortConnection::CheckIfInBootLoader(){
 
     //We want to flash at 115200 Baud always. So let's ping the bootloader at 115200
     //so that we init to the right value when we go to the flash loader
-    ser_->ser_port_->setBaudRate(Schmi::SerialConst::BAUD_RATE);
+    ser_.ser_port_->setBaudRate(Schmi::SerialConst::BAUD_RATE);
 
     //Send the first byte the STM32 bootloader expects (0x7f). If we get a response and it's
     //0x79 then we know we're in the st bootloader
@@ -391,13 +391,13 @@ bool PortConnection::CheckIfInBootLoader(){
     //Try multiple times to account for any instability (in testing we successfully get a NACK every other try)
     const int RETRIES = 5;
     for(int i = 0; i < RETRIES; i++){
-        ser_->Write(&sendBuffer[0], 1);
-        ser_->Read(readBuf, 1, 100);
+        ser_.Write(&sendBuffer[0], 1);
+        ser_.Read(readBuf, 1, 100);
         if(readBuf[0] == ACK || readBuf[0] == NACK){
             return true;
         }
     }
     //If we didn't get a response, reset to the baud rate we had when we called this
-    ser_->ser_port_->setBaudRate(selected_baudrate_);
+    ser_.ser_port_->setBaudRate(selected_baudrate_);
     return false;
 }
