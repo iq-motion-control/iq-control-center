@@ -36,7 +36,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=3 \
-           PATCH=4
+           PATCH=5
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -163,8 +163,8 @@ CONFIG("win32-g++"){
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack_64bit/include"
+        LIBS += -L"C:/ZipPack_64bit/lib"
     }
 
     LIBS += -lquazip -lz
