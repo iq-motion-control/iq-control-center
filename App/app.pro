@@ -163,8 +163,8 @@ CONFIG("win32-g++"){
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/ZipPack_64bit/include"
-        LIBS += -L"C:/ZipPack_64bit/lib"
+        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
     }
 
     LIBS += -lquazip -lz
