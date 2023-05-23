@@ -40,7 +40,6 @@ class Frame : public QFrame
     QHBoxLayout *horizontal_layout_;
 
     int frame_type_ = -1;
-
   signals:
 
   public slots:

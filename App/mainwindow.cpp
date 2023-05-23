@@ -21,6 +21,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QDebug>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   ui->stackedWidget->setCurrentIndex(0);
@@ -171,6 +173,12 @@ void MainWindow::on_pushButton_testing_clicked(){
     }
 }
 
+void MainWindow::on_pushButton_get_help_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(7);
+    }
+}
+
 void MainWindow::on_pushButton_firmware_clicked() {
     if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
         ui->flash_progress_bar->reset();
@@ -254,3 +262,103 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 }
 
 void MainWindow::ClearTabs() { tab_map_.clear(); }
+
+void MainWindow::write_all_variables_to_file(){
+    QJsonArray tab_array;
+
+    //Append the firmware version
+    QJsonObject version_information;
+    version_information.insert("Firmware Build", ui->label_firmware_build_value->text());
+    version_information.insert("GUI Version", ui->label_gui_version_value->text());
+    version_information.insert("Firmware Name", ui->label_firmware_name->text());
+    version_information.insert("Hardware Name", ui->label_hardware_name->text());
+    version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
+    version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
+
+    tab_array.append(version_information);
+
+    //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
+    //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
+    //Each Frame stores the value that we got from the motor
+    for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
+      QJsonObject current_tab_json_object;
+
+      //Grab the frame map from the current tab
+      std::map<std::string, Frame *> frames_in_tab = tab.second->get_frame_map();
+
+      //Go through each frame in the tab
+      for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
+        Frame * curFrame = frame->second;
+
+        switch(curFrame->frame_type_){
+          case 1:
+          {
+              FrameCombo *fc = (FrameCombo *)(curFrame);
+              current_tab_json_object.insert(frame->first.c_str(), fc->value_);
+            break;
+          }
+          case 2:
+          {
+              FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
+              current_tab_json_object.insert(frame->first.c_str(), fsb->value_);
+            break;
+          }
+          case 3:
+          {
+            //Switch frame, don't do anything
+            break;
+          }
+          case 4:
+          {
+              FrameTesting *ft = (FrameTesting *)(curFrame);
+              current_tab_json_object.insert(frame->first.c_str(), ft->value_);
+            break;
+          }
+          case 5:
+          {
+              //Button frame do nothing
+            break;
+          }
+
+          case 6:
+          {
+              FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
+              current_tab_json_object.insert(frame->first.c_str(), fr->value_);
+
+            break;
+          }
+        }
+      }
+
+      tab_array.append(current_tab_json_object);
+      //New line before each tab
+    }
+
+    //Write to the json file
+    QJsonDocument output_doc;
+    output_doc.setArray(tab_array);
+    QByteArray bytes = output_doc.toJson(QJsonDocument::Indented);
+    QString path = "C:/Users/jorda/Documents/testJson.json";
+    QFile file(path);
+    if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
+    {
+        QTextStream iStream( &file );
+        iStream.setCodec( "utf-8" );
+        iStream << bytes;
+        file.close();
+    }
+    else
+    {
+       ui->header_error_label->setText("Unable to open output file location, please try again.");
+    }
+}
+
+void MainWindow::on_generate_support_button_clicked(){
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_all_variables_to_file();
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+    }
+}
+

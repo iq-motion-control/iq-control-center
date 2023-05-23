@@ -65,6 +65,8 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_testing_clicked();
 
+  void on_pushButton_get_help_clicked();
+
   void on_pushButton_advanced_clicked();
 
   void on_pushButton_firmware_clicked();
@@ -79,12 +81,16 @@ class MainWindow : public QMainWindow {
 
   void SetDefaults(Json::Value defaults);
 
- private:
+  void on_generate_support_button_clicked();
+
+private:
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   TabPopulator *tab_populator;
+
+  void write_all_variables_to_file();
 
 };
 

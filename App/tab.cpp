@@ -176,6 +176,9 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
   }
 }
 
+std::map<std::string,Frame*> Tab::get_frame_map(){
+    return frame_map_;
+}
 
 void Tab::ConnectFrameCombo(FrameCombo *fc)
 {
