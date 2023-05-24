@@ -91,7 +91,9 @@ private:
   TabPopulator *tab_populator;
 
   void write_all_variables_to_file();
-
+  void write_version_info_to_file(QJsonArray * json_array);
+  void write_parameters_to_file(QJsonArray * json_array);
+  void write_metadata_to_file(QJsonArray * json_array);
 };
 
 #endif  // MAINWINDOW_H

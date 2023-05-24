@@ -263,11 +263,10 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
 void MainWindow::ClearTabs() { tab_map_.clear(); }
 
-void MainWindow::write_all_variables_to_file(){
-    QJsonArray tab_array;
+void MainWindow::write_version_info_to_file(QJsonArray * json_array){
+    //Append the version information (firmware, hardware, control center)
+    QJsonObject version_information, build_info;
 
-    //Append the firmware version
-    QJsonObject version_information;
     version_information.insert("Firmware Build", ui->label_firmware_build_value->text());
     version_information.insert("GUI Version", ui->label_gui_version_value->text());
     version_information.insert("Firmware Name", ui->label_firmware_name->text());
@@ -275,12 +274,21 @@ void MainWindow::write_all_variables_to_file(){
     version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
     version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
 
-    tab_array.append(version_information);
+    build_info.insert("Build information", version_information);
+
+    json_array->append(build_info);
+}
+
+void MainWindow::write_parameters_to_file(QJsonArray * json_array){
+    //Now go through and get all of the values that are currently set on the control center/module
 
     //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
     //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
     //Each Frame stores the value that we got from the motor
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
+      QJsonObject top_level_tab_obj;
+
+      QJsonArray tab_frame_array;
       QJsonObject current_tab_json_object;
 
       //Grab the frame map from the current tab
@@ -290,17 +298,19 @@ void MainWindow::write_all_variables_to_file(){
       for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
         Frame * curFrame = frame->second;
 
+        current_tab_json_object.insert("descriptor", frame->first.c_str());
+
         switch(curFrame->frame_type_){
           case 1:
           {
               FrameCombo *fc = (FrameCombo *)(curFrame);
-              current_tab_json_object.insert(frame->first.c_str(), fc->value_);
+              current_tab_json_object.insert("value", fc->value_);
             break;
           }
           case 2:
           {
               FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
-              current_tab_json_object.insert(frame->first.c_str(), fsb->value_);
+              current_tab_json_object.insert("value", fsb->value_);
             break;
           }
           case 3:
@@ -311,7 +321,7 @@ void MainWindow::write_all_variables_to_file(){
           case 4:
           {
               FrameTesting *ft = (FrameTesting *)(curFrame);
-              current_tab_json_object.insert(frame->first.c_str(), ft->value_);
+              current_tab_json_object.insert("value", ft->value_);
             break;
           }
           case 5:
@@ -323,28 +333,80 @@ void MainWindow::write_all_variables_to_file(){
           case 6:
           {
               FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
-              current_tab_json_object.insert(frame->first.c_str(), fr->value_);
+              current_tab_json_object.insert("value", fr->value_);
 
             break;
           }
         }
+
+        tab_frame_array.append(current_tab_json_object);
+
       }
 
-      tab_array.append(current_tab_json_object);
-      //New line before each tab
+      //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
+      //If we fill "Entries" directly, it will be inserted above descriptor. While it wouldn't make a functional difference
+      //It would be harder to read for a human
+      top_level_tab_obj.insert("entries", tab_frame_array);
+      top_level_tab_obj.insert("descriptor", tab.first.c_str());
+
+      //Write to our output array
+      json_array->append(top_level_tab_obj);
+
     }
+}
+
+void MainWindow::write_metadata_to_file(QJsonArray * json_array){
+    QDateTime time;
+    QJsonObject output_metadata_object;
+    QJsonObject metadata;
+
+    metadata.insert("Generated Date and Time", time.currentDateTime().toString(Qt::TextDate));
+
+    output_metadata_object.insert("Metadata", metadata);
+    json_array->append(output_metadata_object);
+}
+
+void MainWindow::write_all_variables_to_file(){
+    QJsonArray tab_array;
+
+    write_metadata_to_file(&tab_array);
+    write_version_info_to_file(&tab_array);
+    write_parameters_to_file(&tab_array);
+
+    //Let people pick a directory to save to, and save that path
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+                                                    "/home",
+                                                    QFileDialog::ShowDirsOnly
+                                                    | QFileDialog::DontResolveSymlinks);
 
     //Write to the json file
     QJsonDocument output_doc;
     output_doc.setArray(tab_array);
+
     QByteArray bytes = output_doc.toJson(QJsonDocument::Indented);
-    QString path = "C:/Users/jorda/Documents/testJson.json";
+
+    //Above we filled the array with "entries" not "entries," but to match our defaults format, we want it to say "Entries"
+    QString text(bytes); // add to text string for easy string replace
+    text.replace("entries", "Entries");
+
+    QString path = dir + "/user_support_file.json";
     QFile file(path);
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
         QTextStream iStream( &file );
         iStream.setCodec( "utf-8" );
-        iStream << bytes;
+        iStream << text;
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("File Generated");
+
+        QString text("Your support file has been succesfully generated at: " + path + ". "
+                     "Please email it to <WHATEVER EMAIL IS PICKED AS APPROPRIATE> with your name and complication, and we will respond as soon as possible.");
+        msgBox.setText(text);
+
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+
         file.close();
     }
     else
