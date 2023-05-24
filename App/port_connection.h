@@ -73,6 +73,14 @@ class PortConnection : public QObject {
   ~PortConnection() {}
 
   /**
+   * @brief getUidValues Get all 3 of the unique ids of the connected motor and return them through pointers
+   * @param uid1 pointer to the container for uid1
+   * @param uid2 pointer to the container for uid2
+   * @param uid3 pointer to the container for uid3
+   */
+  void GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * uid3);
+
+  /**
    * @brief CheckIfInBootLoader Checks if the motor is currently in the ST Bootloader
    * @return true if it is. False if not
    */
