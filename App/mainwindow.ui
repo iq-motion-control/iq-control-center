@@ -1027,8 +1027,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1065</width>
-                <height>682</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1302,8 +1302,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1072</width>
-                <height>759</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
