@@ -6,6 +6,7 @@
 class FlashType
 {
 public:
+    FlashType();
     FlashType(QString type, QString start, int length, int major, int minor, int patch, int style);
     QString GetType() { return type_; }
     QString GetStart() { return start_; }
@@ -15,6 +16,7 @@ public:
     int GetPatch() { return patch_; }
     int GetStyle() { return style_; }
 
+    void Init(QString type, QString start, int length, int major, int minor, int patch, int style);
 private:
     QString type_;
     QString start_;

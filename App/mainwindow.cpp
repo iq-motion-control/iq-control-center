@@ -81,23 +81,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->default_pushbutton, SIGNAL(clicked()), def, SLOT(LoadDefaultValues()));
     connect(def, SIGNAL(SaveDefaultValues(Json::Value)), this, SLOT(SetDefaults(Json::Value)));
 
-    Firmware *firm = new Firmware(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
+    //initialize our firmware handler with the necessary information
+    firmware_handler_.Init(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
 
-    connect(ui->flash_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
-    connect(ui->flash_boot_button, SIGNAL(clicked()), firm, SLOT(FlashBootClicked()));
-    connect(ui->flash_app_button, SIGNAL(clicked()), firm, SLOT(FlashAppClicked()));
-    connect(ui->flash_upgrade_button, SIGNAL(clicked()), firm, SLOT(FlashUpgradeClicked()));
+    connect(ui->flash_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
+    connect(ui->flash_boot_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashBootClicked()));
+    connect(ui->flash_app_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashAppClicked()));
+    connect(ui->flash_upgrade_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashUpgradeClicked()));
 
 
-    connect(ui->select_firmware_binary_button, SIGNAL(clicked()), firm,
+    connect(ui->select_firmware_binary_button, SIGNAL(clicked()), &firmware_handler_,
             SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover file button with the firmware SelectRecoveryClicked to allow picking a file
-    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), firm, SLOT(SelectFirmwareClicked()));
+    connect(ui->select_recovery_bin_button, SIGNAL(clicked()), &firmware_handler_, SLOT(SelectFirmwareClicked()));
 
     //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
     //Only allow recovery to flash a combined to avoid any more issue
-    connect(ui->recover_button, SIGNAL(clicked()), firm, SLOT(FlashCombinedClicked()));
+    connect(ui->recover_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
 
   } catch (const QString &e) {
     ui->header_error_label->setText(e);

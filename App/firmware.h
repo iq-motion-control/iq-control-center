@@ -54,8 +54,10 @@
 class Firmware : public QObject {
   Q_OBJECT
  public:
+  Firmware();
   Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
 
+  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
  private:
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
@@ -82,7 +84,7 @@ class Firmware : public QObject {
   QString GetHardwareNameFromResources();
   void ResetMetadata();
 
-  MetadataHandler * metadata_handler_;
+  MetadataHandler metadata_handler_;
   bool using_metadata_ = false;
   //The app index can change depending on what's in the json
   int app_index_;
