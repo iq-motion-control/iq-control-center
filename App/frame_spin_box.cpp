@@ -84,6 +84,10 @@ FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
                 QString(":/res/info_icon.png"));
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
+
+  //Initialize the value
+  GetSavedValue();
+  value_ = saved_value_;
 }
 
 void FrameSpinBox::ShowInfo() {

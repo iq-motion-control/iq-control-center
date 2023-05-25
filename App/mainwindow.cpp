@@ -289,28 +289,34 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array){
       QJsonObject top_level_tab_obj;
 
       QJsonArray tab_frame_array;
-      QJsonObject current_tab_json_object;
 
       //Grab the frame map from the current tab
       std::map<std::string, Frame *> frames_in_tab = tab.second->get_frame_map();
 
       //Go through each frame in the tab
       for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
+        //Grab the frame as the top level, and cast it later
         Frame * curFrame = frame->second;
 
-        current_tab_json_object.insert("descriptor", frame->first.c_str());
+        //Create a new object to hold the tab frame object. DON'T FORGET TO DELETE AT THE END OF THE LOOP
+        QJsonObject * current_tab_json_object = new QJsonObject();
+
+        //Only add the frames that we care about.
+        bool attach_new_object = false;
 
         switch(curFrame->frame_type_){
           case 1:
           {
               FrameCombo *fc = (FrameCombo *)(curFrame);
-              current_tab_json_object.insert("value", fc->value_);
+              current_tab_json_object->insert("value", fc->value_);
+              attach_new_object = true;
             break;
           }
           case 2:
           {
               FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
-              current_tab_json_object.insert("value", fsb->value_);
+              current_tab_json_object->insert("value", fsb->value_);
+              attach_new_object = true;
             break;
           }
           case 3:
@@ -321,26 +327,29 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array){
           case 4:
           {
               FrameTesting *ft = (FrameTesting *)(curFrame);
-              current_tab_json_object.insert("value", ft->value_);
+              current_tab_json_object->insert("value", ft->value_);
+              attach_new_object = true;
             break;
           }
           case 5:
           {
-              //Button frame do nothing
+              //Button frame, do nothing
             break;
           }
 
           case 6:
           {
-              FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
-              current_tab_json_object.insert("value", fr->value_);
-
+            //Read only frame, do nothing
             break;
           }
         }
 
-        tab_frame_array.append(current_tab_json_object);
+        if(attach_new_object){
+            current_tab_json_object->insert("descriptor", frame->first.c_str());
+            tab_frame_array.append(*current_tab_json_object);
+        }
 
+        delete current_tab_json_object;
       }
 
       //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
