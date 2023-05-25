@@ -11,7 +11,7 @@
         "unit": "enum",
         "frame_type": 1,
         "list_name": [
-          "uncofigured",
+          "unconfigured",
           "3D counter clockwise",
           "3D clockwise",
           "2D counter clockwise",
@@ -274,7 +274,7 @@
       {
         "type_idn": 86,
         "descriptor": "Disarm On Throttle",
-        "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disrm On Throttle, throttle messages will not cause the module to disarm.",
+        "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disarm On Throttle, throttle messages will not cause the module to disarm.",
         "sub_idn": 5,
         "format": "B",
         "unit": "enum",
@@ -332,7 +332,7 @@
         "list_name": [
           "Never Play",
           "Play Once",
-          "Play Continuosly"
+          "Play Continuously"
         ],
         "list_value": [
           0,
@@ -372,7 +372,7 @@
         "list_name": [
           "Never Play",
           "Play Once",
-          "Play Continuosly"
+          "Play Continuously"
         ],
         "list_value": [
           0,
