@@ -1,0 +1,20 @@
+[
+  {
+    "hardware_name": "Vertiq 6008 300kv (Steel)"
+  },
+  {
+    "style": 1,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 0,
+    "name": "vertiq_60xx_speed"
+  },
+  {
+    "style": 2,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 0,
+    "name": "vertiq_60xx_servo"
+  }
+]
+]
