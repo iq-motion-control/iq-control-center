@@ -146,7 +146,7 @@
         "decimal": 0,
         "single_step": 1
       },
-	  {
+      {
         "type_idn": 85,
         "descriptor": "Stow Target Angle",
         "info": "The angle in radians the module will stow at with respect to the zero angle",
@@ -159,7 +159,7 @@
         "single_step": 0.1,
         "decimal": 2
       },
-	  {
+      {
         "type_idn": 85,
         "descriptor": "Stow Zero Angle",
         "info": "The zero angle",
@@ -172,7 +172,7 @@
         "single_step": 0.1,
         "decimal": 2
       },
-	  {
+      {
         "type_idn": 85,
         "descriptor": "Sample Zero Angle",
         "info": "Samples a new zero angle based on the current angle",
@@ -181,7 +181,7 @@
         "unit": "",
         "frame_type": 5
       },
-	  {
+      {
         "type_idn": 85,
         "descriptor": "Hold Stow",
         "info": "Determines if we should actively hold the stow angle when we have stowed, or coast after reaching our destination.",
@@ -198,7 +198,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Arm Throttle Upper Limit",
         "info": "The upper limit of the arming region, in terms of throttle percentage.",
@@ -212,7 +212,7 @@
         "decimal": 4,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Arm Throttle Lower Limit",
         "info": "The lower limit of the arming region, in terms of throttle percentage.",
@@ -226,7 +226,7 @@
         "decimal": 4,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Disarm Throttle Upper Limit",
         "info": "The upper limit of the disarming region, in terms of throttle percentage.",
@@ -240,7 +240,7 @@
         "decimal": 4,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Disarm Throttle Lower Limit",
         "info": "The lower limit of the disarming region, in terms of throttle percentage.",
@@ -254,7 +254,7 @@
         "decimal": 4,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Arm On Throttle",
         "info": "Determines if the throttle input will be used to transition to the armed state. When this is set to Do Not Arm On Throttle, throttle messages will not cause the module to arm.",
@@ -271,7 +271,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Disarm On Throttle",
         "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disrm On Throttle, throttle messages will not cause the module to disarm.",
@@ -288,7 +288,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Consecutive Arming Throttles to Arm",
         "info": "The low end of the calibration in us",
@@ -300,7 +300,7 @@
         "minimum": 1,
         "single_step": 1
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Disarm Behavior",
         "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
@@ -311,17 +311,17 @@
         "list_name": [
           "Coast",
           "0V to Coast",
-		  "0V to Brake",
-		  "Stow"
+          "0V to Brake",
+          "Stow"
         ],
         "list_value": [
           0,
           1,
-		  2,
-		  3
+          2,
+          3
         ]
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Disarm Song Playback Option",
         "info": "Determines how many times the disarming song will play on a disarm.",
@@ -332,15 +332,15 @@
         "list_name": [
           "Never Play",
           "Play Once",
-		  "Play Continuosly"
+          "Play Continuosly"
         ],
         "list_value": [
           0,
           1,
-		  2
+          2
         ]
       },
-	  {
+      {
         "type_idn": 52,
         "descriptor": "Timeout Behavior",
         "info": "Determines what behavior to perform when a timeout error occurs. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
@@ -351,17 +351,17 @@
         "list_name": [
           "Coast",
           "0V to Coast",
-		  "0V to Brake",
-		  "Stow"
+          "0V to Brake",
+          "Stow"
         ],
         "list_value": [
           0,
           1,
-		  2,
-		  3
+          2,
+          3
         ]
       },
-	  {
+      {
         "type_idn": 52,
         "descriptor": "Timeout Song Playback Option",
         "info": "Determines how many times the timeout song will play on a timeout error.",
@@ -372,12 +372,12 @@
         "list_name": [
           "Never Play",
           "Play Once",
-		  "Play Continuosly"
+          "Play Continuosly"
         ],
         "list_value": [
           0,
           1,
-		  2
+          2
         ]
       }
   }
