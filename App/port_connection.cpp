@@ -403,7 +403,7 @@ bool PortConnection::CheckIfInBootLoader(){
 }
 
 void PortConnection::GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * uid3){
-    GetEntryReply(*ser_, sys_map_["system_control_client"], "uid1", 5, 0.05f, *uid1);
-    GetEntryReply(*ser_, sys_map_["system_control_client"], "uid2", 5, 0.05f, *uid2);
-    GetEntryReply(*ser_, sys_map_["system_control_client"], "uid3", 5, 0.05f, *uid3);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid1", 5, 0.05f, *uid1);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid2", 5, 0.05f, *uid2);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid3", 5, 0.05f, *uid3);
 }
