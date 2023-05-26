@@ -394,7 +394,6 @@ void MainWindow::write_user_support_file(){
                                                     "/home/user_support_file_" + ui->label_firmware_name->text() + ".json",
                                                     tr("json (*.json"));
 
-
     //Write to the json file
     QJsonDocument output_doc;
     output_doc.setArray(tab_array);
@@ -417,7 +416,8 @@ void MainWindow::write_user_support_file(){
         msgBox.setWindowTitle("File Generated");
 
         QString text("Your support file has been succesfully generated at: " + path + ". "
-                     "Please email it to <WHATEVER EMAIL IS PICKED AS APPROPRIATE> with your name and complication, and we will respond as soon as possible.");
+                     "If you are not already in contact with a member of the Vertiq support team, please email this file "
+                     "to info@vertiq.co with your name and complication, and we will respond as soon as possible.");
         msgBox.setText(text);
 
         msgBox.setStandardButtons(QMessageBox::Ok);
