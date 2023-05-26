@@ -400,7 +400,7 @@ void MainWindow::write_all_variables_to_file(){
 
     QByteArray bytes = output_doc.toJson(QJsonDocument::Indented);
 
-    //Above we filled the array with "entries" not "entries," but to match our defaults format, we want it to say "Entries"
+    //Above we filled the array with "entries" not "Entries," but to match our defaults format, we want it to say "Entries"
     QString text(bytes); // add to text string for easy string replace
     text.replace("entries", "Entries");
 
