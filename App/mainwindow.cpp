@@ -390,10 +390,15 @@ void MainWindow::write_user_support_file(){
     write_parameters_to_file(&tab_array);
 
     //Let people pick a directory to save to, and save that path
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-                                                    "/home",
-                                                    QFileDialog::ShowDirsOnly
-                                                    | QFileDialog::DontResolveSymlinks);
+//    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
+//                                                    "/home",
+//                                                    QFileDialog::ShowDirsOnly
+//                                                    | QFileDialog::DontResolveSymlinks);
+
+    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                    "/home/user_support_file_" + ui->label_firmware_name->text() + ".json",
+                                                    tr("json (*.json"));
+
 
     //Write to the json file
     QJsonDocument output_doc;
@@ -405,7 +410,7 @@ void MainWindow::write_user_support_file(){
     QString text(bytes); // add to text string for easy string replace
     text.replace("entries", "Entries");
 
-    QString path = dir + "/user_support_file.json";
+    QString path = dir;
     QFile file(path);
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
