@@ -389,12 +389,7 @@ void MainWindow::write_user_support_file(){
     write_version_info_to_file(&tab_array);
     write_parameters_to_file(&tab_array);
 
-    //Let people pick a directory to save to, and save that path
-//    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"),
-//                                                    "/home",
-//                                                    QFileDialog::ShowDirsOnly
-//                                                    | QFileDialog::DontResolveSymlinks);
-
+    //Let people pick a directory/name to save to/with, and save that path
     QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
                                                     "/home/user_support_file_" + ui->label_firmware_name->text() + ".json",
                                                     tr("json (*.json"));
