@@ -83,6 +83,8 @@ QJsonArray MetadataHandler::ArrayFromJson(QString pathToJson){
     QFile jsonFile;
     jsonFile.setFileName(pathToJson);
 
+    jsonFile.setPermissions(pathToJson, QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::ReadUser);
+
     //Grab all of the data from the json
     jsonFile.open(QIODevice::ReadOnly);
     QString val = jsonFile.readAll();
