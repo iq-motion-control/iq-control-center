@@ -63,8 +63,11 @@ class QSerialInterface: public CommunicationInterface, public Schmi::QSerial/*, 
     int GetRawBytes();
 
     // Default Constructor
+    QSerialInterface();
     QSerialInterface(const QString &dev, const qint32 &baud_rate = 115200);
     ~QSerialInterface();
+
+    void InitSerial(const QString &dev, const qint32 &baud_rate = 115200);
 
     /*******************************************************************************
      * Receive

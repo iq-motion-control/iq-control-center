@@ -1,28 +1,32 @@
 #include "metadata_handler.hpp"
 
-MetadataHandler::MetadataHandler(PortConnection * pcon):
-    pcon_(pcon)
-{
+MetadataHandler::MetadataHandler(){}
+
+MetadataHandler::MetadataHandler(PortConnection * pcon){
+    Init(pcon);
+}
+
+void MetadataHandler::Init(PortConnection * pcon){
+    pcon_ = pcon;
     extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 }
 
 void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     JlCompress extract_tool;
 
-    metadata_dir_ = new QDir(extract_path_);
-    QStringList files = extract_tool.extractDir(firmware_bin_path_, extract_path_);
+    //Create a temporary directory path then give its information with our class variable directory. lets us avoid dynamic allocation
+    QDir tempDir(extract_path_);
+    metadata_dir_.swap(tempDir);
 
-    for(int i = 0; i < files.length(); i++){
-        QFileInfo file(files[i]);
-    }
+    extract_tool.extractDir(firmware_bin_path_, extract_path_);
 }
 
 QString MetadataHandler::GetCombinedBinPath(){
     QString firmware_bin_path = "";
 
-    if(metadata_dir_->exists("combined.bin")){
+    if(metadata_dir_.exists("combined.bin")){
         firmware_bin_path = extract_path_ + "/combined.bin";
-    }else if(metadata_dir_->exists("main.bin")){
+    }else if(metadata_dir_.exists("main.bin")){
         firmware_bin_path = extract_path_ + "/main.bin";
     }
 
@@ -32,7 +36,7 @@ QString MetadataHandler::GetCombinedBinPath(){
 QString MetadataHandler::GetBootBinPath(){
     QString firmware_bin_path = "";
 
-    if(metadata_dir_->exists("boot.bin")){
+    if(metadata_dir_.exists("boot.bin")){
         firmware_bin_path = extract_path_ + "/boot.bin";
     }
 
@@ -42,7 +46,7 @@ QString MetadataHandler::GetBootBinPath(){
 QString MetadataHandler::GetAppBinPath(){
     QString firmware_bin_path = "";
 
-    if(metadata_dir_->exists("app.bin")){
+    if(metadata_dir_.exists("app.bin")){
         firmware_bin_path = extract_path_ + "/app.bin";
     }
 
@@ -52,7 +56,7 @@ QString MetadataHandler::GetAppBinPath(){
 QString MetadataHandler::GetUpgradeBinPath(){
     QString firmware_bin_path = "";
 
-    if(metadata_dir_->exists("upgrade.bin")){
+    if(metadata_dir_.exists("upgrade.bin")){
         firmware_bin_path = extract_path_ + "/upgrade.bin";
     }
 
@@ -95,12 +99,12 @@ QString MetadataHandler::GetMetadataJsonPath(){
     //Go to the path of the extracted directory (saved in this obj)
 
     //Get a list of all of the files in the folder
-    QStringList filesInFolder = metadata_dir_->entryList();
+    QStringList filesInFolder = metadata_dir_.entryList();
 
     //Look for the metadata file in the zip directory
     for(int i = 0; i < filesInFolder.size(); i++){
         if(filesInFolder.at(i).contains(".json")){
-            return metadata_dir_->filePath(filesInFolder.at(i));
+            return metadata_dir_.filePath(filesInFolder.at(i));
         }
     }
 
@@ -145,7 +149,7 @@ void MetadataHandler::ReadMetadata(){
     allowed_flashing_size_ = allowedFlashingArray.size();
     for(int i = 0; i < allowed_flashing_size_; i++){
         QJsonObject obj(allowedFlashingArray.at(i).toObject());
-        flash_types_[i] = new FlashType(obj.value("type").toString(), obj.value("start").toString(),
+        flash_types_[i].Init(obj.value("type").toString(), obj.value("start").toString(),
                                         obj.value("length").toInt(), obj.value("major").toInt(),
                                         obj.value("minor").toInt(), obj.value("patch").toInt(),
                                         obj.value("style").toInt());
@@ -162,7 +166,7 @@ QStringList MetadataHandler::GetFlashTypes(){
     QStringList retList;
 
     for(int i = 0; i < allowed_flashing_size_; i++){
-        retList.append(flash_types_[i]->GetType());
+        retList.append(flash_types_[i].GetType());
     }
 
     return retList;
@@ -170,7 +174,7 @@ QStringList MetadataHandler::GetFlashTypes(){
 
 void MetadataHandler::FindBinariesInFolder(){
     QStringList retList;
-    QStringList filesInFolder = metadata_dir_->entryList();
+    QStringList filesInFolder = metadata_dir_.entryList();
 
     //Find all binary files in the folder
     for(int i = 0; i < filesInFolder.size(); i++){
@@ -203,8 +207,8 @@ QString MetadataHandler::GetExtractPath(){
 uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
 
     for(int i = 0; i < allowed_flashing_size_; i++){
-        if(flash_types_[i]->GetType() == type){
-            uint32_t flashStart = flash_types_[i]->GetStart().toUInt(nullptr, 16);
+        if(flash_types_[i].GetType() == type){
+            uint32_t flashStart = flash_types_[i].GetStart().toUInt(nullptr, 16);
             return flashStart;
         }
     }
@@ -214,20 +218,20 @@ uint32_t MetadataHandler::GetStartingMemoryFromType(QString type){
 
 uint32_t MetadataHandler::GetUpgradeVersion(){
     //We are flashing a new bootloader so tell the motor that it should update its value
-    uint32_t upgradeMajor = GetTypesArray(UPGRADE_INDEX)->GetMajor();
-    uint32_t upgradeMinor = GetTypesArray(UPGRADE_INDEX)->GetMinor();
-    uint32_t upgradePatch = GetTypesArray(UPGRADE_INDEX)->GetPatch();
-    uint32_t upgradeStyle = GetTypesArray(UPGRADE_INDEX)->GetStyle();
+    uint32_t upgradeMajor = GetTypesArray(UPGRADE_INDEX).GetMajor();
+    uint32_t upgradeMinor = GetTypesArray(UPGRADE_INDEX).GetMinor();
+    uint32_t upgradePatch = GetTypesArray(UPGRADE_INDEX).GetPatch();
+    uint32_t upgradeStyle = GetTypesArray(UPGRADE_INDEX).GetStyle();
 
     return (((upgradeStyle & 0xfff) << 20) | (upgradeMajor & 0x3f) << 14) | ((upgradeMinor & 0x7f) << 7) | ((upgradePatch & 0x7f));
 }
 
 uint32_t MetadataHandler::GetBootloaderVersion(){
     //We are flashing a new bootloader so tell the motor that it should update its value
-    uint32_t bootStyle = GetTypesArray(BOOT_INDEX)->GetStyle();
-    uint32_t bootMajor = GetTypesArray(BOOT_INDEX)->GetMajor();
-    uint32_t bootMinor = GetTypesArray(BOOT_INDEX)->GetMinor();
-    uint32_t bootPatch = GetTypesArray(BOOT_INDEX)->GetPatch();
+    uint32_t bootStyle = GetTypesArray(BOOT_INDEX).GetStyle();
+    uint32_t bootMajor = GetTypesArray(BOOT_INDEX).GetMajor();
+    uint32_t bootMinor = GetTypesArray(BOOT_INDEX).GetMinor();
+    uint32_t bootPatch = GetTypesArray(BOOT_INDEX).GetPatch();
     return (((bootStyle & 0xfff) << 20) | ((bootMajor & 0x7f) << 14) |((bootMinor & 0x7f) << 7) | bootPatch);
 }
 
