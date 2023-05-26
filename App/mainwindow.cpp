@@ -338,7 +338,9 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array){
 
           case 6:
           {
-            //Read only frame, do nothing
+            FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
+            current_tab_json_object->insert("value", fr->value_);
+            attach_new_object = true;
             break;
           }
         }
