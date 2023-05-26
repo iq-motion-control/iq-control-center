@@ -382,7 +382,7 @@ void MainWindow::write_metadata_to_file(QJsonArray * json_array){
     json_array->append(output_metadata_object);
 }
 
-void MainWindow::write_all_variables_to_file(){
+void MainWindow::write_user_support_file(){
     QJsonArray tab_array;
 
     write_metadata_to_file(&tab_array);
@@ -434,7 +434,7 @@ void MainWindow::write_all_variables_to_file(){
 void MainWindow::on_generate_support_button_clicked(){
     //If we're connected then go get the values, otherwise just spit out a message to connect the motor
     if (iv.pcon->GetConnectionState() == 1) {
-        write_all_variables_to_file();
+        write_user_support_file();
     }else{
         ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
     }
