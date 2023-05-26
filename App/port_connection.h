@@ -113,13 +113,13 @@ class PortConnection : public QObject {
    * @brief GetQSerialInterface Returns the serial interface being used
    * @return the curent serial interface
    */
-  QSerialInterface *GetQSerialInterface() { return ser_; }
+  QSerialInterface *GetQSerialInterface() { return &ser_; }
 
   /**
    * @brief SetQSerialInterface Sets the serial interface
    * @param setter
    */
-  void SetQSerialInterface(QSerialInterface *setter) { ser_ = setter; }
+  void SetQSerialInterface(QSerialInterface *setter) { ser_ = *setter; }
 
   /**
    * @brief GetObjId
@@ -273,7 +273,7 @@ class PortConnection : public QObject {
   QMovie *loader_movie_;
 
   bool connection_state_;
-  QSerialInterface *ser_;
+  QSerialInterface ser_;
 
   uint8_t obj_id_;
   int firmware_value_;

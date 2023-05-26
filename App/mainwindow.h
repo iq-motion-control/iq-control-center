@@ -56,6 +56,8 @@ class MainWindow : public QMainWindow {
 
   void AutoCheckUpdate();
 
+  Firmware firmware_handler_;
+
  private slots:
   void on_pushButton_home_clicked();
 
