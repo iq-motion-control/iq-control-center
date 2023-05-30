@@ -45,7 +45,6 @@ void PortConnection::AddToLog(QString text_to_log){
     log_file.close();
 }
 
-
 void PortConnection::ResetToTopPage(){
     ui_->stackedWidget->setCurrentIndex(0);
 }
@@ -104,6 +103,8 @@ void PortConnection::ConnectMotor() {
 
         SetPortConnection(1);
         QString message = "Motor Connected Successfully";
+
+        //Write the fact that we connected with the motor to the output log
         AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud");
 
         ui_->header_error_label->setText(message);
