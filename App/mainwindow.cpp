@@ -366,13 +366,12 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array){
 }
 
 void MainWindow::write_metadata_to_file(QJsonArray * json_array){
-    QDateTime time;
     QJsonObject output_metadata_object;
     QJsonObject metadata;
 
     uint32_t uid1, uid2, uid3;
 
-    metadata.insert("Generated Date and Time", time.currentDateTime().toString(Qt::TextDate));
+    metadata.insert("Generated Date and Time", iv.pcon->time_.currentDateTime().toString(Qt::TextDate));
 
     iv.pcon->GetUidValues(&uid1, &uid2, &uid3);
     metadata.insert("UID1", (int)uid1);

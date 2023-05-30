@@ -21,11 +21,30 @@
 #include "port_connection.h"
 #include "schmi/include/Schmi/qserial.h"
 
+#include <QStandardPaths>
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
 }
+
+void PortConnection::AddToLog(QString text_to_log){
+    //Get a string of the line we want to write to the log
+    QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
+
+    //Add that line to the GUI
+    ui_->log_text_browser->insertPlainText(logMessage);
+
+    //Write the same line to the persistent log file that exists in the background
+    QFile log_file(QCoreApplication::applicationDirPath() + "/log.txt");
+    log_file.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream iStream( &log_file );
+    iStream.setCodec( "utf-8" );
+    iStream << logMessage;
+
+    log_file.close();
+}
+
 
 void PortConnection::ResetToTopPage(){
     ui_->stackedWidget->setCurrentIndex(0);
@@ -85,6 +104,8 @@ void PortConnection::ConnectMotor() {
 
         SetPortConnection(1);
         QString message = "Motor Connected Successfully";
+        AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud");
+
         ui_->header_error_label->setText(message);
 
         if(!firmware_valid){
