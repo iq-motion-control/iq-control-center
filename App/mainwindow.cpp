@@ -441,3 +441,24 @@ void MainWindow::on_generate_support_button_clicked(){
     }
 }
 
+void MainWindow::on_export_log_button_clicked(){
+    QFile currentLog(iv.pcon->path_to_log_file);
+
+    //Let people pick a directory/name to save to/with, and save that path
+    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                    "/home/log.txt",
+                                                    tr("txt (*.txt"));
+
+    currentLog.copy(dir);
+
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Log Exported");
+
+    QString text("Your log file has been succesfully exported to: " + dir + ".");
+    msgBox.setText(text);
+
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+
+}
+

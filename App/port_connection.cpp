@@ -36,7 +36,7 @@ void PortConnection::AddToLog(QString text_to_log){
     ui_->log_text_browser->insertPlainText(logMessage);
 
     //Write the same line to the persistent log file that exists in the background
-    QFile log_file(QCoreApplication::applicationDirPath() + "/log.txt");
+    QFile log_file(path_to_log_file);
     log_file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream iStream( &log_file );
     iStream.setCodec( "utf-8" );

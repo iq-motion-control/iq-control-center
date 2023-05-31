@@ -2634,6 +2634,30 @@ QPushButton:pressed {
         <property name="bottomMargin">
          <number>24</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_get_help">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>24</pointsize>
+            <strikeout>false</strikeout>
+            <kerning>false</kerning>
+           </font>
+          </property>
+          <property name="text">
+           <string>SUPPORT</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QWidget" name="get_help_widget" native="true">
           <property name="palette">
@@ -2668,6 +2692,37 @@ QPushButton:pressed {
 </string>
           </property>
           <layout class="QGridLayout" name="gridLayout_18">
+           <item row="2" column="0">
+            <widget class="QTextBrowser" name="log_text_browser">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>300</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QTextEdit {
+	color: rgb(175, 175, 175);
+	background-color: rgb(60, 60, 60);
+	padding: 10px;
+	line-height: 400%;
+	border: 0px;
+}</string>
+             </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarAsNeeded</enum>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QTextBrowser" name="get_help_text">
              <property name="sizePolicy">
@@ -2675,6 +2730,12 @@ QPushButton:pressed {
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="font">
               <font>
@@ -2692,6 +2753,15 @@ QPushButton:pressed {
 	line-height: 400%;
 	border: 0px;
 }</string>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustIgnored</enum>
+             </property>
+             <property name="tabChangesFocus">
+              <bool>false</bool>
+             </property>
+             <property name="lineWrapMode">
+              <enum>QTextEdit::WidgetWidth</enum>
              </property>
              <property name="html">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -2715,31 +2785,6 @@ hr { height: 1px; border-width: 0; }
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QTextBrowser" name="log_text_browser">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: rgb(60, 60, 60);
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
-}</string>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarAlwaysOn</enum>
-             </property>
-             <property name="sizeAdjustPolicy">
-              <enum>QAbstractScrollArea::AdjustIgnored</enum>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="0">
             <spacer name="verticalSpacer_3">
              <property name="orientation">
@@ -2750,11 +2795,66 @@ hr { height: 1px; border-width: 0; }
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>20</width>
-               <height>20</height>
+               <width>17</width>
+               <height>17</height>
               </size>
              </property>
             </spacer>
+           </item>
+           <item row="1" column="0">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
+                 <italic>false</italic>
+                 <bold>false</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">font: 12pt &quot;Segoe UI&quot;;</string>
+               </property>
+               <property name="text">
+                <string>Output Log:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="export_log_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>140</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(175, 175, 175)</string>
+               </property>
+               <property name="text">
+                <string>Export Log</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item row="4" column="0">
             <widget class="QPushButton" name="generate_support_button">
@@ -2786,41 +2886,7 @@ hr { height: 1px; border-width: 0; }
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="styleSheet">
-              <string notr="true">font: 12pt &quot;Segoe UI&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Output Log:</string>
-             </property>
-            </widget>
-           </item>
           </layout>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_get_help">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="font">
-           <font>
-            <family>Lato</family>
-            <pointsize>24</pointsize>
-            <strikeout>false</strikeout>
-            <kerning>false</kerning>
-           </font>
-          </property>
-          <property name="text">
-           <string>SUPPORT</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
          </widget>
         </item>
        </layout>
