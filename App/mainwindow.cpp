@@ -419,7 +419,7 @@ void MainWindow::write_user_support_file(){
 
         QString text("Your support file has been succesfully generated at: " + path + ". "
                      "If you are not already in contact with a member of the Vertiq support team, please email this file "
-                     "to info@vertiq.co with your name and complication, and we will respond as soon as possible.");
+                     "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
         msgBox.setText(text);
 
         msgBox.setStandardButtons(QMessageBox::Ok);
