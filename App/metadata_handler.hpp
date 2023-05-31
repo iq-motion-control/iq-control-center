@@ -45,6 +45,11 @@ public:
     void Init(PortConnection * pcon);
 
     /**
+     * @brief UpdateAllFilePermissions make sure all files are readable by all users
+     */
+    void UpdateAllFilePermissions();
+
+    /**
      * @brief ExtractMetadata Extract the files out of the compressed metadata package
      * @param pathToMetadata Path to the compressed package
      */
