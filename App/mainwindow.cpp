@@ -172,6 +172,12 @@ void MainWindow::on_pushButton_testing_clicked(){
     }
 }
 
+void MainWindow::on_pushButton_get_help_clicked(){
+    if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
+        ui->stackedWidget->setCurrentIndex(7);
+    }
+}
+
 void MainWindow::on_pushButton_firmware_clicked() {
     if(ui->stackedWidget->currentIndex() != RECOVERY_TAB){
         ui->flash_progress_bar->reset();
@@ -255,3 +261,184 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 }
 
 void MainWindow::ClearTabs() { tab_map_.clear(); }
+
+void MainWindow::write_version_info_to_file(QJsonArray * json_array){
+    //Append the version information (firmware, hardware, control center)
+    QJsonObject version_information, build_info;
+
+    version_information.insert("Firmware Build", ui->label_firmware_build_value->text());
+    version_information.insert("GUI Version", ui->label_gui_version_value->text());
+    version_information.insert("Firmware Name", ui->label_firmware_name->text());
+    version_information.insert("Hardware Name", ui->label_hardware_name->text());
+    version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
+    version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
+
+    build_info.insert("Build information", version_information);
+
+    json_array->append(build_info);
+}
+
+void MainWindow::write_parameters_to_file(QJsonArray * json_array){
+    //Now go through and get all of the values that are currently set on the control center/module
+
+    //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
+    //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
+    //Each Frame stores the value that we got from the motor
+    for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
+      QJsonObject top_level_tab_obj;
+
+      QJsonArray tab_frame_array;
+
+      //Grab the frame map from the current tab
+      std::map<std::string, Frame *> frames_in_tab = tab.second->get_frame_map();
+
+      //Go through each frame in the tab
+      for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
+        //Grab the frame as the top level, and cast it later
+        Frame * curFrame = frame->second;
+
+        //Create a new object to hold the tab frame object. DON'T FORGET TO DELETE AT THE END OF THE LOOP
+        QJsonObject * current_tab_json_object = new QJsonObject();
+
+        //Only add the frames that we care about.
+        bool attach_new_object = false;
+
+        switch(curFrame->frame_type_){
+          case 1:
+          {
+              FrameCombo *fc = (FrameCombo *)(curFrame);
+              current_tab_json_object->insert("value", fc->value_);
+              attach_new_object = true;
+            break;
+          }
+          case 2:
+          {
+              FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
+              current_tab_json_object->insert("value", fsb->value_);
+              attach_new_object = true;
+            break;
+          }
+          case 3:
+          {
+            //Switch frame, don't do anything
+            break;
+          }
+          case 4:
+          {
+              FrameTesting *ft = (FrameTesting *)(curFrame);
+              current_tab_json_object->insert("value", ft->value_);
+              attach_new_object = true;
+            break;
+          }
+          case 5:
+          {
+              //Button frame, do nothing
+            break;
+          }
+
+          case 6:
+          {
+            FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
+            current_tab_json_object->insert("value", fr->value_);
+            attach_new_object = true;
+            break;
+          }
+        }
+
+        if(attach_new_object){
+            current_tab_json_object->insert("descriptor", frame->first.c_str());
+            tab_frame_array.append(*current_tab_json_object);
+        }
+
+        delete current_tab_json_object;
+      }
+
+      //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
+      //If we fill "Entries" directly, it will be inserted above descriptor. While it wouldn't make a functional difference
+      //It would be harder to read for a human
+      top_level_tab_obj.insert("entries", tab_frame_array);
+      top_level_tab_obj.insert("descriptor", tab.first.c_str());
+
+      //Write to our output array
+      json_array->append(top_level_tab_obj);
+
+    }
+}
+
+void MainWindow::write_metadata_to_file(QJsonArray * json_array){
+    QDateTime time;
+    QJsonObject output_metadata_object;
+    QJsonObject metadata;
+
+    uint32_t uid1, uid2, uid3;
+
+    metadata.insert("Generated Date and Time", time.currentDateTime().toString(Qt::TextDate));
+
+    iv.pcon->GetUidValues(&uid1, &uid2, &uid3);
+    metadata.insert("UID1", (int)uid1);
+    metadata.insert("UID2", (int)uid2);
+    metadata.insert("UID3", (int)uid3);
+
+    output_metadata_object.insert("Metadata", metadata);
+
+    json_array->append(output_metadata_object);
+}
+
+void MainWindow::write_user_support_file(){
+    QJsonArray tab_array;
+
+    write_metadata_to_file(&tab_array);
+    write_version_info_to_file(&tab_array);
+    write_parameters_to_file(&tab_array);
+
+    //Let people pick a directory/name to save to/with, and save that path
+    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                    "/home/user_support_file_" + ui->label_firmware_name->text() + ".json",
+                                                    tr("json (*.json"));
+
+    //Write to the json file
+    QJsonDocument output_doc;
+    output_doc.setArray(tab_array);
+
+    QByteArray bytes = output_doc.toJson(QJsonDocument::Indented);
+
+    //Above we filled the array with "entries" not "Entries," but to match our defaults format, we want it to say "Entries"
+    QString text(bytes); // add to text string for easy string replace
+    text.replace("entries", "Entries");
+
+    QString path = dir;
+    QFile file(path);
+    if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
+    {
+        QTextStream iStream( &file );
+        iStream.setCodec( "utf-8" );
+        iStream << text;
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("File Generated");
+
+        QString text("Your support file has been succesfully generated at: " + path + ". "
+                     "If you are not already in contact with a member of the Vertiq support team, please email this file "
+                     "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+        msgBox.setText(text);
+
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+
+        file.close();
+    }
+    else
+    {
+       ui->header_error_label->setText("Unable to open output file location, please try again.");
+    }
+}
+
+void MainWindow::on_generate_support_button_clicked(){
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_user_support_file();
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+    }
+}
+
