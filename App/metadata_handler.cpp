@@ -11,6 +11,21 @@ void MetadataHandler::Init(PortConnection * pcon){
     extract_path_ = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/flash_dir";
 }
 
+void MetadataHandler::UpdateAllFilePermissions(){
+    QFileInfoList files_in_dir = metadata_dir_.entryInfoList();
+
+    for(uint8_t i = 0; i < files_in_dir.length(); i++){
+        QString filePath = files_in_dir.at(i).absoluteFilePath();
+
+        if(filePath.contains(".bin") || filePath.contains(".json")){
+            //If it's a real file go and change all of the possible read permissions to make sure we can get in
+            QFile * tempFile = new QFile(filePath);
+            tempFile->setPermissions(filePath, QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::ReadUser);
+            delete tempFile;
+        }
+    }
+}
+
 void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     JlCompress extract_tool;
 
@@ -19,6 +34,7 @@ void MetadataHandler::ExtractMetadata(QString firmware_bin_path_){
     metadata_dir_.swap(tempDir);
 
     extract_tool.extractDir(firmware_bin_path_, extract_path_);
+    UpdateAllFilePermissions();
 }
 
 QString MetadataHandler::GetCombinedBinPath(){
