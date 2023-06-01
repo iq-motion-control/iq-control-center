@@ -135,18 +135,21 @@ void FrameSpinBox::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameSpinBox::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
-                              0.05f, value_))
+      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
+        iv.pcon->AddToLog("Couldn't set value: " + QString(client_entry_.first.c_str()));
         throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+      }
 
       iv.label_message->setText(QString("Value Saved Successfully"));
-      iv.label_message->setText(QString("Value Saved Successfully"));
+      iv.pcon->AddToLog("Set and saved value: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
+
       saved_value_ = value_;
       RemoveStarFromLabel();
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
   } else {
+    iv.pcon->AddToLog("No Motor Connected. Could not set " + QString((client_entry_.first).c_str()));
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
   }
@@ -155,17 +158,23 @@ void FrameSpinBox::SaveValue() {
 void FrameSpinBox::GetSavedValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f,
-                         saved_value_))
-        throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+      if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f, saved_value_)){
+          iv.pcon->AddToLog("Couldn't get value: " + QString(client_entry_.first.c_str()));
+          throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+      }
+
       if (has_nan_ && std::isnan(saved_value_)) {
         saved_value_ = nan_value_;
       }
       spin_box_->setValue(saved_value_);
+
+      iv.pcon->AddToLog(QString(client_entry_.first.c_str()) + " value gotten as: " + QString::number(saved_value_));
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
   } else {
+    iv.pcon->AddToLog("No Motor Connected. Could not get " + QString((client_entry_.first).c_str()));
     QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
     iv.label_message->setText(error_message);
   }

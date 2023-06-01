@@ -87,9 +87,16 @@ void FrameButton::SetPushButton(QPushButton *push_button, QSizePolicy size_polic
 void FrameButton::SetValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first))
+      if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first)){
+
+        iv.pcon->AddToLog("Couldn't set value: " + QString(client_entry_.first.c_str()));
+
         throw QString("COULDN'T SET VALUE: please reconnect or try again");
+      }
+
       iv.label_message->setText(QString("Value Saved Successfully"));
+      iv.pcon->AddToLog("Set and saved value: " + QString(client_entry_.first.c_str()));
+
       iv.pcon->GetQSerialInterface()->SendNow();
     } catch (const QString &e) {
       iv.label_message->setText(e);

@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->stackedWidget->setCurrentIndex(0);
   ui->pushButton_home->setChecked(1);
 
-
   // Check the server for updates
   AutoCheckUpdate();
 
@@ -37,9 +36,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   QString gui_version =
       QString::number(MAJOR) + "." + QString::number(MINOR) + "." + QString::number(PATCH);
   ui->label_gui_version_value->setText(gui_version);
+
   try {
     iv.pcon = new PortConnection(ui);
     iv.label_message = ui->header_error_label;
+
+    //Write that the control center opened to the log
+    iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -442,6 +445,7 @@ void MainWindow::on_generate_support_button_clicked(){
 }
 
 void MainWindow::on_export_log_button_clicked(){
+    //Grab the project log
     QFile currentLog(iv.pcon->path_to_log_file);
 
     //Let people pick a directory/name to save to/with, and save that path
@@ -449,8 +453,10 @@ void MainWindow::on_export_log_button_clicked(){
                                                     "/home/log.txt",
                                                     tr("txt (*.txt"));
 
+    //Copy the data from the project log to the user's desired location
     currentLog.copy(dir);
 
+    //Pop up with where the log went
     QMessageBox msgBox;
     msgBox.setWindowTitle("Log Exported");
 
@@ -459,6 +465,5 @@ void MainWindow::on_export_log_button_clicked(){
 
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
-
 }
 

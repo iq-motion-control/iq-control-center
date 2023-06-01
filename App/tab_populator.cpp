@@ -137,6 +137,8 @@ void TabPopulator::CreateTabFrames() {
     tab->CreateFrames();
     UpdateTabMap(tab, tab_firmware.second[1]);
   }
+
+  iv.pcon->AddToLog("Created Tab Frames!\n");
 }
 
 void TabPopulator::UpdateTabMap(std::shared_ptr<Tab> &tab, std::string &tab_name) {

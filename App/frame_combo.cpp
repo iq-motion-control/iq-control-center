@@ -130,10 +130,14 @@ void FrameCombo::SetBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
-                              0.05f, value_))
-        throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
+          iv.pcon->AddToLog("Couldn't set value: " + QString(client_entry_.first.c_str()));
+          throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+      }
+
       iv.label_message->setText(QString("Value Saved Successfully"));
+      iv.pcon->AddToLog("Set and saved value: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
+
       saved_value_ = value_;
       RemoveStarFromLabel();
     } catch (const QString &e) {
@@ -141,6 +145,7 @@ void FrameCombo::SaveValue() {
     }
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
+    iv.pcon->AddToLog("No Motor Connected. Could not set: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
     iv.label_message->setText(error_message);
   }
 }
@@ -152,6 +157,7 @@ void FrameCombo::GetSavedValue() {
                          saved_value_)){
         std::string error_start = "";
         std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str() + ", please try again";
+        iv.pcon->AddToLog("Couldn't get value: " + QString(client_entry_.first.c_str()));
         throw QString(error_string.c_str());
       }
 
@@ -164,10 +170,14 @@ void FrameCombo::GetSavedValue() {
       }
       int combo_box_index = key;
       combo_box_->setCurrentIndex(combo_box_index);
+
+      iv.pcon->AddToLog(QString(client_entry_.first.c_str()) + " value index gotten as: " + QString::number(combo_box_index));
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
   } else {
+    iv.pcon->AddToLog("No Motor Connected. Could not get " + QString((client_entry_.first).c_str()));
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
   }

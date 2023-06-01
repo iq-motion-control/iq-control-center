@@ -105,7 +105,9 @@ void PortConnection::ConnectMotor() {
         QString message = "Motor Connected Successfully";
 
         //Write the fact that we connected with the motor to the output log
+        AddToLog("\nNew Module Connected");
         AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud");
+        AddToLog("Module variables follow: \n");
 
         ui_->header_error_label->setText(message);
 
@@ -123,6 +125,8 @@ void PortConnection::ConnectMotor() {
             //Send out the hardware and firmware values to other modules of Control Center
             emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
             emit FindSavedValues();
+
+            AddToLog("Found Saved Values!\n");
         }
 
       } catch (const QString &e) {
