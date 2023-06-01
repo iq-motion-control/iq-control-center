@@ -2692,37 +2692,6 @@ QPushButton:pressed {
 </string>
           </property>
           <layout class="QGridLayout" name="gridLayout_18">
-           <item row="2" column="0">
-            <widget class="QTextBrowser" name="log_text_browser">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>300</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QTextEdit {
-	color: rgb(175, 175, 175);
-	background-color: rgb(60, 60, 60);
-	padding: 10px;
-	line-height: 400%;
-	border: 0px;
-}</string>
-             </property>
-             <property name="verticalScrollBarPolicy">
-              <enum>Qt::ScrollBarAsNeeded</enum>
-             </property>
-             <property name="sizeAdjustPolicy">
-              <enum>QAbstractScrollArea::AdjustToContents</enum>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QTextBrowser" name="get_help_text">
              <property name="sizePolicy">
@@ -2785,22 +2754,6 @@ hr { height: 1px; border-width: 0; }
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Maximum</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>17</width>
-               <height>17</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="1" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
@@ -2854,7 +2807,81 @@ hr { height: 1px; border-width: 0; }
                </property>
               </widget>
              </item>
+             <item>
+              <widget class="QPushButton" name="clear_log_button">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>140</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>14</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: rgb(175, 175, 175)</string>
+               </property>
+               <property name="text">
+                <string>Clear Log</string>
+               </property>
+              </widget>
+             </item>
             </layout>
+           </item>
+           <item row="2" column="0">
+            <widget class="QTextBrowser" name="log_text_browser">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>300</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QTextEdit {
+	color: rgb(175, 175, 175);
+	background-color: rgb(60, 60, 60);
+	padding: 10px;
+	line-height: 400%;
+	border: 0px;
+}</string>
+             </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarAsNeeded</enum>
+             </property>
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>17</width>
+               <height>17</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item row="4" column="0">
             <widget class="QPushButton" name="generate_support_button">

@@ -472,3 +472,6 @@ void MainWindow::on_export_log_button_clicked(){
     }
 }
 
+void MainWindow::on_clear_log_button_clicked(){
+    ui->log_text_browser->clear();
+}

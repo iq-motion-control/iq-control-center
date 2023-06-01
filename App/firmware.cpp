@@ -220,6 +220,8 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
             "It appears you are trying to use an archive not provided from Vertiq. "
             "Please go to vertiq.co and redownload the correct archive for your motor.");
 
+        iv.pcon->AddToLog("No json found in zip\n");
+
         msgBox.setStandardButtons(QMessageBox::Ok);
         //If you pick no, reset to the init state
         if(msgBox.exec() == QMessageBox::Ok){
@@ -290,11 +292,15 @@ bool Firmware::CheckPathAndConnection(){
     if (firmware_bin_path_.isEmpty()) {
       QString err_message = "No Firmware Binary Selected";
       iv.label_message->setText(err_message);
+
+      iv.pcon->AddToLog("Failed to load binary: " + err_message);
       return true;
       //Motor is disconnected when we reach this point of a recovery
     }else if(iv.pcon->GetConnectionState() != 1 && curTab != RECOVERY_TAB){
         QString error_message = "No Motor Connected, Please Connect Motor";
         iv.label_message->setText(error_message);
+
+        iv.pcon->AddToLog("Failed to load binary: " + error_message);
         return true;
     }
 
@@ -317,6 +323,8 @@ bool Firmware::FlashHardwareElectronicsWarning(){
         msgBox.setText(
             "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
             "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+
+        iv.pcon->AddToLog("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
 
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);

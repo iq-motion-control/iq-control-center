@@ -75,6 +75,8 @@ class MainWindow : public QMainWindow {
 
   void on_export_log_button_clicked();
 
+  void on_clear_log_button_clicked();
+
   void ShowMotorSavedValues();
 
   void updater();
