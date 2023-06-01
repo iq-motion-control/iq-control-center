@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     iv.label_message = ui->header_error_label;
 
     //Write that the control center opened to the log
+    iv.pcon->logging_active_ = true;
     iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
 
     QTimer *timer = new QTimer(this);
@@ -453,17 +454,21 @@ void MainWindow::on_export_log_button_clicked(){
                                                     "/home/log.txt",
                                                     tr("txt (*.txt"));
 
-    //Copy the data from the project log to the user's desired location
-    currentLog.copy(dir);
+    if(!(dir.isEmpty())){
+        //Copy the data from the project log to the user's desired location
+        currentLog.copy(dir);
 
-    //Pop up with where the log went
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Log Exported");
+        //Pop up with where the log went
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Log Exported");
 
-    QString text("Your log file has been succesfully exported to: " + dir + ".");
-    msgBox.setText(text);
+        QString text("Your log file has been succesfully exported to: " + dir + ".");
+        msgBox.setText(text);
 
-    msgBox.setStandardButtons(QMessageBox::Ok);
-    msgBox.exec();
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+    }else{
+        ui->header_error_label->setText("Unable to open output file location, please try again.");
+    }
 }
 

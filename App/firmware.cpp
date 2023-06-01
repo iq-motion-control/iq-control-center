@@ -163,6 +163,9 @@ void Firmware::SelectFirmwareClicked() {
         //Change the order of the tr() to change the default
         firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
                                                           tr("Binary (*.bin) ;; Zip (*.zip)"));
+
+        iv.pcon->AddToLog("Firmware file selected: " + firmware_bin_path_);
+
         //Pick which button we want to use
         if(currentTab == FIRMWARE_TAB){
             buttonInUse = firmware_binary_button_;
@@ -360,25 +363,32 @@ void Firmware::FlashCombinedClicked(){
         type_flash_requested_ = "combined";
     }
 
+    iv.pcon->AddToLog("combined flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashBootClicked() {
     type_flash_requested_= "boot";
+    iv.pcon->AddToLog("boot flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashAppClicked(){
     type_flash_requested_ = "app";
+    iv.pcon->AddToLog("app flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashUpgradeClicked() {
     type_flash_requested_= "upgrade";
+    iv.pcon->AddToLog("upgrade flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashClicked() {
+
+    iv.pcon->AddToLog("flash initiated");
+
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct
@@ -403,11 +413,15 @@ void Firmware::FlashClicked() {
 
     }
 
+    iv.pcon->AddToLog("flash starting at location: 0x" + QString("%1").arg(startingMemoryLocation, 0, 16));
+
     if(CheckPathAndConnection()){
         return;
     }
 
     FlashFirmware(startingMemoryLocation);
+
+    iv.pcon->AddToLog("flash complete\n\n");
 }
 
 void Firmware::FlashFirmware(uint32_t startingPoint){

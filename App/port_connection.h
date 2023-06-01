@@ -69,6 +69,8 @@ class PortConnection : public QObject {
     Baud921600 = 921600
   };
 
+  bool logging_active_;
+
   const QString path_to_log_file = QCoreApplication::applicationDirPath() + "/log.txt";
 
   static QDateTime time_;

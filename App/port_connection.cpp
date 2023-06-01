@@ -23,26 +23,28 @@
 
 #include <QStandardPaths>
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
+PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
 }
 
 void PortConnection::AddToLog(QString text_to_log){
-    //Get a string of the line we want to write to the log
-    QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
+    if(logging_active_){
+        //Get a string of the line we want to write to the log
+        QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
 
-    //Add that line to the GUI
-    ui_->log_text_browser->insertPlainText(logMessage);
+        //Add that line to the GUI
+        ui_->log_text_browser->insertPlainText(logMessage);
 
-    //Write the same line to the persistent log file that exists in the background
-    QFile log_file(path_to_log_file);
-    log_file.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream iStream( &log_file );
-    iStream.setCodec( "utf-8" );
-    iStream << logMessage;
+        //Write the same line to the persistent log file that exists in the background
+        QFile log_file(path_to_log_file);
+        log_file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream iStream( &log_file );
+        iStream.setCodec( "utf-8" );
+        iStream << logMessage;
 
-    log_file.close();
+        log_file.close();
+    }
 }
 
 void PortConnection::ResetToTopPage(){
@@ -71,6 +73,8 @@ void PortConnection::SetPortConnection(bool state) {
     ui_->label_upgrader_value->setText(QString(""));
 
     ui_->header_connect_button->setText("CONNECT");
+
+    AddToLog("module disconnected");
   }
 }
 
@@ -102,12 +106,14 @@ void PortConnection::ConnectMotor() {
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
-        QString message = "Motor Connected Successfully";
+        QString message = "Module Connected Successfully";
 
         //Write the fact that we connected with the motor to the output log
-        AddToLog("\nNew Module Connected");
+        AddToLog("New Module Connected");
         AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud");
         AddToLog("Module variables follow: \n");
+
+        logging_active_ = false;
 
         ui_->header_error_label->setText(message);
 
@@ -124,9 +130,17 @@ void PortConnection::ConnectMotor() {
 
             //Send out the hardware and firmware values to other modules of Control Center
             emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+
+            /**
+             * So...both emitting TypeStyleFound and FindSavedValues end up asking the motor for saved values (though the former
+             * never gets at the advanced values. I haven't figured that out yet, but it's another one of thos legacy things that
+             * I don't want to touch too much yet. Anyway, I only want to log when we get all of the values from the module, so we
+             * turn off logging after we say "we connected" and turn it back on when we go through and get all of the saved values"
+            */
+            logging_active_ = true;
             emit FindSavedValues();
 
-            AddToLog("Found Saved Values!\n");
+            AddToLog("Found all saved values\n");
         }
 
       } catch (const QString &e) {
