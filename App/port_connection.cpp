@@ -110,8 +110,8 @@ void PortConnection::ConnectMotor() {
 
         //Write the fact that we connected with the motor to the output log
         AddToLog("New Module Connected");
-        AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud");
-        AddToLog("Module variables follow: \n");
+        AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud\n");
+        AddToLog("Module variables follow:");
 
         logging_active_ = false;
 
@@ -125,8 +125,10 @@ void PortConnection::ConnectMotor() {
         //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
         }else{
             //Get information about what firmware is on the motor
+            logging_active_ = true;
             GetDeviceInformationResponses();
             GetBootAndUpgradeInformation();
+            logging_active_ = false;
 
             //Send out the hardware and firmware values to other modules of Control Center
             emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
@@ -258,6 +260,8 @@ void PortConnection::GetDeviceInformationResponses(){
     QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
     ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
+    AddToLog("module connected has build version: " + firmware_build_number_string);
+
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
     hardware_type_ = hardware_type;
@@ -330,6 +334,8 @@ void PortConnection::GetBootAndUpgradeInformation(){
         bootloader_version_string = "N/A";
     }
     ui_->label_bootloader_value->setText(bootloader_version_string);
+    AddToLog("module connected has bootloader version: " + bootloader_version_string);
+
 
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
@@ -339,6 +345,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
         upgrade_version_string = "N/A";
     }
     ui_->label_upgrader_value->setText(upgrade_version_string);
+    AddToLog("module connected has upgrade version: " + upgrade_version_string);
 }
 
 void PortConnection::DisplayInvalidFirmwareMessage(){

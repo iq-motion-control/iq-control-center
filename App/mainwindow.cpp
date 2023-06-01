@@ -250,12 +250,14 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         } else {
           QString error_message = "Wrong Default Settings Selected";
           iv.label_message->setText(error_message);
+          iv.pcon->AddToLog(error_message);
           return;
         }
       }
     }
     QString success_message = "Default Settings Value Saved";
     iv.label_message->setText(success_message);
+    iv.pcon->AddToLog(success_message);
     return;
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";

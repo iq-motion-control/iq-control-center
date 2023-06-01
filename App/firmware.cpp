@@ -194,6 +194,7 @@ void Firmware::SelectFirmwareClicked() {
     }else{
         QString error_message = "No Motor Connected, Please Connect Motor Before Selecting Firmware";
         iv.label_message->setText(error_message);
+        iv.pcon->AddToLog(error_message);
     }
 
   } catch (const QString &e) {
@@ -510,6 +511,8 @@ bool Firmware::BootMode() {
       ser->SendNow();
 
       iv.label_message->setText("Waiting for motor to go in BootMode");
+      iv.pcon->AddToLog("Waiting for motor to go in BootMode");
+
       // If you delete the port too fast, the ftdi chip will die before bytes were sent.
       QTime dieTime = QTime::currentTime().addMSecs(500);
       while (QTime::currentTime() < dieTime) {
@@ -529,6 +532,7 @@ bool Firmware::BootMode() {
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
+    iv.pcon->AddToLog("could not go into boot mode: " + error_message);
     return 0;
   }
   return 1;
