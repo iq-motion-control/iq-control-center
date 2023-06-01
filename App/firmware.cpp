@@ -475,6 +475,7 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
           while (!boot_mode) {
             boot_mode = fl->InitUsart();
             if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
+              iv.pcon->AddToLog("failed to initialize UART from boot mode");
               throw QString("Could Not Init UART From Boot Mode");
               break;
             };

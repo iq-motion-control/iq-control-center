@@ -34,6 +34,8 @@ void PortConnection::AddToLog(QString text_to_log){
         QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
 
         //Add that line to the GUI
+        //make sure the text cursor is at the end of the document before writing the new line
+        ui_->log_text_browser->moveCursor(QTextCursor::End);
         ui_->log_text_browser->insertPlainText(logMessage);
 
         //Write the same line to the persistent log file that exists in the background
@@ -204,6 +206,9 @@ void PortConnection::DisplayRecoveryMessage(){
     if (msgBox.exec() == QMessageBox::Yes) {
       DisableAllButtons();
       ui_->stackedWidget->setCurrentIndex(6);
+
+      AddToLog("motor connected in recovery mode\n");
+
     }else{
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(0);
@@ -260,6 +265,9 @@ void PortConnection::GetDeviceInformationResponses(){
     QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
     ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
+    uint32_t uid1, uid2, uid3;
+    GetUidValues(&uid1, &uid2, &uid3);
+    AddToLog("UID1: " + QString::number(uid1) + " UID2: " + QString::number(uid2) + " UID3: " + QString::number(uid3));
     AddToLog("module connected has build version: " + firmware_build_number_string);
 
     firmware_value_ = firmware_value;
