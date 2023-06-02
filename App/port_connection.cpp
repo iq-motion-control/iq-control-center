@@ -23,7 +23,7 @@
 
 #include <QStandardPaths>
 
-#define MAXIMUM_LINES_IN_LOG_FILE 3000
+#define MAXIMUM_LINES_IN_LOG_FILE 3000 //Using the 4006 as the example, we have ~85 lines/connection. so this gives us ~35 connections before deleting
 #define LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW 1500
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
