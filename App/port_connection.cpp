@@ -23,6 +23,9 @@
 
 #include <QStandardPaths>
 
+#define MAXIMUM_LINES_IN_LOG_FILE 3000
+#define LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW 1500
+
 PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
@@ -45,8 +48,74 @@ void PortConnection::AddToLog(QString text_to_log){
         iStream.setCodec( "utf-8" );
         iStream << logMessage;
 
+        uint16_t lines_in_log = GetLinesInLog();
+
+        if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
+            log_file.close();
+            ShortenLog();
+
+            return;
+        }
+
         log_file.close();
     }
+}
+
+uint16_t PortConnection::GetLinesInLog(){
+    uint16_t lines = 0;
+
+    QFile log_file(path_to_log_file);
+
+    if(log_file.open(QIODevice::ReadOnly)){
+        while(!log_file.atEnd()){
+            log_file.readLine();
+            lines++;
+        }
+    }
+
+    //Reset the file
+    log_file.seek(0);
+    log_file.close();
+
+    return lines;
+}
+
+void PortConnection::ShortenLog(){
+
+    //Open up the log file with all write permissions available so we can delete it
+    QFile log_file(path_to_log_file);
+    if (!log_file.open(QIODevice::ReadWrite | QIODevice::Text)){
+        return;
+    }
+
+    log_file.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup | QFileDevice::WriteOther);
+
+    //Create a string that will hold the data we'll write to the new log
+    QString newLog;
+
+    uint16_t curLine = 0;
+    //Go through the current log, but only grab the last LINES_TO_REMOVE_FROM_LOG lines
+    while(!log_file.atEnd()){
+        //once we get to past the first lines we don't want to include anymore
+        if(curLine >= LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW){
+            QByteArray newLine = log_file.readLine();
+            newLog.append(QString(newLine));
+        }else{
+            //Just move along in the file
+            log_file.readLine();
+        }
+
+        curLine++;
+    }
+
+    //Delete the current log
+    log_file.remove();
+
+    //Make a new log with only the lines we want
+    QFile newLogFile(path_to_log_file);
+    newLogFile.open(QIODevice::WriteOnly);
+    newLogFile.write(newLog.toUtf8());
+    newLogFile.close(); //don't forget to close your files!
 }
 
 void PortConnection::ResetToTopPage(){

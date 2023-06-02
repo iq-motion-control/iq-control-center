@@ -86,6 +86,11 @@ class PortConnection : public QObject {
   void AddToLog(QString text_to_log);
 
   /**
+   * @brief ShortenLog cut down the number of lines in the file
+   */
+  void ShortenLog();
+
+  /**
    * @brief getUidValues Get all 3 of the unique ids of the connected motor and return them through pointers
    * @param uid1 pointer to the container for uid1
    * @param uid2 pointer to the container for uid2
@@ -272,6 +277,8 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+
+  uint16_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
 
