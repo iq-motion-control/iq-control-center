@@ -85,6 +85,11 @@ class MainWindow : public QMainWindow {
 
   void on_generate_support_button_clicked();
 
+  void on_import_defaults_pushbutton_clicked();
+
+  void on_export_defaults_pushbutton_clicked();
+
+
 private:
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;
@@ -92,6 +97,7 @@ private:
 
   TabPopulator *tab_populator;
 
+  void write_data_to_json(QJsonArray tab_array);
   void write_user_support_file();
   void write_version_info_to_file(QJsonArray * json_array);
   void write_parameters_to_file(QJsonArray * json_array);

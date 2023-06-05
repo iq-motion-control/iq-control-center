@@ -507,7 +507,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -969,7 +969,7 @@ QComboBox:on, QComboBox:off {
             <widget class="QPushButton" name="default_pushbutton">
              <property name="minimumSize">
               <size>
-               <width>150</width>
+               <width>80</width>
                <height>0</height>
               </size>
              </property>
@@ -984,6 +984,90 @@ QComboBox:on, QComboBox:off {
              </property>
              <property name="text">
               <string>Set</string>
+             </property>
+             <property name="default">
+              <bool>false</bool>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="import_defaults_pushbutton">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	color:rgb(175, 175, 175);
+	background: rgb(45, 45, 45);
+	height: 30px;
+	border: 0px solid rgb(175, 175, 175);
+	border-radius: 8px
+}
+
+QPushButton:hover {
+	background: rgb(50, 50, 50);
+}
+
+QPushButton:pressed {
+	background: rgb(100, 100, 100)
+}</string>
+             </property>
+             <property name="text">
+              <string>Import</string>
+             </property>
+             <property name="default">
+              <bool>false</bool>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="export_defaults_pushbutton">
+             <property name="minimumSize">
+              <size>
+               <width>80</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+	color:rgb(175, 175, 175);
+	background: rgb(20, 20, 20);
+	height: 30px;
+	border: 0px solid rgb(175, 175, 175);
+	border-radius: 8px
+}
+
+QPushButton:hover {
+	background: rgb(50, 50, 50);
+}
+
+QPushButton:pressed {
+	background: rgb(100, 100, 100)
+}</string>
+             </property>
+             <property name="text">
+              <string>Export</string>
              </property>
              <property name="default">
               <bool>false</bool>
@@ -1027,8 +1111,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>1065</width>
+                <height>682</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1302,8 +1386,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1356,8 +1440,8 @@ QComboBox:on, QComboBox:off {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1505,93 +1589,9 @@ QComboBox:on, QComboBox:off {
          <widget class="QWidget" name="firmware_widget" native="true">
           <property name="palette">
            <palette>
-            <active>
-             <colorrole role="Button">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Window">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </active>
-            <inactive>
-             <colorrole role="Button">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Window">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </inactive>
-            <disabled>
-             <colorrole role="Button">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Base">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-             <colorrole role="Window">
-              <brush brushstyle="SolidPattern">
-               <color alpha="255">
-                <red>70</red>
-                <green>70</green>
-                <blue>70</blue>
-               </color>
-              </brush>
-             </colorrole>
-            </disabled>
+            <active/>
+            <inactive/>
+            <disabled/>
            </palette>
           </property>
           <layout class="QGridLayout" name="gridLayout_12">
@@ -2054,8 +2054,8 @@ hr { height: 1px; border-width: 0; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>20</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -2638,9 +2638,93 @@ QPushButton:pressed {
          <widget class="QWidget" name="get_help_widget" native="true">
           <property name="palette">
            <palette>
-            <active/>
-            <inactive/>
-            <disabled/>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
            </palette>
           </property>
           <property name="autoFillBackground">

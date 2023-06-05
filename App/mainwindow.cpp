@@ -226,21 +226,46 @@ void MainWindow::ShowMotorSavedValues() {
 }
 
 void MainWindow::SetDefaults(Json::Value defaults) {
+  //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
+
+    //create a map of the values in the defaults file (descriptor and value)
     std::map<std::string, double> default_value_map;
+
+    //Go through each of the entries in the input json
     for (uint8_t ii = 0; ii < defaults.size(); ++ii) {
+
+        //If the current entry has an Entries object keep going
       if (!defaults[ii]["Entries"].empty()) {
+
+          //Clear out the default_value_map to have a fresh slate
         default_value_map.clear();
+
+        //the tab we should be looking for is the descriptor of this object ("general, tuning, etc.)
         std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
+
+        //The tab's default values are stored in the Entries array
         Json::Value defaults_values = defaults[ii]["Entries"];
+
+        //For each of the values in the Entries array
         for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
+           //Grab the desciptor for each entry and its value
           std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
           double value = defaults_values[jj]["value"].asDouble();
+
+          //Put the value into the map with its descriptor as the key
           default_value_map[value_descriptor] = value;
         }
+
+        //Create a map iterator, and look to see if the tab targeted by this defaults file matches
+        //what's in our tab_map_
         std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
         it = tab_map_.find(tab_descriptor);
+
+        //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
         if (it != tab_map_.end()) {
+          //yay, you found the right tab. Now set the value in the tab to what was given
+          //in the defaults file, and make sure the correct values appear in the gui
           tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
           tab_map_[tab_descriptor]->CheckSavedValues();
         } else {
@@ -391,9 +416,39 @@ void MainWindow::write_user_support_file(){
     write_version_info_to_file(&tab_array);
     write_parameters_to_file(&tab_array);
 
+    write_data_to_json(tab_array);
+}
+
+void MainWindow::on_generate_support_button_clicked(){
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_user_support_file();
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+    }
+}
+
+void MainWindow::on_import_defaults_pushbutton_clicked(){
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_user_support_file();
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+    }
+}
+
+void MainWindow::on_export_defaults_pushbutton_clicked(){
+    //This is a lot like exporting the support file, only we don't need the metadata or build info
+    QJsonArray tab_array;
+
+    write_parameters_to_file(&tab_array);
+    write_data_to_json(tab_array);
+}
+
+void MainWindow::write_data_to_json(QJsonArray tab_array){
     //Let people pick a directory/name to save to/with, and save that path
     QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                                    "/home/user_support_file_" + ui->label_firmware_name->text() + ".json",
+                                                    "/home/custom_defaults_" + ui->label_firmware_name->text() + ".json",
                                                     tr("json (*.json"));
 
     //Write to the json file
@@ -432,13 +487,3 @@ void MainWindow::write_user_support_file(){
        ui->header_error_label->setText("Unable to open output file location, please try again.");
     }
 }
-
-void MainWindow::on_generate_support_button_clicked(){
-    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
-    if (iv.pcon->GetConnectionState() == 1) {
-        write_user_support_file();
-    }else{
-        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
-    }
-}
-
