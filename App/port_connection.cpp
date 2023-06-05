@@ -25,7 +25,6 @@
 
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
-#define LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW 250
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
@@ -53,7 +52,7 @@ void PortConnection::AddToLog(QString text_to_log){
 
         if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
             log_file.close();
-            ShortenLog();
+            ShortenLog(lines_in_log);
 
             return;
         }
@@ -81,7 +80,10 @@ uint32_t PortConnection::GetLinesInLog(){
     return lines;
 }
 
-void PortConnection::ShortenLog(){
+void PortConnection::ShortenLog(uint32_t current_num_lines){
+
+    //Only delete the number of lines needed to get back to the max allowed
+    uint32_t lines_to_delete = current_num_lines - MAXIMUM_LINES_IN_LOG_FILE;
 
     //Open up the log file with all write permissions available so we can delete it
     QFile log_file(path_to_log_file);
@@ -98,7 +100,7 @@ void PortConnection::ShortenLog(){
     //Go through the current log, but only grab the last LINES_TO_REMOVE_FROM_LOG lines
     while(!log_file.atEnd()){
         //once we get to past the first lines we don't want to include anymore
-        if(curLine >= LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW){
+        if(curLine > lines_to_delete){
             QByteArray newLine = log_file.readLine();
             newLog.append(QString(newLine));
         }else{
@@ -178,7 +180,7 @@ void PortConnection::ConnectMotor() {
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
-        QString message = "Module Connected Successfully";
+        QString message = "Motor Connected Successfully";
 
         //Write the fact that we connected with the motor to the output log
         AddToLog("New Module Connected");
@@ -349,8 +351,10 @@ int PortConnection::GetFirmwareValid(){
     //Check to see if the firmware is valid
     if(!GetEntryReply(ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
-      AddToLog("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?");
-      throw(QString("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?"));
+
+      QString error_str("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?");
+      AddToLog(error_str);
+      throw(error_str);
     }
 
     return firmware_valid;

@@ -321,11 +321,13 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
-        msgBox.setText(
-            "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-            "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
 
-        iv.pcon->AddToLog("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+        QString error_msg("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+
+        msgBox.setText(error_msg);
+
+        iv.pcon->AddToLog(error_msg.toLower());
 
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
@@ -473,8 +475,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
           while (!boot_mode) {
             boot_mode = fl->InitUsart();
             if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-              iv.pcon->AddToLog("failed to initialize UART from boot mode");
-              throw QString("Could Not Init UART From Boot Mode");
+              QString error_msg("Could Not Init UART From Boot Mode");
+              iv.pcon->AddToLog(error_msg.toLower());
+              throw QString(error_msg);
               break;
             };
           }
@@ -509,8 +512,9 @@ bool Firmware::BootMode() {
         throw QString("COULDN'T REBOOT: please reconnect or try again");
       ser->SendNow();
 
-      iv.label_message->setText("Waiting for motor to go in BootMode");
-      iv.pcon->AddToLog("Waiting for motor to go in BootMode");
+      QString status_msg("Waiting for motor to go in BootMode");
+      iv.label_message->setText(status_msg);
+      iv.pcon->AddToLog(status_msg.toLower());
 
       // If you delete the port too fast, the ftdi chip will die before bytes were sent.
       QTime dieTime = QTime::currentTime().addMSecs(500);

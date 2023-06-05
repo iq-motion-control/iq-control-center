@@ -88,7 +88,7 @@ class PortConnection : public QObject {
   /**
    * @brief ShortenLog cut down the number of lines in the file
    */
-  void ShortenLog();
+  void ShortenLog(uint32_t current_num_lines);
 
   /**
    * @brief getUidValues Get all 3 of the unique ids of the connected motor and return them through pointers
