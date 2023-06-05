@@ -429,8 +429,6 @@ void Firmware::FlashClicked() {
     }
 
     FlashFirmware(startingMemoryLocation);
-
-    iv.pcon->AddToLog("flash complete\n\n");
 }
 
 void Firmware::FlashFirmware(uint32_t startingPoint){

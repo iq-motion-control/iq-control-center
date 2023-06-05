@@ -23,8 +23,9 @@
 
 #include <QStandardPaths>
 
-#define MAXIMUM_LINES_IN_LOG_FILE 3000 //Using the 4006 as the example, we have ~85 lines/connection. so this gives us ~35 connections before deleting
-#define LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW 1500
+#define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
+                                        //too much bigger because it slows the program down when we read the size
+#define LINES_TO_REMOVE_FROM_LOG_ON_OVERFLOW 250
 
 PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
@@ -48,7 +49,7 @@ void PortConnection::AddToLog(QString text_to_log){
         iStream.setCodec( "utf-8" );
         iStream << logMessage;
 
-        uint16_t lines_in_log = GetLinesInLog();
+        uint32_t lines_in_log = GetLinesInLog();
 
         if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
             log_file.close();
@@ -61,8 +62,8 @@ void PortConnection::AddToLog(QString text_to_log){
     }
 }
 
-uint16_t PortConnection::GetLinesInLog(){
-    uint16_t lines = 0;
+uint32_t PortConnection::GetLinesInLog(){
+    uint32_t lines = 0;
 
     QFile log_file(path_to_log_file);
 
@@ -93,7 +94,7 @@ void PortConnection::ShortenLog(){
     //Create a string that will hold the data we'll write to the new log
     QString newLog;
 
-    uint16_t curLine = 0;
+    uint32_t curLine = 0;
     //Go through the current log, but only grab the last LINES_TO_REMOVE_FROM_LOG lines
     while(!log_file.atEnd()){
         //once we get to past the first lines we don't want to include anymore
@@ -212,8 +213,6 @@ void PortConnection::ConnectMotor() {
             */
             logging_active_ = true;
             emit FindSavedValues();
-
-            AddToLog("Found all saved values\n");
         }
 
       } catch (const QString &e) {
@@ -350,6 +349,7 @@ int PortConnection::GetFirmwareValid(){
     //Check to see if the firmware is valid
     if(!GetEntryReply(ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
+      AddToLog("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?");
       throw(QString("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?"));
     }
 

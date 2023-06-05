@@ -278,7 +278,7 @@ class PortConnection : public QObject {
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
 
-  uint16_t GetLinesInLog();
+  uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
 
