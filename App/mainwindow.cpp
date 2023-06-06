@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->stackedWidget->setCurrentIndex(0);
   ui->pushButton_home->setChecked(1);
 
-
   // Check the server for updates
   AutoCheckUpdate();
 
@@ -37,9 +36,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   QString gui_version =
       QString::number(MAJOR) + "." + QString::number(MINOR) + "." + QString::number(PATCH);
   ui->label_gui_version_value->setText(gui_version);
+
   try {
     iv.pcon = new PortConnection(ui);
     iv.label_message = ui->header_error_label;
+
+    //Write that the control center opened to the log
+    iv.pcon->logging_active_ = true;
+    iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -271,12 +275,14 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         } else {
           QString error_message = "Wrong Default Settings Selected";
           iv.label_message->setText(error_message);
+          iv.pcon->AddToLog(error_message);
           return;
         }
       }
     }
     QString success_message = "Default Settings Value Saved";
     iv.label_message->setText(success_message);
+    iv.pcon->AddToLog(success_message);
     return;
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
@@ -400,13 +406,12 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
 }
 
 void MainWindow::write_metadata_to_file(QJsonArray * json_array){
-    QDateTime time;
     QJsonObject output_metadata_object;
     QJsonObject metadata;
 
     uint32_t uid1, uid2, uid3;
 
-    metadata.insert("Generated Date and Time", time.currentDateTime().toString(Qt::TextDate));
+    metadata.insert("Generated Date and Time", iv.pcon->time_.currentDateTime().toString(Qt::TextDate));
 
     iv.pcon->GetUidValues(&uid1, &uid2, &uid3);
     metadata.insert("UID1", (int)uid1);
@@ -589,4 +594,44 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     {
        ui->header_error_label->setText("Unable to open output file location, please try again.");
     }
+}
+
+void MainWindow::on_generate_support_button_clicked(){
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_user_support_file();
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+    }
+}
+
+void MainWindow::on_export_log_button_clicked(){
+    //Grab the project log
+    QFile currentLog(iv.pcon->path_to_log_file);
+
+    //Let people pick a directory/name to save to/with, and save that path
+    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                    "/home/log.txt",
+                                                    tr("txt (*.txt"));
+
+    if(!(dir.isEmpty())){
+        //Copy the data from the project log to the user's desired location
+        currentLog.copy(dir);
+
+        //Pop up with where the log went
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Log Exported");
+
+        QString text("Your log file has been succesfully exported to: " + dir + ".");
+        msgBox.setText(text);
+
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+    }else{
+        ui->header_error_label->setText("Unable to open output file location, please try again.");
+    }
+}
+
+void MainWindow::on_clear_log_button_clicked(){
+    ui->log_text_browser->clear();
 }
