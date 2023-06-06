@@ -416,7 +416,7 @@ void MainWindow::write_user_support_file(){
     write_version_info_to_file(&tab_array);
     write_parameters_to_file(&tab_array);
 
-    write_data_to_json(tab_array);
+    write_data_to_json(tab_array, exportFileTypes::SUPPORT_FILE);
 }
 
 void MainWindow::on_generate_support_button_clicked(){
@@ -441,14 +441,33 @@ void MainWindow::on_export_defaults_pushbutton_clicked(){
     //This is a lot like exporting the support file, only we don't need the metadata or build info
     QJsonArray tab_array;
 
-    write_parameters_to_file(&tab_array);
-    write_data_to_json(tab_array);
+    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
+    if (iv.pcon->GetConnectionState() == 1) {
+        write_parameters_to_file(&tab_array);
+        write_data_to_json(tab_array, exportFileTypes::DEFAULTS_FILE);
+    }else{
+        ui->header_error_label->setText("Please connect your module before attempting to generate a custom defaults file.");
+    }
+
 }
 
-void MainWindow::write_data_to_json(QJsonArray tab_array){
+void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport){
+
+    QString file_beginning;
+
+    switch(fileExport){
+        case exportFileTypes::SUPPORT_FILE:
+            file_beginning.append("user_support_file_");
+        break;
+
+        case exportFileTypes::DEFAULTS_FILE:
+            file_beginning.append("custom_defaults_");
+        break;
+    }
+
     //Let people pick a directory/name to save to/with, and save that path
     QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                                    "/home/custom_defaults_" + ui->label_firmware_name->text() + ".json",
+                                                    "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
                                                     tr("json (*.json"));
 
     //Write to the json file
@@ -472,9 +491,23 @@ void MainWindow::write_data_to_json(QJsonArray tab_array){
         QMessageBox msgBox;
         msgBox.setWindowTitle("File Generated");
 
-        QString text("Your support file has been succesfully generated at: " + path + ". "
-                     "If you are not already in contact with a member of the Vertiq support team, please email this file "
-                     "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+        QString text;
+
+        switch(fileExport){
+            case exportFileTypes::SUPPORT_FILE:
+                text.append("Your support file has been succesfully generated at: " + path + ". "
+                               "If you are not already in contact with a member of the Vertiq support team, please email this file "
+                               "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+            break;
+
+            case exportFileTypes::DEFAULTS_FILE:
+                text.append("Your module's current state has been saved in " + path + ". To add this file to IQ Control Center,"
+                            " please select the import button, and select the desired file. In order to load these default settings, "
+                             "select the dropdown to the left, and select this file. Once selected, click Set, "
+                            "and your module will revert to the settings specified in the file.");
+            break;
+        }
+
         msgBox.setText(text);
 
         msgBox.setStandardButtons(QMessageBox::Ok);
