@@ -303,92 +303,98 @@ void MainWindow::write_version_info_to_file(QJsonArray * json_array){
     json_array->append(build_info);
 }
 
-void MainWindow::write_parameters_to_file(QJsonArray * json_array){
+void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTypes exportStyle){
     //Now go through and get all of the values that are currently set on the control center/module
 
     //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
     //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
     //Each Frame stores the value that we got from the motor
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
-      QJsonObject top_level_tab_obj;
+      //If we're doing a defaults file export, we don't want anything to do with the testing tab.
+      //This could be especially dangerous if the file gets saved with say 1000rpm and someone loads it
+      //with a prop on
+      if(!((exportStyle == exportFileTypes::DEFAULTS_FILE) && (tab.first.find("testing") != std::string::npos))){
 
-      QJsonArray tab_frame_array;
+          QJsonObject top_level_tab_obj;
 
-      //Grab the frame map from the current tab
-      std::map<std::string, Frame *> frames_in_tab = tab.second->get_frame_map();
+          QJsonArray tab_frame_array;
 
-      //Go through each frame in the tab
-      for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
-        //Grab the frame as the top level, and cast it later
-        Frame * curFrame = frame->second;
+          //Grab the frame map from the current tab
+          std::map<std::string, Frame *> frames_in_tab = tab.second->get_frame_map();
 
-        //Create a new object to hold the tab frame object. DON'T FORGET TO DELETE AT THE END OF THE LOOP
-        QJsonObject * current_tab_json_object = new QJsonObject();
+          //Go through each frame in the tab
+          for(auto frame = frames_in_tab.begin(); frame != frames_in_tab.end(); frame++){
+            //Grab the frame as the top level, and cast it later
+            Frame * curFrame = frame->second;
 
-        //Only add the frames that we care about.
-        bool attach_new_object = false;
+            //Create a new object to hold the tab frame object. DON'T FORGET TO DELETE AT THE END OF THE LOOP
+            QJsonObject * current_tab_json_object = new QJsonObject();
 
-        switch(curFrame->frame_type_){
-          case 1:
-          {
-              FrameCombo *fc = (FrameCombo *)(curFrame);
-              current_tab_json_object->insert("value", fc->value_);
-              attach_new_object = true;
-            break;
+            //Only add the frames that we care about.
+            bool attach_new_object = false;
+
+            switch(curFrame->frame_type_){
+              case 1:
+              {
+                  FrameCombo *fc = (FrameCombo *)(curFrame);
+                  current_tab_json_object->insert("value", fc->value_);
+                  attach_new_object = true;
+                break;
+              }
+              case 2:
+              {
+                  FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
+                  current_tab_json_object->insert("value", fsb->value_);
+                  attach_new_object = true;
+                break;
+              }
+              case 3:
+              {
+                //Switch frame, don't do anything
+                break;
+              }
+              case 4:
+              {
+                  FrameTesting *ft = (FrameTesting *)(curFrame);
+                  current_tab_json_object->insert("value", ft->value_);
+                  attach_new_object = true;
+                break;
+              }
+              case 5:
+              {
+                  //Button frame, do nothing
+                break;
+              }
+
+              case 6:
+              {
+                FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
+                current_tab_json_object->insert("value", fr->value_);
+                attach_new_object = true;
+                break;
+              }
+            }
+
+            if(attach_new_object){
+                current_tab_json_object->insert("descriptor", frame->first.c_str());
+                tab_frame_array.append(*current_tab_json_object);
+            }
+
+            delete current_tab_json_object;
           }
-          case 2:
-          {
-              FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
-              current_tab_json_object->insert("value", fsb->value_);
-              attach_new_object = true;
-            break;
-          }
-          case 3:
-          {
-            //Switch frame, don't do anything
-            break;
-          }
-          case 4:
-          {
-              FrameTesting *ft = (FrameTesting *)(curFrame);
-              current_tab_json_object->insert("value", ft->value_);
-              attach_new_object = true;
-            break;
-          }
-          case 5:
-          {
-              //Button frame, do nothing
-            break;
-          }
 
-          case 6:
-          {
-            FrameReadOnly *fr = (FrameReadOnly *)(curFrame);
-            current_tab_json_object->insert("value", fr->value_);
-            attach_new_object = true;
-            break;
-          }
-        }
+          uint8_t extension_index = tab.first.find(".");
+          std::string tab_descriptor = tab.first.substr(0, extension_index);
 
-        if(attach_new_object){
-            current_tab_json_object->insert("descriptor", frame->first.c_str());
-            tab_frame_array.append(*current_tab_json_object);
-        }
+          //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
+          //If we fill "Entries" directly, it will be inserted above descriptor. While it wouldn't make a functional difference
+          //It would be harder to read for a human
+          top_level_tab_obj.insert("entries", tab_frame_array);
+          top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
 
-        delete current_tab_json_object;
+          //Write to our output array
+          json_array->append(top_level_tab_obj);
       }
-
-      uint8_t extension_index = tab.first.find(".");
-      std::string tab_descriptor = tab.first.substr(0, extension_index);
-
-      //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
-      //If we fill "Entries" directly, it will be inserted above descriptor. While it wouldn't make a functional difference
-      //It would be harder to read for a human
-      top_level_tab_obj.insert("entries", tab_frame_array);
-      top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
-
-      //Write to our output array
-      json_array->append(top_level_tab_obj);
 
     }
 }
@@ -417,7 +423,7 @@ void MainWindow::write_user_support_file(){
 
     write_metadata_to_file(&tab_array);
     write_version_info_to_file(&tab_array);
-    write_parameters_to_file(&tab_array);
+    write_parameters_to_file(&tab_array, exportFileTypes::SUPPORT_FILE);
 
     write_data_to_json(tab_array, exportFileTypes::SUPPORT_FILE);
 }
@@ -456,7 +462,6 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
 
     //Create a file from the path
     QFile defaults_file(json_to_import);
-    defaults_file.setPermissions(json_to_import, QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::ReadUser);
 
     //Also get the file info so we can extract just the name and not the whole path (ex. defauts.json)
     QFileInfo file_info(json_to_import);
@@ -505,7 +510,7 @@ void MainWindow::on_export_defaults_pushbutton_clicked(){
 
     //If we're connected then go get the values, otherwise just spit out a message to connect the motor
     if (iv.pcon->GetConnectionState() == 1) {
-        write_parameters_to_file(&tab_array);
+        write_parameters_to_file(&tab_array, exportFileTypes::DEFAULTS_FILE);
         write_data_to_json(tab_array, exportFileTypes::DEFAULTS_FILE);
     }else{
         ui->header_error_label->setText("Please connect your module before attempting to generate a custom defaults file.");

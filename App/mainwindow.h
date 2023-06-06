@@ -103,7 +103,7 @@ private:
   void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);
   void write_user_support_file();
   void write_version_info_to_file(QJsonArray * json_array);
-  void write_parameters_to_file(QJsonArray * json_array);
+  void write_parameters_to_file(QJsonArray * json_array, exportFileTypes fileExport);
   void write_metadata_to_file(QJsonArray * json_array);
 
   void display_successful_import();
