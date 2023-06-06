@@ -89,11 +89,11 @@ void FrameButton::SetValue() {
     try {
       if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first)){
 
-        QString error_msg("COULDN'T SET VALUE: ");
+        QString error_msg("COULDN'T SET VALUE: " + QString(client_entry_.first.c_str()));
 
-        iv.pcon->AddToLog(error_msg.toLower() + QString(client_entry_.first.c_str()));
+        iv.pcon->AddToLog(error_msg.toLower());
 
-        throw QString(error_msg + "please reconnect or try again");
+        throw QString(error_msg + " , please reconnect or try again");
       }
 
       iv.label_message->setText(QString("Value Saved Successfully"));

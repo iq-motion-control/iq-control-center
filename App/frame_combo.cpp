@@ -131,8 +131,8 @@ void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
-          QString error_str("COULDN'T SAVE VALUE: ");
-          iv.pcon->AddToLog(error_str.toLower() + QString(client_entry_.first.c_str()));
+          QString error_str("COULDN'T SAVE VALUE: " + QString(client_entry_.first.c_str()));
+          iv.pcon->AddToLog(error_str.toLower());
           throw QString(error_str + "please reconnect or try again");
       }
 

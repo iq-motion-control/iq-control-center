@@ -136,9 +136,9 @@ void FrameSpinBox::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
-        QString error_msg("COULDN'T SAVE VALUE: ");
-        iv.pcon->AddToLog(error_msg.toLower() + QString(client_entry_.first.c_str()));
-        throw QString(error_msg + "please reconnect or try again");
+        QString error_msg("COULDN'T SAVE VALUE: " + QString(client_entry_.first.c_str()));
+        iv.pcon->AddToLog(error_msg.toLower());
+        throw QString(error_msg + " , please reconnect or try again");
       }
 
       iv.label_message->setText(QString("Value Saved Successfully"));
