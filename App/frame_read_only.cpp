@@ -128,8 +128,10 @@ void FrameReadOnly::GetSavedReadOnlyValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f, saved_value_)){
-          iv.pcon->AddToLog("Couldn't get value: " + QString(client_entry_.first.c_str()));
-          throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+          std::string error_start = "";
+          std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
+          iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
+          throw QString(error_string.c_str()) + " , please try again";
       }
       if (has_nan_ && std::isnan(saved_value_)) {
         saved_value_ = nan_value_;

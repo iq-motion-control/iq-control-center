@@ -159,7 +159,7 @@ void FrameCombo::GetSavedValue() {
         std::string error_start = "";
         std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
         iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
-        throw QString(error_string.c_str()) + ", please try again";
+        throw QString(error_string.c_str()) + " , please try again";
       }
 
       int key = 0;
