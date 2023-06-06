@@ -378,11 +378,14 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array){
         delete current_tab_json_object;
       }
 
+      uint8_t extension_index = tab.first.find(".");
+      std::string tab_descriptor = tab.first.substr(0, extension_index);
+
       //Fill in with "entries" and "descriptors" so that the file is filled in the order matching our defaults files
       //If we fill "Entries" directly, it will be inserted above descriptor. While it wouldn't make a functional difference
       //It would be harder to read for a human
       top_level_tab_obj.insert("entries", tab_frame_array);
-      top_level_tab_obj.insert("descriptor", tab.first.c_str());
+      top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
 
       //Write to our output array
       json_array->append(top_level_tab_obj);
@@ -485,7 +488,6 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
         if(msgBox.clickedButton() == overwriteButton){
             //delete the old version of this name of file
             QFile fileToDelete(path_to_copy_to);
-            fileToDelete.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup | QFileDevice::WriteOther);
             fileToDelete.remove();
 
             //copy over the new one
@@ -541,6 +543,9 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
     QString path = dir;
     QFile file(path);
+
+    file.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
+
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
         QTextStream iStream( &file );
