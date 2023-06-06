@@ -428,7 +428,20 @@ void MainWindow::on_generate_support_button_clicked(){
     }
 }
 
+void MainWindow::display_successful_import(){
+    QString success_message("Custom defaults imported properly");
+    iv.label_message->setText(success_message);
+    //Putting this here for when all of the stuff gets merged together
+    //iv.pcon->AddToLog(success_message);
+    def->RefreshFilesInDefaults();
+}
+
 void MainWindow::on_import_defaults_pushbutton_clicked(){
+
+    //A QUESTION FOR FUTURE CONSIDERATION
+    //What happens when someone updates the control center? Do their custom defaults get blown away?
+    //Do we have a way of stopping that? I would guess that they do get killed, and we have
+    //no way to do anything from stopping that.
 
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
@@ -451,14 +464,35 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
 
     //Say that the file was imported properly, and then refresh the defaults dropdown
     if(copySuccessful){
-        QString success_message("Custom defaults imported properly");
-        iv.label_message->setText(success_message);
-        //Putting this here for when all of the stuff gets merged together
-        //iv.pcon->AddToLog(success_message);
-        def->RefreshFilesInDefaults();
+        display_successful_import();
     }else{
-        //Pop up a window that says it seems like a file with that name already exists...rename it please. or
-        //give the option to overwrite the old one!
+        //Pop up a window that says it seems like a file with that name already exists...rename it please. also
+        //give the option to overwrite the old one
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Defaults Import Error");
+
+        QString text("We were unable to import this file, likely due to a file with the same name already existing. To"
+                     " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
+                     "select \"Cancel,\" rename your file, and try importing it again.");
+
+        msgBox.setText(text);
+        msgBox.addButton("Cancel", QMessageBox::NoRole);
+        QAbstractButton * overwriteButton = msgBox.addButton("Overwrite", QMessageBox::YesRole);
+
+        //If you click cancel, don't do anything.
+        //If you click overwrite, then delete the current file, and write this one
+        msgBox.exec();
+        if(msgBox.clickedButton() == overwriteButton){
+            //delete the old version of this name of file
+            QFile fileToDelete(path_to_copy_to);
+            fileToDelete.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup | QFileDevice::WriteOther);
+            fileToDelete.remove();
+
+            //copy over the new one
+            QFile::copy(defaults_file.fileName(), path_to_copy_to);
+
+            display_successful_import();
+        }
     }
 }
 
