@@ -35,6 +35,7 @@
 #include <QMetaEnum>
 #include <QMetaObject>
 
+#include <QDateTime>
 
 #define MAJOR_VERSION_MASK 0x000fc000
 #define MINOR_VERSION_MASK 0x00003f80
@@ -68,9 +69,26 @@ class PortConnection : public QObject {
     Baud921600 = 921600
   };
 
+  bool logging_active_;
+
+  const QString path_to_log_file = QCoreApplication::applicationDirPath() + "/log.txt";
+
+  static QDateTime time_;
+
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}
+
+  /**
+   * @brief add_to_log write a new line of text to the log
+   * @param text_to_log the text to output
+   */
+  void AddToLog(QString text_to_log);
+
+  /**
+   * @brief ShortenLog cut down the number of lines in the file
+   */
+  void ShortenLog(uint32_t current_num_lines);
 
   /**
    * @brief getUidValues Get all 3 of the unique ids of the connected motor and return them through pointers
@@ -259,6 +277,8 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+
+  uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
 

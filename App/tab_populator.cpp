@@ -85,6 +85,11 @@ void TabPopulator::DisplayFirmwareHardwareName() {
   QString harwdware_display_name = QString::fromStdString(hardware_name_);
   ui_->label_firmware_name->setText(firmware_display_name);
   ui_->label_hardware_name->setText(harwdware_display_name);
+
+  iv.pcon->logging_active_ = true;
+  iv.pcon->AddToLog("module connected has firmware style: " + firmware_display_name);
+  iv.pcon->AddToLog("module connected has hardware style: " + harwdware_display_name + "\n");
+  iv.pcon->logging_active_ = false;
 }
 
 void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number) {

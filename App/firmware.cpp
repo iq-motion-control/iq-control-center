@@ -163,6 +163,9 @@ void Firmware::SelectFirmwareClicked() {
         //Change the order of the tr() to change the default
         firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
                                                           tr("Binary (*.bin) ;; Zip (*.zip)"));
+
+        iv.pcon->AddToLog("Firmware file selected: " + firmware_bin_path_);
+
         //Pick which button we want to use
         if(currentTab == FIRMWARE_TAB){
             buttonInUse = firmware_binary_button_;
@@ -191,6 +194,7 @@ void Firmware::SelectFirmwareClicked() {
     }else{
         QString error_message = "No Motor Connected, Please Connect Motor Before Selecting Firmware";
         iv.label_message->setText(error_message);
+        iv.pcon->AddToLog(error_message);
     }
 
   } catch (const QString &e) {
@@ -216,6 +220,8 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
         msgBox.setText(
             "It appears you are trying to use an archive not provided from Vertiq. "
             "Please go to vertiq.co and redownload the correct archive for your motor.");
+
+        iv.pcon->AddToLog("No json found in zip\n");
 
         msgBox.setStandardButtons(QMessageBox::Ok);
         //If you pick no, reset to the init state
@@ -287,11 +293,15 @@ bool Firmware::CheckPathAndConnection(){
     if (firmware_bin_path_.isEmpty()) {
       QString err_message = "No Firmware Binary Selected";
       iv.label_message->setText(err_message);
+
+      iv.pcon->AddToLog("Failed to load binary: " + err_message);
       return true;
       //Motor is disconnected when we reach this point of a recovery
     }else if(iv.pcon->GetConnectionState() != 1 && curTab != RECOVERY_TAB){
         QString error_message = "No Motor Connected, Please Connect Motor";
         iv.label_message->setText(error_message);
+
+        iv.pcon->AddToLog("Failed to load binary: " + error_message);
         return true;
     }
 
@@ -311,9 +321,13 @@ bool Firmware::FlashHardwareElectronicsWarning(){
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
-        msgBox.setText(
-            "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-            "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+
+        QString error_msg("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+
+        msgBox.setText(error_msg);
+
+        iv.pcon->AddToLog(error_msg.toLower());
 
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
@@ -360,25 +374,32 @@ void Firmware::FlashCombinedClicked(){
         type_flash_requested_ = "combined";
     }
 
+    iv.pcon->AddToLog("combined flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashBootClicked() {
     type_flash_requested_= "boot";
+    iv.pcon->AddToLog("boot flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashAppClicked(){
     type_flash_requested_ = "app";
+    iv.pcon->AddToLog("app flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashUpgradeClicked() {
     type_flash_requested_= "upgrade";
+    iv.pcon->AddToLog("upgrade flash requested");
     FlashClicked();
 }
 
 void Firmware::FlashClicked() {
+
+    iv.pcon->AddToLog("flash initiated");
+
     //After you click Flash Combined, set the binary path to the combined binary
     //Check that you have a good file and are connected to a motor
     //Check that the hardware and electronics are correct
@@ -402,6 +423,8 @@ void Firmware::FlashClicked() {
        }
 
     }
+
+    iv.pcon->AddToLog("flash starting at location: 0x" + QString("%1").arg(startingMemoryLocation, 0, 16));
 
     if(CheckPathAndConnection()){
         return;
@@ -452,7 +475,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
           while (!boot_mode) {
             boot_mode = fl->InitUsart();
             if (std::chrono::steady_clock::now() - time_start > std::chrono::milliseconds(10000)) {
-              throw QString("Could Not Init UART From Boot Mode");
+              QString error_msg("Could Not Init UART From Boot Mode");
+              iv.pcon->AddToLog(error_msg.toLower());
+              throw QString(error_msg);
               break;
             };
           }
@@ -487,7 +512,10 @@ bool Firmware::BootMode() {
         throw QString("COULDN'T REBOOT: please reconnect or try again");
       ser->SendNow();
 
-      iv.label_message->setText("Waiting for motor to go in BootMode");
+      QString status_msg("Waiting for motor to go in BootMode");
+      iv.label_message->setText(status_msg);
+      iv.pcon->AddToLog(status_msg.toLower());
+
       // If you delete the port too fast, the ftdi chip will die before bytes were sent.
       QTime dieTime = QTime::currentTime().addMSecs(500);
       while (QTime::currentTime() < dieTime) {
@@ -507,6 +535,7 @@ bool Firmware::BootMode() {
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
+    iv.pcon->AddToLog("could not go into boot mode: " + error_message);
     return 0;
   }
   return 1;
