@@ -131,13 +131,13 @@ void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
-          QString error_str("COULDN'T SAVE VALUE: please reconnect or try again");
-          iv.pcon->AddToLog(error_str + ": " + QString(client_entry_.first.c_str()));
-          throw QString(error_str);
+          QString error_str("COULDN'T SAVE VALUE: ");
+          iv.pcon->AddToLog(error_str.toLower() + QString(client_entry_.first.c_str()));
+          throw QString(error_str + "please reconnect or try again");
       }
 
       iv.label_message->setText(QString("Value Saved Successfully"));
-      iv.pcon->AddToLog("Set and saved value: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
+      iv.pcon->AddToLog("set and saved value: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
 
       saved_value_ = value_;
       RemoveStarFromLabel();
@@ -157,9 +157,9 @@ void FrameCombo::GetSavedValue() {
       if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
                          saved_value_)){
         std::string error_start = "";
-        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str() + ", please try again";
-        iv.pcon->AddToLog("Couldn't get value: " + QString(client_entry_.first.c_str()));
-        throw QString(error_string.c_str());
+        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
+        iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
+        throw QString(error_string.c_str()) + ", please try again";
       }
 
       int key = 0;
