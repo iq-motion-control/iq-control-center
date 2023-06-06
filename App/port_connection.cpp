@@ -48,15 +48,6 @@ void PortConnection::AddToLog(QString text_to_log){
         iStream.setCodec( "utf-8" );
         iStream << logMessage;
 
-        uint32_t lines_in_log = GetLinesInLog();
-
-        if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
-            log_file.close();
-            ShortenLog(lines_in_log);
-
-            return;
-        }
-
         log_file.close();
     }
 }
@@ -97,7 +88,7 @@ void PortConnection::ShortenLog(uint32_t current_num_lines){
     QString newLog;
 
     uint32_t curLine = 0;
-    //Go through the current log, but only grab the last LINES_TO_REMOVE_FROM_LOG lines
+    //Go through the current log and kill the lines causing the overfill
     while(!log_file.atEnd()){
         //once we get to past the first lines we don't want to include anymore
         if(curLine > lines_to_delete){
@@ -180,6 +171,14 @@ void PortConnection::ConnectMotor() {
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
+
+        //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
+        uint32_t lines_in_log = GetLinesInLog();
+
+        if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
+            ShortenLog(lines_in_log);
+        }
+
         QString message = "Motor Connected Successfully";
 
         //Write the fact that we connected with the motor to the output log
