@@ -67,6 +67,8 @@ class Tab: public QWidget
 
     void ConnectFrameReadOnly(FrameReadOnly *fr);
 
+    bool IsClose(double val1, double val2, double tolerance = 0.01);
+
     std::map<std::string,Frame*> frame_map_;
 
     QWidget *parent_;

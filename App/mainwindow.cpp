@@ -239,13 +239,13 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     //Go through each of the entries in the input json
     for (uint8_t ii = 0; ii < defaults.size(); ++ii) {
 
-        //If the current entry has an Entries object keep going
+      //If the current entry has an Entries object keep going
       if (!defaults[ii]["Entries"].empty()) {
 
           //Clear out the default_value_map to have a fresh slate
         default_value_map.clear();
 
-        //the tab we should be looking for is the descriptor of this object ("general, tuning, etc.)
+        //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
         std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
 
         //The tab's default values are stored in the Entries array
@@ -465,46 +465,49 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
     QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Defaults JSON File"), openDir,
                                                           tr("JSON (*.json)"));
 
-    //Create a file from the path
-    QFile defaults_file(json_to_import);
+    //if you actually picked a file
+    if(json_to_import != ""){
+        //Create a file from the path
+        QFile defaults_file(json_to_import);
 
-    //Also get the file info so we can extract just the name and not the whole path (ex. defauts.json)
-    QFileInfo file_info(json_to_import);
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString path_to_copy_to(current_path + "/Resources/Defaults/" + file_info.fileName());
+        //Also get the file info so we can extract just the name and not the whole path (ex. defauts.json)
+        QFileInfo file_info(json_to_import);
+        QString current_path = QCoreApplication::applicationDirPath();
+        QString path_to_copy_to(current_path + "/Resources/Defaults/" + file_info.fileName());
 
-    bool copySuccessful = QFile::copy(defaults_file.fileName(), path_to_copy_to);
+        bool copySuccessful = QFile::copy(defaults_file.fileName(), path_to_copy_to);
 
-    //Say that the file was imported properly, and then refresh the defaults dropdown
-    if(copySuccessful){
-        display_successful_import();
-    }else{
-        //Pop up a window that says it seems like a file with that name already exists...rename it please. also
-        //give the option to overwrite the old one
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Defaults Import Error");
-
-        QString text("We were unable to import this file, likely due to a file with the same name already existing. To"
-                     " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
-                     "select \"Cancel,\" rename your file, and try importing it again.");
-
-        msgBox.setText(text);
-        msgBox.addButton("Cancel", QMessageBox::NoRole);
-        QAbstractButton * overwriteButton = msgBox.addButton("Overwrite", QMessageBox::YesRole);
-
-        //If you click cancel, don't do anything.
-        //If you click overwrite, then delete the current file, and write this one
-        msgBox.exec();
-        if(msgBox.clickedButton() == overwriteButton){
-            //delete the old version of this name of file
-            QFile fileToDelete(path_to_copy_to);
-            fileToDelete.setPermissions(path_to_copy_to, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
-            fileToDelete.remove();
-
-            //copy over the new one
-            QFile::copy(defaults_file.fileName(), path_to_copy_to);
-
+        //Say that the file was imported properly, and then refresh the defaults dropdown
+        if(copySuccessful){
             display_successful_import();
+        }else{
+            //Pop up a window that says it seems like a file with that name already exists...rename it please. also
+            //give the option to overwrite the old one
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Defaults Import Error");
+
+            QString text("We were unable to import this file, likely due to a file with the same name already existing. To"
+                         " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
+                         "select \"Cancel,\" rename your file, and try importing it again.");
+
+            msgBox.setText(text);
+            msgBox.addButton("Cancel", QMessageBox::NoRole);
+            QAbstractButton * overwriteButton = msgBox.addButton("Overwrite", QMessageBox::YesRole);
+
+            //If you click cancel, don't do anything.
+            //If you click overwrite, then delete the current file, and write this one
+            msgBox.exec();
+            if(msgBox.clickedButton() == overwriteButton){
+                //delete the old version of this name of file
+                QFile fileToDelete(path_to_copy_to);
+                fileToDelete.setPermissions(path_to_copy_to, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
+                fileToDelete.remove();
+
+                //copy over the new one
+                QFile::copy(defaults_file.fileName(), path_to_copy_to);
+
+                display_successful_import();
+            }
         }
     }
 }
@@ -593,15 +596,6 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     else
     {
        ui->header_error_label->setText("Unable to open output file location, please try again.");
-    }
-}
-
-void MainWindow::on_generate_support_button_clicked(){
-    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
-    if (iv.pcon->GetConnectionState() == 1) {
-        write_user_support_file();
-    }else{
-        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
     }
 }
 
