@@ -98,6 +98,7 @@ private:
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   TabPopulator *tab_populator;
+  Defaults *def;
 
   void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);
   void write_user_support_file();

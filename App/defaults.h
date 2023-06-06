@@ -41,6 +41,8 @@ class Defaults : public QObject
   public:
     Defaults(QComboBox* comb, std::string folder_path);
 
+    void RefreshFilesInDefaults();
+
   signals:
    void SaveDefaultValues(Json::Value);
 

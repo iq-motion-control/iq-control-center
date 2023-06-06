@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
-    Defaults *def = new Defaults(ui->default_box, "/Resources/Defaults/");
+    def = new Defaults(ui->default_box, "/Resources/Defaults/");
 
     connect(ui->default_box, QOverload<int>::of(&QComboBox::activated), def,
             &Defaults::DefaultComboBoxIndexChanged);
@@ -429,11 +429,36 @@ void MainWindow::on_generate_support_button_clicked(){
 }
 
 void MainWindow::on_import_defaults_pushbutton_clicked(){
-    //If we're connected then go get the values, otherwise just spit out a message to connect the motor
-    if (iv.pcon->GetConnectionState() == 1) {
-        write_user_support_file();
+
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+    //Open up the file window to let people pick the json they want to add to the Control Center
+    QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Defaults JSON File"), openDir,
+                                                          tr("JSON (*.json)"));
+
+    //Create a file from the path
+    QFile defaults_file(json_to_import);
+    defaults_file.setPermissions(json_to_import, QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::ReadUser);
+
+    //Also get the file info so we can extract just the name and not the whole path (ex. defauts.json)
+    QFileInfo file_info(json_to_import);
+    QString current_path = QCoreApplication::applicationDirPath();
+    QString path_to_copy_to(current_path + "/Resources/Defaults/" + file_info.fileName());
+
+    bool copySuccessful = QFile::copy(defaults_file.fileName(), path_to_copy_to);
+
+    //Say that the file was imported properly, and then refresh the defaults dropdown
+    if(copySuccessful){
+        QString success_message("Custom defaults imported properly");
+        iv.label_message->setText(success_message);
+        //Putting this here for when all of the stuff gets merged together
+        //iv.pcon->AddToLog(success_message);
+        def->RefreshFilesInDefaults();
     }else{
-        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+        //Pop up a window that says it seems like a file with that name already exists...rename it please. or
+        //give the option to overwrite the old one!
     }
 }
 

@@ -24,26 +24,32 @@ Defaults::Defaults(QComboBox* comb, std::string folder_path) :
   comb_(comb),
   folder_path_(folder_path)
 {
-  QString current_path = QCoreApplication::applicationDirPath();
-  QString path = current_path + QString::fromStdString(folder_path);
-
-  QDir dir(path);
-
-  QStringList files = dir.entryList(QDir::Files);
-
-  if (files.size() != 0)
-  {
-    comb_->addItems(files);
-    comb_->show();
-    for ( const QString& file : files  )
-    {
-      defaults_.push_back(DefaultValueFromJson(file, path));
-    }
-
-    default_values_ = defaults_[0];
-  }
+    RefreshFilesInDefaults();
 }
 
+void Defaults::RefreshFilesInDefaults(){
+    QString current_path = QCoreApplication::applicationDirPath();
+    QString path = current_path + QString::fromStdString(folder_path_);
+
+    QDir dir(path);
+
+    QStringList files = dir.entryList(QDir::Files);
+
+    //clear out what we currently have in the box
+    defaults_.clear();
+    comb_->clear();
+
+    if (files.size() != 0){
+        comb_->addItems(files);
+        comb_->show();
+
+        for ( const QString& file : files){
+            defaults_.push_back(DefaultValueFromJson(file, path));
+        }
+
+        default_values_ = defaults_[0];
+    }
+}
 
 void Defaults::LoadDefaultValues()
 {
