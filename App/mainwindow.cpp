@@ -488,6 +488,7 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
         if(msgBox.clickedButton() == overwriteButton){
             //delete the old version of this name of file
             QFile fileToDelete(path_to_copy_to);
+            fileToDelete.setPermissions(path_to_copy_to, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
             fileToDelete.remove();
 
             //copy over the new one
@@ -544,7 +545,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     QString path = dir;
     QFile file(path);
 
-    file.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
+    file.setPermissions(path, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
 
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
