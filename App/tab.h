@@ -50,7 +50,7 @@ class Tab: public QWidget
 
     bool IsClose(double val1, double val2, double tolerance = 0.01);
 
-    bool SaveDefaults(std::map<std::string,double> frame_value_map);
+    void SaveDefaults(std::map<std::string,double> frame_value_map);
 
     std::map<std::string,Frame*> get_frame_map();
 

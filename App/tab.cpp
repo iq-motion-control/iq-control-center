@@ -151,10 +151,8 @@ bool Tab::IsClose(double val1, double val2, double tolerance){
     return (abs(val1 - val2) <= tolerance);
 }
 
-bool Tab::SaveDefaults(std::map<std::string,double> default_value_map)
+void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 {
-
-  bool have_set_module_id = false;
 
   for(std::pair<std::string, double> default_value: default_value_map)
   {
@@ -184,22 +182,12 @@ bool Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 
         //Let's make sure that the value we're trying to save is different than what's on there already
         if(!IsClose(fsb->value_, default_value.second)){
-
-            //If we are changing the value, and it was the module id, then we'll need to reboot the module after set/save
-            //return true so that the mainwindow object knows to reboot
-            if(default_value.first == "Module ID"){
-                have_set_module_id = true;
-            }
-
             fsb->value_ = default_value.second;
             fsb->SaveValue();
         }
       }
     }
   }
-
-  return have_set_module_id;
-
 }
 
 std::map<std::string,Frame*> Tab::get_frame_map(){

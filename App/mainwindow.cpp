@@ -231,8 +231,6 @@ void MainWindow::ShowMotorSavedValues() {
 
 void MainWindow::SetDefaults(Json::Value defaults) {
 
-    bool needsRebootAfterSets = false; //If we set a parameter that requires a reboot to take effect, we need to reboot
-
   //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
 
@@ -279,10 +277,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
           iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
 
-          //If in saving the defaults we changed the module id, then we need to reboot after we set everything
-          if(tab_map_[tab_descriptor]->SaveDefaults(default_value_map)){
-              needsRebootAfterSets = true;
-          }
+          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
 
           iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
           tab_map_[tab_descriptor]->CheckSavedValues();
@@ -300,21 +295,26 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
 
-    //If we set something that requires a reboot, make sure the user knows that nothing broke when it does
-    //reboot. Flash the message, and reboot the motor after they hit ok
-    if(needsRebootAfterSets){
-        QMessageBox msgBox;
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setWindowTitle("Defaults Set Successfully");
+    //If we set something that requires a reboot, the user should know to reboot. So just say they
+    //should do it regardless of what they set
+    QMessageBox msgBox;
+    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
+    msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
 
-        QString text("Set values from default file successfully. Your module will now reboot, and lose connection"
-                     "to the Control Center. To reconnect, please select your serial port and click CONNECT");
+    msgBox.setWindowTitle("Defaults Set Successfully");
 
-        msgBox.setText(text);
-        msgBox.exec();
+    QString text("Set values from default file successfully. We recommend that you restart your module"
+                 " to ensure that all changes take effect. If you would like to restart your module now,"
+                 " please select Reboot Now. Your module will disconnect from IQ Control Center.");
 
+    msgBox.setText(text);
+    msgBox.exec();
+
+    if(msgBox.clickedButton() == rebootButton){
         //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
         iv.pcon->RebootMotor();
+    }else{
+        iv.pcon->AddToLog("module not rebooted after setting through defaults");
     }
 
     return;
@@ -506,7 +506,7 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
             QMessageBox msgBox;
             msgBox.setWindowTitle("Defaults Import Error");
 
-            QString text("We were unable to import this file, likely due to a file with the same name already existing. To"
+            QString text("A defaults file with the same name already exists. To"
                          " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
                          "select \"Cancel,\" rename your file, and try importing it again.");
 
