@@ -48,7 +48,9 @@ class Tab: public QWidget
 
     void CheckSavedValues();
 
-    void SaveDefaults(std::map<std::string,double> frame_value_map);
+    bool IsClose(double val1, double val2, double tolerance = 0.01);
+
+    bool SaveDefaults(std::map<std::string,double> frame_value_map);
 
     std::map<std::string,Frame*> get_frame_map();
 
@@ -66,8 +68,6 @@ class Tab: public QWidget
     void ConnectFrameButton(FrameButton *fb);
 
     void ConnectFrameReadOnly(FrameReadOnly *fr);
-
-    bool IsClose(double val1, double val2, double tolerance = 0.01);
 
     std::map<std::string,Frame*> frame_map_;
 

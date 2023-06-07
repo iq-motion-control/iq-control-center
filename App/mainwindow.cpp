@@ -230,8 +230,13 @@ void MainWindow::ShowMotorSavedValues() {
 }
 
 void MainWindow::SetDefaults(Json::Value defaults) {
+
+    bool needsRebootAfterSets = false; //If we set a parameter that requires a reboot to take effect, we need to reboot
+
   //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
+
+    iv.pcon->AddToLog("setting through defaults");
 
     //create a map of the values in the defaults file (descriptor and value)
     std::map<std::string, double> default_value_map;
@@ -255,6 +260,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
            //Grab the desciptor for each entry and its value
           std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
+
           double value = defaults_values[jj]["value"].asDouble();
 
           //Put the value into the map with its descriptor as the key
@@ -270,9 +276,19 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         if (it != tab_map_.end()) {
           //yay, you found the right tab. Now set the value in the tab to what was given
           //in the defaults file, and make sure the correct values appear in the gui
-          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
+
+          iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
+
+          //If in saving the defaults we changed the module id, then we need to reboot after we set everything
+          if(tab_map_[tab_descriptor]->SaveDefaults(default_value_map)){
+              needsRebootAfterSets = true;
+          }
+
+          iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
           tab_map_[tab_descriptor]->CheckSavedValues();
+
         } else {
+
           QString error_message = "Wrong Default Settings Selected";
           iv.label_message->setText(error_message);
           iv.pcon->AddToLog(error_message);
@@ -283,6 +299,24 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     QString success_message = "Default Settings Value Saved";
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
+
+    //If we set something that requires a reboot, make sure the user knows that nothing broke when it does
+    //reboot. Flash the message, and reboot the motor after they hit ok
+    if(needsRebootAfterSets){
+        QMessageBox msgBox;
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setWindowTitle("Defaults Set Successfully");
+
+        QString text("Set values from default file successfully. Your module will now reboot, and lose connection"
+                     "to the Control Center. To reconnect, please select your serial port and click CONNECT");
+
+        msgBox.setText(text);
+        msgBox.exec();
+
+        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        iv.pcon->RebootMotor();
+    }
+
     return;
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
@@ -480,6 +514,7 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
         //Say that the file was imported properly, and then refresh the defaults dropdown
         if(copySuccessful){
             display_successful_import();
+            iv.pcon->AddToLog("successfully added a custom defaults file at: " + json_to_import);
         }else{
             //Pop up a window that says it seems like a file with that name already exists...rename it please. also
             //give the option to overwrite the old one

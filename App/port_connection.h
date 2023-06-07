@@ -80,6 +80,12 @@ class PortConnection : public QObject {
   ~PortConnection() {}
 
   /**
+   * @brief RebootMotor restart the motor
+   * @return
+   */
+  void RebootMotor();
+
+  /**
    * @brief add_to_log write a new line of text to the log
    * @param text_to_log the text to output
    */
