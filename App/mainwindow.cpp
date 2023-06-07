@@ -295,8 +295,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
 
-    //If we set something that requires a reboot, the user should know to reboot. So just say they
-    //should do it regardless of what they set
+    //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
     QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
     msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
@@ -620,6 +619,8 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
             break;
 
             case exportFileTypes::DEFAULTS_FILE:
+
+                //If someone exports their defaults file, they'll probably want to use it again later on. So give them that option.
                 text.append("Your module's current state has been saved in " + path + ". Would you like to add these defaults"
                             " to the Control Center now? If no, you will have to use the Import button to do so manually later.");
 
@@ -633,7 +634,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
         file.close();
 
-        //If they click yes, then we'll have to directly import the file into the Defaults folder
+        //If they click yes to import their export, then we'll have to directly import the file into the Defaults folder
         if(msgBox.exec() == QMessageBox::Yes){
             import_defaults_file_from_path(path);
         }
