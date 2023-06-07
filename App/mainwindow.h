@@ -110,6 +110,8 @@ private:
   void write_parameters_to_file(QJsonArray * json_array, exportFileTypes fileExport);
   void write_metadata_to_file(QJsonArray * json_array);
 
+  void import_defaults_file_from_path(QString json_to_import);
+
   void display_successful_import();
 };
 

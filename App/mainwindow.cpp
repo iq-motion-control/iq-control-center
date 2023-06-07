@@ -479,26 +479,11 @@ void MainWindow::on_generate_support_button_clicked(){
 void MainWindow::display_successful_import(){
     QString success_message("Custom defaults imported properly");
     iv.label_message->setText(success_message);
-    //Putting this here for when all of the stuff gets merged together
-    //iv.pcon->AddToLog(success_message);
+    iv.pcon->AddToLog(success_message);
     def->RefreshFilesInDefaults();
 }
 
-void MainWindow::on_import_defaults_pushbutton_clicked(){
-
-    //A QUESTION FOR FUTURE CONSIDERATION
-    //What happens when someone updates the control center? Do their custom defaults get blown away?
-    //Do we have a way of stopping that? I would guess that they do get killed, and we have
-    //no way to do anything from stopping that.
-
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::ExistingFile);
-    QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-
-    //Open up the file window to let people pick the json they want to add to the Control Center
-    QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Defaults JSON File"), openDir,
-                                                          tr("JSON (*.json)"));
-
+void MainWindow::import_defaults_file_from_path(QString json_to_import){
     //if you actually picked a file
     if(json_to_import != ""){
         //Create a file from the path
@@ -545,6 +530,24 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
             }
         }
     }
+}
+
+void MainWindow::on_import_defaults_pushbutton_clicked(){
+
+    //A QUESTION FOR FUTURE CONSIDERATION
+    //What happens when someone updates the control center? Do their custom defaults get blown away?
+    //Do we have a way of stopping that? I would guess that they do get killed, and we have
+    //no way to do anything from stopping that.
+
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+    //Open up the file window to let people pick the json they want to add to the Control Center
+    QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Defaults JSON File"), openDir,
+                                                          tr("JSON (*.json)"));
+
+    import_defaults_file_from_path(json_to_import);
 }
 
 void MainWindow::on_export_defaults_pushbutton_clicked(){
@@ -611,22 +614,30 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
                 text.append("Your support file has been succesfully generated at: " + path + ". "
                                "If you are not already in contact with a member of the Vertiq support team, please email this file "
                                "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+
+                msgBox.setStandardButtons(QMessageBox::Ok);
+
             break;
 
             case exportFileTypes::DEFAULTS_FILE:
-                text.append("Your module's current state has been saved in " + path + ". To add this file to IQ Control Center,"
-                            " please select the import button, and select the desired file. In order to load these default settings, "
-                             "select the dropdown to the left, and select this file. Once selected, click Set, "
-                            "and your module will revert to the settings specified in the file.");
+                text.append("Your module's current state has been saved in " + path + ". Would you like to add these defaults"
+                            " to the Control Center now? If no, you will have to use the Import button to do so manually later.");
+
+                msgBox.setStandardButtons(QMessageBox::No);
+                msgBox.addButton(QMessageBox::Yes);
+
             break;
         }
 
         msgBox.setText(text);
 
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
-
         file.close();
+
+        //If they click yes, then we'll have to directly import the file into the Defaults folder
+        if(msgBox.exec() == QMessageBox::Yes){
+            import_defaults_file_from_path(path);
+        }
+
     }
     else
     {
