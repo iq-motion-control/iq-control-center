@@ -511,6 +511,8 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
             QMessageBox msgBox;
             msgBox.setWindowTitle("Defaults Import Error");
 
+            iv.pcon->AddToLog("Failed to import: " + json_to_import + ". A defaults file with that name already exists.");
+
             QString text("A defaults file with the same name already exists. To"
                          " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
                          "select \"Cancel,\" rename your file, and try importing it again.");
@@ -530,6 +532,8 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
 
                 //copy over the new one
                 QFile::copy(defaults_file.fileName(), path_to_copy_to);
+
+                iv.pcon->AddToLog("Overwrote: " + json_to_import + " with a new version of the file.");
 
                 display_successful_import();
             }
@@ -642,6 +646,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
         //If they click yes to import their export, then we'll have to directly import the file into the Defaults folder
         if(msgBox.exec() == QMessageBox::Yes){
+            iv.pcon->AddToLog("Importing defaults file from current module state.");
             import_defaults_file_from_path(path);
         }
 
