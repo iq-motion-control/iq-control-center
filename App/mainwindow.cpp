@@ -492,6 +492,12 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
         QFileInfo file_info(json_to_import);
         QString current_path = QCoreApplication::applicationDirPath();
         QString path_to_copy_to(current_path + "/Resources/Defaults/" + file_info.fileName());
+        QFile::setPermissions(path_to_copy_to, QFileDevice::ReadOwner | QFileDevice::WriteOwner |  QFileDevice::ExeOwner |
+                                               QFileDevice::ReadUser | QFileDevice::WriteUser |  QFileDevice::ExeUser |
+                                               QFileDevice::ReadOther | QFileDevice::WriteOther |  QFileDevice::ExeOther);
+
+
+        iv.pcon->AddToLog("Copying defaults file to: " + path_to_copy_to);
 
         bool copySuccessful = QFile::copy(defaults_file.fileName(), path_to_copy_to);
 

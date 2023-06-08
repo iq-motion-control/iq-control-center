@@ -17,9 +17,14 @@ QMAKE_CXXFLAGS = -Wno-unused-parameter
 QMAKE_LFLAGS += -no-pie
 
 # for windows
+#win32{
+#RC_ICONS = icons/IQ.ico
+#}
+
 win32{
-RC_ICONS = icons/IQ.ico
+RC_FILE = iqcontrolcenter.rc
 }
+
 # for mac
 macx {
 ICON = icons/IQ.icns
@@ -163,8 +168,8 @@ CONFIG("win32-g++"){
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "C:/ZipPack_64bit/include"
+        LIBS += -L"C:/ZipPack_64bit/lib"
     }
 
     LIBS += -lquazip -lz
@@ -201,3 +206,7 @@ RESOURCES += \
     clients.qrc
 
 #LIBS += -framework CoreFoundation
+
+DISTFILES += \
+    iqcontrolcenter.exe.manifest \
+    iqcontrolcenter.rc
