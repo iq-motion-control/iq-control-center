@@ -650,10 +650,10 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
             import_defaults_file_from_path(path);
         }
 
-    }
-    else
-    {
-       ui->header_error_label->setText("Unable to open output file location, please try again.");
+    } else {
+       QString error_text("Unable to open output file location, please try again.");
+       ui->header_error_label->setText(error_text);
+       iv.pcon->AddToLog(error_text);
     }
 }
 
