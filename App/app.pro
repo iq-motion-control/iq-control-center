@@ -17,10 +17,6 @@ QMAKE_CXXFLAGS = -Wno-unused-parameter
 QMAKE_LFLAGS += -no-pie
 
 # for windows
-#win32{
-#RC_ICONS = icons/IQ.ico
-#}
-
 win32{
 RC_FILE = iqcontrolcenter.rc
 }
