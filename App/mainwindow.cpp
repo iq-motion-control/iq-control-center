@@ -656,24 +656,39 @@ void MainWindow::on_export_log_button_clicked(){
     //Grab the project log
     QFile currentLog(iv.pcon->path_to_log_file);
 
+    QFileDialog dialog(this, tr("Open Directory"),
+                       "/home/log.txt",
+                       tr("txt (*.txt"));
+    dialog.setFileMode(QFileDialog::AnyFile);
+
     //Let people pick a directory/name to save to/with, and save that path
-    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+    QString dir = dialog.getSaveFileName(this, tr("Open Directory"),
                                                     "/home/log.txt",
-                                                    tr("txt (*.txt"));
+                                                    tr("text files (*.txt)"));
+
+    //If the file already exists, kill it
+    if(!(dir.isEmpty()) && QFile::exists(dir)){
+        QFile::remove(dir);
+    }
 
     if(!(dir.isEmpty())){
-        //Copy the data from the project log to the user's desired location
-        currentLog.copy(dir);
 
-        //Pop up with where the log went
+        //Pop up with where the log went (if successful)
         QMessageBox msgBox;
-        msgBox.setWindowTitle("Log Exported");
+        msgBox.setWindowTitle("Exporting Log");
+        QString text;
 
-        QString text("Your log file has been succesfully exported to: " + dir + ".");
-        msgBox.setText(text);
+            //Copy the data from the project log to the user's desired location
+            if(currentLog.copy(dir)){
+                text.append("Your log file has been succesfully exported to: " + dir + ".");
+            }else{
+                text.append("Failed to export log.");
+            }
 
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
+            msgBox.setText(text);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
+
     }else{
         ui->header_error_label->setText("Unable to open output file location, please try again.");
     }
