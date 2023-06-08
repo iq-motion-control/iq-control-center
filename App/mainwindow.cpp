@@ -686,6 +686,9 @@ void MainWindow::on_export_log_button_clicked(){
             }
 
             msgBox.setText(text);
+
+            iv.pcon->AddToLog(text);
+
             msgBox.setStandardButtons(QMessageBox::Ok);
             msgBox.exec();
 
