@@ -543,10 +543,8 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
 
 void MainWindow::on_import_defaults_pushbutton_clicked(){
 
-    //A QUESTION FOR FUTURE CONSIDERATION
-    //What happens when someone updates the control center? Do their custom defaults get blown away?
-    //Do we have a way of stopping that? I would guess that they do get killed, and we have
-    //no way to do anything from stopping that.
+    //Note::Testing indicates that updating the control center will not overwrite/delete user files, but it is something we should check on
+    //new releases from now on.
 
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
