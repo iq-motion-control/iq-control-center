@@ -164,8 +164,8 @@ CONFIG("win32-g++"){
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/ZipPack_64bit/include"
-        LIBS += -L"C:/ZipPack_64bit/lib"
+        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
     }
 
     LIBS += -lquazip -lz
@@ -185,8 +185,8 @@ unix{
     else{
         CMAKE_CXXFLAGS += -std=gnu++14
 
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
-        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
+        LIBS += -L"/home/iq/ZipPack_Linux/lib"
 
         LIBS += -lquazip -lz
     }
