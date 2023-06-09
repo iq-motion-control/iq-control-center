@@ -22,6 +22,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+
   ui->setupUi(this);
   ui->stackedWidget->setCurrentIndex(0);
   ui->pushButton_home->setChecked(1);
@@ -40,6 +41,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   try {
     iv.pcon = new PortConnection(ui);
     iv.label_message = ui->header_error_label;
+
+    //create our LocalData folder (definition comes from port connection (where logging happens)
+    //Also create a folder to hold all of the user default files
+    QDir appData, defaults_files;
+    appData.mkdir(iv.pcon->app_data_folder_); // these will only create the folder once.
+    appData.mkdir(iv.pcon->path_to_user_defaults_);
 
     //Write that the control center opened to the log
     iv.pcon->logging_active_ = true;

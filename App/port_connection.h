@@ -32,6 +32,8 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include <QStandardPaths>
+
 #include <QMetaEnum>
 #include <QMetaObject>
 
@@ -71,7 +73,11 @@ class PortConnection : public QObject {
 
   bool logging_active_;
 
-  const QString path_to_log_file = QCoreApplication::applicationDirPath() + "/log.txt";
+  const QString app_data_folder_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+  //On windows: C:/Users/jorda/AppData/Local/IQ Control Center
+
+  const QString path_to_log_file = app_data_folder_ + "/log.txt";
+  const QString path_to_user_defaults_ = (app_data_folder_ + "/user_defaults_files");
 
   static QDateTime time_;
 
