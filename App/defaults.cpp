@@ -46,9 +46,18 @@ void Defaults::RefreshFilesInDefaults(){
     defaults_.clear();
     comb_->clear();
 
+    //Add custom files
+    if(user_files.size() != 0){
+        comb_->addItems(user_files);
+
+        for ( const QString& user_file : user_files){
+            defaults_.push_back(DefaultValueFromJson(user_file, path_to_user_defaults));
+        }
+    }
+
+    //Add vertiq files
     if (files.size() != 0){
         comb_->addItems(files);
-//        comb_->show();
 
         for ( const QString& file : files){
             defaults_.push_back(DefaultValueFromJson(file, path));
@@ -56,15 +65,7 @@ void Defaults::RefreshFilesInDefaults(){
 
     }
 
-    if(user_files.size() != 0){
-        comb_->addItems(user_files);
-        comb_->show();
-
-        for ( const QString& user_file : user_files){
-            defaults_.push_back(DefaultValueFromJson(user_file, path_to_user_defaults));
-        }
-    }
-
+    comb_->show();
     default_values_ = defaults_[0];
 
 }
