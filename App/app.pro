@@ -185,8 +185,8 @@ unix{
     else{
         CMAKE_CXXFLAGS += -std=gnu++14
 
-        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
-        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
 
         LIBS += -lquazip -lz
     }
