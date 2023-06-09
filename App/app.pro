@@ -18,9 +18,8 @@ QMAKE_LFLAGS += -no-pie
 
 # for windows
 win32{
-RC_FILE = iqcontrolcenter.rc
+RC_ICONS = icons/IQ.ico
 }
-
 # for mac
 macx {
 ICON = icons/IQ.icns
@@ -202,7 +201,3 @@ RESOURCES += \
     clients.qrc
 
 #LIBS += -framework CoreFoundation
-
-DISTFILES += \
-    iqcontrolcenter.exe.manifest \
-    iqcontrolcenter.rc
