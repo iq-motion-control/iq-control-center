@@ -39,7 +39,7 @@ class Defaults : public QObject
 {
     Q_OBJECT
   public:
-    Defaults(QComboBox* comb, std::string folder_path);
+    Defaults(QComboBox* comb, std::string folder_path, std::string user_defaults_path);
 
     void RefreshFilesInDefaults();
 
@@ -57,6 +57,7 @@ class Defaults : public QObject
    std::string folder_path_;
    Json::Value default_values_;
    std::vector<Json::Value> defaults_;
+   std::string user_defaults_path_;
 
 
 };

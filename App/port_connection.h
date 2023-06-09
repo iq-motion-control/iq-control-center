@@ -77,7 +77,7 @@ class PortConnection : public QObject {
   //On windows: C:/Users/jorda/AppData/Local/IQ Control Center
 
   const QString path_to_log_file = app_data_folder_ + "/log.txt";
-  const QString path_to_user_defaults_ = (app_data_folder_ + "/user_defaults_files");
+  const QString path_to_user_defaults_repo_ = (app_data_folder_ + "/user_defaults_files");
 
   static QDateTime time_;
 

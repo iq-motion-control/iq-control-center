@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Also create a folder to hold all of the user default files
     QDir appData, defaults_files;
     appData.mkdir(iv.pcon->app_data_folder_); // these will only create the folder once.
-    appData.mkdir(iv.pcon->path_to_user_defaults_);
+    appData.mkdir(iv.pcon->path_to_user_defaults_repo_);
 
     //Write that the control center opened to the log
     iv.pcon->logging_active_ = true;
@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
-    def = new Defaults(ui->default_box, "/Resources/Defaults/");
+    def = new Defaults(ui->default_box, "/Resources/Defaults/", iv.pcon->path_to_user_defaults_repo_.toStdString());
 
     connect(ui->default_box, QOverload<int>::of(&QComboBox::activated), def,
             &Defaults::DefaultComboBoxIndexChanged);
@@ -497,12 +497,7 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
 
         //Also get the file info so we can extract just the name and not the whole path (ex. defauts.json)
         QFileInfo file_info(json_to_import);
-        QString current_path = QCoreApplication::applicationDirPath();
-        QString path_to_copy_to(current_path + "/Resources/Defaults/" + file_info.fileName());
-        QFile::setPermissions(path_to_copy_to, QFileDevice::ReadOwner | QFileDevice::WriteOwner |  QFileDevice::ExeOwner |
-                                               QFileDevice::ReadUser | QFileDevice::WriteUser |  QFileDevice::ExeUser |
-                                               QFileDevice::ReadOther | QFileDevice::WriteOther |  QFileDevice::ExeOther);
-
+        QString path_to_copy_to(iv.pcon->path_to_user_defaults_repo_ + "/" + file_info.fileName());
 
         iv.pcon->AddToLog("Copying defaults file to: " + path_to_copy_to);
 
