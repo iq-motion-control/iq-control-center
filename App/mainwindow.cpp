@@ -605,7 +605,8 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     QString path = dir;
     QFile file(path);
 
-    file.setPermissions(path, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup);
+    file.setPermissions(path, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
+                              QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::ReadGroup);
 
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
     {
@@ -685,6 +686,7 @@ void MainWindow::on_export_log_button_clicked(){
 
             //Copy the data from the project log to the user's desired location
             if(currentLog.copy(dir)){
+
                 text.append("Your log file has been succesfully exported to: " + dir + ".");
             }else{
                 text.append("Failed to export log.");
