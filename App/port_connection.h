@@ -76,6 +76,7 @@ class PortConnection : public QObject {
   const QString app_data_folder_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
   //On windows: C:/Users/jorda/AppData/Local/IQ Control Center
   //On Mac: /Users/iqmotioncontrol/Library/Application Support/IQ Control Center/
+  //On linux: /home/iq/.local/share/IQ Control Center/
 
   const QString path_to_log_file = app_data_folder_ + "/log.txt";
   const QString path_to_user_defaults_repo_ = (app_data_folder_ + "/user_defaults_files");
