@@ -39,6 +39,8 @@
 #include <string>
 #include <vector>
 
+enum class exportFileTypes {SUPPORT_FILE = 0, DEFAULTS_FILE = 1};
+
 namespace Ui {
 class MainWindow;
 }
@@ -89,17 +91,28 @@ class MainWindow : public QMainWindow {
 
   void on_generate_support_button_clicked();
 
+  void on_import_defaults_pushbutton_clicked();
+
+  void on_export_defaults_pushbutton_clicked();
+
+
 private:
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   TabPopulator *tab_populator;
+  Defaults *def;
 
+  void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);
   void write_user_support_file();
   void write_version_info_to_file(QJsonArray * json_array);
-  void write_parameters_to_file(QJsonArray * json_array);
+  void write_parameters_to_file(QJsonArray * json_array, exportFileTypes fileExport);
   void write_metadata_to_file(QJsonArray * json_array);
+
+  void import_defaults_file_from_path(QString json_to_import);
+
+  void display_successful_import();
 };
 
 #endif  // MAINWINDOW_H

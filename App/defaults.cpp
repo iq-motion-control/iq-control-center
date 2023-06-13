@@ -20,30 +20,55 @@
 
 #include "defaults.h"
 
-Defaults::Defaults(QComboBox* comb, std::string folder_path) :
+Defaults::Defaults(QComboBox* comb, std::string folder_path, std::string user_defaults_path) :
   comb_(comb),
-  folder_path_(folder_path)
+  folder_path_(folder_path),
+  user_defaults_path_(user_defaults_path)
 {
-  QString current_path = QCoreApplication::applicationDirPath();
-  QString path = current_path + QString::fromStdString(folder_path);
-
-  QDir dir(path);
-
-  QStringList files = dir.entryList(QDir::Files);
-
-  if (files.size() != 0)
-  {
-    comb_->addItems(files);
-    comb_->show();
-    for ( const QString& file : files  )
-    {
-      defaults_.push_back(DefaultValueFromJson(file, path));
-    }
-
-    default_values_ = defaults_[0];
-  }
+    RefreshFilesInDefaults();
 }
 
+void Defaults::RefreshFilesInDefaults(){
+
+    //Grab all of the vertiq default files
+    QString current_path = QCoreApplication::applicationDirPath();
+    QString path = current_path + QString::fromStdString(folder_path_);
+    QDir dir(path);
+
+    //Grab the user's default files
+    QString path_to_user_defaults = QString::fromStdString(user_defaults_path_) + "/";
+    QDir user_default_dir(path_to_user_defaults);
+
+    QStringList files = dir.entryList(QDir::Files);
+    QStringList user_files = user_default_dir.entryList(QDir::Files);
+
+    //clear out what we currently have in the box
+    defaults_.clear();
+    comb_->clear();
+
+    //Add custom files
+    if(user_files.size() != 0){
+        comb_->addItems(user_files);
+
+        for ( const QString& user_file : user_files){
+            defaults_.push_back(DefaultValueFromJson(user_file, path_to_user_defaults));
+        }
+    }
+
+    //Add vertiq files
+    if (files.size() != 0){
+        comb_->addItems(files);
+
+        for ( const QString& file : files){
+            defaults_.push_back(DefaultValueFromJson(file, path));
+        }
+
+    }
+
+    comb_->show();
+    default_values_ = defaults_[0];
+
+}
 
 void Defaults::LoadDefaultValues()
 {
