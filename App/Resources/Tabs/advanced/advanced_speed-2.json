@@ -122,18 +122,238 @@
         "format": "I",
         "unit": "bps",
         "frame_type": 2,
-        "maximum": 115200,
+        "maximum": 921600,
         "minimum": 9600,
-        "single_step": 105600
+        "single_step": 9600
+      },
+      {
+        "type_idn": 11,
+        "descriptor": "Revert to Factory Default Key 1",
+        "info": "Enter 12345678 here.  This will enable the Revert to Factory Defaults feature.",
+        "sub_idn": 2,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 4294967295,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 11,
+        "descriptor": "Revert to Factory Default Key 2",
+        "info": "Enter 11223344 here.  This will enable the Revert to Factory Defaults feature.",
+        "sub_idn": 3,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 4294967295,
+        "minimum": 0,
+        "single_step": 1
       },
       {
         "type_idn": 11,
         "descriptor": "Revert to Factory Defaults",
-        "info": "Reverts any user saved information to the factory settings.  The motor will reboot and the GUI will disconnect.",
+        "info": "Reverts any user saved information to the factory settings. Need to enter the factory default keys first. The motor will reboot and the GUI will disconnect.",
         "sub_idn": 1,
         "format": "n",
         "unit": "",
         "frame_type": 5
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Hobby Calibrated Communication Protocol",
+        "info": "Indicates which hobby protocol the module has been calibrated with. A module can only be calibrated with one protocol at a time. The module does not need to be calibrated to listen to a protocol, for example you could control the module with PWM in the No Calibration state. Calibration is just an available option if the flight controller and the motor have different minimum and maximum limits. This setting is NOT USER SETTABLE, it can only be changed by performing a calibration.",
+        "sub_idn": 2,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "No Calibration",
+          "Autodetect",
+          "Hobby Disabled",
+          "Standard PWM",
+          "OneShot125",
+          "OneShot42",
+          "MultiShot",
+          "DShot150",
+          "DShot300",
+          "DShot600",
+          "DShot1200"
+        ],
+        "list_value": [
+          0,
+          255,
+          254,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Hobby Calibration High",
+        "info": "The high end of the calibration in us",
+        "sub_idn": 3,
+        "format": "I",
+        "unit": "us",
+        "frame_type": 2,
+        "maximum": 4294967295,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Hobby Calibration Low",
+        "info": "The low end of the calibration in us",
+        "sub_idn": 4,
+        "format": "I",
+        "unit": "us",
+        "frame_type": 2,
+        "maximum": 4294967295,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Hobby Calibration Reset",
+        "info": "Resets all Hobby calibration data to the factory default state. The module will have no user calibration stored on it after this reset.",
+        "sub_idn": 5,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+	  {
+        "type_idn": 52,
+        "descriptor": "Timeout Meaning",
+        "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will disarm the module in either case.",
+        "sub_idn": 17,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Timeout Error",
+          "Disarm"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	  {
+        "type_idn": 87,
+        "descriptor": "Stopped Speed",
+        "info": "Determines the speed the module must be below to be considered stopped.",
+        "sub_idn": 0,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": 2.0,
+        "default_value": 5.0,
+        "decimal": 1,
+        "single_step": 0.1
+      },
+	  {
+        "type_idn": 87,
+        "descriptor": "Stopped Time",
+        "info": "Determines how long the long the module must be stopped before considering a stop complete.",
+        "sub_idn": 1,
+        "format": "f",
+        "unit": "s",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": 0,
+        "default_value": 1.0,
+        "decimal": 1,
+        "single_step": 0.1
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Manual Arming Throttle Source",
+        "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
+        "sub_idn": 11,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Unknown",
+          "Hobby",
+		  "DroneCAN",
+		  "IQUART"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2,
+		  3
+        ]
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Always Armed",
+        "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
+        "sub_idn": 1,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Normal Arming",
+          "Always Armed"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	  {
+        "type_idn": 60,
+        "descriptor": "Zero Spin Throttle Percentage",
+        "info": "Determines the throtlte percentage to treat as the zero spin throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
+        "sub_idn": 9,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.00,
+        "minimum": -1.00,
+        "default_value": 0.00,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 60,
+        "descriptor": "Zero Spin Throttle Tolerance",
+        "info": "Determines the tolerance below (or above on the negative side) the zero spin throttle to also consider as a 0% spin throttle. This is in terms of the incoming throttle percentage over 100. 0 corresponds to 0% throttle, 1 corresponds to 100% throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
+        "sub_idn": 10,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1.00,
+        "minimum": 0.00,
+        "default_value": 0.00,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+	  {
+        "type_idn": 86,
+        "descriptor": "Arming State",
+        "info": "Reports the current arming state and allows for manually changing it. Setting this to a different state will force the motor to transition to that arming state.",
+        "sub_idn": 12,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Disarmed",
+		  "Armed"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
       }
     ]
   }

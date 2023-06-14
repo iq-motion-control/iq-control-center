@@ -13,7 +13,7 @@
     ]
   },
   {
-    "descriptor": "tuning_position-2",
+    "descriptor": "tuning_servo-2",
     "Entries": [
       {
         "descriptor": "Angle Kd",

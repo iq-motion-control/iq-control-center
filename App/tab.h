@@ -32,6 +32,7 @@
 #include "frame_switch.h"
 #include "frame_testing.h"
 #include "frame_button.h"
+#include "frame_read_only.h"
 #include "frame_variables.h"
 
 
@@ -47,7 +48,11 @@ class Tab: public QWidget
 
     void CheckSavedValues();
 
+    bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allows
+
     void SaveDefaults(std::map<std::string,double> frame_value_map);
+
+    std::map<std::string,Frame*> get_frame_map();
 
     QGridLayout *gridLayout_;
 
@@ -62,11 +67,16 @@ class Tab: public QWidget
 
     void ConnectFrameButton(FrameButton *fb);
 
+    void ConnectFrameReadOnly(FrameReadOnly *fr);
+
     std::map<std::string,Frame*> frame_map_;
 
     QWidget *parent_;
     std::string clients_folder_path_;
     std::string client_file_name_;
+    bool using_custom_order_;
+    std::map<std::string, std::string> frame_descriptors_;
+
     std::map<std::string, Client*> client_map_;
     std::map<std::string, FrameVariables*> frame_variables_map_;
 };

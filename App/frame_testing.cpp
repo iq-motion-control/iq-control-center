@@ -22,7 +22,7 @@
 
 FrameTesting::FrameTesting(QWidget* parent, Client* client,
                            std::pair<std::string, ClientEntryAbstract*> client_entry,
-                           FrameVariables* fv)
+                           FrameVariables* fv, bool using_custom_order, QString ordered_label)
     : Frame(parent, 4), client_(client), client_entry_(client_entry) {
   info_ = QString::fromStdString(fv->testing_frame_.info);
   default_value_ = fv->testing_frame_.default_value;
@@ -38,7 +38,12 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   HorizontalLayout();
 
   // makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  if(using_custom_order){
+      label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
@@ -54,6 +59,10 @@ FrameTesting::FrameTesting(QWidget* parent, Client* client,
   spin_box_->setToolTip(QString::fromStdString(fv->testing_frame_.unit));
   spin_box_->setSuffix(unit);
   spin_box_->setValue(default_value_);
+
+  //Fills the space where a set button would be with empty space
+  empty_slot_spacer_ = new QSpacerItem(46, 20, QSizePolicy::Minimum, QSizePolicy::Minimum);
+  horizontal_layout_->addItem(empty_slot_spacer_);
 
   // creates push buton set
   push_button_set_ = new QPushButton(this);
@@ -130,16 +139,19 @@ void FrameTesting::SetValue() {
       if (IsZero(value_, 0.00001)) {
         QString success_message = label_->text() + " succesfully set to " + QString::number(0);
         iv.label_message->setText(success_message);
+        iv.pcon->AddToLog(success_message);
       } else {
         QString success_message =
             label_->text() + " succesfully set to " + QString::number(value_);
         iv.label_message->setText(success_message);
+        iv.pcon->AddToLog(success_message);
       }
     } catch (const QString& e) {
       iv.label_message->setText(e);
     }
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
+    iv.pcon->AddToLog("No Motor Connected. Could not set " + QString((client_entry_.first).c_str()));
     iv.label_message->setText(error_message);
   }
 }

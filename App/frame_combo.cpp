@@ -22,7 +22,9 @@
 
 FrameCombo::FrameCombo(QWidget *parent, Client *client,
                        std::pair<std::string, ClientEntryAbstract *> client_entry,
-                       FrameVariables *fv)
+                       FrameVariables *fv,
+                       bool using_custom_order, QString ordered_label)
+
     : Frame(parent, 1), client_(client), client_entry_(client_entry) {
   info_ = QString::fromStdString(fv->combo_frame_.info);
 
@@ -38,7 +40,12 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
   HorizontalLayout();
 
   // makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  if(using_custom_order){
+    label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
@@ -71,6 +78,9 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
                 QString(":/res/info_icon.png"));
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
+
+  //Initialize the value
+  value_ = index_value_[combo_box_->currentIndex()];
 }
 
 void FrameCombo::ShowInfo() {
@@ -120,10 +130,15 @@ void FrameCombo::SetBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameCombo::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5,
-                              0.05f, value_))
-        throw QString("COULDN'T SAVE VALUE: please reconnect or try again");
+      if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
+          QString error_str("COULDN'T SAVE VALUE: " + QString(client_entry_.first.c_str()));
+          iv.pcon->AddToLog(error_str.toLower());
+          throw QString(error_str + " , please reconnect or try again");
+      }
+
       iv.label_message->setText(QString("Value Saved Successfully"));
+      iv.pcon->AddToLog("set and saved value: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
+
       saved_value_ = value_;
       RemoveStarFromLabel();
     } catch (const QString &e) {
@@ -131,6 +146,7 @@ void FrameCombo::SaveValue() {
     }
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
+    iv.pcon->AddToLog("No Motor Connected. Could not set: " + QString(client_entry_.first.c_str()) + " = " + QString::number(value_));
     iv.label_message->setText(error_message);
   }
 }
@@ -139,8 +155,12 @@ void FrameCombo::GetSavedValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
-                         saved_value_))
-        throw QString("COULDN'T GET SAVED VALUE: please reconnect or try again");
+                         saved_value_)){
+        std::string error_start = "";
+        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
+        iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
+        throw QString(error_string.c_str()) + " , please try again";
+      }
 
       int key = 0;
       for (auto &i : index_value_) {
@@ -151,10 +171,14 @@ void FrameCombo::GetSavedValue() {
       }
       int combo_box_index = key;
       combo_box_->setCurrentIndex(combo_box_index);
+
+      iv.pcon->AddToLog(QString(client_entry_.first.c_str()) + " value index gotten as: " + QString::number(combo_box_index));
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
   } else {
+    iv.pcon->AddToLog("No Motor Connected. Could not get " + QString((client_entry_.first).c_str()));
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
   }

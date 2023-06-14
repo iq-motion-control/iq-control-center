@@ -1,0 +1,237 @@
+[
+  {
+    "descriptor": "tuning_vertiq_4006_speed",
+    "Entries": [
+      {
+        "type_idn": 60,
+        "descriptor": "Max Volts",
+        "info": "Only relevant in Voltage Mode. This is the voltage the controller will command at full throttle. Setting this voltage without knowing the properties of your propeller could result in overheating your motor.",
+        "sub_idn": 4,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 2,
+        "maximum": 25.2,
+        "minimum": -0.1,
+        "single_step": 0.1,
+        "nan": true,
+        "decimal": 1
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "Max Velocity",
+        "info": "Only relevant in Velocity Mode. This is the velocity the controller will command at full throttle. Setting this velocity without knowing the properties of your propeller could result in overheating your motor.",      
+        "sub_idn": 5,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 2,
+        "maximum": 4200,
+        "minimum": -0.5,
+        "single_step": 0.5,
+        "nan": true,
+        "decimal": 1
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity Kp",
+        "info": "The velocity proportional gain. Helps to correct speed errors. Higher gain means smaller errors and faster response, but can lead to oscillations and overheating.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "V/(rad/s)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.001,
+        "decimal": 3,
+        "single_step": 0.001,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity Ki",
+        "info": "The velocity integral gain. Helps to correct steady state speed errors. Higher gain means quicker suppression of steady state errors, but also increased oscillations, overheating, and faster windup. This term is generally not needed.",
+        "sub_idn": 8,
+        "format": "f",
+        "unit": "V/(rad)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.00001,
+        "single_step": 0.00001,
+        "decimal": 5,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity Kd",
+        "info": "The velocity derivative gain. Helps to reduce overshoot oscillations. Higher gain means less overshoot from Kp and Ki, but can also introduce higher frequency oscillations and overheating.",
+        "sub_idn": 9,
+        "format": "f",
+        "unit": "V/(rad/s^2)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.0000001,
+        "single_step": 0.0000001,
+        "decimal": 7,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity FF0",
+        "info": "The 0th order feedforward for the velocity controller. The constant voltage offset. Generally not needed for propellers.",
+        "sub_idn": 10,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 2,
+        "maximum": 25.2,
+        "minimum": -25.21,
+        "single_step": 0.01,
+        "decimal": 2,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity FF1",
+        "info": "The 1st order feedforward for the velocity controller. A linear voltage term, which compensates for friction and motor back EMF. We recommend keeping the default value.",
+        "sub_idn": 11,
+        "format": "f",
+        "unit": "V/(rad/s)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.0001,
+        "single_step": 0.0001,
+        "decimal": 4,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Velocity FF2",
+        "info": "The 2nd order feedforward of the velocity controller. Typically compensates for the drag of the propeller.",
+        "sub_idn": 12,
+        "format": "f",
+        "unit": "V/(rad/s^2)",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": -0.000000001,
+        "single_step": 0.000000001,
+        "decimal": 9,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Timeout",
+        "info": "The motor must receive a message within this amount of time. If it does not, it enters coast mode.",
+        "sub_idn": 15,
+        "format": "f",
+        "unit": "s",
+        "frame_type": 2,
+        "maximum": 1000000000,
+        "minimum": 0,
+        "single_step": 0.001,
+        "decimal": 3,
+        "nan": true
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Input Filter Cutoff",
+        "info": "A low pass filter on flight controller commands. A lower frequency means more filtering, which results in smoother speed changes and cooler motors but adds delay.",
+        "sub_idn": 16,
+        "format": "I",
+        "unit": "Hz",
+        "frame_type": 2,
+        "maximum": 10000,
+        "minimum": 1,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Zero Behavior",
+        "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command when DroneCAN is bypassing arming.",
+        "sub_idn": 2,
+        "format": "I",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Coast",
+          "Brake",
+		  "Normal Controller"
+        ],
+        "list_value": [
+          0,
+          1,
+		  2
+        ]
+      },
+	  {
+        "type_idn": 50,
+        "descriptor": "Voltage Slew Limit Enable",
+        "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command.",
+        "sub_idn": 47,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Enabled",
+          "Disabled"
+        ],
+        "list_value": [
+          1,
+          0
+        ]
+      },
+	  {
+        "type_idn": 50,
+        "descriptor": "Voltage Slew Limit",
+        "info": "Sets the slew limit of the motor in V/s. Only has an effect of the slew limit is enabled.",
+        "sub_idn": 46,
+        "format": "f",
+        "unit": "V/s",
+        "frame_type": 2,
+        "maximum": 10000,
+        "minimum": 1,
+        "decimal": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Kp",
+        "info": "The stow angle proportional gain.",
+        "sub_idn": 5,
+        "format": "f",
+        "unit": "V/rad",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Ki",
+        "info": "The stow angle integral gain.",
+        "sub_idn": 6,
+        "format": "f",
+        "unit": "V/(rad*s)",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      },
+      {
+        "type_idn": 85,
+        "descriptor": "Stow Kd",
+        "info": "The stow angle differential gain.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "V/(rad/s)",
+        "frame_type": 2,
+        "maximum": 100,
+        "minimum": -0.001,
+        "decimal": 2,
+        "single_step": 0.01,
+        "nan": true
+      }
+    ]
+  }
+]

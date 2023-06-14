@@ -1,0 +1,15 @@
+[
+    {
+      "descriptor": "advanced_speed-16",
+      "Entries": [
+        {
+          "descriptor": "Convection Thermal Conductivity Coefficient",
+          "value": 0.039
+        },
+        {
+          "descriptor": "Velocity FF2",
+          "value": 0.0000751
+        }
+      ]
+    }
+  ]

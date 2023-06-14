@@ -22,7 +22,7 @@
 
 FrameButton::FrameButton(QWidget *parent, Client *client,
                          std::pair<std::string, ClientEntryAbstract *> client_entry,
-                         FrameVariables *fv)
+                         FrameVariables *fv, bool using_custom_order, QString ordered_label)
     : Frame(parent, 5), client_(client), client_entry_(client_entry) {
   info_ = QString::fromStdString(fv->button_frame_.info);
   // creates frame
@@ -37,7 +37,13 @@ FrameButton::FrameButton(QWidget *parent, Client *client,
   HorizontalLayout();
 
   // makes frame label
-  label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  // makes frame label
+  if(using_custom_order){
+    label_ = new QLabel(ordered_label, this);
+  }else{
+    label_ = new QLabel(QString((client_entry.first).c_str()), this);
+  }
+
   SetLabel(label_, size_policy);
   horizontal_layout_->addWidget(label_);
 
@@ -81,9 +87,18 @@ void FrameButton::SetPushButton(QPushButton *push_button, QSizePolicy size_polic
 void FrameButton::SetValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
-      if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first))
-        throw QString("COULDN'T SET VALUE: please reconnect or try again");
+      if (!client_->Set(*iv.pcon->GetQSerialInterface(), client_entry_.first)){
+
+        QString error_msg("COULDN'T SET VALUE: " + QString(client_entry_.first.c_str()));
+
+        iv.pcon->AddToLog(error_msg.toLower());
+
+        throw QString(error_msg + " , please reconnect or try again");
+      }
+
       iv.label_message->setText(QString("Value Saved Successfully"));
+      iv.pcon->AddToLog("Set and saved value: " + QString(client_entry_.first.c_str()));
+
       iv.pcon->GetQSerialInterface()->SendNow();
     } catch (const QString &e) {
       iv.label_message->setText(e);

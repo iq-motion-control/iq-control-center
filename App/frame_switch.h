@@ -42,7 +42,7 @@ class FrameSwitch: public QWidget
 {
     Q_OBJECT
   public:
-    FrameSwitch(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry);
+    FrameSwitch(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, bool using_custom_order, QString ordered_label);
 
     Frame *frame_;
     Switch *switch_;
