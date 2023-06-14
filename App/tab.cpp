@@ -147,8 +147,13 @@ void Tab::CheckSavedValues()
   }
 }
 
+bool Tab::IsClose(double val1, double val2, double tolerance){
+    return (abs(val1 - val2) <= tolerance);
+}
+
 void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 {
+
   for(std::pair<std::string, double> default_value: default_value_map)
   {
     Frame *frame = frame_map_[default_value.first];
@@ -160,8 +165,13 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
         FrameCombo *fc = nullptr;
         if(!(fc = dynamic_cast<FrameCombo*>(frame)))
           break;
-        fc->value_ = default_value.second;
-        fc->SaveValue();
+
+        //Let's make sure that the value we're trying to save is different than what's on there already
+        if(!IsClose(fc->value_, default_value.second)){
+            fc->value_ = default_value.second;
+            fc->SaveValue();
+        }
+
         break;
       }
       case 2:
@@ -169,13 +179,20 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
         FrameSpinBox *fsb = nullptr;
         if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
           break;
-        fsb->value_ = default_value.second;
-        fsb->SaveValue();
+
+        //Let's make sure that the value we're trying to save is different than what's on there already
+        if(!IsClose(fsb->value_, default_value.second)){
+            fsb->value_ = default_value.second;
+            fsb->SaveValue();
+        }
       }
     }
   }
 }
 
+std::map<std::string,Frame*> Tab::get_frame_map(){
+    return frame_map_;
+}
 
 void Tab::ConnectFrameCombo(FrameCombo *fc)
 {

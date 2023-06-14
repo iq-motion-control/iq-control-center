@@ -21,10 +21,95 @@
 #include "port_connection.h"
 #include "schmi/include/Schmi/qserial.h"
 
+#include <QStandardPaths>
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) : ui_(user_int), ser_(nullptr) {
+#define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
+                                        //too much bigger because it slows the program down when we read the size
+
+PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+}
+
+void PortConnection::AddToLog(QString text_to_log){
+    if(logging_active_){
+        //Get a string of the line we want to write to the log
+        QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
+
+        //Add that line to the GUI
+        //make sure the text cursor is at the end of the document before writing the new line
+        ui_->log_text_browser->moveCursor(QTextCursor::End);
+        ui_->log_text_browser->insertPlainText(logMessage);
+
+        //Write the same line to the persistent log file that exists in the background
+        QFile log_file(path_to_log_file);
+        log_file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream iStream( &log_file );
+        iStream.setCodec( "utf-8" );
+        iStream << logMessage;
+
+        log_file.close();
+    }
+}
+
+uint32_t PortConnection::GetLinesInLog(){
+    uint32_t lines = 0;
+
+    QFile log_file(path_to_log_file);
+
+    if(log_file.open(QIODevice::ReadOnly)){
+        while(!log_file.atEnd()){
+            log_file.readLine();
+            lines++;
+        }
+    }
+
+    //Reset the file
+    log_file.seek(0);
+    log_file.close();
+
+    return lines;
+}
+
+void PortConnection::ShortenLog(uint32_t current_num_lines){
+
+    //Only delete the number of lines needed to get back to the max allowed
+    uint32_t lines_to_delete = current_num_lines - MAXIMUM_LINES_IN_LOG_FILE;
+
+    //Open up the log file with all write permissions available so we can delete it
+    QFile log_file(path_to_log_file);
+    if (!log_file.open(QIODevice::ReadWrite | QIODevice::Text)){
+        return;
+    }
+
+    log_file.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup | QFileDevice::WriteOther);
+
+    //Create a string that will hold the data we'll write to the new log
+    QString newLog;
+
+    uint32_t curLine = 0;
+    //Go through the current log and kill the lines causing the overfill
+    while(!log_file.atEnd()){
+        //once we get to past the first lines we don't want to include anymore
+        if(curLine > lines_to_delete){
+            QByteArray newLine = log_file.readLine();
+            newLog.append(QString(newLine));
+        }else{
+            //Just move along in the file
+            log_file.readLine();
+        }
+
+        curLine++;
+    }
+
+    //Delete the current log
+    log_file.remove();
+
+    //Make a new log with only the lines we want
+    QFile newLogFile(path_to_log_file);
+    newLogFile.open(QIODevice::WriteOnly);
+    newLogFile.write(newLog.toUtf8());
+    newLogFile.close(); //don't forget to close your files!
 }
 
 void PortConnection::ResetToTopPage(){
@@ -53,6 +138,8 @@ void PortConnection::SetPortConnection(bool state) {
     ui_->label_upgrader_value->setText(QString(""));
 
     ui_->header_connect_button->setText("CONNECT");
+
+    AddToLog("module disconnected");
   }
 }
 
@@ -84,7 +171,23 @@ void PortConnection::ConnectMotor() {
         firmware_valid = GetFirmwareValid();
 
         SetPortConnection(1);
+
+        //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
+        uint32_t lines_in_log = GetLinesInLog();
+
+        if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
+            ShortenLog(lines_in_log);
+        }
+
         QString message = "Motor Connected Successfully";
+
+        //Write the fact that we connected with the motor to the output log
+        AddToLog("New Module Connected");
+        AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud\n");
+        AddToLog("Module variables follow:");
+
+        logging_active_ = false;
+
         ui_->header_error_label->setText(message);
 
         if(!firmware_valid){
@@ -95,11 +198,21 @@ void PortConnection::ConnectMotor() {
         //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
         }else{
             //Get information about what firmware is on the motor
+            logging_active_ = true;
             GetDeviceInformationResponses();
             GetBootAndUpgradeInformation();
+            logging_active_ = false;
 
             //Send out the hardware and firmware values to other modules of Control Center
             emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+
+            /**
+             * So...both emitting TypeStyleFound and FindSavedValues end up asking the motor for saved values (though the former
+             * never gets at the advanced values. I haven't figured that out yet, but it's another one of thos legacy things that
+             * I don't want to touch too much yet. Anyway, I only want to log when we get all of the values from the module, so we
+             * turn off logging after we say "we connected" and turn it back on when we go through and get all of the saved values"
+            */
+            logging_active_ = true;
             emit FindSavedValues();
         }
 
@@ -162,6 +275,9 @@ void PortConnection::DisplayRecoveryMessage(){
     if (msgBox.exec() == QMessageBox::Yes) {
       DisableAllButtons();
       ui_->stackedWidget->setCurrentIndex(6);
+
+      AddToLog("motor connected in recovery mode\n");
+
     }else{
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(0);
@@ -218,6 +334,11 @@ void PortConnection::GetDeviceInformationResponses(){
     QString firmware_build_number_string = QString::number(firmware_build_major) + "." + QString::number(firmware_build_minor) + "." + QString::number(firmware_build_patch);
     ui_->label_firmware_build_value->setText(firmware_build_number_string);
 
+    uint32_t uid1, uid2, uid3;
+    GetUidValues(&uid1, &uid2, &uid3);
+    AddToLog("UID1: " + QString::number(uid1) + " UID2: " + QString::number(uid2) + " UID3: " + QString::number(uid3));
+    AddToLog("module connected has build version: " + firmware_build_number_string);
+
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
     hardware_type_ = hardware_type;
@@ -229,7 +350,10 @@ int PortConnection::GetFirmwareValid(){
     //Check to see if the firmware is valid
     if(!GetEntryReply(ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
-      throw(QString("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?"));
+
+      QString error_str("FIRMWARE ERROR: unable to determine firmware validity. Is your module powered on?");
+      AddToLog(error_str);
+      throw(error_str);
     }
 
     return firmware_valid;
@@ -290,6 +414,8 @@ void PortConnection::GetBootAndUpgradeInformation(){
         bootloader_version_string = "N/A";
     }
     ui_->label_bootloader_value->setText(bootloader_version_string);
+    AddToLog("module connected has bootloader version: " + bootloader_version_string);
+
 
     //If we have an upgrader label its version, otherwise put N/A
     QString upgrade_version_string = "";
@@ -299,6 +425,7 @@ void PortConnection::GetBootAndUpgradeInformation(){
         upgrade_version_string = "N/A";
     }
     ui_->label_upgrader_value->setText(upgrade_version_string);
+    AddToLog("module connected has upgrade version: " + upgrade_version_string);
 }
 
 void PortConnection::DisplayInvalidFirmwareMessage(){
@@ -400,4 +527,15 @@ bool PortConnection::CheckIfInBootLoader(){
     //If we didn't get a response, reset to the baud rate we had when we called this
     ser_.ser_port_->setBaudRate(selected_baudrate_);
     return false;
+}
+
+void PortConnection::GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * uid3){
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid1", 5, 0.05f, *uid1);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid2", 5, 0.05f, *uid2);
+    GetEntryReply(ser_, sys_map_["system_control_client"], "uid3", 5, 0.05f, *uid3);
+}
+
+void PortConnection::RebootMotor(){
+    AddToLog("rebooting module\n");
+    sys_map_["system_control_client"]->Set(ser_, std::string("reboot_program"));
 }

@@ -139,16 +139,19 @@ void FrameTesting::SetValue() {
       if (IsZero(value_, 0.00001)) {
         QString success_message = label_->text() + " succesfully set to " + QString::number(0);
         iv.label_message->setText(success_message);
+        iv.pcon->AddToLog(success_message);
       } else {
         QString success_message =
             label_->text() + " succesfully set to " + QString::number(value_);
         iv.label_message->setText(success_message);
+        iv.pcon->AddToLog(success_message);
       }
     } catch (const QString& e) {
       iv.label_message->setText(e);
     }
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
+    iv.pcon->AddToLog("No Motor Connected. Could not set " + QString((client_entry_.first).c_str()));
     iv.label_message->setText(error_message);
   }
 }

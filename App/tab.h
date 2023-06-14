@@ -48,7 +48,11 @@ class Tab: public QWidget
 
     void CheckSavedValues();
 
+    bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allows
+
     void SaveDefaults(std::map<std::string,double> frame_value_map);
+
+    std::map<std::string,Frame*> get_frame_map();
 
     QGridLayout *gridLayout_;
 

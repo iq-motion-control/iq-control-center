@@ -32,9 +32,12 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include <QStandardPaths>
+
 #include <QMetaEnum>
 #include <QMetaObject>
 
+#include <QDateTime>
 
 #define MAJOR_VERSION_MASK 0x000fc000
 #define MINOR_VERSION_MASK 0x00003f80
@@ -68,9 +71,46 @@ class PortConnection : public QObject {
     Baud921600 = 921600
   };
 
+  bool logging_active_;
+
+  const QString app_data_folder_ = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+  //On windows: C:/Users/jorda/AppData/Local/IQ Control Center
+  //On Mac: /Users/iqmotioncontrol/Library/Application Support/IQ Control Center/
+  //On linux: /home/iq/.local/share/IQ Control Center/
+
+  const QString path_to_log_file = app_data_folder_ + "/log.txt";
+  const QString path_to_user_defaults_repo_ = (app_data_folder_ + "/user_defaults_files");
+
+  static QDateTime time_;
+
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}
+
+  /**
+   * @brief RebootMotor restart the motor
+   * @return
+   */
+  void RebootMotor();
+
+  /**
+   * @brief add_to_log write a new line of text to the log
+   * @param text_to_log the text to output
+   */
+  void AddToLog(QString text_to_log);
+
+  /**
+   * @brief ShortenLog cut down the number of lines in the file
+   */
+  void ShortenLog(uint32_t current_num_lines);
+
+  /**
+   * @brief getUidValues Get all 3 of the unique ids of the connected motor and return them through pointers
+   * @param uid1 pointer to the container for uid1
+   * @param uid2 pointer to the container for uid2
+   * @param uid3 pointer to the container for uid3
+   */
+  void GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * uid3);
 
   /**
    * @brief CheckIfInBootLoader Checks if the motor is currently in the ST Bootloader
@@ -251,6 +291,8 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+
+  uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
 
