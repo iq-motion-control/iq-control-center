@@ -1,4 +1,1 @@
 
-[submodule "App/schmi"]
-	path = App/schmi
-	url = git@bitbucket.org:iqcontrol/schmi.git
