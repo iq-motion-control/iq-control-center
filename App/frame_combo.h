@@ -40,7 +40,7 @@ class FrameCombo : public Frame {
   Q_OBJECT
  public:
   FrameCombo(QWidget *parent, Client *client,
-             std::pair<std::string, ClientEntryAbstract *> client_entry, FrameVariables *fv);
+             std::pair<std::string, ClientEntryAbstract *> client_entry, FrameVariables *fv, bool using_custom_order, QString ordered_label);
 
   QComboBox *combo_box_;
   QPushButton *push_button_default_;

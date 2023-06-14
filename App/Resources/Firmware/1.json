@@ -4,17 +4,30 @@
   },
   {
     "style": 1,
-    "min_build_number": 23,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 30,
     "name": "speed-1"
   },
   {
     "style": 2,
-    "min_build_number": 15,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 18,
     "name": "servo-1" 
   },
   {
     "style": 4,
-    "min_build_number": 15,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 18,
     "name": "stepdir-1"
+  },
+  {
+    "style": 3,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 24,
+    "name": "pulsing-1"
   }
 ]

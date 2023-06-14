@@ -13,11 +13,11 @@
     "Entries": [
       {
         "descriptor": "Max Volts",
-        "value": 21
+        "value": 12
       },
       {
         "descriptor": "Max Velocity",
-        "value": 3294
+        "value": 2315
       },
       {
         "descriptor": "Velocity Kp",
@@ -41,7 +41,11 @@
       },
       {
         "descriptor": "Velocity FF2",
-        "value": 2.50E-07
+        "value": 4.68E-07
+      },
+	  {
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "value": 0.0044
       }
     ]
   },

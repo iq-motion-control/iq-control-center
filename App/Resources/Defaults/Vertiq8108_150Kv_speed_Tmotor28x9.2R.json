@@ -1,0 +1,11 @@
+[
+  {
+    "descriptor": "advanced_speed-16",
+    "Entries": [
+      {
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "value": 0.029
+      }
+    ]
+  }
+]

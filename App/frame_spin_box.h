@@ -55,7 +55,8 @@ class FrameSpinBox: public Frame
 {
     Q_OBJECT
   public:
-    FrameSpinBox(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv);
+    FrameSpinBox(QWidget *parent, Client* client, std::pair<std::string, ClientEntryAbstract*> client_entry, FrameVariables* fv,
+                 bool using_custom_order, QString ordered_label);
 
     QPushButton *push_button_default_;
     QPushButton *push_button_save_;

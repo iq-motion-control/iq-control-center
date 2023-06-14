@@ -1,0 +1,20 @@
+[
+  {
+    "descriptor": "general_speed-16",
+    "Entries": [
+      {
+        "descriptor": "Mode",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "descriptor": "tuning_speed-16",
+    "Entries": [
+      {
+        "descriptor": "Max Volts",
+        "value": 36.0
+      }
+    ]
+  }
+]

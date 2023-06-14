@@ -40,27 +40,68 @@
 
 #include "flash_loading_bar.h"
 
+#include "metadata_handler.hpp"
+
 #include "main.h"
+
+#define DEFAULT_STARTING_LOCATION_ 0x08000000
+#define BOOT_PRESENT_MASK 0b100
+#define UPGRADE_PRESENT_MASK 0b010
+#define APP_PRESENT_MASK 0b001
+#define FIRMWARE_TAB 4
+#define RECOVERY_TAB 6
 
 class Firmware : public QObject {
   Q_OBJECT
  public:
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button);
+  Firmware();
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
 
+  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
  private:
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
   QProgressBar *flash_progress_bar_;
   QPushButton *firmware_binary_button_;
+
+  QProgressBar *recover_progress_bar_;
+  QPushButton *recover_binary_button_;
+
   QString firmware_bin_path_;
+  QString extract_path_ = "";
+
+  QString type_flash_requested_ = "";
+  QString recovery_bin_path_;
 
   bool BootMode();
+  void FlashFirmware(uint32_t startingPoint);
+  bool CheckPathAndConnection();
+  bool FlashHardwareElectronicsWarning();
+  void UpdateFlashButtons();
+  void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
+  void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
+  QString GetHardwareNameFromResources();
+  void ResetMetadata();
+
+  MetadataHandler metadata_handler_;
+  bool using_metadata_ = false;
+  //The app index can change depending on what's in the json
+  int app_index_;
+
+  bool boot_present_;
+  bool upgrade_present_;
+  bool app_present_;
 
  signals:
 
  public slots:
   void FlashClicked();
+
+  void FlashCombinedClicked();
+  void FlashBootClicked();
+  void FlashAppClicked();
+  void FlashUpgradeClicked();
   void SelectFirmwareClicked();
 };
 

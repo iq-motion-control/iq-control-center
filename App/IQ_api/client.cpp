@@ -331,7 +331,8 @@ int8_t ParseMsg(uint8_t* rx_data, uint8_t rx_length,
 }
 
 std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std::string& file_name,
-                                               const std::string& folder_path) {
+                                               const std::string& folder_path, bool * using_custom_order,
+                                               std::map<std::string, std::string> * client_descriptor_map) {
   JsonCpp json;
   Json::Value JSON;
 
@@ -374,7 +375,7 @@ std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std
       uint8_t custom_client_size = json_client.size();
       for (uint8_t j = 0; j < custom_client_size; ++j) {
         Client* client_ptr;
-        CreateClient(obj_idn, json_client[j], client_ptr);
+        CreateClient(obj_idn, json_client[j], client_ptr, using_custom_order, client_descriptor_map);
         client_map[json_client[j]["descriptor"].asString()] = client_ptr;
       }
     }
@@ -382,23 +383,50 @@ std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std
   {
     for (uint8_t i = 0; i < file_size; ++i) {
       Client* client_ptr;
-      CreateClient(obj_idn, JSON[i], client_ptr);
+      CreateClient(obj_idn, JSON[i], client_ptr, using_custom_order, client_descriptor_map);
       client_map[JSON[i]["descriptor"].asString()] = client_ptr;
     }
   }
   return client_map;
 }
 
-void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr) {
+void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr, bool * using_custom_order, std::map<std::string, std::string> * client_descriptor_map) {
   std::map<std::string, ClientEntryAbstract*> client_entry_map;
+  std::map<std::string, std::string> local_client_descriptor_map;
+
   uint8_t params_size = custom_client["Entries"].size();
+
+  //Read whether or not this tab has a custom order or if we should just use alphabetical
+  bool custom_order = custom_client["custom_order"].asBool();
+
+  if(using_custom_order != nullptr){
+    *using_custom_order = custom_order;
+  }
+
   for (uint8_t j = 0; j < params_size; ++j) {
     Json::Value entry = custom_client["Entries"][j];
-    std::string hello = entry["descriptor"].asString();
+    std::string entry_descriptor = entry["descriptor"].asString(); //Every entry regardless of ordering gets their descriptor grabbed here
+
     ClientEntryAbstract* entry_ptr;
     CreateClientEntry(obj_idn, custom_client["Entries"][j], entry_ptr);
-    client_entry_map[entry["descriptor"].asString()] = entry_ptr;
+
+    if(!custom_order){
+        client_entry_map[entry["descriptor"].asString()] = entry_ptr;
+    }else{
+        char position = entry["position"].asUInt();
+        std::string position_str(&position, 1);
+
+        //We'll need a map to store the entries we want in the order we want
+        //In order to get the correct name with the correct entry, we'll need another map to store the descriptor
+        client_entry_map[position_str] = entry_ptr;
+        local_client_descriptor_map[position_str] = entry_descriptor;
+    }
   }
+
+  if(client_descriptor_map != nullptr){
+    client_descriptor_map->swap(local_client_descriptor_map); //Bring the descriptor data out of this fxn
+  }
+
   client_ptr = new Client(obj_idn, client_entry_map);
   return;
 }

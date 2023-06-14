@@ -7,7 +7,9 @@ FlashLoadingBar::FlashLoadingBar(QProgressBar* flash_progress_bar)
 
 void FlashLoadingBar::StartLoadingBar(const uint64_t& total_num_bytes) {
   started_check_ = false;
-  iv.label_message->setText("Starting flash");
+  QString start_flash("Starting flash");
+  iv.label_message->setText(start_flash);
+  iv.pcon->AddToLog(start_flash.toLower());
   total_num_bytes_ = total_num_bytes * 2;  // flashing + check
   flash_progress_bar_->reset();
   flash_progress_bar_->setMaximum(total_num_bytes_);
@@ -16,7 +18,9 @@ void FlashLoadingBar::StartLoadingBar(const uint64_t& total_num_bytes) {
 void FlashLoadingBar::StartCheckingLoadingBar(const uint64_t& total_num_bytes) {
   // We don't reset the bar because we are using one bar for both flash and check
   started_check_ = true;
-  iv.label_message->setText("Starting flash check");
+  QString label_text("Starting flash check");
+  iv.label_message->setText(label_text);
+  iv.pcon->AddToLog(label_text.toLower());
 }
 
 void FlashLoadingBar::UpdateLoadingBar(const uint64_t& bytes_left) {

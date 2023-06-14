@@ -1,0 +1,12 @@
+[
+  {
+    "hardware_name": "Vertiq 2314 920kv"
+  },
+  {
+    "style": 1,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 31,
+    "name": "speed-1"
+  }
+]
