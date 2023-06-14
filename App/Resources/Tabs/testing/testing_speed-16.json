@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "testing_speed-1",
+    "descriptor": "testing_vertiq_8108",
     "Entries": [
       {
         "type_idn": 52,
@@ -71,6 +71,84 @@
         "format": "n",
         "unit": "",
         "frame_type": 5
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Last Error Code",
+        "info": "Reports the error code of the last CAN failure. 0 means no error",
+        "sub_idn": 3,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 8,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Receive Error Counter",
+        "info": "Counter that increments with CAN receive errors",
+        "sub_idn": 4,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 256,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Transmit Error Counter",
+        "info": "Counter that increments with CAN transmit errors",
+        "sub_idn": 5,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 256,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Bus Off",
+        "info": "Bit indicating if the bus turned itself off due to errors. If the bit is 1, the bus is off.",
+        "sub_idn": 6,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Bus Error Passive Flag",
+        "info": "Bit indicating if the error limit to enter passive mode has been reached. 1 means we are past the passive error limit",
+        "sub_idn": 7,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
+      },
+	  {
+        "type_idn": 80,
+        "descriptor": "CAN Bus Error Warning Flag",
+        "info": "Bit indicating if the error warning limit has been reached. 1 indicates we have had enough errors to trigger a warning",
+        "sub_idn": 8,
+        "format": "B",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "decimal": 0,
+        "single_step": 1
       }
     ]
   }

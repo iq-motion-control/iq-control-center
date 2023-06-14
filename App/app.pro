@@ -14,6 +14,7 @@ TEMPLATE = app
 
 QMAKE_CFLAGS = -Wno-unused-parameter
 QMAKE_CXXFLAGS = -Wno-unused-parameter
+QMAKE_LFLAGS += -no-pie
 
 # for windows
 win32{
@@ -34,8 +35,8 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=2 \
-           PATCH=1
+           MINOR=4 \
+           PATCH=0
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -44,7 +45,7 @@ DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
 
 macx {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/maintenancetool\\\"
-DEFINES += MAINTENANCETOOL_FLAGS=\\\"--checkupdates\\\"
+DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
 
 unix {
@@ -62,6 +63,9 @@ CONFIG += static
 
 
 SOURCES += \
+    flash_type.cpp \
+    frame_read_only.cpp \
+    metadata_handler.cpp \
     schmi/src/binary_file_std.cpp \
     schmi/src/flash_loader.cpp \
     schmi/src/loading_bar_std.cpp \
@@ -98,6 +102,9 @@ SOURCES += \
 
 
 HEADERS += \
+    flash_type.hpp \
+    frame_read_only.h \
+    metadata_handler.hpp \
     schmi/include/Schmi/binary_file_interface.hpp \
     schmi/include/Schmi/binary_file_std.hpp \
     schmi/include/Schmi/error_handler_interface.hpp \
@@ -144,6 +151,46 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
+#if using the 32 bit kit use the 32 bit quazip build
+#if using the 64 bit kit use the 64 bit quazip build
+CONFIG("win32-g++"){
+    CMAKE_CXXFLAGS += -std=gnu++14
+
+    #if 32 bit build
+    contains(QT_ARCH, i386){
+        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        LIBS += -L"C:/Users/fkumm/ZipPack/lib"
+    }
+    ##64 bit build
+    else{
+        INCLUDEPATH += "C:/ZipPack_64bit/include"
+        LIBS += -L"C:/ZipPack_64bit/lib"
+    }
+
+    LIBS += -lquazip -lz
+}
+
+unix{
+
+    macx{
+        CMAKE_CXXFLAGS += -std=gnu++14
+
+        INCLUDEPATH += "/Users/iqmotioncontrol/ZipPack_Mac/include"
+        LIBS += -L"/Users/iqmotioncontrol/ZipPack_Mac/lib"
+
+        LIBS += -lquazip -lz
+    }
+
+    else{
+        CMAKE_CXXFLAGS += -std=gnu++14
+
+        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
+        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+
+        LIBS += -lquazip -lz
+    }
+}
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -154,5 +201,3 @@ RESOURCES += \
     clients.qrc
 
 #LIBS += -framework CoreFoundation
-
-

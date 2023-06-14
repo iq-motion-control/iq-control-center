@@ -19,14 +19,17 @@
 */
 
 #include "tab.h"
+#include <QDebug>
 
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
   QWidget(parent),
   parent_(parent),
   clients_folder_path_(client_file[0]),
   client_file_name_(client_file[1]),
-  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_)),
-  frame_variables_map_(FrameVariablesFromJson(client_file_name_, clients_folder_path_))
+  using_custom_order_(false),
+  frame_descriptors_(),
+  client_map_(ClientsFromJson(obj_idn, client_file_name_, clients_folder_path_, &using_custom_order_, &frame_descriptors_)),
+  frame_variables_map_(FrameVariablesFromJson(client_file_name_, clients_folder_path_, using_custom_order_))
 {
 
 }
@@ -45,13 +48,14 @@ void Tab::CreateFrames()
     {
       std::string client_entry_descriptor = client_entry.first;
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
+
       uint8_t frame_type = fv->frame_type_;
 
       switch(frame_type)
       {
         case 1:
         {
-          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv);
+          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
           ConnectFrameCombo(fc);
           frame_map_[client_entry_descriptor] = fc;
@@ -59,7 +63,7 @@ void Tab::CreateFrames()
         }
         case 2:
         {
-          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv);
+          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
           ConnectFrameSpinBox(fsb);
           frame_map_[client_entry_descriptor] = fsb;
@@ -67,7 +71,7 @@ void Tab::CreateFrames()
         }
         case 3:
         {
-          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry);
+          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
           ConnectFrameSwitch(fs);
 //          frame_map_[client_entry_descriptor] = fs;
@@ -75,18 +79,29 @@ void Tab::CreateFrames()
         }
         case 4:
         {
-          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv);
+          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
           ConnectFrameTesting(ft);
           frame_map_[client_entry_descriptor] = ft;
           break;
         }
         case 5:
-          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv);
+        {
+          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
           gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
           ConnectFrameButton(fb);
           frame_map_[client_entry_descriptor] = fb;
           break;
+        }
+
+        case 6:
+        {
+          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+          gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
+          ConnectFrameReadOnly(fr);
+          frame_map_[client_entry_descriptor] = fr;
+          break;
+        }
       }
       ++frame_vertical_position;
     }
@@ -117,13 +132,28 @@ void Tab::CheckSavedValues()
         if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
            break;
         fsb->GetSavedValue();
+        break;
+      }
+
+      case 6:
+      {
+        FrameReadOnly *fr = nullptr;
+        if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
+            break;
+        fr->GetSavedReadOnlyValue();
+        break;
       }
     }
   }
 }
 
+bool Tab::IsClose(double val1, double val2, double tolerance){
+    return (abs(val1 - val2) <= tolerance);
+}
+
 void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 {
+
   for(std::pair<std::string, double> default_value: default_value_map)
   {
     Frame *frame = frame_map_[default_value.first];
@@ -135,8 +165,13 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
         FrameCombo *fc = nullptr;
         if(!(fc = dynamic_cast<FrameCombo*>(frame)))
           break;
-        fc->value_ = default_value.second;
-        fc->SaveValue();
+
+        //Let's make sure that the value we're trying to save is different than what's on there already
+        if(!IsClose(fc->value_, default_value.second)){
+            fc->value_ = default_value.second;
+            fc->SaveValue();
+        }
+
         break;
       }
       case 2:
@@ -144,13 +179,20 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
         FrameSpinBox *fsb = nullptr;
         if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
           break;
-        fsb->value_ = default_value.second;
-        fsb->SaveValue();
+
+        //Let's make sure that the value we're trying to save is different than what's on there already
+        if(!IsClose(fsb->value_, default_value.second)){
+            fsb->value_ = default_value.second;
+            fsb->SaveValue();
+        }
       }
     }
   }
 }
 
+std::map<std::string,Frame*> Tab::get_frame_map(){
+    return frame_map_;
+}
 
 void Tab::ConnectFrameCombo(FrameCombo *fc)
 {
@@ -180,6 +222,12 @@ void Tab::ConnectFrameTesting(FrameTesting *ft)
 void Tab::ConnectFrameButton(FrameButton *fb)
 {
   connect(fb->push_button_set_, SIGNAL(clicked()), fb, SLOT(SetValue()));
+}
+
+void Tab::ConnectFrameReadOnly(FrameReadOnly *fr)
+{
+    connect(fr->push_button_get_, SIGNAL(clicked()), fr, SLOT(GetSavedReadOnlyValue()));
+    connect(fr->spin_box_, QOverload<double>::of(&QDoubleSpinBox::valueChanged), fr, &FrameReadOnly::SpinBoxValueChanged);
 }
 
 Tab::~Tab()

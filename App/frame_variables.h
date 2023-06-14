@@ -33,6 +33,8 @@
 
 #include <math.h>
 
+#define POSITION_BYTE_LEN 1
+
 class FrameVariables {
  public:
   FrameVariables() {}
@@ -43,10 +45,11 @@ class FrameVariables {
   // 3 = switch
   // 4 = testing
   // 5 = button
+  // 6 = readonly
 
   struct ComboFrame {
     std::vector<std::string> list_names;
-    std::vector<uint8_t> list_values;
+    std::vector<int> list_values;
     std::string info;
   };
 
@@ -76,16 +79,27 @@ class FrameVariables {
     std::string info;
   };
 
+  struct ReadOnlyFrame {
+      double maximum;
+      double minimum;
+      double single_step;
+      double decimal;
+      std::string unit;
+      bool nan;
+      std::string info;
+  };
+
   ComboFrame combo_frame_;
   SpinFrame spin_frame_;
   SwitchFrame switch_frame_;
   TestingFrame testing_frame_;
   ButtonFrame button_frame_;
+  ReadOnlyFrame read_only_frame_;
 };
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
-                                                               const std::string &folder_path);
-std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client);
+                                                               const std::string &folder_path, bool using_custom_order);
+std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client, bool using_custom_order);
 FrameVariables *CreateFrameVariables(const Json::Value &param);
 
 #endif  // FRAME_VARIABLES_H

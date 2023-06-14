@@ -21,7 +21,8 @@
 #include "frame_variables.h"
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
-                                                               const std::string &folder_path) {
+                                                               const std::string &folder_path,
+                                                               bool using_custom_order) {
   JsonCpp json;
   Json::Value JSON;
   std::map<std::string, FrameVariables *> frame_variables_map;
@@ -55,25 +56,39 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
       }
       uint8_t custom_client_size = json_client.size();
       for (uint8_t j = 0; j < custom_client_size; ++j) {
-        frame_variables_map = CreateFrameVariablesMap(json_client[j]);
+        frame_variables_map = CreateFrameVariablesMap(json_client[j], using_custom_order);
       }
     }
   } else  // file with only one client
   {
     for (uint8_t i = 0; i < file_size; ++i) {
-      frame_variables_map = CreateFrameVariablesMap(JSON[i]);
+      frame_variables_map = CreateFrameVariablesMap(JSON[i], using_custom_order);
     }
   }
   return frame_variables_map;
 }
 
-std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client) {
+std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Value &custom_client, bool using_custom_order) {
   std::map<std::string, FrameVariables *> frame_variables_map;
   uint8_t params_size = custom_client["Entries"].size();
+
+  //go through each param in the entry and grab the correct values out
   for (uint8_t j = 0; j < params_size; ++j) {
+      //Get the param
     Json::Value param = custom_client["Entries"][j];
+    //Find the generic frame vars from the param
     FrameVariables *frame_variables = CreateFrameVariables(param);
-    frame_variables_map[param["descriptor"].asString()] = frame_variables;
+
+    //If you're not using a custom order, use the descriptor as the order (alphabetical)
+    //If you are using a custom order, then you need to use the position parameter
+    if(!using_custom_order){
+        frame_variables_map[param["descriptor"].asString()] = frame_variables;
+    }else{
+        //Raf set everything up to really really like strings. So, we need to convert the json uint into an ascii value -> string
+        char position = param["position"].asUInt();
+        std::string position_str(&position, POSITION_BYTE_LEN);
+        frame_variables_map[position_str] = frame_variables;
+    }
   }
 
   return frame_variables_map;
@@ -87,7 +102,7 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       uint8_t list_size = param["list_name"].size();
       for (uint8_t ii = 0; ii < list_size; ++ii) {
         std::string name = param["list_name"][ii].asString();
-        uint8_t value = param["list_value"][ii].asUInt();
+        int value = param["list_value"][ii].asInt();
         frame_variables_ptr->combo_frame_.list_names.push_back(name);
         frame_variables_ptr->combo_frame_.list_values.push_back(value);
       }
@@ -137,6 +152,24 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       frame_variables_ptr->button_frame_.info = param["info"].asString();
       break;
     }
+    case 6: {
+        double maximum = NAN;
+        double minimum = NAN;
+        if (!param["maximum"].isNull()) {
+          maximum = param["maximum"].asDouble();
+        }
+        if (!param["minimum"].isNull()) {
+          minimum = param["minimum"].asDouble();
+        }
+        frame_variables_ptr->read_only_frame_.maximum = maximum;
+        frame_variables_ptr->read_only_frame_.minimum = minimum;
+        frame_variables_ptr->read_only_frame_.single_step = param["single_step"].asDouble();
+        frame_variables_ptr->read_only_frame_.decimal = param["decimal"].asDouble();
+        frame_variables_ptr->read_only_frame_.unit = param["unit"].asString();
+        frame_variables_ptr->read_only_frame_.nan = param["nan"].asBool();
+        frame_variables_ptr->read_only_frame_.info = param["info"].asString();
+    break;
+  }
   }
 
   return frame_variables_ptr;
