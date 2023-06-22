@@ -235,7 +235,7 @@
       {
         "type_idn": 83,
         "descriptor": "Convection Thermal Conductivity Coefficient",
-        "info": "Coefficient controlling the effect forced convection has on the coil temprature estimation model. Will vary with different propellers.",
+        "info": "Coefficient controlling the effect forced convection has on the coil temperature estimation model. Will vary with different propellers.",
         "sub_idn": 7,
         "format": "f",
         "unit": "",
