@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "general_speed-16",
+    "descriptor": "general_vertiq_8108_speed",
     "Entries": [
       {
         "descriptor": "Mode",
@@ -9,7 +9,7 @@
     ]
   },
   {
-    "descriptor": "tuning_speed-16",
+    "descriptor": "tuning_vertiq_8108_speed",
     "Entries": [
       {
         "descriptor": "Max Volts",
