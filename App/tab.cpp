@@ -151,41 +151,81 @@ bool Tab::IsClose(double val1, double val2, double tolerance){
     return (abs(val1 - val2) <= tolerance);
 }
 
-void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
-{
+void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
 
-  for(std::pair<std::string, double> default_value: default_value_map)
-  {
-    Frame *frame = frame_map_[default_value.first];
-    int frame_type = frame->frame_type_;
-    switch(frame_type)
-    {
-      case 1:
-      {
-        FrameCombo *fc = nullptr;
-        if(!(fc = dynamic_cast<FrameCombo*>(frame)))
-          break;
+    double baud_rate_in_defaults = 0;
+    bool baud_rate_needs_change = false;
+    int baud_rate_frame_type = 0;
+    Frame * baud_rate_frame;
 
-        //Let's make sure that the value we're trying to save is different than what's on there already
-        if(!IsClose(fc->value_, default_value.second)){
-            fc->value_ = default_value.second;
-            fc->SaveValue();
-        }
+  for(std::pair<std::string, double> default_value: default_value_map){
 
+    //if the current frame is baud rate, we want to save its value, and deal with it last.
+    //when you set through defaults, you don't want to change the baud rate in the middle
+
+      //Adding the baud rate logic to both cases in the event that baud rate ever changes frame types
+        Frame *frame = frame_map_[default_value.first];
+        int frame_type = frame->frame_type_;
+
+        switch(frame_type)
+        {
+          case 1:
+          {
+            FrameCombo *fc = nullptr;
+            if(!(fc = dynamic_cast<FrameCombo*>(frame)))
+              break;
+
+            //Let's make sure that the value we're trying to save is different than what's on there already
+            if(!IsClose(fc->value_, default_value.second)){
+
+                if(default_value.first == "UART Baud Rate"){
+                    baud_rate_needs_change = true;
+                    baud_rate_in_defaults = default_value.second;
+                    baud_rate_frame_type = 1;
+                    baud_rate_frame = frame;
+                }else{
+                    fc->value_ = default_value.second;
+                    fc->SaveValue();
+                }
+            }
+
+            break;
+          }
+
+          case 2:
+          {
+            FrameSpinBox *fsb = nullptr;
+            if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
+              break;
+
+            //Let's make sure that the value we're trying to save is different than what's on there already
+            if(!IsClose(fsb->value_, default_value.second)){
+                if(default_value.first == "UART Baud Rate"){
+                    baud_rate_needs_change = true;
+                    baud_rate_in_defaults = default_value.second;
+                    baud_rate_frame_type = 2;
+                    baud_rate_frame = frame;
+                }else{
+                    fsb->value_ = default_value.second;
+                    fsb->SaveValue();
+                }
+            }
+          }
+    } //switch()
+  } //for()
+
+  //we've gone through every frame, now we can set baud rate if necessary
+  if(baud_rate_needs_change){
+    switch(baud_rate_frame_type){
+        case 1:
+            dynamic_cast<FrameCombo *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
+            dynamic_cast<FrameCombo *>(baud_rate_frame)->SaveValue();
         break;
-      }
-      case 2:
-      {
-        FrameSpinBox *fsb = nullptr;
-        if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
-          break;
 
-        //Let's make sure that the value we're trying to save is different than what's on there already
-        if(!IsClose(fsb->value_, default_value.second)){
-            fsb->value_ = default_value.second;
-            fsb->SaveValue();
-        }
-      }
+        case 2:
+            dynamic_cast<FrameSpinBox *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
+            dynamic_cast<FrameSpinBox *>(baud_rate_frame)->SaveValue();
+        break;
     }
   }
 }

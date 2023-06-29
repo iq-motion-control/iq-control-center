@@ -422,6 +422,9 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
             }
 
             if(attach_new_object){
+
+                //If the descriptor is for baud rate, make sure it goes to the end. the advanced tab will
+                //Always be the last in the file
                 current_tab_json_object->insert("descriptor", frame->first.c_str());
                 tab_frame_array.append(*current_tab_json_object);
             }
@@ -439,7 +442,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
           top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
 
           //Write to our output array
-          json_array->append(top_level_tab_obj);
+          json_array->prepend(top_level_tab_obj);
       }
 
     }
