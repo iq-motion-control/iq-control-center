@@ -437,8 +437,9 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
 
             if(attach_new_object){
 
-                //If the descriptor is for baud rate, make sure it goes to the end. the advanced tab will
-                //Always be the last in the file
+                //NOTE:: It does not matter where baud rate goes in the advanced tab json entry. When we set through
+                //       defaults, we read the json as a map sorted alphabetically. This will always put baud rate
+                //       near the top.
                 current_tab_json_object->insert("descriptor", frame->first.c_str());
                 tab_frame_array.append(*current_tab_json_object);
             }
