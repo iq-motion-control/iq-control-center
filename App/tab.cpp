@@ -21,6 +21,8 @@
 #include "tab.h"
 #include <QDebug>
 
+#define BAUD_RATE_IS_A_SPIN_BOX
+
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
   QWidget(parent),
   parent_(parent),
@@ -111,47 +113,52 @@ void Tab::CreateFrames()
   gridLayout_->addItem(verticalSpacer, frame_vertical_position, 1, 1, 1);
 }
 
-void Tab::CheckSavedValues()
+void Tab::CheckSavedValues(bool changed_baud_rate)
 {
-  for(std::pair<std::string, Frame*> frame: frame_map_)
-  {
-    int frame_type = frame.second->frame_type_;
-    switch(frame_type)
-    {
-      case 1:
+     //Only try to read the values if we didn't change the baud rate
+    if(!changed_baud_rate){
+      for(std::pair<std::string, Frame*> frame: frame_map_)
       {
-        FrameCombo *fc = nullptr;
-        if(!(fc = dynamic_cast<FrameCombo*>(frame.second)))
-           break;
-        fc->GetSavedValue();
-        break;
-      }
-      case 2:
-      {
-        FrameSpinBox *fsb = nullptr;
-        if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
-           break;
-        fsb->GetSavedValue();
-        break;
-      }
-
-      case 6:
-      {
-        FrameReadOnly *fr = nullptr;
-        if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
+        int frame_type = frame.second->frame_type_;
+        switch(frame_type)
+        {
+          case 1:
+          {
+            FrameCombo *fc = nullptr;
+            if(!(fc = dynamic_cast<FrameCombo*>(frame.second)))
+               break;
+            fc->GetSavedValue();
             break;
-        fr->GetSavedReadOnlyValue();
-        break;
+          }
+          case 2:
+          {
+            FrameSpinBox *fsb = nullptr;
+            if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
+               break;
+            fsb->GetSavedValue();
+            break;
+          }
+
+          case 6:
+          {
+            FrameReadOnly *fr = nullptr;
+            if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
+                break;
+            fr->GetSavedReadOnlyValue();
+            break;
+          }
+        }
       }
+    }else{
+        iv.pcon->AddToLog("Couldn't read values. The baud rate changed.");
     }
-  }
 }
 
 bool Tab::IsClose(double val1, double val2, double tolerance){
     return (abs(val1 - val2) <= tolerance);
 }
 
-void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
+void Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * baud_changed){
 
     double baud_rate_in_defaults = 0;
     bool baud_rate_needs_change = false;
@@ -163,7 +170,8 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
     //if the current frame is baud rate, we want to save its value, and deal with it last.
     //when you set through defaults, you don't want to change the baud rate in the middle
 
-      //Adding the baud rate logic to both cases in the event that baud rate ever changes frame types
+      //Adding the baud rate logic to both cases in the event that baud rate ever changes frame types, but only calling it once based
+      //on the BAUD_RATE_IS_A_SPIN_BOX definition
         Frame *frame = frame_map_[default_value.first];
         int frame_type = frame->frame_type_;
 
@@ -177,16 +185,19 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
 
             //Let's make sure that the value we're trying to save is different than what's on there already
             if(!IsClose(fc->value_, default_value.second)){
-
+                #ifndef BAUD_RATE_IS_A_SPIN_BOX
                 if(default_value.first == "UART Baud Rate"){
                     baud_rate_needs_change = true;
                     baud_rate_in_defaults = default_value.second;
                     baud_rate_frame_type = 1;
                     baud_rate_frame = frame;
                 }else{
+                #endif
                     fc->value_ = default_value.second;
                     fc->SaveValue();
+                #ifndef BAUD_RATE_IS_A_SPIN_BOX
                 }
+                #endif
             }
 
             break;
@@ -200,15 +211,19 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
 
             //Let's make sure that the value we're trying to save is different than what's on there already
             if(!IsClose(fsb->value_, default_value.second)){
+                #ifdef BAUD_RATE_IS_A_SPIN_BOX
                 if(default_value.first == "UART Baud Rate"){
                     baud_rate_needs_change = true;
                     baud_rate_in_defaults = default_value.second;
                     baud_rate_frame_type = 2;
                     baud_rate_frame = frame;
                 }else{
+                #endif
                     fsb->value_ = default_value.second;
                     fsb->SaveValue();
+                #ifdef BAUD_RATE_IS_A_SPIN_BOX
                 }
+                #endif
             }
           }
     } //switch()
@@ -228,6 +243,9 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map){
         break;
     }
   }
+
+  //Make sure to output whether or not we changed the baud rate
+  *baud_changed = baud_rate_needs_change;
 }
 
 std::map<std::string,Frame*> Tab::get_frame_map(){

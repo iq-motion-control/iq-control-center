@@ -46,11 +46,11 @@ class Tab: public QWidget
 
     void CreateFrames();
 
-    void CheckSavedValues();
+    void CheckSavedValues(bool changed_baud_rate = false);
 
     bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allows
 
-    void SaveDefaults(std::map<std::string,double> frame_value_map);
+    void SaveDefaults(std::map<std::string,double> frame_value_map, bool * baud_changed);
 
     std::map<std::string,Frame*> get_frame_map();
 

@@ -238,6 +238,9 @@ void MainWindow::ShowMotorSavedValues() {
 
 void MainWindow::SetDefaults(Json::Value defaults) {
 
+    //Keep track of if we changed the baud rate
+    bool changed_baud_rate = false;
+
   //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
 
@@ -284,10 +287,10 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
           iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
 
-          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
+          tab_map_[tab_descriptor]->SaveDefaults(default_value_map, &changed_baud_rate);
 
           iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
-          tab_map_[tab_descriptor]->CheckSavedValues();
+          tab_map_[tab_descriptor]->CheckSavedValues(changed_baud_rate);
 
         } else {
 
@@ -305,13 +308,24 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
     QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
-    msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
+    QAbstractButton * exitButton = msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
 
     msgBox.setWindowTitle("Defaults Set Successfully");
 
-    QString text("Set values from default file successfully. We recommend that you restart your module"
-                 " to ensure that all changes take effect. If you would like to restart your module now,"
-                 " please select Reboot Now. Your module will disconnect from IQ Control Center.");
+    QString text;
+
+    if(!changed_baud_rate){
+        text.append("Set values from default file successfully. We recommend that you restart your module"
+                    " to ensure that all changes take effect. If you would like to restart your module now,"
+                    " please select Reboot Now. Your module will disconnect from IQ Control Center.");
+    }else{
+        text.append("Set values from default file successfully. Since your module's UART Baud Rate has changed, and your "
+                    "module has disconnected, we are unable to reboot your module through IQ Control Center. We highly "
+                    "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
+
+        msgBox.removeButton(rebootButton);
+        exitButton->setText("OK");
+    }
 
     msgBox.setText(text);
     msgBox.exec();
@@ -442,6 +456,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
           top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
 
           //Write to our output array
+          //using prepend to ensure that advanced ends up last
           json_array->prepend(top_level_tab_obj);
       }
 
