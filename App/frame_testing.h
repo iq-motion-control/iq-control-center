@@ -35,6 +35,7 @@
 #include "IQ_api/client.hpp"
 #include "frame.h"
 #include "frame_variables.h"
+#include "common_icon_creation.h"
 
 class FrameTesting : public Frame {
   Q_OBJECT
@@ -54,9 +55,6 @@ class FrameTesting : public Frame {
   void ShowInfo();
 
  private:
-  void SetPushButton(QPushButton *push_button, QSizePolicy size_policy, QString push_button_name,
-                     QString icon_file_name);
-
   void SetSpinBox(QSizePolicy size_policy, FrameVariables *fv);
 
   bool IsZero(double value, double threshold);

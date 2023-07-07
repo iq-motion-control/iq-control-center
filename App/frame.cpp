@@ -64,3 +64,30 @@ QSizePolicy Frame::CreateSizePolicy()
   size_policy.setVerticalStretch(0);
   return size_policy;
 }
+
+//Left around for backwards compatibility. Should be avoided due to increased RAM usage.
+void Frame::SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
+                               QString push_button_name, QString icon_file_name) {
+  push_button->setObjectName(push_button_name);
+  size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
+  push_button->setSizePolicy(size_policy);
+  push_button->setMinimumSize(QSize(40, 30));
+  push_button->setMaximumSize(QSize(40, 30));
+  QIcon icon;
+  icon.addFile(icon_file_name, QSize(), QIcon::Normal, QIcon::Off);
+  push_button->setIcon(icon);
+  push_button->setIconSize(QSize(20, 20));
+  push_button->setFlat(true);
+}
+
+void Frame::SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
+                               QString push_button_name, QIcon icon_to_use) {
+  push_button->setObjectName(push_button_name);
+  size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
+  push_button->setSizePolicy(size_policy);
+  push_button->setMinimumSize(QSize(40, 30));
+  push_button->setMaximumSize(QSize(40, 30));
+  push_button->setIcon(icon_to_use);
+  push_button->setIconSize(QSize(20, 20));
+  push_button->setFlat(true);
+}

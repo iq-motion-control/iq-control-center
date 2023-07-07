@@ -25,6 +25,8 @@
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPushButton>
+
 
 class Frame : public QFrame
 {
@@ -36,6 +38,11 @@ class Frame : public QFrame
     void SetSettings(QSizePolicy sizePolicy,  QLatin1String style_sheet);
     QSizePolicy CreateSizePolicy();
     void HorizontalLayout();
+
+    void SetPushButton(QPushButton *push_button, QSizePolicy size_policy, QString push_button_name,
+                       QString icon_file_name);
+    void SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
+                                   QString push_button_name, QIcon icon_to_use);
 
     QHBoxLayout *horizontal_layout_;
 

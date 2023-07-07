@@ -20,6 +20,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "common_icon_creation.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
@@ -110,6 +111,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
     //Only allow recovery to flash a combined to avoid any more issue
     connect(ui->recover_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
+
+    //Fred testing: Icon setup?
+    icon_setup();
 
   } catch (const QString &e) {
     ui->header_error_label->setText(e);
