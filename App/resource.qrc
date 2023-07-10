@@ -17,5 +17,7 @@
         <file>res/down_arrow_icon.png</file>
         <file>res/loader.gif</file>
         <file>res/info_icon.png</file>
+        <file>res/down_arrow_icon_smaller.png</file>
+        <file>res/up_arrow_icon_smaller.png</file>
     </qresource>
 </RCC>

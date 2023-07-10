@@ -97,7 +97,7 @@ class FrameCombo : public Frame {
       "    border-top-right-radius: 3px; /* same radius as the QComboBox */\n"
       "    border-bottom-right-radius: 3px;\n"
       "	background: transparent;\n"
-      "	image:url(:/res/down_arrow_icon.png);"
+      "	image:url(:/res/down_arrow_icon_smaller.png);"
       "}\n"
       "\n"
       "QComboBox::hover {\n"

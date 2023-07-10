@@ -86,7 +86,7 @@ class FrameReadOnly: public Frame
           "}\n"
           "\n"
           "QDoubleSpinBox::up-button {\n"
-          "	image: url(:/res/up_arrow_icon.png);"
+          "	image: url(:/res/up_arrow_icon_smaller.png);"
           "	background: transparent;\n"
           "	width: 20px;\n"
           "}\n"
@@ -96,7 +96,7 @@ class FrameReadOnly: public Frame
           "}\n"
           "\n"
           "QDoubleSpinBox::down-button {\n"
-          "	image: url(:/res/down_arrow_icon.png);"
+          "	image: url(:/res/down_arrow_icon_smaller.png);"
           "	background: transparent;\n"
           "	width: 20px;\n"
           "}\n"
@@ -119,7 +119,7 @@ class FrameReadOnly: public Frame
           "	\n"
           "\n"
           "/*\n"
-          "image:  url(:/res/down_arrow_icon.png);\n"
+          "image:  url(:/res/down_arrow_icon_smaller.png);\n"
           " url(:/res/up_arrow_icon.png);");
 };
 
