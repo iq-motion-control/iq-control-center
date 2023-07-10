@@ -39,10 +39,15 @@ class Frame : public QFrame
     QSizePolicy CreateSizePolicy();
     void HorizontalLayout();
 
-    void SetPushButton(QPushButton *push_button, QSizePolicy size_policy, QString push_button_name,
-                       QString icon_file_name);
+
     void SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
                                    QString push_button_name, QIcon icon_to_use);
+
+    //Avoid using this signature if possible. It creates an entirely new QIcon object, and if done too much that eats up RAM.
+    //If the same icon is used multiple times, it is better to make that icon once and pass it to the other signature of this function.
+    void SetPushButton(QPushButton *push_button, QSizePolicy size_policy, QString push_button_name,
+                       QString icon_file_name);
+
 
     QHBoxLayout *horizontal_layout_;
 

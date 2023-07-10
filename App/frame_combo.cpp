@@ -111,7 +111,6 @@ void FrameCombo::SetBox(QSizePolicy size_policy, FrameVariables *fv) {
   combo_box_->setStyleSheet(QStringLiteral(""));
   combo_box_->setEditable(false);
 
-  //Fred Note: This guy appears to be the culprit. Uncommenting this leads to our RAM spike. Why? What does this do?
   //This is meant to dictate what to do if the content of the combox box changes, but the content of our boxes doesn't change,
   //They aren't editable and we don't change it after initial creation. There is no visual difference from setting this size adjust policy
   //that I can tell. But it does increase RAM usage by over 300 MB, so we are better off without. Leaving it commented out for historical refrence.
