@@ -112,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Only allow recovery to flash a combined to avoid any more issue
     connect(ui->recover_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
 
-    //Fred testing: Icon setup?
+    //Set up shared icons
     icon_setup();
 
   } catch (const QString &e) {
