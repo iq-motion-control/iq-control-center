@@ -242,10 +242,8 @@ void MainWindow::ShowMotorSavedValues() {
 
 void MainWindow::SetDefaults(Json::Value defaults) {
 
-    //Keep track of if we changed the baud rate, and all of the information needed to write a new one
+    //Keep track of if we changed the baud rate, or any other variables that'll stop us from rebooting
     bool unable_to_reboot = false;
-
-    std::string baud_tab_descriptor;
 
   //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
