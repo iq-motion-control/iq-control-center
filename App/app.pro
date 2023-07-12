@@ -63,6 +63,7 @@ CONFIG += static
 
 
 SOURCES += \
+    common_icon_creation.cpp \
     flash_type.cpp \
     frame_read_only.cpp \
     metadata_handler.cpp \
@@ -102,6 +103,7 @@ SOURCES += \
 
 
 HEADERS += \
+    common_icon_creation.h \
     flash_type.hpp \
     frame_read_only.h \
     metadata_handler.hpp \

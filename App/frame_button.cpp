@@ -53,14 +53,15 @@ FrameButton::FrameButton(QWidget *parent, Client *client,
 
   // creates push buton save
   push_button_set_ = new QPushButton(this);
-  SetPushButton(push_button_set_, size_policy, QString("pushButtonSet"), QString(":/res/save.png"));
+  SetPushButton(push_button_set_, size_policy, QString("pushButtonSet"), push_button_save_icon_);
+
   push_button_set_->setToolTip(save_tip_);
   horizontal_layout_->addWidget(push_button_set_);
 
   // creates pushbutton info
   push_button_info_ = new QPushButton(this);
   SetPushButton(push_button_info_, size_policy, QString("pushButtonInfo"),
-                QString(":/res/info_icon.png"));
+                push_button_info_icon_);
   horizontal_layout_->addWidget(push_button_info_);
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
 }
@@ -68,20 +69,6 @@ FrameButton::FrameButton(QWidget *parent, Client *client,
 void FrameButton::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
   QWhatsThis::showText(globalPos, info_, push_button_info_);
-}
-
-void FrameButton::SetPushButton(QPushButton *push_button, QSizePolicy size_policy,
-                                QString push_button_name, QString icon_file_name) {
-  push_button->setObjectName(push_button_name);
-  size_policy.setHeightForWidth(push_button->sizePolicy().hasHeightForWidth());
-  push_button->setSizePolicy(size_policy);
-  push_button->setMinimumSize(QSize(40, 30));
-  push_button->setMaximumSize(QSize(40, 30));
-  QIcon icon;
-  icon.addFile(icon_file_name, QSize(), QIcon::Normal, QIcon::Off);
-  push_button->setIcon(icon);
-  push_button->setIconSize(QSize(20, 20));
-  push_button->setFlat(true);
 }
 
 void FrameButton::SetValue() {

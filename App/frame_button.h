@@ -35,6 +35,7 @@
 #include "IQ_api/client.hpp"
 #include "frame_variables.h"
 #include "frame.h"
+#include "common_icon_creation.h"
 
 class FrameButton : public Frame
 {
@@ -51,8 +52,6 @@ class FrameButton : public Frame
     void ShowInfo();
 
   private:
-    void SetPushButton(QPushButton *push_button,QSizePolicy size_policy, QString push_button_name, QString icon_file_name );
-
 
     Client *client_;
     std::pair<std::string, ClientEntryAbstract*> client_entry_;
