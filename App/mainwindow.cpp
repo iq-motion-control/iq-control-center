@@ -243,10 +243,8 @@ void MainWindow::ShowMotorSavedValues() {
 void MainWindow::SetDefaults(Json::Value defaults) {
 
     //Keep track of if we changed the baud rate, and all of the information needed to write a new one
-    bool update_baud = false;
-    double baud_rate_in_defaults = 0;
-    int baud_rate_frame_type = 0;
-    Frame * baud_rate_frame;
+    bool unable_to_reboot = false;
+
     std::string baud_tab_descriptor;
 
   //if the motor is connected, and you have a non-empty tab_map_
@@ -263,7 +261,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
       //If the current entry has an Entries object keep going
       if (!defaults[ii]["Entries"].empty()) {
 
-          //Clear out the default_value_map to have a fresh slate
+        //Clear out the maps to have a fresh slate for this tab's frames
         default_value_map.clear();
 
         //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
@@ -278,8 +276,11 @@ void MainWindow::SetDefaults(Json::Value defaults) {
           std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
           double value = defaults_values[jj]["value"].asDouble();
 
-          //Put the value into the map with its descriptor as the key
-          default_value_map[value_descriptor] = value;
+          //Put the value into the correct map with its descriptor as the key (aka...don't put a special one in here. we'll deal with them later)
+          if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
+            default_value_map[value_descriptor] = value;
+          }
+
         }
 
         //Create a map iterator, and look to see if the tab targeted by this defaults file matches
@@ -294,25 +295,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
           iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
 
-          //We need some temp vars to track the baud rate information from this tab
-          bool temp_baud_changed = false;
-          int temp_baud_frame_type = 0;
-          double temp_baud_to_set = 0;
-
-          Frame * temp_ptr = tab_map_[tab_descriptor]->SaveDefaults(default_value_map, &temp_baud_changed, &temp_baud_frame_type, &temp_baud_to_set);
-
-          //If we got the baud rate frame, then store it
-          if(temp_ptr != nullptr){
-            baud_rate_frame = temp_ptr;
-          }
-
-          //If the baud changed, then store all of the information for later
-          if(temp_baud_changed){
-              update_baud = true;
-              baud_rate_frame_type = temp_baud_frame_type;
-              baud_rate_in_defaults = temp_baud_to_set;
-              baud_tab_descriptor = tab_descriptor;
-          }
+          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
 
           iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
           tab_map_[tab_descriptor]->CheckSavedValues();
@@ -327,15 +310,10 @@ void MainWindow::SetDefaults(Json::Value defaults) {
       }
     }
 
-    //We have now saved and checked all defaults besides the baud rate, but we've stored all important data about the baud rate
-    //so we can safely change it now
-    if(update_baud){
-        iv.pcon->AddToLog("Setting a new baud rate: " + QString::number(baud_rate_in_defaults));
-        //grab the tab where baud rate lives and set the new baud rate
-        tab_map_[baud_tab_descriptor]->SetBaudRate(baud_rate_frame_type, baud_rate_frame, baud_rate_in_defaults);
-    }
+    //Now that we've handled the normal vars, let's handle the special ones
+    unable_to_reboot = this->HandleSpecialDefaults(defaults);
 
-    QString success_message = "Default Settings Value Saved";
+    QString success_message = "Default Settings Values Saved";
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
 
@@ -348,13 +326,13 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
     QString text;
 
-    if(!update_baud){
+    if(!unable_to_reboot){
         text.append("Set values from default file successfully. We recommend that you restart your module"
                     " to ensure that all changes take effect. If you would like to restart your module now,"
                     " please select Reboot Now. Your module will disconnect from IQ Control Center.");
     }else{
-        text.append("Set values from default file successfully. Since your module's UART Baud Rate has changed, and your "
-                    "module has disconnected, we are unable to reboot your module through IQ Control Center. We highly "
+        text.append("Set values from default file successfully. Due to the values changed, your "
+                    "module has disconnected, and we are unable to reboot your module through IQ Control Center. We highly "
                     "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
 
         msgBox.removeButton(rebootButton);
@@ -378,6 +356,60 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     return;
   }
 }
+
+bool MainWindow::HandleSpecialDefaults(Json::Value defaults) {
+
+bool unable_to_reset = false;
+
+iv.pcon->AddToLog("setting special defaults\n");
+
+//Create a map of the values that have to be handled separately (ex. baud rate)
+std::map<std::string, double> special_default_value_map;
+
+//Go through each of the entries in the input json
+for (uint8_t ii = 0; ii < defaults.size(); ++ii) {
+
+    //Clear out the maps to have a fresh slate for this tab's frames
+    special_default_value_map.clear();
+
+    //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
+    std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
+
+    //The tab's default values are stored in the Entries array
+    Json::Value defaults_values = defaults[ii]["Entries"];
+
+    //For each of the values in the Entries array
+    for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
+
+       //Grab the desciptor for each entry and its value
+      std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
+      double value = defaults_values[jj]["value"].asDouble();
+
+      //Put the value into the correct map with its descriptor as the key
+      if(SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
+        special_default_value_map[value_descriptor] = value;
+      }
+    }
+
+    //Create a map iterator, and look to see if the tab targeted by this defaults file matches
+    //what's in our tab_map_
+    std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
+    it = tab_map_.find(tab_descriptor);
+
+    //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
+    if (it != tab_map_.end()) {
+      //yay, you found the right tab. Now set the value in the tab to what was given
+      //in the defaults file, and make sure the correct values appear in the gui
+      //We've handled the normal defaults for this tab, now we can do the special ones
+      if(tab_map_[tab_descriptor]->SaveSpecialDefaults(special_default_value_map)){
+          unable_to_reset = true;
+      }
+    }
+  }
+
+    return unable_to_reset;
+}
+
 
 void MainWindow::ClearTabs() { tab_map_.clear(); }
 

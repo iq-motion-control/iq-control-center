@@ -48,17 +48,18 @@ class Tab: public QWidget
 
     void CheckSavedValues();
 
-    bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allow
+    bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allows
 
-    Frame * SaveDefaults(std::map<std::string,double> frame_value_map, bool * baud_changed, int * baud_frame_type, double * baud_value);
+    void SaveDefaults(std::map<std::string,double> frame_value_map);
 
-    void SetBaudRate(int baud_rate_frame_type, Frame * baud_rate_frame, double baud_rate_in_defaults);
+    bool SaveSpecialDefaults(std::map<std::string,double> frame_value_map);
 
     std::map<std::string,Frame*> get_frame_map();
 
     QGridLayout *gridLayout_;
 
   private:
+
     void ConnectFrameCombo(FrameCombo *fc);
 
     void ConnectFrameSpinBox(FrameSpinBox *fsb);
@@ -70,6 +71,8 @@ class Tab: public QWidget
     void ConnectFrameButton(FrameButton *fb);
 
     void ConnectFrameReadOnly(FrameReadOnly *fr);
+
+    bool SetNewBaudRate(double value);
 
     std::map<std::string,Frame*> frame_map_;
 

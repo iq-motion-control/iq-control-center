@@ -41,6 +41,8 @@
 
 enum class exportFileTypes {SUPPORT_FILE = 0, DEFAULTS_FILE = 1};
 
+const QStringList SPECIAL_DEFAULTS{"UART Baud Rate"};
+
 namespace Ui {
 class MainWindow;
 }
@@ -88,6 +90,7 @@ class MainWindow : public QMainWindow {
   void ClearTabs();
 
   void SetDefaults(Json::Value defaults);
+  bool HandleSpecialDefaults(Json::Value defaults);
 
   void on_generate_support_button_clicked();
 
@@ -113,6 +116,7 @@ private:
   void import_defaults_file_from_path(QString json_to_import);
 
   void display_successful_import();
+  void GetDefaultsMap(Json::Value defaults, std::map<std::string, double> * default_value_map);
 };
 
 #endif  // MAINWINDOW_H
