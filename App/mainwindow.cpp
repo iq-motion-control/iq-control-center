@@ -491,8 +491,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
           top_level_tab_obj.insert("descriptor", tab_descriptor.c_str());
 
           //Write to our output array
-          //using prepend to ensure that advanced ends up last
-          json_array->prepend(top_level_tab_obj);
+          json_array->append(top_level_tab_obj);
       }
 
     }
