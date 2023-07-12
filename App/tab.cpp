@@ -113,45 +113,40 @@ void Tab::CreateFrames()
   gridLayout_->addItem(verticalSpacer, frame_vertical_position, 1, 1, 1);
 }
 
-void Tab::CheckSavedValues(bool changed_baud_rate)
+void Tab::CheckSavedValues()
 {
-     //Only try to read the values if we didn't change the baud rate
-    if(!changed_baud_rate){
-      for(std::pair<std::string, Frame*> frame: frame_map_)
+  for(std::pair<std::string, Frame*> frame: frame_map_)
+  {
+    int frame_type = frame.second->frame_type_;
+    switch(frame_type)
+    {
+      case 1:
       {
-        int frame_type = frame.second->frame_type_;
-        switch(frame_type)
-        {
-          case 1:
-          {
-            FrameCombo *fc = nullptr;
-            if(!(fc = dynamic_cast<FrameCombo*>(frame.second)))
-               break;
-            fc->GetSavedValue();
-            break;
-          }
-          case 2:
-          {
-            FrameSpinBox *fsb = nullptr;
-            if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
-               break;
-            fsb->GetSavedValue();
-            break;
-          }
-
-          case 6:
-          {
-            FrameReadOnly *fr = nullptr;
-            if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
-                break;
-            fr->GetSavedReadOnlyValue();
-            break;
-          }
-        }
+        FrameCombo *fc = nullptr;
+        if(!(fc = dynamic_cast<FrameCombo*>(frame.second)))
+           break;
+        fc->GetSavedValue();
+        break;
       }
-    }else{
-        iv.pcon->AddToLog("Couldn't read values. The baud rate changed.");
+      case 2:
+      {
+        FrameSpinBox *fsb = nullptr;
+        if(!(fsb = dynamic_cast<FrameSpinBox*>(frame.second)))
+           break;
+        fsb->GetSavedValue();
+        break;
+      }
+
+      case 6:
+      {
+        FrameReadOnly *fr = nullptr;
+        if(!(fr = dynamic_cast<FrameReadOnly *>(frame.second)))
+            break;
+        fr->GetSavedReadOnlyValue();
+        break;
+      }
     }
+  }
 }
 
 bool Tab::IsClose(double val1, double val2, double tolerance){

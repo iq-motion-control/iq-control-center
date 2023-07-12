@@ -46,7 +46,7 @@ class Tab: public QWidget
 
     void CreateFrames();
 
-    void CheckSavedValues(bool changed_baud_rate = false);
+    void CheckSavedValues();
 
     bool IsClose(double val1, double val2, double tolerance = 0.000000001); //set the tolerance to the smallest single step the control center allow
 

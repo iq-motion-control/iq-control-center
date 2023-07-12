@@ -242,7 +242,7 @@ void MainWindow::ShowMotorSavedValues() {
 
 void MainWindow::SetDefaults(Json::Value defaults) {
 
-    //Keep track of if we changed the baud rate
+    //Keep track of if we changed the baud rate, and all of the information needed to write a new one
     bool update_baud = false;
     double baud_rate_in_defaults = 0;
     int baud_rate_frame_type = 0;
@@ -294,16 +294,19 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
           iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
 
+          //We need some temp vars to track the baud rate information from this tab
           bool temp_baud_changed = false;
           int temp_baud_frame_type = 0;
           double temp_baud_to_set = 0;
 
           Frame * temp_ptr = tab_map_[tab_descriptor]->SaveDefaults(default_value_map, &temp_baud_changed, &temp_baud_frame_type, &temp_baud_to_set);
 
+          //If we got the baud rate frame, then store it
           if(temp_ptr != nullptr){
             baud_rate_frame = temp_ptr;
           }
 
+          //If the baud changed, then store all of the information for later
           if(temp_baud_changed){
               update_baud = true;
               baud_rate_frame_type = temp_baud_frame_type;
@@ -312,7 +315,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
           }
 
           iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
-          tab_map_[tab_descriptor]->CheckSavedValues(update_baud);
+          tab_map_[tab_descriptor]->CheckSavedValues();
 
         } else {
 
@@ -327,8 +330,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     //We have now saved and checked all defaults besides the baud rate, but we've stored all important data about the baud rate
     //so we can safely change it now
     if(update_baud){
-        qDebug() << ("changed_baud_rate");
-
+        iv.pcon->AddToLog("Setting a new baud rate: " + QString::number(baud_rate_in_defaults));
         //grab the tab where baud rate lives and set the new baud rate
         tab_map_[baud_tab_descriptor]->SetBaudRate(baud_rate_frame_type, baud_rate_frame, baud_rate_in_defaults);
     }
