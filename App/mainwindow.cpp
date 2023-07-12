@@ -72,9 +72,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     iv.pcon->FindBaudrates();
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
-    int index115200 = ui->header_baudrate_combo_box->findText("115200"); 
+    int index115200 = ui->header_baudrate_combo_box->findText("115200");
     ui->header_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
-    iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200 
+    iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200
 
     //Connect a lost connection with the motor to clearing all tabs in the window
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
@@ -243,7 +243,11 @@ void MainWindow::ShowMotorSavedValues() {
 void MainWindow::SetDefaults(Json::Value defaults) {
 
     //Keep track of if we changed the baud rate
-    bool changed_baud_rate = false;
+    bool update_baud = false;
+    double baud_rate_in_defaults = 0;
+    int baud_rate_frame_type = 0;
+    Frame * baud_rate_frame;
+    std::string baud_tab_descriptor;
 
   //if the motor is connected, and you have a non-empty tab_map_
   if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
@@ -272,7 +276,6 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
            //Grab the desciptor for each entry and its value
           std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
-
           double value = defaults_values[jj]["value"].asDouble();
 
           //Put the value into the map with its descriptor as the key
@@ -291,10 +294,25 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
           iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
 
-          tab_map_[tab_descriptor]->SaveDefaults(default_value_map, &changed_baud_rate);
+          bool temp_baud_changed = false;
+          int temp_baud_frame_type = 0;
+          double temp_baud_to_set = 0;
+
+          Frame * temp_ptr = tab_map_[tab_descriptor]->SaveDefaults(default_value_map, &temp_baud_changed, &temp_baud_frame_type, &temp_baud_to_set);
+
+          if(temp_ptr != nullptr){
+            baud_rate_frame = temp_ptr;
+          }
+
+          if(temp_baud_changed){
+              update_baud = true;
+              baud_rate_frame_type = temp_baud_frame_type;
+              baud_rate_in_defaults = temp_baud_to_set;
+              baud_tab_descriptor = tab_descriptor;
+          }
 
           iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
-          tab_map_[tab_descriptor]->CheckSavedValues(changed_baud_rate);
+          tab_map_[tab_descriptor]->CheckSavedValues(update_baud);
 
         } else {
 
@@ -305,6 +323,16 @@ void MainWindow::SetDefaults(Json::Value defaults) {
         }
       }
     }
+
+    //We have now saved and checked all defaults besides the baud rate, but we've stored all important data about the baud rate
+    //so we can safely change it now
+    if(update_baud){
+        qDebug() << ("changed_baud_rate");
+
+        //grab the tab where baud rate lives and set the new baud rate
+        tab_map_[baud_tab_descriptor]->SetBaudRate(baud_rate_frame_type, baud_rate_frame, baud_rate_in_defaults);
+    }
+
     QString success_message = "Default Settings Value Saved";
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
@@ -318,7 +346,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
     QString text;
 
-    if(!changed_baud_rate){
+    if(!update_baud){
         text.append("Set values from default file successfully. We recommend that you restart your module"
                     " to ensure that all changes take effect. If you would like to restart your module now,"
                     " please select Reboot Now. Your module will disconnect from IQ Control Center.");

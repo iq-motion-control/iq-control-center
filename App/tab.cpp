@@ -158,12 +158,12 @@ bool Tab::IsClose(double val1, double val2, double tolerance){
     return (abs(val1 - val2) <= tolerance);
 }
 
-void Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * baud_changed){
+Frame * Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * baud_changed, int * baud_frame_type, double * baud_value){
 
     double baud_rate_in_defaults = 0;
     bool baud_rate_needs_change = false;
     int baud_rate_frame_type = 0;
-    Frame * baud_rate_frame;
+    Frame * baud_rate_frame = nullptr;
 
   for(std::pair<std::string, double> default_value: default_value_map){
 
@@ -190,7 +190,7 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * ba
                     baud_rate_needs_change = true;
                     baud_rate_in_defaults = default_value.second;
                     baud_rate_frame_type = 1;
-                    baud_rate_frame = frame;
+                    baud_rate_frame = frame_map_[default_value.first];;
                 }else{
                 #endif
                     fc->value_ = default_value.second;
@@ -216,7 +216,7 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * ba
                     baud_rate_needs_change = true;
                     baud_rate_in_defaults = default_value.second;
                     baud_rate_frame_type = 2;
-                    baud_rate_frame = frame;
+                    baud_rate_frame = frame_map_[default_value.first];;
                 }else{
                 #endif
                     fsb->value_ = default_value.second;
@@ -229,24 +229,28 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map, bool * ba
     } //switch()
   } //for()
 
-  //we've gone through every frame, now we can set baud rate if necessary
-  if(baud_rate_needs_change){
-    switch(baud_rate_frame_type){
-        case 1:
-            dynamic_cast<FrameCombo *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
-            dynamic_cast<FrameCombo *>(baud_rate_frame)->SaveValue();
-        break;
-
-        case 2:
-            dynamic_cast<FrameSpinBox *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
-            dynamic_cast<FrameSpinBox *>(baud_rate_frame)->SaveValue();
-        break;
-    }
-  }
-
-  //Make sure to output whether or not we changed the baud rate
+  //Make sure to output whether or not we changed the baud rate, and the important information with it
   *baud_changed = baud_rate_needs_change;
+  *baud_frame_type = baud_rate_frame_type;
+  *baud_value = baud_rate_in_defaults;
+  return baud_rate_frame;
 }
+
+void Tab::SetBaudRate(int baud_rate_frame_type, Frame * baud_rate_frame, double baud_rate_in_defaults){
+//we've gone through every frame, now we can set baud rate if necessary
+  switch(baud_rate_frame_type){
+      case 1:
+          dynamic_cast<FrameCombo *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
+          dynamic_cast<FrameCombo *>(baud_rate_frame)->SaveValue();
+      break;
+
+      case 2:
+          dynamic_cast<FrameSpinBox *>(baud_rate_frame)->value_ = baud_rate_in_defaults;
+          dynamic_cast<FrameSpinBox *>(baud_rate_frame)->SaveValue();
+      break;
+  }
+}
+
 
 std::map<std::string,Frame*> Tab::get_frame_map(){
     return frame_map_;
