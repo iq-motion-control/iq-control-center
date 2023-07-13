@@ -115,6 +115,7 @@ private:
   TabPopulator *tab_populator;
   Defaults *def;
 
+  bool ReadAndPopulateDefaults(Json::Value defaults);
   void HandleDefaultsPopup(bool unable_to_reboot);
 
   void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);

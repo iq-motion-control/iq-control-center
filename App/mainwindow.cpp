@@ -278,14 +278,7 @@ void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
     }
 }
 
-void MainWindow::SetDefaults(Json::Value defaults) {
-
-    //Keep track of if we changed the baud rate, or any other variables that'll stop us from rebooting
-    bool unable_to_reboot = false;
-
-  //if the motor is connected, and you have a non-empty tab_map_
-  if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
-
+bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
     iv.pcon->AddToLog("setting through defaults");
 
     //create a map of the values in the defaults file (descriptor and value)
@@ -358,14 +351,31 @@ void MainWindow::SetDefaults(Json::Value defaults) {
             QString error_message = "Wrong Default Settings Selected";
             iv.label_message->setText(error_message);
             iv.pcon->AddToLog(error_message);
-            return;
+            return false;
           }
         }
+    }
+
+    return true;
+}
+
+void MainWindow::SetDefaults(Json::Value defaults) {
+
+    //Keep track of if we changed the baud rate, or any other variables that'll stop us from rebooting
+    bool unable_to_reboot = false;
+
+  //if the motor is connected, and you have a non-empty tab_map_
+  if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
+
+    //Handle our standard defaults (the ones that won't break anything)
+    if(!ReadAndPopulateDefaults(defaults)){
+        return;
     }
 
     //Now that we've handled the normal vars, let's handle the special ones
     unable_to_reboot = this->HandleSpecialDefaults();
 
+    //Handle the display after we've set all of the new values through defaults
     HandleDefaultsPopup(unable_to_reboot);
 
     return;
