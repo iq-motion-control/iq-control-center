@@ -320,11 +320,11 @@ bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
             if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
               default_value_map[value_descriptor] = value;
             }else if(tab_descriptor.find("advanced") != std::string::npos){
-              advanced_value_map[value_descriptor] = value;
+              advanced_special_value_map[value_descriptor] = value;
             }else if(tab_descriptor.find("tuning") != std::string::npos){
-                tuning_value_map[value_descriptor] = value;
+                tuning_special_value_map[value_descriptor] = value;
             }else if(tab_descriptor.find("general") != std::string::npos){
-                general_value_map[value_descriptor] = value;
+                general_special_value_map[value_descriptor] = value;
             }
 
           }
@@ -395,9 +395,9 @@ bool MainWindow::HandleSpecialDefaults() {
     //We've already got the special frames that we care about stored.
     //We also have the names of each of the tab_descriptors stored
     //We also know which index each of the tab descriptors lives in
-    bool tuning_cant_restart = tab_map_[tab_descriptors.at(tuning_index).toStdString()]->SaveSpecialDefaults(tuning_value_map);
-    bool general_cant_restart = tab_map_[tab_descriptors.at(general_index).toStdString()]->SaveSpecialDefaults(general_value_map);
-    bool advanced_cant_restart = tab_map_[tab_descriptors.at(advanced_index).toStdString()]->SaveSpecialDefaults(advanced_value_map);
+    bool tuning_cant_restart = tab_map_[tab_descriptors.at(tuning_index).toStdString()]->SaveSpecialDefaults(tuning_special_value_map);
+    bool general_cant_restart = tab_map_[tab_descriptors.at(general_index).toStdString()]->SaveSpecialDefaults(general_special_value_map);
+    bool advanced_cant_restart = tab_map_[tab_descriptors.at(advanced_index).toStdString()]->SaveSpecialDefaults(advanced_special_value_map);
 
     return tuning_cant_restart || general_cant_restart || advanced_cant_restart;
 }

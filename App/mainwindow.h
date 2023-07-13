@@ -100,9 +100,9 @@ class MainWindow : public QMainWindow {
 
 
 private:
-  std::map<std::string, double> advanced_value_map;
-  std::map<std::string, double> tuning_value_map;
-  std::map<std::string, double> general_value_map;
+  std::map<std::string, double> advanced_special_value_map;
+  std::map<std::string, double> tuning_special_value_map;
+  std::map<std::string, double> general_special_value_map;
   QStringList tab_descriptors;
   uint8_t advanced_index = 0;
   uint8_t tuning_index = 0;
