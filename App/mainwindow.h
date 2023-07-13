@@ -90,7 +90,7 @@ class MainWindow : public QMainWindow {
   void ClearTabs();
 
   void SetDefaults(Json::Value defaults);
-  bool HandleSpecialDefaults(Json::Value defaults);
+  bool HandleSpecialDefaults();
 
   void on_generate_support_button_clicked();
 
@@ -100,6 +100,14 @@ class MainWindow : public QMainWindow {
 
 
 private:
+  std::map<std::string, double> advanced_value_map;
+  std::map<std::string, double> tuning_value_map;
+  std::map<std::string, double> general_value_map;
+  QStringList tab_descriptors;
+  uint8_t advanced_index = 0;
+  uint8_t tuning_index = 0;
+  uint8_t general_index = 0;
+
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;
   //    QtAutoUpdater::UpdateButton *updateButton;

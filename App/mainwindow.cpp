@@ -259,57 +259,75 @@ void MainWindow::SetDefaults(Json::Value defaults) {
       //If the current entry has an Entries object keep going
       if (!defaults[ii]["Entries"].empty()) {
 
-        //Clear out the maps to have a fresh slate for this tab's frames
-        default_value_map.clear();
+          //Clear out the maps to have a fresh slate for this tab's frames
+          default_value_map.clear();
 
-        //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
-        std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
+          //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
+          std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
 
-        //The tab's default values are stored in the Entries array
-        Json::Value defaults_values = defaults[ii]["Entries"];
-
-        //For each of the values in the Entries array
-        for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
-           //Grab the desciptor for each entry and its value
-          std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
-          double value = defaults_values[jj]["value"].asDouble();
-
-          //Put the value into the correct map with its descriptor as the key (aka...don't put a special one in here. we'll deal with them later)
-          if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
-            default_value_map[value_descriptor] = value;
+          //Save our tab descriptors for later (don't want to bother finding them again with the special defaults)
+          tab_descriptors.append(tab_descriptor.c_str());
+          if(tab_descriptor.find("advanced") != std::string::npos){
+            advanced_index = ii;
+          }else if(tab_descriptor.find("tuning") != std::string::npos){
+            tuning_index = ii;
+          }else if(tab_descriptor.find("general") != std::string::npos){
+            general_index = ii;
           }
 
+
+          //The tab's default values are stored in the Entries array
+          Json::Value defaults_values = defaults[ii]["Entries"];
+
+          //For each of the values in the Entries array
+          for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
+             //Grab the desciptor for each entry and its value
+            std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
+            double value = defaults_values[jj]["value"].asDouble();
+
+            //Put the value into the correct map with its descriptor as the key
+            if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
+              default_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("advanced") != std::string::npos){
+              advanced_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("tuning") != std::string::npos){
+                tuning_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("general") != std::string::npos){
+                general_value_map[value_descriptor] = value;
+            }
+
+          }
+
+          //Create a map iterator, and look to see if the tab targeted by this defaults file matches
+          //what's in our tab_map_
+          std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
+          it = tab_map_.find(tab_descriptor);
+
+          //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
+          if (it != tab_map_.end()) {
+            //yay, you found the right tab. Now set the value in the tab to what was given
+            //in the defaults file, and make sure the correct values appear in the gui
+
+            iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
+
+            tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
+
+            iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
+            tab_map_[tab_descriptor]->CheckSavedValues();
+
+          } else {
+
+            QString error_message = "Wrong Default Settings Selected";
+            iv.label_message->setText(error_message);
+            iv.pcon->AddToLog(error_message);
+            return;
+          }
         }
-
-        //Create a map iterator, and look to see if the tab targeted by this defaults file matches
-        //what's in our tab_map_
-        std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
-        it = tab_map_.find(tab_descriptor);
-
-        //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
-        if (it != tab_map_.end()) {
-          //yay, you found the right tab. Now set the value in the tab to what was given
-          //in the defaults file, and make sure the correct values appear in the gui
-
-          iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
-
-          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
-
-          iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
-          tab_map_[tab_descriptor]->CheckSavedValues();
-
-        } else {
-
-          QString error_message = "Wrong Default Settings Selected";
-          iv.label_message->setText(error_message);
-          iv.pcon->AddToLog(error_message);
-          return;
-        }
-      }
     }
 
     //Now that we've handled the normal vars, let's handle the special ones
-    unable_to_reboot = this->HandleSpecialDefaults(defaults);
+    unable_to_reboot = this->HandleSpecialDefaults();
+
 
     QString success_message = "Default Settings Values Saved";
     iv.label_message->setText(success_message);
@@ -355,57 +373,19 @@ void MainWindow::SetDefaults(Json::Value defaults) {
   }
 }
 
-bool MainWindow::HandleSpecialDefaults(Json::Value defaults) {
+bool MainWindow::HandleSpecialDefaults() {
 
-bool unable_to_reset = false;
+    iv.pcon->AddToLog("setting special defaults\n");
 
-iv.pcon->AddToLog("setting special defaults\n");
+    //The Json::Value defaults holds all of the information held in the Defaults file json input
+    //We've already got the special frames that we care about stored.
+    //We also have the names of each of the tab_descriptors stored
+    //We also know which index each of the tab descriptors lives in
+    bool tuning_cant_restart = tab_map_[tab_descriptors.at(tuning_index).toStdString()]->SaveSpecialDefaults(tuning_value_map);
+    bool general_cant_restart = tab_map_[tab_descriptors.at(general_index).toStdString()]->SaveSpecialDefaults(general_value_map);
+    bool advanced_cant_restart = tab_map_[tab_descriptors.at(advanced_index).toStdString()]->SaveSpecialDefaults(advanced_value_map);
 
-//Create a map of the values that have to be handled separately (ex. baud rate)
-std::map<std::string, double> special_default_value_map;
-
-//Go through each of the entries in the input json
-for (uint8_t ii = 0; ii < defaults.size(); ++ii) {
-
-    //Clear out the maps to have a fresh slate for this tab's frames
-    special_default_value_map.clear();
-
-    //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
-    std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
-
-    //The tab's default values are stored in the Entries array
-    Json::Value defaults_values = defaults[ii]["Entries"];
-
-    //For each of the values in the Entries array
-    for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
-
-       //Grab the desciptor for each entry and its value
-      std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
-      double value = defaults_values[jj]["value"].asDouble();
-
-      //Put the value into the correct map with its descriptor as the key
-      if(SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
-        special_default_value_map[value_descriptor] = value;
-      }
-    }
-
-    //Create a map iterator, and look to see if the tab targeted by this defaults file matches
-    //what's in our tab_map_
-    std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
-    it = tab_map_.find(tab_descriptor);
-
-    //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
-    if (it != tab_map_.end()) {
-      //yay, you found the right tab. Now set the value in the tab to what was given
-      //in the defaults file, and make sure the correct values appear in the gui
-      //We've handled the normal defaults for this tab, now we can do the special ones
-      if(tab_map_[tab_descriptor]->SaveSpecialDefaults(special_default_value_map)){
-          unable_to_reset = true;
-      }
-    }
-  }
-
-    return unable_to_reset;
+    return tuning_cant_restart || general_cant_restart || advanced_cant_restart;
 }
 
 
