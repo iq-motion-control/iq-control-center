@@ -115,6 +115,8 @@ private:
   TabPopulator *tab_populator;
   Defaults *def;
 
+  void HandleDefaultsPopup(bool unable_to_reboot);
+
   void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);
   void write_user_support_file();
   void write_version_info_to_file(QJsonArray * json_array);

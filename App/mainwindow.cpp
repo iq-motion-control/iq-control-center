@@ -240,6 +240,44 @@ void MainWindow::ShowMotorSavedValues() {
   }
 }
 
+void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
+    QString success_message = "Default Settings Values Saved";
+    iv.label_message->setText(success_message);
+    iv.pcon->AddToLog(success_message);
+
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
+    QAbstractButton * exitButton = msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
+
+    msgBox.setWindowTitle("Defaults Set Successfully");
+
+    QString text;
+
+    if(!unable_to_reboot){
+        text.append("Set values from default file successfully. We recommend that you restart your module"
+                    " to ensure that all changes take effect. If you would like to restart your module now,"
+                    " please select Reboot Now. Your module will disconnect from IQ Control Center.");
+    }else{
+        text.append("Set values from default file successfully. Due to the values changed, your "
+                    "module has disconnected, and we are unable to reboot your module through IQ Control Center. We highly "
+                    "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
+
+        msgBox.removeButton(rebootButton);
+        exitButton->setText("OK");
+    }
+
+    msgBox.setText(text);
+    msgBox.exec();
+
+    if(msgBox.clickedButton() == rebootButton){
+        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        iv.pcon->RebootMotor();
+    }else{
+        iv.pcon->AddToLog("module not rebooted after setting through defaults");
+    }
+}
+
 void MainWindow::SetDefaults(Json::Value defaults) {
 
     //Keep track of if we changed the baud rate, or any other variables that'll stop us from rebooting
@@ -263,6 +301,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
           default_value_map.clear();
 
           //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
+          //the value will actually be something like advanced_vertiq_40xx_speed.json
           std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
 
           //Save our tab descriptors for later (don't want to bother finding them again with the special defaults)
@@ -274,7 +313,6 @@ void MainWindow::SetDefaults(Json::Value defaults) {
           }else if(tab_descriptor.find("general") != std::string::npos){
             general_index = ii;
           }
-
 
           //The tab's default values are stored in the Entries array
           Json::Value defaults_values = defaults[ii]["Entries"];
@@ -328,44 +366,10 @@ void MainWindow::SetDefaults(Json::Value defaults) {
     //Now that we've handled the normal vars, let's handle the special ones
     unable_to_reboot = this->HandleSpecialDefaults();
 
-
-    QString success_message = "Default Settings Values Saved";
-    iv.label_message->setText(success_message);
-    iv.pcon->AddToLog(success_message);
-
-    //Give the user the option to reboot the module after setting with defaults.
-    QMessageBox msgBox;
-    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
-    QAbstractButton * exitButton = msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
-
-    msgBox.setWindowTitle("Defaults Set Successfully");
-
-    QString text;
-
-    if(!unable_to_reboot){
-        text.append("Set values from default file successfully. We recommend that you restart your module"
-                    " to ensure that all changes take effect. If you would like to restart your module now,"
-                    " please select Reboot Now. Your module will disconnect from IQ Control Center.");
-    }else{
-        text.append("Set values from default file successfully. Due to the values changed, your "
-                    "module has disconnected, and we are unable to reboot your module through IQ Control Center. We highly "
-                    "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
-
-        msgBox.removeButton(rebootButton);
-        exitButton->setText("OK");
-    }
-
-    msgBox.setText(text);
-    msgBox.exec();
-
-    if(msgBox.clickedButton() == rebootButton){
-        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
-        iv.pcon->RebootMotor();
-    }else{
-        iv.pcon->AddToLog("module not rebooted after setting through defaults");
-    }
+    HandleDefaultsPopup(unable_to_reboot);
 
     return;
+
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
