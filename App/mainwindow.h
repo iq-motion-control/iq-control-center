@@ -41,6 +41,8 @@
 
 enum class exportFileTypes {SUPPORT_FILE = 0, DEFAULTS_FILE = 1};
 
+const QStringList SPECIAL_DEFAULTS{"UART Baud Rate"};
+
 namespace Ui {
 class MainWindow;
 }
@@ -88,6 +90,7 @@ class MainWindow : public QMainWindow {
   void ClearTabs();
 
   void SetDefaults(Json::Value defaults);
+  bool HandleSpecialDefaults();
 
   void on_generate_support_button_clicked();
 
@@ -97,12 +100,23 @@ class MainWindow : public QMainWindow {
 
 
 private:
+  std::map<std::string, double> advanced_special_value_map;
+  std::map<std::string, double> tuning_special_value_map;
+  std::map<std::string, double> general_special_value_map;
+  QStringList tab_descriptors;
+  uint8_t advanced_index = 0;
+  uint8_t tuning_index = 0;
+  uint8_t general_index = 0;
+
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   TabPopulator *tab_populator;
   Defaults *def;
+
+  bool ReadAndPopulateDefaults(Json::Value defaults);
+  void HandleDefaultsPopup(bool unable_to_reboot);
 
   void write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport);
   void write_user_support_file();
@@ -113,6 +127,7 @@ private:
   void import_defaults_file_from_path(QString json_to_import);
 
   void display_successful_import();
+  void GetDefaultsMap(Json::Value defaults, std::map<std::string, double> * default_value_map);
 };
 
 #endif  // MAINWINDOW_H

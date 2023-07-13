@@ -72,9 +72,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     iv.pcon->FindBaudrates();
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
-    int index115200 = ui->header_baudrate_combo_box->findText("115200"); 
+    int index115200 = ui->header_baudrate_combo_box->findText("115200");
     ui->header_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
-    iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200 
+    iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200
 
     //Connect a lost connection with the motor to clearing all tabs in the window
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
@@ -240,11 +240,45 @@ void MainWindow::ShowMotorSavedValues() {
   }
 }
 
-void MainWindow::SetDefaults(Json::Value defaults) {
+void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
+    QString success_message = "Default Settings Values Saved";
+    iv.label_message->setText(success_message);
+    iv.pcon->AddToLog(success_message);
 
-  //if the motor is connected, and you have a non-empty tab_map_
-  if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
+    QAbstractButton * exitButton = msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
 
+    msgBox.setWindowTitle("Defaults Set Successfully");
+
+    QString text;
+
+    if(!unable_to_reboot){
+        text.append("Set values from default file successfully. We recommend that you restart your module"
+                    " to ensure that all changes take effect. If you would like to restart your module now,"
+                    " please select Reboot Now. Your module will disconnect from IQ Control Center.");
+    }else{
+        text.append("Set values from default file successfully. Due to the values changed, your "
+                    "module has disconnected, and we are unable to reboot your module through IQ Control Center. We highly "
+                    "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
+
+        msgBox.removeButton(rebootButton);
+        exitButton->setText("OK");
+    }
+
+    msgBox.setText(text);
+    msgBox.exec();
+
+    if(msgBox.clickedButton() == rebootButton){
+        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        iv.pcon->RebootMotor();
+    }else{
+        iv.pcon->AddToLog("module not rebooted after setting through defaults");
+    }
+}
+
+bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
     iv.pcon->AddToLog("setting through defaults");
 
     //create a map of the values in the defaults file (descriptor and value)
@@ -256,84 +290,118 @@ void MainWindow::SetDefaults(Json::Value defaults) {
       //If the current entry has an Entries object keep going
       if (!defaults[ii]["Entries"].empty()) {
 
-          //Clear out the default_value_map to have a fresh slate
-        default_value_map.clear();
+          //Clear out the maps to have a fresh slate for this tab's frames
+          default_value_map.clear();
 
-        //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
-        std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
+          //the tab we should be looking for is the descriptor of this object (general, tuning, etc.)
+          //the value will actually be something like advanced_vertiq_40xx_speed.json
+          std::string tab_descriptor = defaults[ii]["descriptor"].asString() + ".json";
 
-        //The tab's default values are stored in the Entries array
-        Json::Value defaults_values = defaults[ii]["Entries"];
+          //Save our tab descriptors for later (don't want to bother finding them again with the special defaults)
+          tab_descriptors.append(tab_descriptor.c_str());
+          if(tab_descriptor.find("advanced") != std::string::npos){
+            advanced_index = ii;
+          }else if(tab_descriptor.find("tuning") != std::string::npos){
+            tuning_index = ii;
+          }else if(tab_descriptor.find("general") != std::string::npos){
+            general_index = ii;
+          }
 
-        //For each of the values in the Entries array
-        for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
-           //Grab the desciptor for each entry and its value
-          std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
+          //The tab's default values are stored in the Entries array
+          Json::Value defaults_values = defaults[ii]["Entries"];
 
-          double value = defaults_values[jj]["value"].asDouble();
+          //For each of the values in the Entries array
+          for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
+             //Grab the desciptor for each entry and its value
+            std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
+            double value = defaults_values[jj]["value"].asDouble();
 
-          //Put the value into the map with its descriptor as the key
-          default_value_map[value_descriptor] = value;
+            //Put the value into the correct map with its descriptor as the key
+            if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
+              default_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("advanced") != std::string::npos){
+              advanced_special_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("tuning") != std::string::npos){
+                tuning_special_value_map[value_descriptor] = value;
+            }else if(tab_descriptor.find("general") != std::string::npos){
+                general_special_value_map[value_descriptor] = value;
+            }
+
+          }
+
+          //Create a map iterator, and look to see if the tab targeted by this defaults file matches
+          //what's in our tab_map_
+          std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
+          it = tab_map_.find(tab_descriptor);
+
+          //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
+          if (it != tab_map_.end()) {
+            //yay, you found the right tab. Now set the value in the tab to what was given
+            //in the defaults file, and make sure the correct values appear in the gui
+
+            iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
+
+            tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
+
+            iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
+            tab_map_[tab_descriptor]->CheckSavedValues();
+
+          } else {
+
+            QString error_message = "Wrong Default Settings Selected";
+            iv.label_message->setText(error_message);
+            iv.pcon->AddToLog(error_message);
+            return false;
+          }
         }
-
-        //Create a map iterator, and look to see if the tab targeted by this defaults file matches
-        //what's in our tab_map_
-        std::map<std::string, std::shared_ptr<Tab>>::const_iterator it;
-        it = tab_map_.find(tab_descriptor);
-
-        //If you find the tab you're looking for yay. If not, then throw an error and don't do anything else
-        if (it != tab_map_.end()) {
-          //yay, you found the right tab. Now set the value in the tab to what was given
-          //in the defaults file, and make sure the correct values appear in the gui
-
-          iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
-
-          tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
-
-          iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
-          tab_map_[tab_descriptor]->CheckSavedValues();
-
-        } else {
-
-          QString error_message = "Wrong Default Settings Selected";
-          iv.label_message->setText(error_message);
-          iv.pcon->AddToLog(error_message);
-          return;
-        }
-      }
     }
-    QString success_message = "Default Settings Value Saved";
-    iv.label_message->setText(success_message);
-    iv.pcon->AddToLog(success_message);
 
-    //Give the user the option to reboot the module after setting with defaults.
-    QMessageBox msgBox;
-    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
-    msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
+    return true;
+}
 
-    msgBox.setWindowTitle("Defaults Set Successfully");
+void MainWindow::SetDefaults(Json::Value defaults) {
 
-    QString text("Set values from default file successfully. We recommend that you restart your module"
-                 " to ensure that all changes take effect. If you would like to restart your module now,"
-                 " please select Reboot Now. Your module will disconnect from IQ Control Center.");
+    //Keep track of if we changed the baud rate, or any other variables that'll stop us from rebooting
+    bool unable_to_reboot = false;
 
-    msgBox.setText(text);
-    msgBox.exec();
+  //if the motor is connected, and you have a non-empty tab_map_
+  if (iv.pcon->GetConnectionState() == 1 && !tab_map_.empty()) {
 
-    if(msgBox.clickedButton() == rebootButton){
-        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
-        iv.pcon->RebootMotor();
-    }else{
-        iv.pcon->AddToLog("module not rebooted after setting through defaults");
+    //Handle our standard defaults (the ones that won't break anything)
+    if(!ReadAndPopulateDefaults(defaults)){
+        return;
     }
+
+    //Now that we've handled the normal vars, let's handle the special ones
+    unable_to_reboot = this->HandleSpecialDefaults();
+
+    //Handle the display after we've set all of the new values through defaults
+    HandleDefaultsPopup(unable_to_reboot);
 
     return;
+
   } else {
     QString error_message = "No Motor Connected, Please Connect Motor";
     iv.label_message->setText(error_message);
     return;
   }
 }
+
+bool MainWindow::HandleSpecialDefaults() {
+
+    iv.pcon->AddToLog("setting special defaults\n");
+
+    //The Json::Value defaults holds all of the information held in the Defaults file json input
+    //We've already got the special frames that we care about stored.
+    //We also have the names of each of the tab_descriptors stored
+    //We also know which index each of the tab descriptors lives in
+    bool tuning_cant_restart = tab_map_[tab_descriptors.at(tuning_index).toStdString()]->SaveSpecialDefaults(tuning_special_value_map);
+    bool general_cant_restart = tab_map_[tab_descriptors.at(general_index).toStdString()]->SaveSpecialDefaults(general_special_value_map);
+    bool advanced_cant_restart = tab_map_[tab_descriptors.at(advanced_index).toStdString()]->SaveSpecialDefaults(advanced_special_value_map);
+
+    return tuning_cant_restart || general_cant_restart || advanced_cant_restart;
+}
+
 
 void MainWindow::ClearTabs() { tab_map_.clear(); }
 
@@ -426,6 +494,10 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
             }
 
             if(attach_new_object){
+
+                //NOTE:: It does not matter where baud rate goes in the advanced tab json entry. When we set through
+                //       defaults, we read the json as a map sorted alphabetically. This will always put baud rate
+                //       near the top.
                 current_tab_json_object->insert("descriptor", frame->first.c_str());
                 tab_frame_array.append(*current_tab_json_object);
             }

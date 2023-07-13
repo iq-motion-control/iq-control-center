@@ -20,6 +20,7 @@
 
 #include "tab.h"
 #include <QDebug>
+#include "mainwindow.h"
 
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
   QWidget(parent),
@@ -188,6 +189,51 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
       }
     }
   }
+}
+
+bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
+
+    bool retVal = false;
+
+    //Check to see which special defaults are in here, and call the correct functions to set them up
+    bool (Tab::* SpecialFunctionPointers [SPECIAL_DEFAULTS.size()])(double value);
+
+    SpecialFunctionPointers[0] = &Tab::SetNewBaudRate;
+
+    //Go through each of the values in the map
+    for(std::pair<std::string, double> default_value : default_value_map) {
+        //Pull out the frame from this tab
+        QString current_frame = default_value.first.c_str();
+        for(int i = 0; i < SPECIAL_DEFAULTS.size(); i++){
+
+            //Call the correct function for the given special variables
+            if(current_frame == SPECIAL_DEFAULTS[i]){
+                retVal |= ((*this).*(SpecialFunctionPointers[i]))(default_value.second);
+            }
+        }
+    }
+
+    return retVal;
+}
+
+bool Tab::SetNewBaudRate(double value){
+    //We know the frame type
+    bool baud_changed = false;
+    Frame * baud_rate_frame = frame_map_["UART Baud Rate"];
+
+    FrameSpinBox *fsb = nullptr;
+    if(!(fsb = dynamic_cast<FrameSpinBox*>(baud_rate_frame))){
+        return false;
+    }
+
+    //Let's make sure that the value we're trying to save is different than what's on there already
+    if(!IsClose(fsb->value_, value)){
+        fsb->value_ = value;
+        fsb->SaveValue();
+        baud_changed = true;
+    }
+
+    return baud_changed;
 }
 
 std::map<std::string,Frame*> Tab::get_frame_map(){
