@@ -192,6 +192,9 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 }
 
 bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
+
+    bool retVal = false;
+
     //Check to see which special defaults are in here, and call the correct functions to set them up
     bool (Tab::* SpecialFunctionPointers [SPECIAL_DEFAULTS.size()])(double value);
 
@@ -199,18 +202,18 @@ bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
 
     //Go through each of the values in the map
     for(std::pair<std::string, double> default_value : default_value_map) {
-        //Pull out the frame from this tab ba
+        //Pull out the frame from this tab
         QString current_frame = default_value.first.c_str();
         for(int i = 0; i < SPECIAL_DEFAULTS.size(); i++){
 
             //Call the correct function for the given special variables
             if(current_frame == SPECIAL_DEFAULTS[i]){
-                return ((*this).*(SpecialFunctionPointers[i]))(default_value.second);
+                retVal |= ((*this).*(SpecialFunctionPointers[i]))(default_value.second);
             }
         }
     }
 
-    return false;
+    return retVal;
 }
 
 bool Tab::SetNewBaudRate(double value){
