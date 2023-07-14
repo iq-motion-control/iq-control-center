@@ -191,6 +191,8 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
               }
             }
           }
+        }else{ //we didn't find the value
+          iv.pcon->AddToLog("Failed to find target value on module");
         }
       }
 }
