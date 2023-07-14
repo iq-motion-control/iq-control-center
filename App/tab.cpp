@@ -155,44 +155,44 @@ bool Tab::IsClose(double val1, double val2, double tolerance){
 void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 {
 
-  for(std::pair<std::string, double> default_value: default_value_map)
-  {
-    //If the tab actually has the frame that the defaults file wants, then we can set it.
-    //otherwise ignore it altogether
-    if(frame_map_.count(default_value.first) > 0){
-        Frame *frame = frame_map_[default_value.first];
-        int frame_type = frame->frame_type_;
-        switch(frame_type)
-        {
-          case 1:
+    for(std::pair<std::string, double> default_value: default_value_map)
+    {
+      //If the tab actually has the frame that the defaults file wants, then we can set it.
+      //otherwise ignore it altogether
+      if(frame_map_.count(default_value.first) > 0){
+          Frame *frame = frame_map_[default_value.first];
+          int frame_type = frame->frame_type_;
+          switch(frame_type)
           {
-            FrameCombo *fc = nullptr;
-            if(!(fc = dynamic_cast<FrameCombo*>(frame)))
-              break;
+            case 1:
+            {
+              FrameCombo *fc = nullptr;
+              if(!(fc = dynamic_cast<FrameCombo*>(frame)))
+                break;
 
-            //Let's make sure that the value we're trying to save is different than what's on there already
-            if(!IsClose(fc->value_, default_value.second)){
-                fc->value_ = default_value.second;
-                fc->SaveValue();
+              //Let's make sure that the value we're trying to save is different than what's on there already
+              if(!IsClose(fc->value_, default_value.second)){
+                  fc->value_ = default_value.second;
+                  fc->SaveValue();
+              }
+
+              break;
             }
+            case 2:
+            {
+              FrameSpinBox *fsb = nullptr;
+              if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
+                break;
 
-            break;
-          }
-          case 2:
-          {
-            FrameSpinBox *fsb = nullptr;
-            if(!(fsb = dynamic_cast<FrameSpinBox*>(frame)))
-              break;
-
-            //Let's make sure that the value we're trying to save is different than what's on there already
-            if(!IsClose(fsb->value_, default_value.second)){
-                fsb->value_ = default_value.second;
-                fsb->SaveValue();
+              //Let's make sure that the value we're trying to save is different than what's on there already
+              if(!IsClose(fsb->value_, default_value.second)){
+                  fsb->value_ = default_value.second;
+                  fsb->SaveValue();
+              }
             }
           }
         }
       }
-  }
 }
 
 bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
