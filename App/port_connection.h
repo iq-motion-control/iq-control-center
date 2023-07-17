@@ -277,6 +277,8 @@ class PortConnection : public QObject {
    */
   void DisableAllButtons();
 
+    void HandleFindingCorrectMotorToRecover(QString detected_module);
+
  public slots:
 
   void ConnectMotor();

@@ -351,7 +351,7 @@ void PortConnection::DisplayRecoveryMessage(){
       QString previously_connected_module = GetHardwareNameFromResources(previous_handled_connection.hardware_value);
 
       //Pop up our message and determine if our guess is correct about what module is connected
-
+      HandleFindingCorrectMotorToRecover(previously_connected_module);
 
       ui_->stackedWidget->setCurrentIndex(6);
 
@@ -363,6 +363,29 @@ void PortConnection::DisplayRecoveryMessage(){
     }
 
     throw QString("Recovery Detected");
+}
+
+void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    msgBox.addButton("Correct", QMessageBox::YesRole);
+    QAbstractButton * wrongButton = msgBox.addButton("Select a Different Module", QMessageBox::NoRole);
+
+    msgBox.setWindowTitle("Select Recovery Module");
+
+    QString text = "We cannot determine your module type while in recovery mode, but you've recently connected to a " + detected_module +
+                   ". Is the the module you would like to recover?";
+
+    msgBox.setText(text);
+    msgBox.exec();
+
+    //We only care if they click wrong. if it's wrong we'll have to help them find the correct
+    //module to recover. then save those numbers as what to use to protect aginst flashing the
+    //wrong firmware
+    if(msgBox.clickedButton() == wrongButton){
+        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+
+    }
 }
 
 void PortConnection::GetDeviceInformationResponses(){
