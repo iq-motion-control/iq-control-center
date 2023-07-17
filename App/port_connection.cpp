@@ -20,15 +20,20 @@
 
 #include "port_connection.h"
 #include "schmi/include/Schmi/qserial.h"
-
+#include "metadata_handler.hpp"
 #include <QStandardPaths>
+#include <qDebug>
 
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
+PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr), hardware_str_(HARDWARE_STRING), electronics_str_(ELECTRONICS_STRING) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+  //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
+  hardware_type_ = -1;
+  electronics_type_ = -1;
 }
 
 void PortConnection::AddToLog(QString text_to_log){
@@ -110,6 +115,39 @@ void PortConnection::ShortenLog(uint32_t current_num_lines){
     newLogFile.open(QIODevice::WriteOnly);
     newLogFile.write(newLog.toUtf8());
     newLogFile.close(); //don't forget to close your files!
+}
+
+void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val){
+    QString fileLines;
+
+    QFile file(path_to_log_file);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        while (!file.atEnd()) {
+            fileLines.append(file.readLine());
+        }
+    }
+
+    int hardware_starting_char = fileLines.lastIndexOf(hardware_str_) + hardware_str_.size();
+    int electronics_starting_char = fileLines.lastIndexOf(electronics_str_) + electronics_str_.size();
+
+    *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
+    *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
+}
+
+int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
+    //unicode defines the values '0'-'9' from 0x0030 - 0x0039 inclusive (same as ascii)
+    QString value;
+
+    int current_char = starting_char;
+
+    //Tested that this will work with any length of integer (tested from 1 - 1234)
+    //Just keep going until the character you're on isn't an integeger anymore
+    while(fileLines.at(current_char) >= 0x0030 && fileLines.at(current_char) <= 0x0039){
+        value.append(fileLines.at(current_char));
+        current_char++;
+    }
+
+    return value.toInt();
 }
 
 void PortConnection::ResetToTopPage(){
@@ -261,6 +299,28 @@ void PortConnection::EnableAllButtons(){
     ui_->pushButton_general->setEnabled(true);
 }
 
+QString PortConnection::GetHardwareNameFromResources(int hardware_type){
+
+    MetadataHandler temp_metadata_handler;
+
+    /**
+     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+     * the tab_populator's version of the resource files. So, we need to grab them ourself
+     */
+    QString current_path = QCoreApplication::applicationDirPath();
+    QString hardware_type_file_path =
+        current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
+
+    /**
+     * Get the hardware type from the resource files. This is the
+     * type of motor people should download for. Hardware name
+     * is something like "vertiq 8018 150Kv
+     */
+    QString hardwareName = temp_metadata_handler.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+
+    return hardwareName;
+}
+
 void PortConnection::DisplayRecoveryMessage(){
     recovery_port_name_ = selected_port_name_;
     ser_.ser_port_->close();
@@ -274,6 +334,25 @@ void PortConnection::DisplayRecoveryMessage(){
     msgBox.setDefaultButton(QMessageBox::No);
     if (msgBox.exec() == QMessageBox::Yes) {
       DisableAllButtons();
+
+      //Check to see if we know the type of motor from a previous connection in this session
+      //If we don't know what the last motor was directly, then we need to go grab it from the log
+      if(hardware_type_ == -1 && electronics_type_ == -1){
+          //Ok...so we are trying to connect to a motor that can't talk to us. Let's use the "cache" method in which we assume that the most
+          //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
+          FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_value, &previous_handled_connection.electronics_value);
+      }else{
+          previous_handled_connection.hardware_value = hardware_type_;
+          previous_handled_connection.electronics_value = electronics_type_;
+      }
+
+      //regardless of where we got the previous connection from, we have it at this point. We can now
+      //grab the hardware name from the hardware value
+      QString previously_connected_module = GetHardwareNameFromResources(previous_handled_connection.hardware_value);
+
+      //Pop up our message and determine if our guess is correct about what module is connected
+
+
       ui_->stackedWidget->setCurrentIndex(6);
 
       AddToLog("motor connected in recovery mode\n");
@@ -343,6 +422,15 @@ void PortConnection::GetDeviceInformationResponses(){
     firmware_style_ = firmware_style;
     hardware_type_ = hardware_type;
     electronics_type_ = electronics_type;
+
+    //add these to the log so that it is easer to protect people from bricking their motor in recovery mode
+    //We can parse the log to see the most recent connection if we don't have the value saved (which we don't
+    //if someone opens the control center fresh and tries to connect to a recovery mode module)
+    AddToLog(hardware_str_ + QString::number(hardware_type));
+    AddToLog(electronics_str_ + QString::number(electronics_type));
+
+    previous_handled_connection.hardware_value = hardware_type_;
+    previous_handled_connection.electronics_value = electronics_type_;
 }
 
 int PortConnection::GetFirmwareValid(){

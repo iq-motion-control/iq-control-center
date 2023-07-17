@@ -58,7 +58,7 @@ class Firmware : public QObject {
   Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
 
   void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
- private:
+private:
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
@@ -81,7 +81,7 @@ class Firmware : public QObject {
   void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
-  QString GetHardwareNameFromResources();
+//  QString GetHardwareNameFromResources(int hardware_type);
   void ResetMetadata();
 
   MetadataHandler metadata_handler_;

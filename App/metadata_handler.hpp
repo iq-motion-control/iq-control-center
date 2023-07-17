@@ -76,10 +76,11 @@ public:
     QString GetMetadataJsonPath();
 
     /**
-     * @brief CheckHardwareAndElectronics Checks the metadata hardware and electronics against the connected motor's
+     * @brief CheckHardwareAndElectronics Checks the metadata hardware and electronics against the connected motor's or previously connected motor
+     * @param hardware_type the type of hardware that you attempted to flash
      * @return True if match
      */
-    bool CheckHardwareAndElectronics();
+    bool CheckHardwareAndElectronics(int * hardware_type, int * electronics_type, bool * guessed_at_module_type);
 
     /**
      * @brief GetErrorType Determines if there is a mismatch between the electronics and/or the hardware

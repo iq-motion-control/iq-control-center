@@ -212,8 +212,39 @@ void MetadataHandler::DeleteExtractedFolder(){
     }
 }
 
-bool MetadataHandler::CheckHardwareAndElectronics(){
-    return (to_flash_electronics_type_ == pcon_->GetElectronicsType()) && (to_flash_hardware_type_ == pcon_->GetHardwareType());
+bool MetadataHandler::CheckHardwareAndElectronics(int * hardware_type, int * electronics_type, bool * guessed_at_module_type){
+    //Some cases:
+    /*
+     * 1. We've connected to the module before, and the hardware/electronics values are real things. Doesn't matter if you're in recovery or not
+     * 2. This is the first try to connect after opening control center, and you're in recovery mode. the elctronics and hardware types are -1
+     */
+
+    int connected_hardware_type = pcon_->GetHardwareType();
+    int connected_electronics_type = pcon_->GetElectronicsType();
+
+    //Case 1: This is the first time you're opening the control center. you have no saved info about the module
+    if(connected_hardware_type == -1 && connected_electronics_type == -1){
+        //Ok...so we are trying to connect to a motor that can't talk to us. Let's use the "cache" method in which we assume that the most
+        //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
+        int most_recent_hardware, most_recent_electronics;
+        pcon_->FindHardwareAndElectronicsFromLog(&most_recent_hardware, &most_recent_electronics);
+
+        //At this point we have the most recently connected module type, and we know which type the firmware is for
+        //set the return pointer to the hardware type so that we can return the correct message
+        *hardware_type = most_recent_hardware;
+        *electronics_type = most_recent_electronics;
+        *guessed_at_module_type = true;
+
+        return (to_flash_electronics_type_ == most_recent_electronics) && (to_flash_hardware_type_ == most_recent_hardware);
+
+    }else{
+
+        *hardware_type = pcon_->GetHardwareType();
+        *electronics_type = pcon_->GetElectronicsType();
+        *guessed_at_module_type = false;
+
+        return (to_flash_electronics_type_ == pcon_->GetElectronicsType()) && (to_flash_hardware_type_ == pcon_->GetHardwareType());
+    }
 }
 
 QString MetadataHandler::GetExtractPath(){

@@ -239,11 +239,11 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
     //The recovery tab does not necessarily know about the hardware and electronics
-    if(currentTab != RECOVERY_TAB){
+//    if(currentTab != RECOVERY_TAB){
         if(FlashHardwareElectronicsWarning()){
             return;
         }
-    }
+//
 
     //If we aren't in recovery, present only the options that can be safely flashed.
     //Only giving combined option from recovery mode
@@ -309,11 +309,15 @@ bool Firmware::CheckPathAndConnection(){
 }
 
 bool Firmware::FlashHardwareElectronicsWarning(){
+
+    int hardware_type, electronics_type;
+    bool guessed_at_module_type = false;
+
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
     //A wrong value could be a mismatched Kv or incorrect motor type
-    if(!(metadata_handler_.CheckHardwareAndElectronics())){
+    if(!(metadata_handler_.CheckHardwareAndElectronics(&hardware_type, &electronics_type, &guessed_at_module_type))){
 
-        QString hardwareName = GetHardwareNameFromResources();
+        QString hardwareName = iv.pcon->GetHardwareNameFromResources(hardware_type);
 
         //Determine which thing they have wrong
         QString errorType;
@@ -322,8 +326,14 @@ bool Firmware::FlashHardwareElectronicsWarning(){
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
 
-        QString error_msg("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+        QString error_msg;
+
+        if(guessed_at_module_type){
+            error_msg = "It appears that you are trying to recover a " + hardwareName + " with firmware not meant for this module.";
+        }else{
+            error_msg = "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType;
+        }
 
         msgBox.setText(error_msg);
 
@@ -342,25 +352,25 @@ bool Firmware::FlashHardwareElectronicsWarning(){
     return false;
 }
 
-QString Firmware::GetHardwareNameFromResources(){
+//QString Firmware::GetHardwareNameFromResources(int hardware_type){
 
-    /**
-     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
-     * the tab_populator's version of the resource files. So, we need to grab them ourself
-     */
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString hardware_type_file_path =
-        current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
+//    /**
+//     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+//     * the tab_populator's version of the resource files. So, we need to grab them ourself
+//     */
+//    QString current_path = QCoreApplication::applicationDirPath();
+//    QString hardware_type_file_path =
+//        current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
 
-    /**
-     * Get the hardware type from the resource files. This is the
-     * type of motor people should download for. Hardware name
-     * is something like "vertiq 8018 150Kv
-     */
-    QString hardwareName = metadata_handler_.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+//    /**
+//     * Get the hardware type from the resource files. This is the
+//     * type of motor people should download for. Hardware name
+//     * is something like "vertiq 8018 150Kv
+//     */
+//    QString hardwareName = metadata_handler_.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
 
-    return hardwareName;
-}
+//    return hardwareName;
+//}
 
 void Firmware::FlashCombinedClicked(){
     if(using_metadata_){

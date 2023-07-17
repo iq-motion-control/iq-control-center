@@ -64,12 +64,20 @@
 #define UPGRADE_MAJOR_SHIFT 14
 #define UPGRADE_MINOR_SHIFT 7
 
+#define HARDWARE_STRING "connected module has hardware type: "
+#define ELECTRONICS_STRING "connected module has electronics type: "
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:
   enum ExtraBaudRate{
     Baud921600 = 921600
   };
+
+  struct module_connection_values {
+      int hardware_value;
+      int electronics_value;
+  } previous_handled_connection;
 
   bool logging_active_;
 
@@ -86,6 +94,16 @@ class PortConnection : public QObject {
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}
+
+
+  QString GetHardwareNameFromResources(int hardware_type);
+  void FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val);
+
+  /**
+   * @brief ExtractValueFromLog find the most recently added value from the log given the starting character and length of the preamble
+   * @return the hardware value
+   */
+  int ExtractValueFromLog(QString fileLines, int starting_char);
 
   /**
    * @brief RebootMotor restart the motor
@@ -315,6 +333,9 @@ class PortConnection : public QObject {
   int hardware_type_;
   int electronics_type_;
   uint8_t applications_present_on_motor_;
+
+  QString hardware_str_;
+  QString electronics_str_;
 };
 
 #endif  // CONNECTION_HPP
