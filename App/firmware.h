@@ -55,15 +55,16 @@ class Firmware : public QObject {
   Q_OBJECT
  public:
   Firmware();
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, QComboBox *module_options_box);
 
-  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, QComboBox *module_options_box);
 private:
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
   QProgressBar *flash_progress_bar_;
   QPushButton *firmware_binary_button_;
+  QComboBox *module_options_dropdown_;
 
   QProgressBar *recover_progress_bar_;
   QPushButton *recover_binary_button_;

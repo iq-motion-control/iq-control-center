@@ -32,16 +32,17 @@
 
 Firmware::Firmware(){}
 
-Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
-    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button);
+Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, QComboBox *module_options_box){
+    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button, module_options_box);
 }
 
-void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
+void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, QComboBox *module_options_box){
     flash_progress_bar_ = flash_progress_bar;
     firmware_binary_button_ = firmware_binary_button;
     recover_progress_bar_ = recover_progress_bar;
     recover_binary_button_ = recover_binary_button;
     sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+    module_options_dropdown_ = module_options_box;
 
     //If the Control Center closed or crashed without completing a flash, there may be leftover local metadata files.
     //Clearing them out on startup so we start with a fresh slate. Make a temporary metadata handler just to clear out any old files.
@@ -238,12 +239,12 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     metadata_handler_.ReadMetadata();
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
-    //The recovery tab does not necessarily know about the hardware and electronics
-//    if(currentTab != RECOVERY_TAB){
-        if(FlashHardwareElectronicsWarning()){
-            return;
-        }
-//
+    //When we have gotten to this point, we've either confirmed that our guess at the correct type of module
+    //was a correct guess, or the user has been told to use the dropdown on the recovery tab
+    if(FlashHardwareElectronicsWarning()){
+        return;
+    }
+
 
     //If we aren't in recovery, present only the options that can be safely flashed.
     //Only giving combined option from recovery mode
@@ -309,31 +310,42 @@ bool Firmware::CheckPathAndConnection(){
 }
 
 bool Firmware::FlashHardwareElectronicsWarning(){
+    int target_hardware;
+    int target_electronics;
 
-    int hardware_type, electronics_type;
-    bool guessed_at_module_type = false;
+    //We've already set previous_handled_connection in port connection to either
+    //the last module connected during this session, or the last connected module
+    //as read through the log. But! If we didn't guess correctly, we need to replace that value
+    //by whatever is in the dropdown
+    if(!iv.pcon->guessed_module_type_correctly_){
+
+        //Grab the current index of the dropdown. This index will match the value in supported_modules.json. We can just go grab that entry
+        int current_dropdown_index = module_options_dropdown_->currentIndex();
+        QJsonObject target_object = iv.pcon->supported_modules_json_[current_dropdown_index].toObject();
+
+       target_hardware = target_object["hardware_value"].toInt();
+       target_electronics = target_object["electronics_value"].toInt();
+    }else{
+        target_hardware = iv.pcon->previous_handled_connection.hardware_value;
+        target_electronics = iv.pcon->previous_handled_connection.electronics_value;
+    }
 
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
     //A wrong value could be a mismatched Kv or incorrect motor type
-    if(!(metadata_handler_.CheckHardwareAndElectronics(&hardware_type, &electronics_type, &guessed_at_module_type))){
+    if(!(metadata_handler_.CheckHardwareAndElectronics(target_hardware, target_electronics))){
 
-        QString hardwareName = iv.pcon->GetHardwareNameFromResources(hardware_type);
+        //Hardware name needs to either be from what's in the dropdown, or from the previously handled connection value
+        QString hardwareName = iv.pcon->GetHardwareNameFromResources(target_hardware);
 
         //Determine which thing they have wrong
         QString errorType;
-        errorType = metadata_handler_.GetErrorType();
+        errorType = metadata_handler_.GetErrorType(target_hardware, target_electronics);
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
 
-        QString error_msg;
-
-        if(guessed_at_module_type){
-            error_msg = "It appears that you are trying to recover a " + hardwareName + " with firmware not meant for this module.";
-        }else{
-            error_msg = "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType;
-        }
+        QString error_msg("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+                          "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
 
         msgBox.setText(error_msg);
 

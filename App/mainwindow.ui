@@ -507,7 +507,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1111,8 +1111,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1065</width>
-                <height>682</height>
+                <width>16</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1589,9 +1589,93 @@ QPushButton:pressed {
          <widget class="QWidget" name="firmware_widget" native="true">
           <property name="palette">
            <palette>
-            <active/>
-            <inactive/>
-            <disabled/>
+            <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </active>
+            <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </inactive>
+            <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>70</red>
+                <green>70</green>
+                <blue>70</blue>
+               </color>
+              </brush>
+             </colorrole>
+            </disabled>
            </palette>
           </property>
           <layout class="QGridLayout" name="gridLayout_12">
@@ -2069,99 +2153,91 @@ hr { height: 1px; border-width: 0; }
       <widget class="QWidget" name="page_recovery">
        <property name="palette">
         <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Base">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-          <colorrole role="Window">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>80</red>
-             <green>80</green>
-             <blue>80</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
+         <active/>
+         <inactive/>
+         <disabled/>
         </palette>
        </property>
        <property name="autoFillBackground">
         <bool>false</bool>
        </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame#header_frame {
+	color:  rgb(175, 175, 175);
+	background-color: rgb(60, 60, 60);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(50, 50, 50);
+}
+
+QLabel {
+	border-bottom: 0px solid black
+}
+
+QComboBox {
+	color: rgb(175, 175, 175);
+	border-bottom: 1px solid rgb(175, 175, 175);    
+	border-radius: 0px;
+    padding: 3px 20px 3px 3px;
+    selection-color: rgb(1, 150, 250);
+	background: transparent;
+	padding: 2px
+}
+
+QComboBox::drop-down {
+    width: 20px; /*changes size of arrow icon section and also changes size of drop down menu*/
+    border-left-width: 0px;  /*adjusts border of arrow icon section*/
+    border-left-color: blue;
+    border-left-style: solid;
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+	background: transparent;
+	image: url(:/res/down_arrow_icon.png);
+}
+
+QComboBox:hover {
+    border: 1px solid transparent;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+QComboBox:on, QComboBox:off {
+    color: rgb(60, 60, 60)
+}
+
+QPushButton {
+	background: rgb(60, 60, 60);
+	color: rgb(175, 175, 175);
+	text-align: center;
+}
+
+
+
+QPushButton:hover{
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	color: rgb(1, 150, 250);
+	border-style: outset;
+}
+
+QPushButton:checked {
+	color: rgb(1, 150, 250);
+	border-style: outset;
+    border-left: 2px solid rgb(1, 150, 250);
+    min-width: 10em;
+    padding: 6px;
+}
+</string>
+       </property>
        <layout class="QGridLayout" name="gridLayout_16">
+        <item row="1" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QComboBox" name="module_dropdown"/>
+          </item>
+         </layout>
+        </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label_2">
           <property name="font">
@@ -2174,7 +2250,7 @@ hr { height: 1px; border-width: 0; }
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QWidget" name="recover_widget" native="true">
           <property name="palette">
            <palette>

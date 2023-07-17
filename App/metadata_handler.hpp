@@ -80,7 +80,7 @@ public:
      * @param hardware_type the type of hardware that you attempted to flash
      * @return True if match
      */
-    bool CheckHardwareAndElectronics(int * hardware_type, int * electronics_type, bool * guessed_at_module_type);
+    bool CheckHardwareAndElectronics(int target_hardware, int target_electronics);
 
     /**
      * @brief GetErrorType Determines if there is a mismatch between the electronics and/or the hardware
@@ -88,7 +88,7 @@ public:
      * @param toFlashHardwareType
      * @return
      */
-    QString GetErrorType();
+    QString GetErrorType(int target_hardware, int target_electronics);
 
     /**
      * @brief GetExtractPath Returns the path to the extracted data

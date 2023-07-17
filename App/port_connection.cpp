@@ -22,7 +22,6 @@
 #include "schmi/include/Schmi/qserial.h"
 #include "metadata_handler.hpp"
 #include <QStandardPaths>
-#include <qDebug>
 
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
@@ -34,6 +33,20 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(fals
   //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
   hardware_type_ = -1;
   electronics_type_ = -1;
+
+  QString path_to_supported_modules_json = QCoreApplication::applicationDirPath() + "/Resources/Info/supported_modules.json";
+
+  //Open the file specified by pathToJson
+  QFile jsonFile;
+  jsonFile.setFileName(path_to_supported_modules_json);
+
+  //Grab all of the data from the json
+  jsonFile.open(QIODevice::ReadOnly);
+  QString val = jsonFile.readAll();
+  jsonFile.close(); //DON'T FORGET TO CLOSE
+
+  //Read the data stored in the json as a json document
+  supported_modules_json_ = QJsonDocument::fromJson(val.toUtf8()).array();
 }
 
 void PortConnection::AddToLog(QString text_to_log){
@@ -365,10 +378,19 @@ void PortConnection::DisplayRecoveryMessage(){
     throw QString("Recovery Detected");
 }
 
+void PortConnection::FillModuleDropdown(){
+
+    for(int i = 0; i < supported_modules_json_.size(); i++){
+        QJsonObject tempObj = supported_modules_json_[i].toObject();
+
+        ui_->module_dropdown->addItem(tempObj["hardware_name"].toString());
+    }
+}
+
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
-    msgBox.addButton("Correct", QMessageBox::YesRole);
+    QAbstractButton * correctButton = msgBox.addButton("Correct", QMessageBox::YesRole);
     QAbstractButton * wrongButton = msgBox.addButton("Select a Different Module", QMessageBox::NoRole);
 
     msgBox.setWindowTitle("Select Recovery Module");
@@ -383,8 +405,25 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
     //module to recover. then save those numbers as what to use to protect aginst flashing the
     //wrong firmware
     if(msgBox.clickedButton() == wrongButton){
-        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        //Fill in our dropdown with the modules that could possibly need recovering
+        FillModuleDropdown();
 
+        text = "In order to ensure that you program the correct firmware onto your module, please use the "
+               "dropdown at the top of the Recovery tab to select the module type you are recovering. Failure to select the "
+               "correct module type could result in damage to your module.";
+
+        msgBox.setText(text);
+        correctButton->setText("Ok");
+        msgBox.removeButton(wrongButton);
+
+        msgBox.exec();
+
+        ui_->module_dropdown->show();
+
+    }else{
+        //If we have the right module, don't even show the dropdown
+        ui_->module_dropdown->hide();
+        guessed_module_type_correctly_ = true;
     }
 }
 

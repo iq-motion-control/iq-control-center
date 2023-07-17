@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
+#include "qjsonarray.h"
 #include "qserial_interface.h"
 #include "ui_mainwindow.h"
 
@@ -73,6 +74,10 @@ class PortConnection : public QObject {
   enum ExtraBaudRate{
     Baud921600 = 921600
   };
+
+  bool guessed_module_type_correctly_ = false;
+
+  QJsonArray supported_modules_json_;
 
   struct module_connection_values {
       int hardware_value;
@@ -311,6 +316,8 @@ class PortConnection : public QObject {
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+
+  void FillModuleDropdown();
 
   uint32_t GetLinesInLog();
 
