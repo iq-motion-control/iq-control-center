@@ -126,11 +126,24 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int *
         }
     }
 
-    int hardware_starting_char = fileLines.lastIndexOf(hardware_str_) + hardware_str_.size();
-    int electronics_starting_char = fileLines.lastIndexOf(electronics_str_) + electronics_str_.size();
+    //lastIndexOf returns -1 if it can't find the string
+    int last_hardware_instance_index = fileLines.lastIndexOf(hardware_str_);
+    int last_electronics_instance_index = fileLines.lastIndexOf(electronics_str_);
 
-    *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
-    *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
+    //so long as we can find the strings in the log we can extract the values. otherwise they need to be -1
+    //to indicate an issue
+    if(last_hardware_instance_index != -1 && last_electronics_instance_index != -1){
+        int hardware_starting_char =  last_hardware_instance_index + hardware_str_.size();
+        int electronics_starting_char = last_electronics_instance_index + electronics_str_.size();
+
+        *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
+        *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
+
+        return;
+    }
+
+    *hardware_val =  -1;
+    *electronics_val = -1;
 }
 
 int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
@@ -386,8 +399,18 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
 
     msgBox.setWindowTitle("Select Recovery Module");
 
-    QString text = "We cannot determine your module type while in recovery mode, but you've recently connected to a " + detected_module +
-                   ". Is the the module you would like to recover?";
+    QString text;
+
+    //we couldn't find the module at all
+    if(detected_module == ""){
+        //if we don't know your module type, don't give the option to click correct
+        text = "We cannot determine your module type while in recovery mode, and could not determine any previously connected modules.";
+        msgBox.removeButton(correctButton);
+        wrongButton->setText("Ok");
+    }else{
+        text = "We cannot determine your module type while in recovery mode, but you've recently connected to a " + detected_module +
+                       ". Is the the module you would like to recover?";
+    }
 
     msgBox.setText(text);
     msgBox.exec();
@@ -403,9 +426,10 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
         text = "Please use care to ensure that you download and program the correct firmware onto your module. Failure to do so "
                "could result in significant damage.";
 
+        //Reuse the box that we already have, just change the text in it as well as the buttons
         msgBox.setText(text);
-        correctButton->setText("Ok");
-        msgBox.removeButton(wrongButton);
+        wrongButton->setText("Ok");
+        msgBox.removeButton(correctButton);
 
         msgBox.exec();
 

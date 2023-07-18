@@ -97,8 +97,18 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
-
+  /**
+   * @brief GetHardwareNameFromResources given a hardware type number, go into our resource files and grab out the module name
+   * @param hardware_type a number specifying hardware type
+   * @return The name of the module with hardware_type value (Ex. 30 would return Vertiq 4006 370kv)
+   */
   QString GetHardwareNameFromResources(int hardware_type);
+
+  /**
+   * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the elctonics and hardware version of the most recent connectoin
+   * @param hardware_val a pointer to hold the hardware value
+   * @param electronics_val a pointer to hold the elctronics value
+   */
   void FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val);
 
   /**
@@ -279,7 +289,11 @@ class PortConnection : public QObject {
    */
   void DisableAllButtons();
 
-    void HandleFindingCorrectMotorToRecover(QString detected_module);
+  /**
+   * @brief HandleFindingCorrectMotorToRecover given our detected module input, give the user the chance to tell us that we assumed correctly or not
+   * @param detected_module the string describing the module we're assuming the user is recovering
+   */
+  void HandleFindingCorrectMotorToRecover(QString detected_module);
 
  public slots:
 
