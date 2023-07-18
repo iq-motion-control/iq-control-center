@@ -546,10 +546,6 @@ bool Firmware::BootMode() {
   return 1;
 }
 
-void Firmware::ResetMetadataOnConnection(){
-    ResetMetadata();
-}
-
 //Clear out our locally stored metadata files and binaries, and mark that we are not currently
 //using any metadata.
 void Firmware::ResetMetadata(){

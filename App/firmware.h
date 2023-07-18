@@ -82,7 +82,7 @@ private:
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
 //  QString GetHardwareNameFromResources(int hardware_type);
-  void ResetMetadata();
+
 
   MetadataHandler metadata_handler_;
   bool using_metadata_ = false;
@@ -103,8 +103,8 @@ private:
   void FlashAppClicked();
   void FlashUpgradeClicked();
   void SelectFirmwareClicked();
-
-  void ResetMetadataOnConnection();
+void ResetMetadata();
+//  void ResetMetadataOnConnection();
 };
 
 #endif  // FIRMWARE_H

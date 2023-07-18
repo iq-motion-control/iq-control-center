@@ -120,7 +120,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //people in the recovery tab until they recover their module or restart the control center
     //2. do this. whenever someone connects a new module (or clicks the connect button while in the recovery tab)
     //just clear out whatever metadata/files may or may not be hanging around
-    connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadataOnConnection()));
+    connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
 
     //Set up shared icons
     icon_setup();
