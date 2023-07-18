@@ -320,18 +320,23 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type){
      * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
      * the tab_populator's version of the resource files. So, we need to grab them ourself
      */
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString hardware_type_file_path =
-        current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
+    //Only try to do this if the hardware type is a real value, and not -1 thrown in recovery
+    if(hardware_type >= 0){
+        QString current_path = QCoreApplication::applicationDirPath();
+        QString hardware_type_file_path =
+            current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
 
-    /**
-     * Get the hardware type from the resource files. This is the
-     * type of motor people should download for. Hardware name
-     * is something like "vertiq 8018 150Kv
-     */
-    QString hardwareName = temp_metadata_handler.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+        /**
+         * Get the hardware type from the resource files. This is the
+         * type of motor people should download for. Hardware name
+         * is something like "vertiq 8018 150Kv
+         */
+        QString hardwareName = temp_metadata_handler.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
 
-    return hardwareName;
+        return hardwareName;
+    }
+
+    return "";
 }
 
 void PortConnection::DisplayRecoveryMessage(){
@@ -367,7 +372,6 @@ void PortConnection::DisplayRecoveryMessage(){
       HandleFindingCorrectMotorToRecover(previously_connected_module);
 
       ui_->stackedWidget->setCurrentIndex(6);
-
       AddToLog("motor connected in recovery mode\n");
 
     }else{
@@ -378,20 +382,11 @@ void PortConnection::DisplayRecoveryMessage(){
     throw QString("Recovery Detected");
 }
 
-void PortConnection::FillModuleDropdown(){
-
-    for(int i = 0; i < supported_modules_json_.size(); i++){
-        QJsonObject tempObj = supported_modules_json_[i].toObject();
-
-        ui_->module_dropdown->addItem(tempObj["hardware_name"].toString());
-    }
-}
-
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
     QAbstractButton * correctButton = msgBox.addButton("Correct", QMessageBox::YesRole);
-    QAbstractButton * wrongButton = msgBox.addButton("Select a Different Module", QMessageBox::NoRole);
+    QAbstractButton * wrongButton = msgBox.addButton("Recover a Different Module", QMessageBox::NoRole);
 
     msgBox.setWindowTitle("Select Recovery Module");
 
@@ -405,24 +400,19 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
     //module to recover. then save those numbers as what to use to protect aginst flashing the
     //wrong firmware
     if(msgBox.clickedButton() == wrongButton){
-        //Fill in our dropdown with the modules that could possibly need recovering
-        FillModuleDropdown();
 
-        text = "In order to ensure that you program the correct firmware onto your module, please use the "
-               "dropdown at the top of the Recovery tab to select the module type you are recovering. Failure to select the "
-               "correct module type could result in damage to your module.";
+        guessed_module_type_correctly_ = false;
+
+        text = "Please use care to ensure that you download and program the correct firmware onto your module. Failure to do so "
+               "could result in significant damage.";
 
         msgBox.setText(text);
         correctButton->setText("Ok");
         msgBox.removeButton(wrongButton);
 
         msgBox.exec();
-
-        ui_->module_dropdown->show();
-
     }else{
         //If we have the right module, don't even show the dropdown
-        ui_->module_dropdown->hide();
         guessed_module_type_correctly_ = true;
     }
 }
@@ -491,6 +481,7 @@ void PortConnection::GetDeviceInformationResponses(){
     AddToLog(hardware_str_ + QString::number(hardware_type));
     AddToLog(electronics_str_ + QString::number(electronics_type));
 
+    //Make sure to store who we're connected to in our struct
     previous_handled_connection.hardware_value = hardware_type_;
     previous_handled_connection.electronics_value = electronics_type_;
 }

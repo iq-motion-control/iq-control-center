@@ -131,12 +131,15 @@ QString MetadataHandler::GetMetadataJsonPath(){
 QString MetadataHandler::GetErrorType(int target_hardware, int target_electronics){
     QString errorType = "";
 
+    QString wrong_hardware = pcon_ ->GetHardwareNameFromResources(target_hardware);
+    QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_);
+
     //Message if there is an electronics type error
     QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(target_electronics)
                                         + " and got " + errorType.number(to_flash_electronics_type_);
     //Message if there is a hardware error
-    QString hardwareError = "Firmware is for the wrong Hardware Type. Expected " + errorType.number(target_hardware)
-            + " and got " + errorType.number(to_flash_hardware_type_);
+    QString hardwareError = "Firmware is for the wrong Hardware Type. Expected to be flashing a " + correct_hardware + " (" +errorType.number(target_hardware)
+             + ")" + " and got " + wrong_hardware + " (" + errorType.number(to_flash_hardware_type_) + ")";
 
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
@@ -213,6 +216,35 @@ void MetadataHandler::DeleteExtractedFolder(){
 }
 
 bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware, int target_electronics){
+
+    QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_);
+
+    //If the targets come in as -1, then we know we guessed wrong. Flash a warning
+    //"Hey you're about to flash firmware meant for [get name for the module]. you sure about this?"
+    //If they're not sure about this return false.
+    //Give the user the option to reboot the module after setting with defaults.
+    //If we guessed right, actually compare the values
+
+    if(target_hardware == -1 && target_electronics == -1){
+        QMessageBox msgBox;
+        msgBox.addButton("Yes", QMessageBox::YesRole);
+        QAbstractButton * wrongButton = msgBox.addButton("No", QMessageBox::NoRole);
+
+        msgBox.setWindowTitle("Is Firmware Correct?");
+
+        QString text = "You are about to flash firmware meant for the module: " + target_module_name + ". Before selecting Recover "
+                       "please ensure this is firmware is correct for your module. Is this firmware correct?";
+
+        msgBox.setText(text);
+        msgBox.exec();
+
+        if(msgBox.clickedButton() == wrongButton){
+            return false;
+        }
+
+        return true;
+    }
+
     return (to_flash_electronics_type_ == target_electronics) &&
             (to_flash_hardware_type_ == target_hardware);
 }

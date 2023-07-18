@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(def, SIGNAL(SaveDefaultValues(Json::Value)), this, SLOT(SetDefaults(Json::Value)));
 
     //initialize our firmware handler with the necessary information
-    firmware_handler_.Init(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button, ui->module_dropdown);
+    firmware_handler_.Init(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
 
     connect(ui->flash_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
     connect(ui->flash_boot_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashBootClicked()));
@@ -111,6 +111,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Connect pressing the Recover button with the RecoverClicked() function to rescue the motor
     //Only allow recovery to flash a combined to avoid any more issue
     connect(ui->recover_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
+
+    //whenever I connect with a module, I want to reset our metadata
+    connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadataOnConnection()));
 
     //Set up shared icons
     icon_setup();
