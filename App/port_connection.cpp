@@ -139,11 +139,15 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int *
         *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
         *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
 
+        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + "Electronics: " + QString::number(*electronics_val));
+
         return;
     }
 
+    //If we couldn't find any connection instances, spit back invalid numbers
     *hardware_val =  -1;
     *electronics_val = -1;
+    AddToLog("Could not find any previous connections in the log");
 }
 
 int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){

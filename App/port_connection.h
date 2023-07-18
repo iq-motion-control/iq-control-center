@@ -328,8 +328,6 @@ class PortConnection : public QObject {
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
 
-  void FillModuleDropdown();
-
   uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
