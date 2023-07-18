@@ -26,7 +26,6 @@
 #include <QMessageBox>
 #include <QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
-#include "qjsonarray.h"
 #include "qserial_interface.h"
 #include "ui_mainwindow.h"
 
@@ -76,8 +75,6 @@ class PortConnection : public QObject {
   };
 
   bool guessed_module_type_correctly_ = false;
-
-  QJsonArray supported_modules_json_;
 
   struct module_connection_values {
       int hardware_value;

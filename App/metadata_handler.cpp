@@ -222,7 +222,6 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware, int targe
     //If the targets come in as -1, then we know we guessed wrong. Flash a warning
     //"Hey you're about to flash firmware meant for [get name for the module]. you sure about this?"
     //If they're not sure about this return false.
-    //Give the user the option to reboot the module after setting with defaults.
     //If we guessed right, actually compare the values
 
     if(target_hardware == -1 && target_electronics == -1){

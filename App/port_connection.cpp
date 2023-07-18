@@ -33,20 +33,6 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(fals
   //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
   hardware_type_ = -1;
   electronics_type_ = -1;
-
-  QString path_to_supported_modules_json = QCoreApplication::applicationDirPath() + "/Resources/Info/supported_modules.json";
-
-  //Open the file specified by pathToJson
-  QFile jsonFile;
-  jsonFile.setFileName(path_to_supported_modules_json);
-
-  //Grab all of the data from the json
-  jsonFile.open(QIODevice::ReadOnly);
-  QString val = jsonFile.readAll();
-  jsonFile.close(); //DON'T FORGET TO CLOSE
-
-  //Read the data stored in the json as a json document
-  supported_modules_json_ = QJsonDocument::fromJson(val.toUtf8()).array();
 }
 
 void PortConnection::AddToLog(QString text_to_log){
@@ -154,7 +140,7 @@ int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
     int current_char = starting_char;
 
     //Tested that this will work with any length of integer (tested from 1 - 1234)
-    //Just keep going until the character you're on isn't an integeger anymore
+    //Just keep going until the character you're on isn't an integer anymore
     while(fileLines.at(current_char) >= 0x0030 && fileLines.at(current_char) <= 0x0039){
         value.append(fileLines.at(current_char));
         current_char++;
@@ -368,6 +354,8 @@ void PortConnection::DisplayRecoveryMessage(){
           //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
           FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_value, &previous_handled_connection.electronics_value);
       }else{
+
+          //hardware_type_ and electronics_type_ are values that get filled in during module connection
           previous_handled_connection.hardware_value = hardware_type_;
           previous_handled_connection.electronics_value = electronics_type_;
       }
@@ -404,9 +392,10 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
     msgBox.setText(text);
     msgBox.exec();
 
+    AddToLog(text);
+
     //We only care if they click wrong. if it's wrong we'll have to help them find the correct
-    //module to recover. then save those numbers as what to use to protect aginst flashing the
-    //wrong firmware
+    //module to recover another way (aka...when they pick a file...make absolutely sure it's what they want)
     if(msgBox.clickedButton() == wrongButton){
 
         guessed_module_type_correctly_ = false;
@@ -419,9 +408,12 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
         msgBox.removeButton(wrongButton);
 
         msgBox.exec();
+
+        AddToLog("Assumed module type incorrectly. Cannot verify the type of module connected.");
     }else{
-        //If we have the right module, don't even show the dropdown
+        //If we have the right module, we don't need to do anything besides this var
         guessed_module_type_correctly_ = true;
+        AddToLog("Assumed module type correctly as: " + detected_module);
     }
 }
 

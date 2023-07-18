@@ -81,8 +81,6 @@ private:
   void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
-//  QString GetHardwareNameFromResources(int hardware_type);
-
 
   MetadataHandler metadata_handler_;
   bool using_metadata_ = false;
@@ -103,8 +101,7 @@ private:
   void FlashAppClicked();
   void FlashUpgradeClicked();
   void SelectFirmwareClicked();
-void ResetMetadata();
-//  void ResetMetadataOnConnection();
+  void ResetMetadata();
 };
 
 #endif  // FIRMWARE_H
