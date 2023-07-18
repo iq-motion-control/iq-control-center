@@ -113,6 +113,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->recover_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
 
     //whenever I connect with a module, I want to reset our metadata
+    //This protects against having bad firmware sticking around for people to flash to the wrong
+    //type of module (specifically in recovery mode)
+    //There's a couple of choices to fix the behavior:
+    //1. erase/disable the connect button when we're in recovery. I don't love this one, because it completely traps
+    //people in the recovery tab until they recover their module or restart the control center
+    //2. do this. whenever someone connects a new module (or clicks the connect button while in the recovery tab)
+    //just clear out whatever metadata/files may or may not be hanging around
     connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadataOnConnection()));
 
     //Set up shared icons

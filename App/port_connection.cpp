@@ -164,7 +164,15 @@ int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
 }
 
 void PortConnection::ResetToTopPage(){
+    //Make sure that the home button is the only one that's checked
     ui_->stackedWidget->setCurrentIndex(0);
+    ui_->pushButton_advanced->setChecked(false);
+    ui_->pushButton_general->setChecked(false);
+    ui_->pushButton_firmware->setChecked(false);
+    ui_->pushButton_testing->setChecked(false);
+    ui_->pushButton_tuning->setChecked(false);
+    ui_->pushButton_get_help->setChecked(false);
+    ui_->pushButton_home->setChecked(true);
 }
 
 int PortConnection::GetCurrentTab(){
