@@ -139,7 +139,9 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int *
         *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
         *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
 
-        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + "Electronics: " + QString::number(*electronics_val));
+        qDebug() << "HERE";
+
+        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + " Electronics: " + QString::number(*electronics_val));
 
         return;
     }
@@ -158,7 +160,7 @@ int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
 
     //Tested that this will work with any length of integer (tested from 1 - 1234)
     //Just keep going until the character you're on isn't an integer anymore
-    while(fileLines.at(current_char) >= 0x0030 && fileLines.at(current_char) <= 0x0039){
+    while(fileLines.at(current_char) >= int('0') && fileLines.at(current_char) <= int('9')){
         value.append(fileLines.at(current_char));
         current_char++;
     }
@@ -413,7 +415,7 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
         wrongButton->setText("Ok");
     }else{
         text = "We cannot determine your module type while in recovery mode, but you've recently connected to a " + detected_module +
-                       ". Is the the module you would like to recover?";
+                       ". Is this the module you would like to recover?";
     }
 
     msgBox.setText(text);
@@ -428,7 +430,7 @@ void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module)
         guessed_module_type_correctly_ = false;
 
         text = "Please use care to ensure that you download and program the correct firmware onto your module. Failure to do so "
-               "could result in significant damage.";
+               "could damage your module.";
 
         //Reuse the box that we already have, just change the text in it as well as the buttons
         msgBox.setText(text);
