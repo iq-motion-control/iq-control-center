@@ -241,6 +241,7 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware, int targe
             return false;
         }
 
+        pcon_->AddToLog("Flashing firmware meant for: " + target_module_name);
         return true;
     }
 
