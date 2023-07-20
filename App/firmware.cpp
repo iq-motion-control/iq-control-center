@@ -239,7 +239,7 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
     //When we have gotten to this point, we've either confirmed that our guess at the correct type of module
-    //was a correct guess, or the user has been told to use the dropdown on the recovery tab
+    //was a correct guess, or the user said we were wrong, and we'll warn them as they pick firmware
     if(FlashHardwareElectronicsWarning(currentTab)){
         return;
     }

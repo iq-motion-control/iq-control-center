@@ -131,15 +131,15 @@ QString MetadataHandler::GetMetadataJsonPath(){
 QString MetadataHandler::GetErrorType(int target_hardware, int target_electronics){
     QString errorType = "";
 
-    QString wrong_hardware = pcon_ ->GetHardwareNameFromResources(target_hardware);
+    QString wrong_hardware = pcon_->GetHardwareNameFromResources(target_hardware);
     QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_);
 
     //Message if there is an electronics type error
     QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(target_electronics)
                                         + " and got " + errorType.number(to_flash_electronics_type_);
     //Message if there is a hardware error
-    QString hardwareError = "Firmware is for the wrong Hardware Type. Expected to be flashing a " + correct_hardware + " (" +errorType.number(target_hardware)
-             + ")" + " and got " + wrong_hardware + " (" + errorType.number(to_flash_hardware_type_) + ")";
+    QString hardwareError = "Firmware is for the wrong Hardware Type. File expected to be flashing: " + correct_hardware + " (" +errorType.number(target_hardware)
+             + ")" + " but the module was reported as: " + wrong_hardware + " (" + errorType.number(to_flash_hardware_type_) + ")";
 
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong

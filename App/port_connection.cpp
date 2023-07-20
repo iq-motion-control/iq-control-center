@@ -139,8 +139,6 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int *
         *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
         *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
 
-        qDebug() << "HERE";
-
         AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + " Electronics: " + QString::number(*electronics_val));
 
         return;
