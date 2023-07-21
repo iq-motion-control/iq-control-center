@@ -64,12 +64,22 @@
 #define UPGRADE_MAJOR_SHIFT 14
 #define UPGRADE_MINOR_SHIFT 7
 
+#define HARDWARE_STRING "connected module has hardware type: "
+#define ELECTRONICS_STRING "connected module has electronics type: "
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:
   enum ExtraBaudRate{
     Baud921600 = 921600
   };
+
+  bool guessed_module_type_correctly_ = false;
+
+  struct module_connection_values {
+      int hardware_value;
+      int electronics_value;
+  } previous_handled_connection;
 
   bool logging_active_;
 
@@ -86,6 +96,26 @@ class PortConnection : public QObject {
   PortConnection(Ui::MainWindow *user_in);
 
   ~PortConnection() {}
+
+  /**
+   * @brief GetHardwareNameFromResources given a hardware type number, go into our resource files and grab out the module name
+   * @param hardware_type a number specifying hardware type
+   * @return The name of the module with hardware_type value (Ex. 30 would return Vertiq 4006 370kv)
+   */
+  QString GetHardwareNameFromResources(int hardware_type);
+
+  /**
+   * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the elctonics and hardware version of the most recent connectoin
+   * @param hardware_val a pointer to hold the hardware value
+   * @param electronics_val a pointer to hold the elctronics value
+   */
+  void FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val);
+
+  /**
+   * @brief ExtractValueFromLog find the most recently added value from the log given the starting character and length of the preamble
+   * @return the hardware value
+   */
+  int ExtractValueFromLog(QString fileLines, int starting_char);
 
   /**
    * @brief RebootMotor restart the motor
@@ -259,6 +289,12 @@ class PortConnection : public QObject {
    */
   void DisableAllButtons();
 
+  /**
+   * @brief HandleFindingCorrectMotorToRecover given our detected module input, give the user the chance to tell us that we assumed correctly or not
+   * @param detected_module the string describing the module we're assuming the user is recovering
+   */
+  void HandleFindingCorrectMotorToRecover(QString detected_module);
+
  public slots:
 
   void ConnectMotor();
@@ -315,6 +351,9 @@ class PortConnection : public QObject {
   int hardware_type_;
   int electronics_type_;
   uint8_t applications_present_on_motor_;
+
+  QString hardware_str_;
+  QString electronics_str_;
 };
 
 #endif  // CONNECTION_HPP

@@ -231,6 +231,19 @@
         "minimum": 0.0,
         "decimal": 2,
         "single_step": 0.1
+      },
+      {
+        "type_idn": 83,
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "info": "Coefficient controlling the effect forced convection has on the coil temprature estimation model. Will vary with different propellers.",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1,
+        "minimum": 0,
+        "single_step": 0.0001,
+        "decimal": 5
       }
     ]
   }

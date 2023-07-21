@@ -20,15 +20,19 @@
 
 #include "port_connection.h"
 #include "schmi/include/Schmi/qserial.h"
-
+#include "metadata_handler.hpp"
 #include <QStandardPaths>
 
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr) {
+PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr), hardware_str_(HARDWARE_STRING), electronics_str_(ELECTRONICS_STRING) {
   SetPortConnection(0);
   sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+  //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
+  hardware_type_ = -1;
+  electronics_type_ = -1;
 }
 
 void PortConnection::AddToLog(QString text_to_log){
@@ -112,8 +116,66 @@ void PortConnection::ShortenLog(uint32_t current_num_lines){
     newLogFile.close(); //don't forget to close your files!
 }
 
+void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val){
+    QString fileLines;
+
+    QFile file(path_to_log_file);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        while (!file.atEnd()) {
+            fileLines.append(file.readLine());
+        }
+    }
+
+    //lastIndexOf returns -1 if it can't find the string
+    int last_hardware_instance_index = fileLines.lastIndexOf(hardware_str_);
+    int last_electronics_instance_index = fileLines.lastIndexOf(electronics_str_);
+
+    //so long as we can find the strings in the log we can extract the values. otherwise they need to be -1
+    //to indicate an issue
+    if(last_hardware_instance_index != -1 && last_electronics_instance_index != -1){
+        int hardware_starting_char =  last_hardware_instance_index + hardware_str_.size();
+        int electronics_starting_char = last_electronics_instance_index + electronics_str_.size();
+
+        *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
+        *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
+
+        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + " Electronics: " + QString::number(*electronics_val));
+
+        return;
+    }
+
+    //If we couldn't find any connection instances, spit back invalid numbers
+    *hardware_val =  -1;
+    *electronics_val = -1;
+    AddToLog("Could not find any previous connections in the log");
+}
+
+int PortConnection::ExtractValueFromLog(QString fileLines, int starting_char){
+    //unicode defines the values '0'-'9' from 0x0030 - 0x0039 inclusive (same as ascii)
+    QString value;
+
+    int current_char = starting_char;
+
+    //Tested that this will work with any length of integer (tested from 1 - 1234)
+    //Just keep going until the character you're on isn't an integer anymore
+    while(fileLines.at(current_char) >= int('0') && fileLines.at(current_char) <= int('9')){
+        value.append(fileLines.at(current_char));
+        current_char++;
+    }
+
+    return value.toInt();
+}
+
 void PortConnection::ResetToTopPage(){
+    //Make sure that the home button is the only one that's checked
     ui_->stackedWidget->setCurrentIndex(0);
+    ui_->pushButton_advanced->setChecked(false);
+    ui_->pushButton_general->setChecked(false);
+    ui_->pushButton_firmware->setChecked(false);
+    ui_->pushButton_testing->setChecked(false);
+    ui_->pushButton_tuning->setChecked(false);
+    ui_->pushButton_get_help->setChecked(false);
+    ui_->pushButton_home->setChecked(true);
 }
 
 int PortConnection::GetCurrentTab(){
@@ -261,6 +323,33 @@ void PortConnection::EnableAllButtons(){
     ui_->pushButton_general->setEnabled(true);
 }
 
+QString PortConnection::GetHardwareNameFromResources(int hardware_type){
+
+    MetadataHandler temp_metadata_handler;
+
+    /**
+     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
+     * the tab_populator's version of the resource files. So, we need to grab them ourself
+     */
+    //Only try to do this if the hardware type is a real value, and not -1 thrown in recovery
+    if(hardware_type >= 0){
+        QString current_path = QCoreApplication::applicationDirPath();
+        QString hardware_type_file_path =
+            current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
+
+        /**
+         * Get the hardware type from the resource files. This is the
+         * type of motor people should download for. Hardware name
+         * is something like "vertiq 8018 150Kv
+         */
+        QString hardwareName = temp_metadata_handler.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+
+        return hardwareName;
+    }
+
+    return "";
+}
+
 void PortConnection::DisplayRecoveryMessage(){
     recovery_port_name_ = selected_port_name_;
     ser_.ser_port_->close();
@@ -274,8 +363,28 @@ void PortConnection::DisplayRecoveryMessage(){
     msgBox.setDefaultButton(QMessageBox::No);
     if (msgBox.exec() == QMessageBox::Yes) {
       DisableAllButtons();
-      ui_->stackedWidget->setCurrentIndex(6);
 
+      //Check to see if we know the type of motor from a previous connection in this session
+      //If we don't know what the last motor was directly, then we need to go grab it from the log
+      if(hardware_type_ == -1 && electronics_type_ == -1){
+          //Ok...so we are trying to connect to a motor that can't talk to us. Let's use the "cache" method in which we assume that the most
+          //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
+          FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_value, &previous_handled_connection.electronics_value);
+      }else{
+
+          //hardware_type_ and electronics_type_ are values that get filled in during module connection
+          previous_handled_connection.hardware_value = hardware_type_;
+          previous_handled_connection.electronics_value = electronics_type_;
+      }
+
+      //regardless of where we got the previous connection from, we have it at this point. We can now
+      //grab the hardware name from the hardware value
+      QString previously_connected_module = GetHardwareNameFromResources(previous_handled_connection.hardware_value);
+
+      //Pop up our message and determine if our guess is correct about what module is connected
+      HandleFindingCorrectMotorToRecover(previously_connected_module);
+
+      ui_->stackedWidget->setCurrentIndex(6);
       AddToLog("motor connected in recovery mode\n");
 
     }else{
@@ -284,6 +393,56 @@ void PortConnection::DisplayRecoveryMessage(){
     }
 
     throw QString("Recovery Detected");
+}
+
+void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    QAbstractButton * correctButton = msgBox.addButton("Correct", QMessageBox::YesRole);
+    QAbstractButton * wrongButton = msgBox.addButton("Recover a Different Module", QMessageBox::NoRole);
+
+    msgBox.setWindowTitle("Select Recovery Module");
+
+    QString text;
+
+    //we couldn't find the module at all
+    if(detected_module == ""){
+        //if we don't know your module type, don't give the option to click correct
+        text = "We cannot determine your module type while in recovery mode, and could not determine any previously connected modules.";
+        msgBox.removeButton(correctButton);
+        wrongButton->setText("Ok");
+    }else{
+        text = "We cannot determine your module type while in recovery mode, but you've recently connected to a " + detected_module +
+                       ". Is this the module you would like to recover?";
+    }
+
+    msgBox.setText(text);
+    msgBox.exec();
+
+    AddToLog(text);
+
+    //We only care if they click wrong. if it's wrong we'll have to help them find the correct
+    //module to recover another way (aka...when they pick a file...make absolutely sure it's what they want)
+    if(msgBox.clickedButton() == wrongButton){
+
+        guessed_module_type_correctly_ = false;
+
+        text = "Please use care to ensure that you download and program the correct firmware onto your module. Failure to do so "
+               "could damage your module.";
+
+        //Reuse the box that we already have, just change the text in it as well as the buttons
+        msgBox.setText(text);
+        wrongButton->setText("Ok");
+        msgBox.removeButton(correctButton);
+
+        msgBox.exec();
+
+        AddToLog("Assumed module type incorrectly. Cannot verify the type of module connected.");
+    }else{
+        //If we have the right module, we don't need to do anything besides this var
+        guessed_module_type_correctly_ = true;
+        AddToLog("Assumed module type correctly as: " + detected_module);
+    }
 }
 
 void PortConnection::GetDeviceInformationResponses(){
@@ -343,6 +502,16 @@ void PortConnection::GetDeviceInformationResponses(){
     firmware_style_ = firmware_style;
     hardware_type_ = hardware_type;
     electronics_type_ = electronics_type;
+
+    //add these to the log so that it is easer to protect people from bricking their motor in recovery mode
+    //We can parse the log to see the most recent connection if we don't have the value saved (which we don't
+    //if someone opens the control center fresh and tries to connect to a recovery mode module)
+    AddToLog(hardware_str_ + QString::number(hardware_type));
+    AddToLog(electronics_str_ + QString::number(electronics_type));
+
+    //Make sure to store who we're connected to in our struct
+    previous_handled_connection.hardware_value = hardware_type_;
+    previous_handled_connection.electronics_value = electronics_type_;
 }
 
 int PortConnection::GetFirmwareValid(){
