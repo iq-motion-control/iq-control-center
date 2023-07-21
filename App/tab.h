@@ -52,11 +52,14 @@ class Tab: public QWidget
 
     void SaveDefaults(std::map<std::string,double> frame_value_map);
 
+    bool SaveSpecialDefaults(std::map<std::string,double> frame_value_map);
+
     std::map<std::string,Frame*> get_frame_map();
 
     QGridLayout *gridLayout_;
 
   private:
+
     void ConnectFrameCombo(FrameCombo *fc);
 
     void ConnectFrameSpinBox(FrameSpinBox *fsb);
@@ -68,6 +71,8 @@ class Tab: public QWidget
     void ConnectFrameButton(FrameButton *fb);
 
     void ConnectFrameReadOnly(FrameReadOnly *fr);
+
+    bool SetNewBaudRate(double value);
 
     std::map<std::string,Frame*> frame_map_;
 

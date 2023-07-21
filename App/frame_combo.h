@@ -35,6 +35,7 @@
 
 #include "frame.h"
 #include "frame_variables.h"
+#include "common_icon_creation.h"
 
 class FrameCombo : public Frame {
   Q_OBJECT
@@ -55,9 +56,6 @@ class FrameCombo : public Frame {
   void ShowInfo();
 
  private:
-  void SetPushButton(QPushButton *push_button, QSizePolicy size_policy, QString push_button_name,
-                     QString icon_file_name);
-
   void SetBox(QSizePolicy size_policy, FrameVariables *fv);
 
   void AddStarToLabel();
@@ -99,7 +97,7 @@ class FrameCombo : public Frame {
       "    border-top-right-radius: 3px; /* same radius as the QComboBox */\n"
       "    border-bottom-right-radius: 3px;\n"
       "	background: transparent;\n"
-      "	image:url(:/res/down_arrow_icon.png);"
+      "	image:url(:/res/down_arrow_icon_smaller.png);"
       "}\n"
       "\n"
       "QComboBox::hover {\n"

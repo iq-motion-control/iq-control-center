@@ -238,12 +238,12 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     metadata_handler_.ReadMetadata();
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
-    //The recovery tab does not necessarily know about the hardware and electronics
-    if(currentTab != RECOVERY_TAB){
-        if(FlashHardwareElectronicsWarning()){
-            return;
-        }
+    //When we have gotten to this point, we've either confirmed that our guess at the correct type of module
+    //was a correct guess, or the user said we were wrong, and we'll warn them as they pick firmware
+    if(FlashHardwareElectronicsWarning(currentTab)){
+        return;
     }
+
 
     //If we aren't in recovery, present only the options that can be safely flashed.
     //Only giving combined option from recovery mode
@@ -308,22 +308,47 @@ bool Firmware::CheckPathAndConnection(){
     return false;
 }
 
-bool Firmware::FlashHardwareElectronicsWarning(){
+bool Firmware::FlashHardwareElectronicsWarning(int current_tab){
+    int target_hardware = -1;
+    int target_electronics = -1;
+
+    //We've already set previous_handled_connection in port connection to either
+    //the last module connected during this session, or the last connected module
+    //as read through the log
+    if(current_tab == RECOVERY_TAB){
+        if(iv.pcon->guessed_module_type_correctly_){
+            target_hardware = iv.pcon->previous_handled_connection.hardware_value;
+            target_electronics = iv.pcon->previous_handled_connection.electronics_value;
+        }
+    }else{
+        target_hardware = iv.pcon->previous_handled_connection.hardware_value;
+        target_electronics = iv.pcon->previous_handled_connection.electronics_value;
+    }
+
+    bool should_put_hardware_electronics_in_msg = (target_hardware != -1) && (target_electronics != -1);
+    bool hardware_and_electronics_correct = metadata_handler_.CheckHardwareAndElectronics(target_hardware, target_electronics);
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
     //A wrong value could be a mismatched Kv or incorrect motor type
-    if(!(metadata_handler_.CheckHardwareAndElectronics())){
+    if(!(hardware_and_electronics_correct)){
 
-        QString hardwareName = GetHardwareNameFromResources();
+        //Hardware name needs to either be from what's in the dropdown, or from the previously handled connection value
+        QString hardwareName = iv.pcon->GetHardwareNameFromResources(target_hardware);
 
         //Determine which thing they have wrong
         QString errorType;
-        errorType = metadata_handler_.GetErrorType();
+        errorType = metadata_handler_.GetErrorType(target_hardware, target_electronics);
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");
 
-        QString error_msg("The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
-                                      "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType);
+        QString error_msg;
+
+        if(should_put_hardware_electronics_in_msg){
+            error_msg = "The firmware you are trying to flash is not meant for this motor. Please go to vertiq.co "
+                         "and download the correct file for your motor: " + hardwareName + "\n\n" + "Error(s): " + errorType;
+        }else{
+            error_msg = "The recovery firmware selected was not meant for your module. Please go to vertiq.co and download the correct file for your module.";
+        }
 
         msgBox.setText(error_msg);
 
@@ -340,26 +365,6 @@ bool Firmware::FlashHardwareElectronicsWarning(){
     }
 
     return false;
-}
-
-QString Firmware::GetHardwareNameFromResources(){
-
-    /**
-     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
-     * the tab_populator's version of the resource files. So, we need to grab them ourself
-     */
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString hardware_type_file_path =
-        current_path + "/Resources/Firmware/" + QString::number(iv.pcon->GetHardwareType()) + ".json";
-
-    /**
-     * Get the hardware type from the resource files. This is the
-     * type of motor people should download for. Hardware name
-     * is something like "vertiq 8018 150Kv
-     */
-    QString hardwareName = metadata_handler_.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
-
-    return hardwareName;
 }
 
 void Firmware::FlashCombinedClicked(){

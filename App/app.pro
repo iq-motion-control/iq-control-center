@@ -36,7 +36,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=4 \
-           PATCH=0
+           PATCH=1
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -63,6 +63,7 @@ CONFIG += static
 
 
 SOURCES += \
+    common_icon_creation.cpp \
     flash_type.cpp \
     frame_read_only.cpp \
     metadata_handler.cpp \
@@ -102,6 +103,7 @@ SOURCES += \
 
 
 HEADERS += \
+    common_icon_creation.h \
     flash_type.hpp \
     frame_read_only.h \
     metadata_handler.hpp \
