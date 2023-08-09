@@ -1,0 +1,15 @@
+image: atlassian/default-image:3
+
+sync-github: &sync-github
+  step:
+    name: Syncing with GitHub repository
+    script:
+      - git remote add sync git@github.com:iq-motion-control/iq-control-center.git
+      - git checkout master
+      - git pull
+      - git push sync master --force
+
+pipelines:
+  branches:
+    master:
+    - <<: *sync-github
