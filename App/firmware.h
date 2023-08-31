@@ -32,11 +32,11 @@
 #include <QVector>
 
 #include "IQ_api/client.hpp"
-#include "schmi/include/Schmi/binary_file_std.hpp"
-#include "schmi/include/Schmi/flash_loader.hpp"
-#include "schmi/include/Schmi/loading_bar_std.hpp"
-#include "schmi/include/Schmi/qerror_handler.hpp"
-#include "schmi/include/Schmi/qserial.h"
+#include "iq_flasher/include/Schmi/binary_file_std.hpp"
+#include "iq_flasher/include/Schmi/flash_loader.hpp"
+#include "iq_flasher/include/Schmi/loading_bar_std.hpp"
+#include "iq_flasher/include/Schmi/qerror_handler.hpp"
+#include "iq_flasher/include/Schmi/qserial.h"
 
 #include "flash_loading_bar.h"
 

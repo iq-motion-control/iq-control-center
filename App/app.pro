@@ -67,12 +67,12 @@ SOURCES += \
     flash_type.cpp \
     frame_read_only.cpp \
     metadata_handler.cpp \
-    schmi/src/binary_file_std.cpp \
-    schmi/src/flash_loader.cpp \
-    schmi/src/loading_bar_std.cpp \
-    schmi/src/qerror_handler.cpp \
-    schmi/src/qserial.cpp \
-    schmi/src/stm32.cpp \
+    iq_flasher/src/binary_file_std.cpp \
+    iq_flasher/src/flash_loader.cpp \
+    iq_flasher/src/loading_bar_std.cpp \
+    iq_flasher/src/qerror_handler.cpp \
+    iq_flasher/src/qserial.cpp \
+    iq_flasher/src/stm32.cpp \
     flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -107,17 +107,17 @@ HEADERS += \
     flash_type.hpp \
     frame_read_only.h \
     metadata_handler.hpp \
-    schmi/include/Schmi/binary_file_interface.hpp \
-    schmi/include/Schmi/binary_file_std.hpp \
-    schmi/include/Schmi/error_handler_interface.hpp \
-    schmi/include/Schmi/flash_loader.hpp \
-    schmi/include/Schmi/loading_bar_interface.hpp \
-    schmi/include/Schmi/loading_bar_std.hpp \
-    schmi/include/Schmi/qerror_handler.hpp \
-    schmi/include/Schmi/qserial.h \
-    schmi/include/Schmi/serial_interface.hpp \
-    schmi/include/Schmi/std_exception.hpp \
-    schmi/include/Schmi/stm32.hpp \
+    iq_flasher/include/Schmi/binary_file_interface.hpp \
+    iq_flasher/include/Schmi/binary_file_std.hpp \
+    iq_flasher/include/Schmi/error_handler_interface.hpp \
+    iq_flasher/include/Schmi/flash_loader.hpp \
+    iq_flasher/include/Schmi/loading_bar_interface.hpp \
+    iq_flasher/include/Schmi/loading_bar_std.hpp \
+    iq_flasher/include/Schmi/qerror_handler.hpp \
+    iq_flasher/include/Schmi/qserial.h \
+    iq_flasher/include/Schmi/serial_interface.hpp \
+    iq_flasher/include/Schmi/std_exception.hpp \
+    iq_flasher/include/Schmi/stm32.hpp \
     flash_loading_bar.h \
     frame_button.h \
         mainwindow.h \
