@@ -31,7 +31,7 @@
 #include "IQ_api/crc_helper.h"
 #include "string.h" // for memcpy
 
-#include "schmi/include/Schmi/qserial.h"
+#include "iq_flasher/include/Schmi/qserial.h"
 
 #include "QString"
 #include "QSerialPort"
