@@ -19,7 +19,7 @@
 */
 
 #include "port_connection.h"
-#include "schmi/include/Schmi/qserial.h"
+#include "iq_flasher/include/Schmi/qserial.h"
 #include "metadata_handler.hpp"
 #include <QStandardPaths>
 
