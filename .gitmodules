@@ -1,4 +1,4 @@
 
-[submodule "App/schmi"]
-	path = App/schmi
-	url = https://github.com/iq-motion-control/iq-flasher.git
+[submodule "App/iq_flasher"]
+	path = App/iq_flasher
+	url = ../iq-flasher.git
