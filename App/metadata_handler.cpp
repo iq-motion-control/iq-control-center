@@ -140,6 +140,7 @@ QString MetadataHandler::GetErrorType(int target_hardware, int target_electronic
     //Message if there is a hardware error
     QString hardwareError = "Firmware is for the wrong Hardware Type. File expected to be flashing: " + correct_hardware + " (" +errorType.number(target_hardware)
              + ")" + " but the module was reported as: " + wrong_hardware + " (" + errorType.number(to_flash_hardware_type_) + ")";
+
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
     if((to_flash_electronics_type_ != target_electronics) && (to_flash_hardware_type_ != target_hardware)){
