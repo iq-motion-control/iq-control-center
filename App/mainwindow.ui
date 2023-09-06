@@ -980,7 +980,7 @@ QPushButton:checked {
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>30</width>
+           <width>62</width>
            <height>20</height>
           </size>
          </property>
@@ -1176,13 +1176,13 @@ QPushButton:checked {
            </property>
            <property name="minimumSize">
             <size>
-             <width>150</width>
+             <width>50</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>150</width>
+             <width>50</width>
              <height>16777215</height>
             </size>
            </property>
