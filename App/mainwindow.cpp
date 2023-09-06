@@ -58,8 +58,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     timer->start(1000);
 
     //Find available COM ports and display options in the PORT tab
-    connect(ui->header_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
-    connect(ui->header_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+    connect(ui->serial_port_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
+    connect(ui->serial_port_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::PortComboBoxIndexChanged);
 
     //Connect "connect button" with the port connection module so that we can connect to the motor on button press
@@ -67,20 +67,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     iv.pcon->FindPorts();
 
     //Baud Rate dropdown connect with actual baud rate for communication
-    connect(ui->header_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+    connect(ui->serial_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
 
+    //TODO: Remove hardcoded examples:
+//    ui->selected_module_combo_box->setEditable(true);
+    ui->selected_module_combo_box->lineEdit()->setReadOnly(true);
+    ui->selected_module_combo_box->lineEdit()->setAlignment(Qt::AlignRight);
     ui->selected_module_combo_box->addItem(QStringLiteral("1"));
     ui->selected_module_combo_box->addItem(QStringLiteral("2"));
     ui->selected_module_combo_box->addItem(QStringLiteral("3"));
     ui->selected_module_combo_box->addItem(QStringLiteral("4"));
 
+    //TODO: Use Q_FOREACH instead of regular for loop
+    for(int i = 0; i <ui->selected_module_combo_box->count(); i++){
+      ui->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
 
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
-    int index115200 = ui->header_baudrate_combo_box->findText("115200");
-    ui->header_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
+    int index115200 = ui->serial_baudrate_combo_box->findText("115200");
+    ui->serial_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
     iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200
 
     //Connect a lost connection with the motor to clearing all tabs in the window

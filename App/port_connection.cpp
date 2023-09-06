@@ -191,7 +191,7 @@ void PortConnection::SetPortConnection(bool state) {
     ports_names_.clear();
     selected_port_name_.clear();
 
-    ui_->header_combo_box->clear();
+    ui_->serial_port_combo_box->clear();
 
     ui_->label_firmware_build_value->setText(QString(""));
     ui_->label_firmware_name->setText(QString(""));
@@ -639,10 +639,10 @@ void PortConnection::PortComboBoxIndexChanged(int index) {
 void PortConnection::FindPorts() {
   ports_names_.clear();
   selected_port_name_.clear();
-  ui_->header_combo_box->clear();
+  ui_->serial_port_combo_box->clear();
   Q_FOREACH (QSerialPortInfo port_info, QSerialPortInfo::availablePorts()) {
     ports_names_.push_back(port_info.portName());
-    ui_->header_combo_box->addItem(port_info.portName());
+    ui_->serial_port_combo_box->addItem(port_info.portName());
   }
   if (ports_names_.size() != 0) {
     PortComboBoxIndexChanged(0);
@@ -650,18 +650,18 @@ void PortConnection::FindPorts() {
 }
 
 void PortConnection::BaudrateComboBoxIndexChanged(int index) {
-  selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+  selected_baudrate_ = ui_->serial_baudrate_combo_box->currentData().value<int>();
 }
 
 void PortConnection::FindBaudrates() {
-  ui_->header_baudrate_combo_box->clear();
+  ui_->serial_baudrate_combo_box->clear();
   //QSerialPort only goes up to 115200, and its a back-end library, not part of our project, so best not to modify it. Add our own extra baud rate enum to port_connection to cover this and future cases
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
-  selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
+  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
+  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
+  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
+  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
+  selected_baudrate_ = ui_->serial_baudrate_combo_box->currentData().value<int>();
 }
 
 bool PortConnection::CheckIfInBootLoader(){

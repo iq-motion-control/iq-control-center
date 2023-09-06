@@ -996,6 +996,9 @@ QPushButton:checked {
            <property name="text">
             <string>Detected Modules:</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -1005,6 +1008,9 @@ QPushButton:checked {
            </property>
            <property name="text">
             <string>4</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -1028,17 +1034,20 @@ QPushButton:checked {
        </item>
        <item>
         <layout class="QVBoxLayout" name="selected_module_layout">
-         <item>
-          <widget class="QLabel" name="label_7">
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+          <widget class="QLabel" name="selected_module_label">
            <property name="styleSheet">
             <string notr="true">color: rgb(175, 175, 175)</string>
            </property>
            <property name="text">
-            <string>Selected Module:</string>
+            <string>Module ID:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
-         <item>
+         <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
           <widget class="QComboBox" name="selected_module_combo_box">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -1048,55 +1057,24 @@ QPushButton:checked {
            </property>
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>50</width>
              <height>0</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>100</width>
+             <width>50</width>
              <height>16777215</height>
             </size>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>30</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="module_id_layout">
-         <item>
-          <widget class="QLabel" name="module_id_label">
-           <property name="styleSheet">
-            <string notr="true">color: rgb(175, 175, 175)</string>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
            </property>
-           <property name="text">
-            <string>Module ID:</string>
+           <property name="autoFillBackground">
+            <bool>false</bool>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="module_id_value">
-           <property name="styleSheet">
-            <string notr="true">color: rgb(175, 175, 175)</string>
-           </property>
-           <property name="text">
-            <string>12</string>
+           <property name="editable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1119,19 +1097,22 @@ QPushButton:checked {
         </spacer>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="com_baud_rate_layout">
+        <layout class="QVBoxLayout" name="serial_baud_rate_layout">
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="serial_baud_rate_label">
            <property name="styleSheet">
             <string notr="true">color: rgb(175, 175, 175)</string>
            </property>
            <property name="text">
-            <string>COM BAUD RATE:</string>
+            <string>Serial Baud Rate:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="header_baudrate_combo_box">
+          <widget class="QComboBox" name="serial_baudrate_combo_box">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>100</horstretch>
@@ -1171,19 +1152,22 @@ QPushButton:checked {
         </spacer>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="com_port_layout">
+        <layout class="QVBoxLayout" name="serial_port_layout">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="serial_port_label">
            <property name="styleSheet">
             <string notr="true">color: rgb(175, 175, 175)</string>
            </property>
            <property name="text">
-            <string>COM PORT:</string>
+            <string>Serial Port:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="CustomComboBox" name="header_combo_box">
+          <widget class="CustomComboBox" name="serial_port_combo_box">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
