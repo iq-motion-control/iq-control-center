@@ -138,8 +138,8 @@ QString MetadataHandler::GetErrorType(int target_hardware, int target_electronic
     QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(target_electronics)
                                         + " and got " + errorType.number(to_flash_electronics_type_);
     //Message if there is a hardware error
-    QString hardwareError = "Firmware is for the wrong Hardware Type. File expected to be flashing: " + correct_hardware + " (" +errorType.number(target_hardware)
-             + ")" + " but the module was reported as: " + wrong_hardware + " (" + errorType.number(to_flash_hardware_type_) + ")";
+    QString hardwareError = "Firmware is for the wrong Hardware Type. File expected to be flashing: " + correct_hardware + " (" + errorType.number(to_flash_hardware_type_)
+             + ")" + " but the module was reported as: " + wrong_hardware + " (" + errorType.number(target_hardware) + ")";
 
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
