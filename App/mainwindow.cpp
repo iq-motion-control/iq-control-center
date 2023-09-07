@@ -63,13 +63,25 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             &PortConnection::PortComboBoxIndexChanged);
 
     //Connect "connect button" with the port connection module so that we can connect to the motor on button press
-    connect(ui->header_connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
+    connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
 
     //Baud Rate dropdown connect with actual baud rate for communication
     connect(ui->serial_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
+
+    //Format serial_baudrate_combo_box
+    //editable must be set to true in mainwindow.ui for all combo boxes
+    ui->serial_baudrate_combo_box->lineEdit()->setReadOnly(true);
+    ui->serial_baudrate_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
+
+    ui->serial_port_combo_box->lineEdit()->setReadOnly(true);
+    ui->serial_port_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
+
+    for(int i = 0; i <ui->serial_baudrate_combo_box->count(); i++){
+      ui->serial_baudrate_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
 
     //TODO: Remove hardcoded examples:
 //    ui->selected_module_combo_box->setEditable(true);
@@ -135,7 +147,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //people in the recovery tab until they recover their module or restart the control center
     //2. do this. whenever someone connects a new module (or clicks the connect button while in the recovery tab)
     //just clear out whatever metadata/files may or may not be hanging around
-    connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
+    connect(ui->connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
 
     //Set up shared icons
     icon_setup();

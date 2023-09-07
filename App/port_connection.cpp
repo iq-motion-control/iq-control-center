@@ -185,7 +185,7 @@ int PortConnection::GetCurrentTab(){
 void PortConnection::SetPortConnection(bool state) {
   if (state) {
     connection_state_ = 1;
-    ui_->header_connect_button->setText("DISCONNECT");
+        ui_->connect_button->setText("DISCONNECT");
   } else {
     connection_state_ = 0;
     ports_names_.clear();
@@ -198,8 +198,8 @@ void PortConnection::SetPortConnection(bool state) {
     ui_->label_hardware_name->setText(QString(""));
     ui_->label_bootloader_value->setText(QString(""));
     ui_->label_upgrader_value->setText(QString(""));
-
-    ui_->header_connect_button->setText("CONNECT");
+    
+    ui_->connect_button->setText("CONNECT");
 
     AddToLog("module disconnected");
   }
