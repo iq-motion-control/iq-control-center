@@ -65,7 +65,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Connect "connect button" with the port connection module so that we can connect to the motor on button press
     connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
-
     //Baud Rate dropdown connect with actual baud rate for communication
     connect(ui->serial_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
@@ -76,15 +75,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->serial_baudrate_combo_box->lineEdit()->setReadOnly(true);
     ui->serial_baudrate_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
 
-    ui->serial_port_combo_box->lineEdit()->setReadOnly(true);
-    ui->serial_port_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
-
     for(int i = 0; i <ui->serial_baudrate_combo_box->count(); i++){
       ui->serial_baudrate_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
     }
+    ui->serial_port_combo_box->lineEdit()->setReadOnly(true);
+    ui->serial_port_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
+
+    for(int i = 0; i <ui->serial_port_combo_box->count(); i++){
+      ui->serial_port_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
+
 
     //TODO: Remove hardcoded examples:
-//    ui->selected_module_combo_box->setEditable(true);
+    //ui->selected_module_combo_box->setEditable(true);
     ui->selected_module_combo_box->lineEdit()->setReadOnly(true);
     ui->selected_module_combo_box->lineEdit()->setAlignment(Qt::AlignRight);
     ui->selected_module_combo_box->addItem(QStringLiteral("1"));
@@ -92,7 +95,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->selected_module_combo_box->addItem(QStringLiteral("3"));
     ui->selected_module_combo_box->addItem(QStringLiteral("4"));
 
-    //TODO: Use Q_FOREACH instead of regular for loop
     for(int i = 0; i <ui->selected_module_combo_box->count(); i++){
       ui->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
     }

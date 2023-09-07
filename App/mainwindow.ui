@@ -3726,11 +3726,51 @@ QPushButton:checked {
            <height>20</height>
           </size>
          </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="BrightText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="BrightText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="BrightText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>255</red>
+               <green>255</green>
+               <blue>255</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="resource.qrc">:/res/IQ_gui_header2.png</pixmap>
+          <pixmap resource="resource.qrc">:/res/IQ_gui_header3.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -3970,7 +4010,7 @@ QPushButton:checked {
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="play_button">
+        <widget class="QPushButton" name="identify_button">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -3979,13 +4019,13 @@ QPushButton:checked {
          </property>
          <property name="minimumSize">
           <size>
-           <width>75</width>
+           <width>125</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>125</width>
            <height>16777215</height>
           </size>
          </property>
@@ -3993,9 +4033,15 @@ QPushButton:checked {
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>PLAY</string>
+          <string>IDENTIFY</string>
          </property>
-         <property name="autoDefault">
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="autoRepeat">
+          <bool>false</bool>
+         </property>
+         <property name="default">
           <bool>false</bool>
          </property>
          <property name="flat">
