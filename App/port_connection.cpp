@@ -26,9 +26,12 @@
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
 
+#define DEFAULT_OBJECT_ID 0
+
 PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr), hardware_str_(HARDWARE_STRING), electronics_str_(ELECTRONICS_STRING) {
   SetPortConnection(0);
-  sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+  sys_map_ = ClientsFromJson(DEFAULT_OBJECT_ID, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
 
   //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
   hardware_type_ = -1;
