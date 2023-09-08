@@ -226,6 +226,8 @@ void PortConnection::ConnectMotor(){
 
   int firmware_valid = 0;
 
+  qDebug() << "Inside of ConnectMotor fxn";
+
   //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
   if(CheckIfInBootLoader()){
     DisplayRecoveryMessage();
@@ -383,6 +385,11 @@ void PortConnection::ConnectToSerialPort() {
         //Try to open the serial port in general
         if (!ser_.ser_port_->open(QIODevice::ReadWrite)){
           throw QString("CONNECTION ERROR: could not open serial port");
+        }
+
+        //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
+        if(CheckIfInBootLoader()){
+            DisplayRecoveryMessage();
         }
 
         //We were able to connect to the serial port, now let's try and find some modules
@@ -808,6 +815,8 @@ void PortConnection::FindBaudrates() {
 bool PortConnection::CheckIfInBootLoader(){
     //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
     //As our guide to know if we are in the bootloader
+
+    qDebug() << "in checkifinbootloader()";
 
     //If we have already sent the initial command, we can send any of the commands available in the bootloader
     //If we get the expected response, we still know we're in the bootloader
