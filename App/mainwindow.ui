@@ -936,7 +936,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -4305,13 +4305,6 @@ QPushButton:pressed {
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="loader_label">
-         <property name="text">
-          <string/>
-         </property>
         </widget>
        </item>
       </layout>
