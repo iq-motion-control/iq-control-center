@@ -32,6 +32,8 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include "indication_handler.hpp"
+
 #include <QStandardPaths>
 
 #include <QMetaEnum>
@@ -295,6 +297,8 @@ class PortConnection : public QObject {
    */
   void HandleFindingCorrectMotorToRecover(QString detected_module);
 
+  std::string GetClentsFolderPath();
+
  public slots:
 
   void ConnectMotor();
@@ -310,6 +314,8 @@ class PortConnection : public QObject {
   void BaudrateComboBoxIndexChanged(int index);
 
   void ClearFirmwareChoices();
+
+  void PlayIndication();
 
  signals:
 
@@ -354,6 +360,8 @@ class PortConnection : public QObject {
 
   QString hardware_str_;
   QString electronics_str_;
+
+  IndicationHandler indication_handle_;
 };
 
 #endif  // CONNECTION_HPP
