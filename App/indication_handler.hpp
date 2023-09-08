@@ -3,7 +3,7 @@
 
 #include "qserial_interface.h"
 #include "IQ_api/client.hpp"
-#include "IQ_api/client_helpers.hpp"
+#include <math.h>
 
 class IndicationHandler : public QObject {
   Q_OBJECT
@@ -13,7 +13,7 @@ class IndicationHandler : public QObject {
   void PlayIndication();
 
  private:
-
+  //notes that we can use (rounded...so they're not exactly the right note)
   const uint16_t c = (uint16_t)floor(261.6 * 2);
   const uint16_t d = (uint16_t)floor(293.665 * 2);
   const uint16_t e = (uint16_t)floor(329.7 * 2);
@@ -27,10 +27,9 @@ class IndicationHandler : public QObject {
   const uint16_t bb = (uint16_t)floor(466.164);
   const uint16_t fs = (uint16_t)floor(369.99);
 
-  const uint16_t indication_eighth = 200;
-  const uint16_t indication_swung_eighth = indication_eighth + (indication_eighth/2);
-  const uint16_t indication_notes[8] = {f, f, (uint16_t)(ab * 4), (uint16_t)(ab * 4), f, c, (uint16_t)(eb*2), f};
-  const uint16_t indication_durations[8] = {indication_swung_eighth, indication_eighth, indication_eighth, indication_eighth,indication_swung_eighth, indication_eighth, (uint16_t)(indication_eighth*2), (uint16_t)(indication_eighth*2)};
+  const uint16_t indication_speed = 150;
+  const uint16_t indication_notes[5] = {d,e,d,e,g};
+  const uint16_t indication_durations[5] = {indication_speed, indication_speed, indication_speed, indication_speed, indication_speed};
 
   void PlayNote(uint16_t frequency, uint16_t duration);
 
