@@ -48,6 +48,16 @@ void Tab::CreateFrames()
     for(std::pair<std::string, ClientEntryAbstract*> client_entry: client.second->client_entry_map_)
     {
       std::string client_entry_descriptor = client_entry.first;
+
+      //We need to check to see if this is the Module ID entry. if it is,
+      //Check to see if the port connection obj_id_ is different from sys_map_ obj_id. if it is
+      //Default to making this client's object id = 0 since we know this is an old firmware module
+      if(client_entry_descriptor == "Module ID"){
+        if(iv.pcon->GetSysMapObjId() != client_entry.second->obj_idn_){
+            client_entry.second->obj_idn_ = iv.pcon->GetSysMapObjId();
+        }
+      }
+
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
 
       uint8_t frame_type = fv->frame_type_;

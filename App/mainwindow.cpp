@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             &PortConnection::PortComboBoxIndexChanged);
 
     //Connect "connect button" with the port connection module so that we can connect to the motor on button press
-    connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
+    connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectToSerialPort()));
     iv.pcon->FindPorts();
     //Baud Rate dropdown connect with actual baud rate for communication
     connect(ui->serial_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
@@ -74,6 +74,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //editable must be set to true in mainwindow.ui for all combo boxes
     ui->serial_baudrate_combo_box->lineEdit()->setReadOnly(true);
     ui->serial_baudrate_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
+
+    //Module ID Dropdown connect with actual module ID for communication
+    connect(ui->selected_module_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+            &PortConnection::ModuleIdComboBoxIndexChanged);
+
+    //Connect the DETECT button with calling the detect modules on the bus function
+    connect(ui->detect_button, SIGNAL(clicked()), iv.pcon, SLOT(DetectNumberOfModulesOnBus()));
+
 
     for(int i = 0; i <ui->serial_baudrate_combo_box->count(); i++){
       ui->serial_baudrate_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);

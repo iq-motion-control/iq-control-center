@@ -39,6 +39,8 @@
 
 #include <QDateTime>
 
+#define MAX_MODULE_ID 62
+
 #define MAJOR_VERSION_MASK 0x000fc000
 #define MINOR_VERSION_MASK 0x00003f80
 #define PATCH_VERSION_MASK 0x7f
@@ -295,9 +297,20 @@ class PortConnection : public QObject {
    */
   void HandleFindingCorrectMotorToRecover(QString detected_module);
 
+  /**
+   * @brief ConnectMotor populates all tabs based on the information gotten from the motor
+   */
+  void ConnectMotor();
+
+  uint8_t GetSysMapObjId();
+
+  std::map<std::string, Client *> GetSystemControlMap();
+
  public slots:
 
-  void ConnectMotor();
+  void DetectNumberOfModulesOnBus();
+
+  void ConnectToSerialPort();
 
   void TimerTimeout();
 
@@ -308,6 +321,8 @@ class PortConnection : public QObject {
   void PortComboBoxIndexChanged(int index);
 
   void BaudrateComboBoxIndexChanged(int index);
+
+  void ModuleIdComboBoxIndexChanged(int index);
 
   void ClearFirmwareChoices();
 
@@ -328,6 +343,9 @@ class PortConnection : public QObject {
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
 
+  void UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys_control);
+  void ClearDetections();
+
   uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
@@ -346,6 +364,8 @@ class PortConnection : public QObject {
   QSerialInterface ser_;
 
   uint8_t obj_id_;
+  uint8_t system_control_id_;
+
   int firmware_value_;
   int firmware_style_;
   int hardware_type_;
@@ -354,6 +374,9 @@ class PortConnection : public QObject {
 
   QString hardware_str_;
   QString electronics_str_;
+
+  uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
+  uint8_t num_modules_discovered_; //keep track of the number we've actually found
 };
 
 #endif  // CONNECTION_HPP

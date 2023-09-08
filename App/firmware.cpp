@@ -41,7 +41,10 @@ void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_bina
     firmware_binary_button_ = firmware_binary_button;
     recover_progress_bar_ = recover_progress_bar;
     recover_binary_button_ = recover_binary_button;
-    sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+    //We should get our map from port connection who has already dealt with all of the module ID/system control ID stuff.
+    //Avoid doing all of the logic again
+    sys_map_ = iv.pcon->GetSystemControlMap();
 
     //If the Control Center closed or crashed without completing a flash, there may be leftover local metadata files.
     //Clearing them out on startup so we start with a fresh slate. Make a temporary metadata handler just to clear out any old files.
