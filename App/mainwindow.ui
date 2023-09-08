@@ -3899,18 +3899,26 @@ QPushButton:checked {
          </property>
          <property name="minimumSize">
           <size>
-           <width>100</width>
-           <height>0</height>
+           <width>75</width>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
-           <height>16777215</height>
+           <width>75</width>
+           <height>30</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QPushButton {
+	background-color: rgb(3, 149, 218);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
+}
+QPushButton:pressed {
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
+}</string>
          </property>
          <property name="text">
           <string>DETECT</string>
@@ -3918,8 +3926,11 @@ QPushButton:checked {
          <property name="autoDefault">
           <bool>false</bool>
          </property>
-         <property name="flat">
+         <property name="default">
           <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -3987,7 +3998,7 @@ QPushButton:checked {
             <bool>false</bool>
            </property>
            <property name="editable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -4019,18 +4030,26 @@ QPushButton:checked {
          </property>
          <property name="minimumSize">
           <size>
-           <width>125</width>
-           <height>0</height>
+           <width>75</width>
+           <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>125</width>
-           <height>16777215</height>
+           <width>75</width>
+           <height>30</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QPushButton {
+	background-color: rgb(3, 149, 218);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
+}
+QPushButton:pressed {
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
+}</string>
          </property>
          <property name="text">
           <string>IDENTIFY</string>
@@ -4042,10 +4061,10 @@ QPushButton:checked {
           <bool>false</bool>
          </property>
          <property name="default">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
          <property name="flat">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -4107,7 +4126,7 @@ QPushButton:checked {
             </size>
            </property>
            <property name="editable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -4171,7 +4190,7 @@ QPushButton:checked {
             </size>
            </property>
            <property name="editable">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -4187,12 +4206,26 @@ QPushButton:checked {
          </property>
          <property name="minimumSize">
           <size>
-           <width>150</width>
-           <height>0</height>
+           <width>75</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>75</width>
+           <height>30</height>
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QPushButton {
+	background-color: rgb(3, 149, 218);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
+}
+QPushButton:pressed {
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
+}</string>
          </property>
          <property name="text">
           <string>CONNECT</string>
@@ -4200,8 +4233,11 @@ QPushButton:checked {
          <property name="autoDefault">
           <bool>false</bool>
          </property>
-         <property name="flat">
+         <property name="default">
           <bool>true</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
