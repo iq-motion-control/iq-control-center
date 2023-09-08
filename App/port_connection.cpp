@@ -735,9 +735,6 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
     uint8_t obj_id;
-
-    qDebug() << sys_map_["system_control_client"]->GetClientObjId();
-
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
       delete ser_.ser_port_;
       SetPortConnection(0);
