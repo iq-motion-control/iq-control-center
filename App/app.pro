@@ -66,6 +66,7 @@ SOURCES += \
     common_icon_creation.cpp \
     flash_type.cpp \
     frame_read_only.cpp \
+    indication_handler.cpp \
     metadata_handler.cpp \
     iq_flasher/src/binary_file_std.cpp \
     iq_flasher/src/flash_loader.cpp \
@@ -106,6 +107,7 @@ HEADERS += \
     common_icon_creation.h \
     flash_type.hpp \
     frame_read_only.h \
+    indication_handler.hpp \
     metadata_handler.hpp \
     iq_flasher/include/Schmi/binary_file_interface.hpp \
     iq_flasher/include/Schmi/binary_file_std.hpp \
