@@ -5,6 +5,8 @@
 #include "IQ_api/client.hpp"
 #include <math.h>
 
+#define USING_FOLKSONG
+
 class IndicationHandler : public QObject {
   Q_OBJECT
 
@@ -27,9 +29,19 @@ class IndicationHandler : public QObject {
   const uint16_t bb = (uint16_t)floor(466.164);
   const uint16_t fs = (uint16_t)floor(369.99);
 
-  const uint16_t indication_speed = 150;
+#ifdef USING_BB_TRIAD
+
+  const uint16_t indication_speed = 100;
+  const uint16_t indication_notes[9] = {bb, d, f, d, bb, d, f, d, bb};
+  const uint16_t indication_durations[9] = {indication_speed, indication_speed, indication_speed, indication_speed, indication_speed, indication_speed, indication_speed, indication_speed, indication_speed};
+
+#elif defined(USING_FOLKSONG)
+
+  const uint16_t indication_speed = 125;
   const uint16_t indication_notes[5] = {d,e,d,e,g};
   const uint16_t indication_durations[5] = {indication_speed, indication_speed, indication_speed, indication_speed, indication_speed};
+
+#endif
 
   void PlayNote(uint16_t frequency, uint16_t duration);
 
