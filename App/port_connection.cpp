@@ -735,12 +735,30 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1) {
     uint8_t obj_id;
+    //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
-      delete ser_.ser_port_;
-      SetPortConnection(0);
-      QString error_message = "Serial Port Disconnected";
-      ui_->header_error_label->setText(error_message);
-      emit LostConnection();
+        //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+        //if there's no one left, then we should just give up and close the port
+        if(num_modules_discovered_ > 1){
+
+            //pop up a message for them telling what just happened
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Module Disconnected");
+            msgBox.setText(
+                "Your currently targeted module has disconnected. We will rescan the network, and reconnect to another module.");
+            msgBox.setStandardButtons(QMessageBox::Yes);
+            msgBox.exec();
+
+            //Find who's here now
+            DetectNumberOfModulesOnBus();
+
+        }else{
+          delete ser_.ser_port_;
+          SetPortConnection(0);
+          QString error_message = "Serial Port Disconnected";
+          ui_->header_error_label->setText(error_message);
+          emit LostConnection();
+        }
     }
   }
 }
