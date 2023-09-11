@@ -948,7 +948,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1554,8 +1554,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>18</width>
-                <height>16</height>
+                <width>1070</width>
+                <height>648</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -3949,7 +3949,7 @@ QGroupBox:title{
 }</string>
          </property>
          <property name="title">
-          <string>Module Bus</string>
+          <string>Module Connections</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
@@ -4106,7 +4106,7 @@ QPushButton:hover{
                <string notr="true">color: rgb(175, 175, 175)</string>
               </property>
               <property name="text">
-               <string>Module ID:</string>
+               <string>Target Module ID:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -4123,13 +4123,13 @@ QPushButton:hover{
               </property>
               <property name="minimumSize">
                <size>
-                <width>50</width>
+                <width>85</width>
                 <height>20</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>85</width>
                 <height>16777215</height>
                </size>
               </property>
