@@ -71,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     iv.pcon->FindBaudrates();
 
     // Center align items in selected_module_combo_box
+    // TODO: remove hardcoded example value
+    ui->selected_module_combo_box->addItem(QStringLiteral("42"));
     for(int i = 0; i <ui->selected_module_combo_box->count(); i++){
       ui->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
     }
