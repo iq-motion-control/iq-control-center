@@ -364,7 +364,9 @@ void PortConnection::DetectNumberOfModulesOnBus(){
         ConnectMotor();
 
       }else{
+        //we didn't find anything, so reset to default, and close the port
         sys_map_["system_control_client"]->UpdateClientObjId(DEFAULT_OBJECT_ID);
+        ser_.ser_port_->close();
       }
 
   }else{
