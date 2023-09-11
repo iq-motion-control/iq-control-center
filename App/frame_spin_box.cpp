@@ -20,6 +20,8 @@
 
 #include "frame_spin_box.h"
 
+#include <qDebug>
+
 FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
                            std::pair<std::string, ClientEntryAbstract *> client_entry,
                            FrameVariables *fv,
@@ -123,6 +125,7 @@ void FrameSpinBox::SaveValue() {
     try {
 
       //If this is the Module ID Spin Box, then we need to make sure that no one else already has that value
+      qDebug() << value_;
       if(client_entry_.first == "Module ID" && iv.pcon->ModuleIdAlreadyExists(value_)){
           QString error_msg("Module ID already in use on this bus, please select a different value");
           iv.pcon->AddToLog(error_msg);

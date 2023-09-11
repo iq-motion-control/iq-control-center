@@ -406,6 +406,8 @@ void PortConnection::ConnectToSerialPort() {
           throw QString("CONNECTION ERROR: could not open serial port");
         }
 
+        AddToLog("Successfully opened serial port: " + selected_port_name_);
+
         //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
         if(CheckIfInBootLoader()){
             DisplayRecoveryMessage();
@@ -892,5 +894,7 @@ uint8_t PortConnection::GetSysMapObjId(){
 }
 
 bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
-    return ui_->selected_module_combo_box->findData(module_id);
+    int already_exists = ui_->selected_module_combo_box->findData(module_id);
+
+    return already_exists > -1;
 }
