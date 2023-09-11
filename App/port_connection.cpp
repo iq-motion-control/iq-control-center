@@ -226,8 +226,6 @@ void PortConnection::ConnectMotor(){
 
   int firmware_valid = 0;
 
-  qDebug() << "Inside of ConnectMotor fxn";
-
   //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
   if(CheckIfInBootLoader()){
     DisplayRecoveryMessage();
@@ -367,7 +365,15 @@ void PortConnection::ModuleIdComboBoxIndexChanged(int index){
     uint8_t obj_id = detected_module_ids_[index];
     sys_map_["system_control_client"]->UpdateClientObjId(obj_id);
 
-    ConnectMotor();
+    uint8_t temp_id = 0;
+    //Let's check that it's there. if not, don't try to connect
+    if(GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 2, 0.01f, temp_id)){
+        ConnectMotor();
+    }
+
+    //if we don't connect, then all we'll try to do is send the heartbeat to the new module id
+    //when we don't get a response to that, we'll flash the "couldn't find that motor anymore" message
+    //and then auto find the next available
 }
 
 void PortConnection::ConnectToSerialPort() {
@@ -815,9 +821,6 @@ void PortConnection::FindBaudrates() {
 bool PortConnection::CheckIfInBootLoader(){
     //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
     //As our guide to know if we are in the bootloader
-
-    qDebug() << "in checkifinbootloader()";
-
     //If we have already sent the initial command, we can send any of the commands available in the bootloader
     //If we get the expected response, we still know we're in the bootloader
     #define INIT_CMD 0x7f
