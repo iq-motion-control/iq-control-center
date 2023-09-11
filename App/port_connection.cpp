@@ -315,6 +315,13 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   uint8_t temp_obj_id = 0;
   uint8_t module_id_with_system_control_zero = NO_OLD_MODULES_FOUND;
 
+  AddToLog("\n");
+  AddToLog("Detecting modules on the bus");
+
+  QString message = "Detecting Modules . . . ";
+  ui_->header_error_label->setText(message);
+  ui_->header_error_label->repaint();
+
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
 
@@ -349,15 +356,20 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       }//for()
 
+      //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
 
       if(num_modules_discovered_ > 0){
         sys_map_["system_control_client"]->UpdateClientObjId(detected_module_ids_[0]);
         //We've found the modules, connect to the lowest module id
         ConnectMotor();
+
       }else{
         sys_map_["system_control_client"]->UpdateClientObjId(DEFAULT_OBJECT_ID);
       }
+
+  }else{
+      AddToLog("Could not detect modules. No serial port open.");
   }
 }
 
@@ -379,7 +391,7 @@ void PortConnection::ModuleIdComboBoxIndexChanged(int index){
 void PortConnection::ConnectToSerialPort() {
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
-      QString message = "Connecting . . . ";
+      QString message = "Detecting Modules . . . ";
       ui_->header_error_label->setText(message);
       ui_->header_error_label->repaint();
 
