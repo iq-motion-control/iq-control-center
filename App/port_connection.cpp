@@ -231,7 +231,7 @@ void PortConnection::ConnectMotor(){
     DisplayRecoveryMessage();
   }
 
-          //Check if the firmware is valid
+  //Check if the firmware is valid
   firmware_valid = GetFirmwareValid();
 
   SetPortConnection(1);
@@ -324,7 +324,6 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
-
       //Ensure that we're starting from scratch with our detections
       ClearDetections();
 
@@ -405,7 +404,7 @@ void PortConnection::ConnectToSerialPort() {
           throw QString("CONNECTION ERROR: could not open serial port");
         }
 
-        //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
+        //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
         if(CheckIfInBootLoader()){
             DisplayRecoveryMessage();
         }
@@ -496,17 +495,26 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type){
 }
 
 void PortConnection::DisplayRecoveryMessage(){
+
     recovery_port_name_ = selected_port_name_;
-    ser_.ser_port_->close();
+
     QMessageBox msgBox;
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
-        "It appears that your motor is currently in recovery mode.\n"
-        "Would you like to recover your motor now?");
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-    if (msgBox.exec() == QMessageBox::Yes) {
+        "It appears that a connected motor is in Recovery mode. If you would like to recover this module now, "
+        "please disconnect all other modules from the bus, and select Recover Now. Otherwise, please disconnect the "
+        "module in recovery mode from the bus, and then select Continue");
+
+    QAbstractButton * continueButton = msgBox.addButton("Continue", QMessageBox::YesRole);
+    QAbstractButton * recoverButton = msgBox.addButton("Recover Now", QMessageBox::NoRole);
+
+    msgBox.exec();
+
+    if (msgBox.clickedButton() == recoverButton) {
+      //If we want to recover now, then close the port. Port gets handled in the recovery process
+      //We don't want to close the port now if we're ignoring the recovery guy
+      ser_.ser_port_->close();
+
       DisableAllButtons();
 
       //Check to see if we know the type of motor from a previous connection in this session
@@ -537,7 +545,7 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->stackedWidget->setCurrentIndex(0);
     }
 
-    throw QString("Recovery Detected");
+//    throw QString("Recovery Detected");
 }
 
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
@@ -771,7 +779,6 @@ void PortConnection::TimerTimeout() {
             msgBox.setWindowTitle("Module Disconnected");
             msgBox.setText(
                 "Your currently targeted module has disconnected. We will rescan the network, and reconnect to another module.");
-            msgBox.setStandardButtons(QMessageBox::Yes);
             msgBox.exec();
 
             //Find who's here now
