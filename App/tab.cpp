@@ -49,10 +49,14 @@ void Tab::CreateFrames()
     {
       std::string client_entry_descriptor = client_entry.first;
 
+      bool entry_needs_reboot = false;
+
       //We need to check to see if this is the Module ID entry. if it is,
       //Check to see if the port connection obj_id_ is different from sys_map_ obj_id. if it is
       //Default to making this client's object id = 0 since we know this is an old firmware module
       if(client_entry_descriptor == "Module ID"){
+        entry_needs_reboot = true;
+
         if(iv.pcon->GetSysMapObjId() != client_entry.second->obj_idn_){
             client_entry.second->obj_idn_ = iv.pcon->GetSysMapObjId();
         }
@@ -74,7 +78,8 @@ void Tab::CreateFrames()
         }
         case 2:
         {
-          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+
+          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()), entry_needs_reboot);
           gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
           ConnectFrameSpinBox(fsb);
           frame_map_[client_entry_descriptor] = fsb;

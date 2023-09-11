@@ -23,8 +23,8 @@
 FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
                            std::pair<std::string, ClientEntryAbstract *> client_entry,
                            FrameVariables *fv,
-                           bool using_custom_order, QString ordered_label)
-    : Frame(parent, 2), client_(client), client_entry_(client_entry) {
+                           bool using_custom_order, QString ordered_label, bool requires_restart)
+    : Frame(parent, 2), client_(client), client_entry_(client_entry), requires_restart_(requires_restart) {
   nan_value_ = fv->spin_frame_.minimum;
   has_nan_ = fv->spin_frame_.nan;
   single_step_ = fv->spin_frame_.single_step;
@@ -132,6 +132,21 @@ void FrameSpinBox::SaveValue() {
 
       saved_value_ = value_;
       RemoveStarFromLabel();
+
+      //If we need to restart when we change this parameter, then make the user restart
+      if(requires_restart_){
+        iv.pcon->RebootMotor();
+
+        //Pop up a message saying what's going on
+        //Give the user the option to reboot the module after setting with defaults.
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Reboot Required");
+        QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+
+        msgBox.setText(text);
+        msgBox.exec();
+      }
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
