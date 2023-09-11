@@ -70,17 +70,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
 
-    for(int i = 0; i <ui->serial_port_combo_box->count(); i++){
-      ui->serial_port_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
-    }
-
-
-    //TODO: Remove hardcoded examples:
-    ui->selected_module_combo_box->addItem(QStringLiteral("1"));
-    ui->selected_module_combo_box->addItem(QStringLiteral("2"));
-    ui->selected_module_combo_box->addItem(QStringLiteral("3"));
-    ui->selected_module_combo_box->addItem(QStringLiteral("4"));
-
+    // Center align items in selected_module_combo_box
     for(int i = 0; i <ui->selected_module_combo_box->count(); i++){
       ui->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
     }
