@@ -948,7 +948,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>6</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
