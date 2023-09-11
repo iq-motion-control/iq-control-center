@@ -66,20 +66,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
     //Baud Rate dropdown connect with actual baud rate for communication
-    connect(ui->serial_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+    connect(ui->serial_baud_rate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
-
-    //Format serial_baudrate_combo_box
-    //editable must be set to true in mainwindow.ui for all combo boxes
-//    ui->serial_baudrate_combo_box->lineEdit()->setReadOnly(true);
-//    ui->serial_baudrate_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
-
-//    for(int i = 0; i <ui->serial_baudrate_combo_box->count(); i++){
-//      ui->serial_baudrate_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
-//    }
-//    ui->serial_port_combo_box->lineEdit()->setReadOnly(true);
-//    ui->serial_port_combo_box->lineEdit()->setAlignment(Qt::AlignCenter);
 
     for(int i = 0; i <ui->serial_port_combo_box->count(); i++){
       ui->serial_port_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
@@ -87,9 +76,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     //TODO: Remove hardcoded examples:
-    //ui->selected_module_combo_box->setEditable(true);
-//    ui->selected_module_combo_box->lineEdit()->setReadOnly(true);
-//    ui->selected_module_combo_box->lineEdit()->setAlignment(Qt::AlignRight);
     ui->selected_module_combo_box->addItem(QStringLiteral("1"));
     ui->selected_module_combo_box->addItem(QStringLiteral("2"));
     ui->selected_module_combo_box->addItem(QStringLiteral("3"));
@@ -101,8 +87,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
-    int index115200 = ui->serial_baudrate_combo_box->findText("115200");
-    ui->serial_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
+    int index115200 = ui->serial_baud_rate_combo_box->findText("115200");
+    ui->serial_baud_rate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
     iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200
 
     //Connect a lost connection with the motor to clearing all tabs in the window
