@@ -318,12 +318,13 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   AddToLog("\n");
   AddToLog("Detecting modules on the bus");
 
-  QString message = "Detecting Modules . . . ";
-  ui_->header_error_label->setText(message);
-  ui_->header_error_label->repaint();
-
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
+
+      QString message = "Detecting Modules . . . ";
+      ui_->header_error_label->setText(message);
+      ui_->header_error_label->repaint();
+
       //Ensure that we're starting from scratch with our detections
       ClearDetections();
 
