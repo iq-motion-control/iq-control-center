@@ -3920,7 +3920,7 @@ QPushButton:checked {
         </spacer>
        </item>
        <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-        <widget class="QGroupBox" name="module_bus_group_box">
+        <widget class="QGroupBox" name="module_connections_group_box">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
