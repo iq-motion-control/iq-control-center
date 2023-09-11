@@ -306,6 +306,8 @@ class PortConnection : public QObject {
 
   std::map<std::string, Client *> GetSystemControlMap();
 
+  bool ModuleIdAlreadyExists(uint8_t module_id);
+
  public slots:
 
   void DetectNumberOfModulesOnBus();

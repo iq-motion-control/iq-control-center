@@ -890,3 +890,7 @@ std::map<std::string, Client *> PortConnection::GetSystemControlMap(){
 uint8_t PortConnection::GetSysMapObjId(){
     return sys_map_["system_control_client"]->GetClientObjId();
 }
+
+bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
+    return ui_->selected_module_combo_box->findData(module_id);
+}

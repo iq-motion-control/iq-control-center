@@ -121,6 +121,14 @@ void FrameSpinBox::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameSpinBox::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
+
+      //If this is the Module ID Spin Box, then we need to make sure that no one else already has that value
+      if(iv.pcon->ModuleIdAlreadyExists(value_)){
+          QString error_msg("Module ID already in use on this bus, please select a different value");
+          iv.pcon->AddToLog(error_msg);
+          throw QString(error_msg);
+      }
+
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
         QString error_msg("COULDN'T SAVE VALUE: " + QString(client_entry_.first.c_str()));
         iv.pcon->AddToLog(error_msg.toLower());
