@@ -243,7 +243,7 @@ void PortConnection::ConnectMotor(){
     ShortenLog(lines_in_log);
   }
 
-  QString message = "Module Connected with Module ID: " + QString::number(sys_map_["system_control_client"]->GetClientObjId());
+  QString message = "Module Connected with Module ID: " + ui_->selected_module_combo_box->currentText();
 
   //Write the fact that we connected with the motor to the output log
   AddToLog("\n");
