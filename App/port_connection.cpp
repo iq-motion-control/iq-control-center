@@ -828,18 +828,18 @@ void PortConnection::FindPorts() {
 }
 
 void PortConnection::BaudrateComboBoxIndexChanged(int index) {
-  selected_baudrate_ = ui_->serial_baudrate_combo_box->currentData().value<int>();
+  selected_baudrate_ = ui_->serial_baud_rate_combo_box->currentData().value<int>();
 }
 
 void PortConnection::FindBaudrates() {
-  ui_->serial_baudrate_combo_box->clear();
+  ui_->serial_baud_rate_combo_box->clear();
   //QSerialPort only goes up to 115200, and its a back-end library, not part of our project, so best not to modify it. Add our own extra baud rate enum to port_connection to cover this and future cases
-  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
-  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
-  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
-  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
-  ui_->serial_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
-  selected_baudrate_ = ui_->serial_baudrate_combo_box->currentData().value<int>();
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
+  selected_baudrate_ = ui_->serial_baud_rate_combo_box->currentData().value<int>();
 }
 
 bool PortConnection::CheckIfInBootLoader(){
