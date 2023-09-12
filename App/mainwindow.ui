@@ -948,7 +948,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1424,7 +1424,7 @@ QComboBox:on, QComboBox:off {
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -2239,13 +2239,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_upgrade_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2276,9 +2279,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2303,18 +2306,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2341,9 +2344,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2368,18 +2371,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2406,9 +2409,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2433,18 +2436,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2462,13 +2465,16 @@ QPushButton:pressed {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2486,13 +2492,16 @@ QPushButton:pressed {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2504,13 +2513,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_boot_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2522,13 +2534,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_app_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -3576,7 +3591,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3614,16 +3629,19 @@ QPushButton:hover{
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
-	background-color: rgb(3, 115, 167);
-	border-radius: 10px;
-	color: rgb(227, 227, 227);
+	color:rgb(175, 175, 175);
+	background: rgb(45, 45, 45);
+	height: 30px;
+	border: 0px solid rgb(175, 175, 175);
+	border-radius: 8px
 }
+
+QPushButton:hover {
+	background: rgb(50, 50, 50);
+}
+
 QPushButton:pressed {
-	background-color: rgb(3, 80, 117);
-	color: rgb(0, 170, 255);
-}
-QPushButton:hover{
-	border: 1.5px solid rgb(5, 120, 189);
+	background: rgb(100, 100, 100)
 }</string>
                </property>
                <property name="text">
@@ -3707,7 +3725,7 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4096,7 +4114,7 @@ QGroupBox:title{
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4249,7 +4267,7 @@ QPushButton:hover{
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4515,7 +4533,7 @@ QGroupBox:title{
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
