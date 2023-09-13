@@ -37,3 +37,7 @@ void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
   }
 }
 
+void IndicationHandler::UpdateBuzzerObjId(uint8_t obj_id){
+    buzzer_control_map_["buzzer_control_client"]->UpdateClientObjId(obj_id);
+}
+

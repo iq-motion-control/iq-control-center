@@ -362,12 +362,14 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       if(num_modules_discovered_ > 0){
         sys_map_["system_control_client"]->UpdateClientObjId(detected_module_ids_[0]);
+        indication_handle_.UpdateBuzzerObjId(detected_module_ids_[0]);
         //We've found the modules, connect to the lowest module id
         ConnectMotor();
 
       }else{
         //we didn't find anything, so reset to default, and close the port
         sys_map_["system_control_client"]->UpdateClientObjId(DEFAULT_OBJECT_ID);
+        indication_handle_.UpdateBuzzerObjId(detected_module_ids_[0]);
         ser_.ser_port_->close();
       }
 
@@ -379,6 +381,8 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 void PortConnection::ModuleIdComboBoxIndexChanged(int index){
     uint8_t obj_id = detected_module_ids_[index];
     sys_map_["system_control_client"]->UpdateClientObjId(obj_id);
+    indication_handle_.UpdateBuzzerObjId(obj_id);
+
 
     uint8_t temp_id = 0;
     //Let's check that it's there. if not, don't try to connect

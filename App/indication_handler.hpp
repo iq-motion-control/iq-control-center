@@ -13,6 +13,7 @@ class IndicationHandler : public QObject {
  public:
   IndicationHandler(QSerialInterface * ser, std::string path_to_clients);
   void PlayIndication();
+  void UpdateBuzzerObjId(uint8_t obj_id);
 
  private:
   //notes that we can use (rounded...so they're not exactly the right note)
