@@ -28,7 +28,7 @@ void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
 
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "hz", frequency);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "duration", duration);
-  buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "volume", 127); //Make it full volume, and make the user's max volume control how loud it is.
+  buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "volume", 50);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "ctrl_note");
 
   //Keep checking for when the current note is done playing
