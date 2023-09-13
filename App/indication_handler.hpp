@@ -5,7 +5,7 @@
 #include "IQ_api/client.hpp"
 #include <math.h>
 
-#define USING_BB_TRIAD
+#define USING_JAZZY_PHRASE
 
 class IndicationHandler : public QObject {
   Q_OBJECT
@@ -47,7 +47,7 @@ class IndicationHandler : public QObject {
   const uint16_t indication_notes[5] = {d,e,d,e,g};
   const uint16_t indication_durations[5] = {indication_speed, indication_speed, indication_speed, indication_speed, indication_speed};
 #elif defined(USING_FANCY_CHORD)
-  const uint16_t indication_speed = 175;
+  const uint16_t indication_speed = 120;
   const uint16_t indication_notes[6] = {low_c, low_e, low_g, low_b, d, high_fs};
   const uint16_t indication_durations[6] = {indication_speed, indication_speed, indication_speed, indication_speed, indication_speed, indication_speed};
 #elif defined(USING_BLUES_SCALE)
