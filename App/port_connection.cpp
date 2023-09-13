@@ -236,7 +236,7 @@ void PortConnection::ConnectMotor(){
 
   SetPortConnection(1);
 
-          //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
+  //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
   uint32_t lines_in_log = GetLinesInLog();
 
   if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
@@ -267,7 +267,7 @@ void PortConnection::ConnectMotor(){
     GetBootAndUpgradeInformation();
     logging_active_ = false;
 
-            //Send out the hardware and firmware values to other modules of Control Center
+    //Send out the hardware and firmware values to other modules of Control Center
     emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
 
     /**
@@ -549,8 +549,6 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(0);
     }
-
-//    throw QString("Recovery Detected");
 }
 
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){

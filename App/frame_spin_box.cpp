@@ -20,8 +20,6 @@
 
 #include "frame_spin_box.h"
 
-#include <qDebug>
-
 FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
                            std::pair<std::string, ClientEntryAbstract *> client_entry,
                            FrameVariables *fv,
