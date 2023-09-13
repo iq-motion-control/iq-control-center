@@ -977,7 +977,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1474,22 +1474,6 @@ QPushButton:hover{
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>15</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QPushButton" name="import_defaults_pushbutton">
              <property name="minimumSize">
               <size>
@@ -1602,7 +1586,7 @@ QPushButton:hover{
                 <x>0</x>
                 <y>0</y>
                 <width>1143</width>
-                <height>631</height>
+                <height>630</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1854,8 +1838,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1149</width>
-                <height>707</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -4590,7 +4574,7 @@ QPushButton:hover{
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
