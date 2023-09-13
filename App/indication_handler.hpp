@@ -5,7 +5,7 @@
 #include "IQ_api/client.hpp"
 #include <math.h>
 
-#define USING_JAZZY_PHRASE
+#define USING_BB_TRIAD
 
 class IndicationHandler : public QObject {
   Q_OBJECT
@@ -60,7 +60,6 @@ class IndicationHandler : public QObject {
 
   const uint16_t indication_notes[7] = {d, e, f, g, e, c, d};
   const uint16_t indication_durations[7] = {indication_speed_swung, indication_speed_straight, indication_speed_swung, indication_speed_straight, longer_note, indication_speed_swung, longer_note};
-
 #endif
 
 
