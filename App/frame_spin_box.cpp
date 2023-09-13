@@ -23,8 +23,8 @@
 FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
                            std::pair<std::string, ClientEntryAbstract *> client_entry,
                            FrameVariables *fv,
-                           bool using_custom_order, QString ordered_label)
-    : Frame(parent, 2), client_(client), client_entry_(client_entry) {
+                           bool using_custom_order, QString ordered_label, bool requires_restart)
+    : Frame(parent, 2), client_(client), client_entry_(client_entry), requires_restart_(requires_restart) {
   nan_value_ = fv->spin_frame_.minimum;
   has_nan_ = fv->spin_frame_.nan;
   single_step_ = fv->spin_frame_.single_step;
@@ -121,6 +121,14 @@ void FrameSpinBox::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
 void FrameSpinBox::SaveValue() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
+
+      //If this is the Module ID Spin Box, then we need to make sure that no one else already has that value
+      if(client_entry_.first == "Module ID" && iv.pcon->ModuleIdAlreadyExists(value_)){
+          QString error_msg("Module ID already in use on this bus, please select a different value");
+          iv.pcon->AddToLog(error_msg);
+          throw QString(error_msg);
+      }
+
       if (!SetVerifyEntrySave(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f, value_)){
         QString error_msg("COULDN'T SAVE VALUE: " + QString(client_entry_.first.c_str()));
         iv.pcon->AddToLog(error_msg.toLower());
@@ -132,6 +140,21 @@ void FrameSpinBox::SaveValue() {
 
       saved_value_ = value_;
       RemoveStarFromLabel();
+
+      //If we need to restart when we change this parameter, then make the user restart
+      if(requires_restart_){
+        iv.pcon->RebootMotor();
+
+        //Pop up a message saying what's going on
+        //Give the user the option to reboot the module after setting with defaults.
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Reboot Required");
+        QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+
+        msgBox.setText(text);
+        msgBox.exec();
+      }
+
     } catch (const QString &e) {
       iv.label_message->setText(e);
     }
