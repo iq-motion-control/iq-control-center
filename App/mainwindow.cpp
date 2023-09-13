@@ -58,22 +58,29 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     timer->start(1000);
 
     //Find available COM ports and display options in the PORT tab
-    connect(ui->header_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
-    connect(ui->header_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+    connect(ui->serial_port_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
+    connect(ui->serial_port_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::PortComboBoxIndexChanged);
 
     //Connect "connect button" with the port connection module so that we can connect to the motor on button press
-    connect(ui->header_connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
+    connect(ui->connect_button, SIGNAL(clicked()), iv.pcon, SLOT(ConnectMotor()));
     iv.pcon->FindPorts();
-
     //Baud Rate dropdown connect with actual baud rate for communication
-    connect(ui->header_baudrate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
+    connect(ui->serial_baud_rate_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::BaudrateComboBoxIndexChanged);
     iv.pcon->FindBaudrates();
+
+    // Center align items in selected_module_combo_box
+    // TODO: remove hardcoded example value
+    ui->selected_module_combo_box->addItem(QStringLiteral("42"));
+    for(int i = 0; i <ui->selected_module_combo_box->count(); i++){
+      ui->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
+
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
-    int index115200 = ui->header_baudrate_combo_box->findText("115200");
-    ui->header_baudrate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
+    int index115200 = ui->serial_baud_rate_combo_box->findText("115200");
+    ui->serial_baud_rate_combo_box->setCurrentIndex(index115200); //Set first shown value to 115200
     iv.pcon->BaudrateComboBoxIndexChanged(index115200); //Actually select the value as 115200
 
     //Connect a lost connection with the motor to clearing all tabs in the window
@@ -120,7 +127,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //people in the recovery tab until they recover their module or restart the control center
     //2. do this. whenever someone connects a new module (or clicks the connect button while in the recovery tab)
     //just clear out whatever metadata/files may or may not be hanging around
-    connect(ui->header_connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
+    connect(ui->connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
 
     //Set up shared icons
     icon_setup();
