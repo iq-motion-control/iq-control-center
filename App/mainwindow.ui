@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1417</width>
+    <width>1500</width>
     <height>953</height>
    </rect>
   </property>
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1366</width>
-    <height>710</height>
+    <width>1450</width>
+    <height>750</height>
    </size>
   </property>
   <property name="palette">
@@ -43,9 +43,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="font">
-    <font>
-     <family>Lato</family>
-    </font>
+    <font/>
    </property>
    <property name="mouseTracking">
     <bool>false</bool>
@@ -75,14 +73,20 @@
     <item row="1" column="0">
      <widget class="QFrame" name="list_frame">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="maximumSize">
+      <property name="minimumSize">
        <size>
         <width>275</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>285</width>
         <height>16777215</height>
        </size>
       </property>
@@ -155,7 +159,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -319,7 +322,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
            <bold>false</bold>
           </font>
@@ -372,7 +374,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -412,7 +413,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -452,7 +452,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -492,7 +491,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -529,7 +527,6 @@ QPushButton:checked {
          </property>
          <property name="font">
           <font>
-           <family>MS Shell Dlg 2</family>
            <pointsize>12</pointsize>
           </font>
          </property>
@@ -565,7 +562,7 @@ QPushButton:checked {
     <item row="2" column="0">
      <widget class="QFrame" name="status_frame">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -574,6 +571,12 @@ QPushButton:checked {
        <size>
         <width>275</width>
         <height>275</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>285</width>
+        <height>16777215</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -608,6 +611,12 @@ QLabel {
        </property>
        <item row="6" column="1">
         <widget class="QLabel" name="label_hardware_name">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -615,6 +624,12 @@ QLabel {
        </item>
        <item row="6" column="0">
         <widget class="QLabel" name="label_hardware_style">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -632,9 +647,7 @@ QLabel {
        <item row="3" column="0">
         <widget class="QLabel" name="label_firmware_build">
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string>Firmware Version</string>
@@ -666,6 +679,12 @@ QLabel {
        </item>
        <item row="7" column="1">
         <widget class="QLabel" name="label_bootloader_value">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -674,9 +693,7 @@ QLabel {
        <item row="2" column="0">
         <widget class="QLabel" name="label_gui_version">
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string>GUI Version</string>
@@ -688,10 +705,14 @@ QLabel {
        </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_firmware_build_value">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string/>
@@ -707,9 +728,7 @@ QLabel {
           </sizepolicy>
          </property>
          <property name="font">
-          <font>
-           <family>Lato</family>
-          </font>
+          <font/>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgb(60, 60, 60);
@@ -731,6 +750,12 @@ color: white</string>
        </item>
        <item row="9" column="1">
         <widget class="QLabel" name="label_upgrader_value">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -738,10 +763,14 @@ color: white</string>
        </item>
        <item row="5" column="1">
         <widget class="QLabel" name="label_firmware_name">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string/>
@@ -782,10 +811,14 @@ color: white</string>
        </item>
        <item row="2" column="1">
         <widget class="QLabel" name="label_gui_version_value">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string/>
@@ -795,9 +828,7 @@ color: white</string>
        <item row="5" column="0">
         <widget class="QLabel" name="label_firmware_2">
          <property name="font">
-          <font>
-           <family>MS Shell Dlg 2</family>
-          </font>
+          <font/>
          </property>
          <property name="text">
           <string>Firmware Style</string>
@@ -813,9 +844,7 @@ color: white</string>
     <item row="1" column="1" rowspan="2">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="font">
-       <font>
-        <family>Lato</family>
-       </font>
+       <font/>
       </property>
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
@@ -948,7 +977,7 @@ QScrollBar::handle:vertical {
        <number>0</number>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page_home">
        <property name="maximumSize">
@@ -1077,7 +1106,6 @@ QScrollBar::handle:vertical {
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
             <strikeout>false</strikeout>
             <kerning>false</kerning>
@@ -1279,7 +1307,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
             <strikeout>false</strikeout>
             <kerning>false</kerning>
@@ -1364,7 +1391,6 @@ QComboBox:on, QComboBox:off {
             <widget class="QLabel" name="default_label">
              <property name="font">
               <font>
-               <family>Lato</family>
                <pointsize>20</pointsize>
               </font>
              </property>
@@ -1424,7 +1450,7 @@ QComboBox:on, QComboBox:off {
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -1448,22 +1474,6 @@ QPushButton:hover{
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>15</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
             <widget class="QPushButton" name="import_defaults_pushbutton">
              <property name="minimumSize">
               <size>
@@ -1479,19 +1489,16 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	color:rgb(175, 175, 175);
-	background: rgb(45, 45, 45);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
+	background-color: rgb(5, 100, 145);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
 }
-
-QPushButton:hover {
-	background: rgb(50, 50, 50);
-}
-
 QPushButton:pressed {
-	background: rgb(100, 100, 100)
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
              </property>
              <property name="text">
@@ -1521,19 +1528,16 @@ QPushButton:pressed {
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	color:rgb(175, 175, 175);
-	background: rgb(20, 20, 20);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
+	background-color: rgb(5, 100, 145);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
 }
-
-QPushButton:hover {
-	background: rgb(50, 50, 50);
-}
-
 QPushButton:pressed {
-	background: rgb(100, 100, 100)
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
              </property>
              <property name="text">
@@ -1581,8 +1585,8 @@ QPushButton:pressed {
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1070</width>
-                <height>648</height>
+                <width>1143</width>
+                <height>630</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1860,7 +1864,6 @@ QPushButton:pressed {
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
            </font>
           </property>
@@ -1936,7 +1939,6 @@ QPushButton:pressed {
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
            </font>
           </property>
@@ -2203,7 +2205,6 @@ QProgressBar::chunk {background: rgb(1, 150, 250);width: 3px;margin:1;};
              </property>
              <property name="font">
               <font>
-               <family>Lato</family>
                <pointsize>16</pointsize>
               </font>
              </property>
@@ -2239,13 +2240,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_upgrade_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2276,9 +2280,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2303,18 +2307,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2341,9 +2345,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2368,18 +2372,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2406,9 +2410,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2433,18 +2437,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -2462,13 +2466,16 @@ QPushButton:pressed {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2486,13 +2493,16 @@ QPushButton:pressed {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2504,13 +2514,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_boot_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2522,13 +2535,16 @@ QPushButton:pressed {
                <widget class="QPushButton" name="flash_app_button">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
 QPushButton:pressed {
 	background-color: rgb(3, 80, 117);
 	color: rgb(0, 170, 255);
+}
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
 }</string>
                 </property>
                 <property name="text">
@@ -2622,7 +2638,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
            </font>
           </property>
@@ -3004,30 +3019,25 @@ li.checked::marker { content: &quot;\2612&quot;; }
              </property>
              <property name="font">
               <font>
-               <family>Lato</family>
                <pointsize>16</pointsize>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">QFrame#boot_mode_frame {
-	border: 0px;
+              <string notr="true">QFrame {
+	border: none;
 }
-
 QPushButton {
-	background: rgb(60, 60, 60);
-	height: 30px;
-	border: 0px solid rgb(175, 175, 175);
-	border-radius: 8px
+	background-color: rgb(5, 100, 145);
+	border-radius: 10px;
+	color: rgb(227, 227, 227);
 }
-
-QPushButton:hover {
-	background: rgb(50, 50, 50);
-}
-
 QPushButton:pressed {
-	background: rgb(100, 100, 100)
+	background-color: rgb(3, 80, 117);
+	color: rgb(0, 170, 255);
 }
-</string>
+QPushButton:hover{
+	border: 1.5px solid rgb(5, 120, 189);
+}</string>
              </property>
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -3041,7 +3051,7 @@ QPushButton:pressed {
                 <property name="minimumSize">
                  <size>
                   <width>150</width>
-                  <height>0</height>
+                  <height>30</height>
                  </size>
                 </property>
                 <property name="palette">
@@ -3059,9 +3069,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3086,18 +3096,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3124,9 +3134,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3151,18 +3161,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3189,9 +3199,9 @@ QPushButton:pressed {
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3216,18 +3226,18 @@ QPushButton:pressed {
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>3</red>
-                      <green>149</green>
-                      <blue>218</blue>
+                      <red>5</red>
+                      <green>100</green>
+                      <blue>145</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -3245,7 +3255,7 @@ QPushButton:pressed {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3267,12 +3277,12 @@ QPushButton:hover{
                 <property name="minimumSize">
                  <size>
                   <width>150</width>
-                  <height>0</height>
+                  <height>30</height>
                  </size>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3333,7 +3343,6 @@ QPushButton:hover{
           </property>
           <property name="font">
            <font>
-            <family>Lato</family>
             <pointsize>24</pointsize>
             <strikeout>false</strikeout>
             <kerning>false</kerning>
@@ -3576,7 +3585,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3614,7 +3623,7 @@ QPushButton:hover{
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
-	background-color: rgb(3, 115, 167);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3707,7 +3716,7 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -3742,13 +3751,13 @@ QPushButton:hover{
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>90</height>
+        <height>100</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>100</height>
+        <height>110</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -3971,15 +3980,21 @@ QPushButton:checked {
        <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
         <widget class="QGroupBox" name="module_connections_group_box">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>480</width>
            <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>480</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -4009,7 +4024,7 @@ QGroupBox:title{
             <item>
              <widget class="QLabel" name="detected_modules_label">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -4034,7 +4049,7 @@ QGroupBox:title{
             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QLabel" name="detected_modules_value">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -4096,7 +4111,7 @@ QGroupBox:title{
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4249,7 +4264,7 @@ QPushButton:hover{
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4503,19 +4518,19 @@ QGroupBox:title{
             </property>
             <property name="minimumSize">
              <size>
-              <width>75</width>
+              <width>95</width>
               <height>30</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>75</width>
+              <width>95</width>
               <height>30</height>
              </size>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: rgb(3, 149, 218);
+	background-color: rgb(5, 100, 145);
 	border-radius: 10px;
 	color: rgb(227, 227, 227);
 }
@@ -4558,8 +4573,8 @@ QPushButton:hover{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1417</width>
-     <height>21</height>
+     <width>1500</width>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
