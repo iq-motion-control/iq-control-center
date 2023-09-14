@@ -32,6 +32,8 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include "indication_handler.hpp"
+
 #include <QStandardPaths>
 
 #include <QMetaEnum>
@@ -300,6 +302,8 @@ class PortConnection : public QObject {
    */
   void HandleFindingCorrectMotorToRecover(QString detected_module);
 
+  std::string GetClentsFolderPath();
+
   /**
    * @brief ConnectMotor populates all tabs based on the information gotten from the motor
    */
@@ -330,6 +334,8 @@ class PortConnection : public QObject {
   void ModuleIdComboBoxIndexChanged(int index);
 
   void ClearFirmwareChoices();
+
+  void PlayIndication();
 
  signals:
 
@@ -382,6 +388,8 @@ class PortConnection : public QObject {
 
   uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
   uint8_t num_modules_discovered_; //keep track of the number we've actually found
+
+  IndicationHandler indication_handle_;
 };
 
 #endif  // CONNECTION_HPP

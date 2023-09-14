@@ -1,14 +1,16 @@
-[  //buzzer_control_client 
-  {
+[  //buzzer_control_client
+{
     "descriptor":"buzzer_control_client",
-    "Entries": 
-		[
-			{"type_idn":61, "descriptor":"ctrl_mode",  "sub_idn":0, "format":"b", "unit":""     },
-			{"type_idn":61, "descriptor":"ctrl_brake", "sub_idn":1, "format":"n", "unit":""     },
-			{"type_idn":61, "descriptor":"ctrl_coast", "sub_idn":2, "format":"n", "unit":""     },
-			{"type_idn":61, "descriptor":"ctrl_note",  "sub_idn":3, "format":"n", "unit":"pwm"  },
-			{"type_idn":61, "descriptor":"volume",     "sub_idn":4, "format":"f", "unit":"V"    },
-			{"type_idn":61, "descriptor":"period",     "sub_idn":5, "format":"I", "unit":"rad/s"}
-		]
-  }
+            "Entries":
+            [
+                {"type_idn":61, "descriptor":"ctrl_mode",  "sub_idn":  0, "format":"b", "unit": "enum"       },
+                {"type_idn":61, "descriptor":"ctrl_brake", "sub_idn":  1, "format":"n",  "unit": ""           },
+                {"type_idn":61, "descriptor":"ctrl_coast", "sub_idn":  2, "format":"n",  "unit": ""           },
+                {"type_idn":61, "descriptor":"ctrl_note",  "sub_idn":  3, "format":"n",  "unit": ""           },
+                {"type_idn":61, "descriptor":"volume_max", "sub_idn":  4, "format":"f", "unit": "V"          },
+                {"type_idn":61, "descriptor":"hz",         "sub_idn":  5, "format":"H", "unit": "Hz"         },
+                {"type_idn":61, "descriptor":"volume",     "sub_idn":  6, "format":"B", "unit": "(0-127)"    },
+                {"type_idn":61, "descriptor":"duration",   "sub_idn":  7, "format":"H", "unit": "ms"         }
+            ]
+}
 ]

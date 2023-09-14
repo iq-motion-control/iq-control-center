@@ -35,7 +35,9 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :
   ser_(nullptr),
   hardware_str_(HARDWARE_STRING),
   electronics_str_(ELECTRONICS_STRING),
-  num_modules_discovered_(0) {
+  num_modules_discovered_(0),
+  indication_handle_(&ser_, clients_folder_path_)
+{
 
       SetPortConnection(0);
 
@@ -360,13 +362,22 @@ void PortConnection::DetectNumberOfModulesOnBus(){
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
 
       if(num_modules_discovered_ > 0){
+        //Update system control to the value stored in detected_module_ids_. This may be 0
+        //if you are using old firmware with a non-0 module id
         sys_map_["system_control_client"]->UpdateClientObjId(detected_module_ids_[0]);
+
+        //The buzzer gets the actual module ID, not necessarily the same value that is stored in detected_module_ids_.
+        //With old firmware the stored value would be 0 (for system control 0), but we actually want to set
+        //buzzer's ID to the stored module ID which is in the combo box
+        indication_handle_.UpdateBuzzerObjId(ui_->selected_module_combo_box->currentText().toUInt());
+
         //We've found the modules, connect to the lowest module id
         ConnectMotor();
 
       }else{
         //we didn't find anything, so reset to default, and close the port
         sys_map_["system_control_client"]->UpdateClientObjId(DEFAULT_OBJECT_ID);
+        indication_handle_.UpdateBuzzerObjId(DEFAULT_OBJECT_ID);
         ser_.ser_port_->close();
       }
 
@@ -378,6 +389,11 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 void PortConnection::ModuleIdComboBoxIndexChanged(int index){
     uint8_t obj_id = detected_module_ids_[index];
     sys_map_["system_control_client"]->UpdateClientObjId(obj_id);
+
+    //The buzzer gets the actual module ID, not necessarily the same value that is stored in detected_module_ids_.
+    //With old firmware the stored value would be 0 (for system control 0), but we actually want to set
+    //buzzer's ID to the stored module ID which is in the combo box
+    indication_handle_.UpdateBuzzerObjId(ui_->selected_module_combo_box->currentText().toUInt());
 
     uint8_t temp_id = 0;
     //Let's check that it's there. if not, don't try to connect
@@ -896,4 +912,8 @@ bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
     int already_exists = ui_->selected_module_combo_box->findData(module_id);
 
     return already_exists > -1;
+}
+
+void PortConnection::PlayIndication(){
+    indication_handle_.PlayIndication();
 }

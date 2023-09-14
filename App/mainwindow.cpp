@@ -135,6 +135,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //just clear out whatever metadata/files may or may not be hanging around
     connect(ui->connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
 
+    connect(ui->identify_button, SIGNAL(clicked()), iv.pcon, SLOT(PlayIndication()));
+
     //Set up shared icons
     icon_setup();
 
