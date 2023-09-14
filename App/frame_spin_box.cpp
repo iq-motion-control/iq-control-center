@@ -123,7 +123,7 @@ void FrameSpinBox::SaveValue() {
     try {
 
       //If this is the Module ID Spin Box, then we need to make sure that no one else already has that value
-      if(client_entry_.first == "Module ID" && iv.pcon->ModuleIdAlreadyExists(value_)){
+      if(client_entry_.second->sub_idn_ == MODULE_ID_SUB_ID && client_entry_.second->type_idn_ == MODULE_ID_TYPE_ID && iv.pcon->ModuleIdAlreadyExists(value_)){
           QString error_msg("Module ID already in use on this bus, please select a different value");
           iv.pcon->AddToLog(error_msg);
           throw QString(error_msg);

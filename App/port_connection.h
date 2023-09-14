@@ -66,6 +66,9 @@
 #define UPGRADE_MAJOR_SHIFT 14
 #define UPGRADE_MINOR_SHIFT 7
 
+#define MODULE_ID_SUB_ID 14
+#define MODULE_ID_TYPE_ID 5
+
 #define HARDWARE_STRING "connected module has hardware type: "
 #define ELECTRONICS_STRING "connected module has electronics type: "
 

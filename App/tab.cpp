@@ -54,7 +54,8 @@ void Tab::CreateFrames()
       //We need to check to see if this is the Module ID entry. if it is,
       //Check to see if the port connection obj_id_ is different from sys_map_ obj_id. if it is
       //Default to making this client's object id = 0 since we know this is an old firmware module
-      if(client_entry_descriptor == "Module ID"){
+
+      if(client_entry.second->sub_idn_ == MODULE_ID_SUB_ID && client_entry.second->type_idn_ == MODULE_ID_TYPE_ID){
         entry_needs_reboot = true;
 
         if(iv.pcon->GetSysMapObjId() != client_entry.second->obj_idn_){
