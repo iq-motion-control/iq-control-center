@@ -362,8 +362,15 @@ void PortConnection::DetectNumberOfModulesOnBus(){
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
 
       if(num_modules_discovered_ > 0){
+        //Update system control to the value stored in detected_module_ids_. This may be 0
+        //if you are using old firmware with a non-0 module id
         sys_map_["system_control_client"]->UpdateClientObjId(detected_module_ids_[0]);
+
+        //The buzzer gets the actual module ID, not necessarily the same value that is stored in detected_module_ids_.
+        //With old firmware the stored value would be 0 (for system control 0), but we actually want to set
+        //buzzer's ID to the stored module ID which is in the combo box
         indication_handle_.UpdateBuzzerObjId(ui_->selected_module_combo_box->currentText().toUInt());
+
         //We've found the modules, connect to the lowest module id
         ConnectMotor();
 
