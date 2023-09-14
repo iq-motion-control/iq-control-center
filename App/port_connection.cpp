@@ -35,7 +35,8 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :
   ser_(nullptr),
   hardware_str_(HARDWARE_STRING),
   electronics_str_(ELECTRONICS_STRING),
-  num_modules_discovered_(0),  indication_handle_(&ser_, clients_folder_path_)
+  num_modules_discovered_(0),
+  indication_handle_(&ser_, clients_folder_path_)
 {
 
       SetPortConnection(0);
