@@ -16,6 +16,9 @@ class IndicationHandler : public QObject {
   void UpdateBuzzerObjId(uint8_t obj_id);
 
  private:
+  const int MODULE_BUZZER_IN_NOTE = 2;
+  const int MODULE_BUZZER_IN_NO_CHANGE = -1;
+
   //notes that we can use (rounded...so they're not exactly the right note)
   const uint16_t c = (uint16_t)floor(261.6 * 2);
   const uint16_t low_c = (uint16_t)floor(261.6);

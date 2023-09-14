@@ -24,7 +24,7 @@ void IndicationHandler::PlayIndication(){
 }
 
 void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
-  int response = 25;
+  int response = MODULE_BUZZER_IN_NOTE;
 
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "hz", frequency);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "duration", duration);
@@ -32,7 +32,7 @@ void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "ctrl_note");
 
   //Keep checking for when the current note is done playing
-  while(response > -1){
+  while(response > MODULE_BUZZER_IN_NO_CHANGE){
     GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, response);
   }
 }
