@@ -542,7 +542,7 @@ void PortConnection::DisplayRecoveryMessage(){
     QMessageBox msgBox;
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
-        "It appears that a connected motor is in Recovery mode. If you would like to recover this module now, "
+        "It appears that a connected module is in Recovery Mode. If you would like to recover this module now, "
         "plase select Recover Now. Otherwise, select Continue. You will be unable to communicate with "
         "the module in recovery mode until it is recovered. To recover the module, please re-run DETECT, and select "
         "Recover Now.");
