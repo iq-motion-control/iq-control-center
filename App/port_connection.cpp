@@ -228,11 +228,6 @@ void PortConnection::ConnectMotor(){
 
   int firmware_valid = 0;
 
-  //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
-  if(CheckIfInBootLoader()){
-    DisplayRecoveryMessage();
-  }
-
   //Check if the firmware is valid
   firmware_valid = GetFirmwareValid();
 
@@ -310,6 +305,24 @@ void PortConnection::UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys
 
       ui_->selected_module_combo_box->addItem(module_id_str, detected_module_ids_[i]);
       AddToLog("Found module with Module ID: " + module_id_str);
+    }
+}
+
+void PortConnection::DetectModulesClickedCallback(){
+    //If someone clicked detect, and the serial port is actually connected,
+    //then call DetectNumberOfModulesOnBus
+    if(connection_state_ == 1){
+
+        //we clicked on detect, we should do another check to see if anyone is in recovery
+        if(CheckIfInBootLoader()){
+            DisplayRecoveryMessage();
+        }
+
+        DetectNumberOfModulesOnBus();
+    }else{
+        QString error = "Could not detect modules. No serial port is connected";
+        AddToLog(error);
+        ui_->header_error_label->setText(error);
     }
 }
 
@@ -407,6 +420,8 @@ void PortConnection::ModuleIdComboBoxIndexChanged(int index){
 }
 
 void PortConnection::ConnectToSerialPort() {
+  bool found_module_in_recovery = false;
+
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
       QString message = "Detecting Modules . . . ";
@@ -426,12 +441,17 @@ void PortConnection::ConnectToSerialPort() {
         AddToLog("Successfully opened serial port: " + selected_port_name_);
 
         //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
-        if(CheckIfInBootLoader()){
-            DisplayRecoveryMessage();
-        }
+        //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
+        //We should go through and detect anyone we can who is not in recovery so people can better
+        //know who they're recovering
+        found_module_in_recovery = CheckIfInBootLoader();
 
         //We were able to connect to the serial port, now let's try and find some modules
         DetectNumberOfModulesOnBus();
+
+        if(found_module_in_recovery){
+            DisplayRecoveryMessage();
+        }
 
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
@@ -523,8 +543,9 @@ void PortConnection::DisplayRecoveryMessage(){
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
         "It appears that a connected motor is in Recovery mode. If you would like to recover this module now, "
-        "please disconnect all other modules from the bus, and select Recover Now. Otherwise, please disconnect the "
-        "module in recovery mode from the bus, and then select Continue");
+        "plase select Recover Now. Otherwise, select Continue. You will be unable to communicate with "
+        "the module in recovery mode until it is recovered. To recover the module, please re-run DETECT, and select "
+        "Recover Now.");
 
     QAbstractButton * continueButton = msgBox.addButton("Continue", QMessageBox::YesRole);
     QAbstractButton * recoverButton = msgBox.addButton("Recover Now", QMessageBox::NoRole);
@@ -536,6 +557,10 @@ void PortConnection::DisplayRecoveryMessage(){
       //We don't want to close the port now if we're ignoring the recovery guy
       ser_.ser_port_->close();
 
+      //kill our knowledge of anything else on the bus
+      ClearDetections();
+
+      //Don't let people leave
       DisableAllButtons();
 
       //Check to see if we know the type of motor from a previous connection in this session

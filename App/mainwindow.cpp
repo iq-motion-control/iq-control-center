@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->selected_module_combo_box, QOverload<int>::of(&QComboBox::activated), iv.pcon,
             &PortConnection::ModuleIdComboBoxIndexChanged);
     //Connect the DETECT button with calling the detect modules on the bus function
-    connect(ui->detect_button, SIGNAL(clicked()), iv.pcon, SLOT(DetectNumberOfModulesOnBus()));
+    connect(ui->detect_button, SIGNAL(clicked()), iv.pcon, SLOT(DetectModulesClickedCallback()));
 
     //Because we set motors to an initial baud rate of 115200, we should display that as the default value in order
     //to reduce the number of clicks the user has to make in order to connect with the motor
