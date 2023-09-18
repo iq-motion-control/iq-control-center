@@ -1586,7 +1586,7 @@ QPushButton:hover{
                 <x>0</x>
                 <y>0</y>
                 <width>1143</width>
-                <height>630</height>
+                <height>631</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1838,8 +1838,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1913,8 +1913,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2665,8 +2665,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
              </widget>
@@ -4064,7 +4064,7 @@ QGroupBox:title{
                <string notr="true">color: rgb(175, 175, 175)</string>
               </property>
               <property name="text">
-               <string>4</string>
+               <string/>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -4574,7 +4574,7 @@ QPushButton:hover{
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">

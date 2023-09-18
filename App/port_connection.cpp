@@ -306,6 +306,11 @@ void PortConnection::UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys
       ui_->selected_module_combo_box->addItem(module_id_str, detected_module_ids_[i]);
       AddToLog("Found module with Module ID: " + module_id_str);
     }
+
+    // Center align items in selected_module_combo_box
+    for(int i = 0; i < ui_->selected_module_combo_box->count(); i++){
+      ui_->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
 }
 
 void PortConnection::DetectModulesClickedCallback(){
