@@ -317,12 +317,6 @@ void PortConnection::DetectModulesClickedCallback(){
     //If someone clicked detect, and the serial port is actually connected,
     //then call DetectNumberOfModulesOnBus
     if(connection_state_ == 1){
-
-        //we clicked on detect, we should do another check to see if anyone is in recovery
-        if(CheckIfInBootLoader()){
-            DisplayRecoveryMessage();
-        }
-
         DetectNumberOfModulesOnBus();
     }else{
         QString error = "Could not detect modules. No serial port is connected";
@@ -337,6 +331,14 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
   AddToLog("\n");
   AddToLog("Detecting modules on the bus");
+
+  //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
+  //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
+  //We should go through and detect anyone we can who is not in recovery so people can better
+  //know who they're recovering
+  if(CheckIfInBootLoader()){
+      DisplayRecoveryMessage();
+  }
 
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
@@ -445,18 +447,8 @@ void PortConnection::ConnectToSerialPort() {
 
         AddToLog("Successfully opened serial port: " + selected_port_name_);
 
-        //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
-        //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
-        //We should go through and detect anyone we can who is not in recovery so people can better
-        //know who they're recovering
-        found_module_in_recovery = CheckIfInBootLoader();
-
         //We were able to connect to the serial port, now let's try and find some modules
         DetectNumberOfModulesOnBus();
-
-        if(found_module_in_recovery){
-            DisplayRecoveryMessage();
-        }
 
       } catch (const QString &e) {
         ui_->header_error_label->setText(e);
