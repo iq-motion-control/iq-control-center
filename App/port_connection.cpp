@@ -945,7 +945,10 @@ uint8_t PortConnection::GetSysMapObjId(){
 }
 
 bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
-    int already_exists = ui_->selected_module_combo_box->findData(module_id);
+    //findText goes through all of the labels stored in the combo box
+    //Looking for labels rather than the data automatically checks the old firmware case
+    //returns -1 if it's not there
+    int already_exists = ui_->selected_module_combo_box->findText(QString::number(module_id));
 
     return already_exists > -1;
 }
