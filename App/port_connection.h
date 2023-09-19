@@ -316,8 +316,7 @@ class PortConnection : public QObject {
   bool ModuleIdAlreadyExists(uint8_t module_id);
 
  public slots:
-
-  void DetectNumberOfModulesOnBus();
+  void DetectModulesClickedCallback();
 
   void ConnectToSerialPort();
 
@@ -348,6 +347,7 @@ class PortConnection : public QObject {
   void LostConnection();
 
  private:
+  void DetectNumberOfModulesOnBus();
   void DisplayRecoveryMessage();
   void DisplayInvalidFirmwareMessage();
   void GetDeviceInformationResponses();

@@ -164,8 +164,8 @@ void Firmware::SelectFirmwareClicked() {
 
         //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
         //Change the order of the tr() to change the default
-        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
-                                                          tr("Binary (*.bin) ;; Zip (*.zip)"));
+        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Archive or Binary"), desktop_dir,
+                                                          tr("  Zip (*.zip) ;; Binary (*.bin)"));
 
         iv.pcon->AddToLog("Firmware file selected: " + firmware_bin_path_);
 
