@@ -329,6 +329,8 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   uint8_t temp_obj_id = 0;
   uint8_t module_id_with_system_control_zero = NO_OLD_MODULES_FOUND;
 
+  bool found_in_bootloader = false;
+
   AddToLog("\n");
   AddToLog("Detecting modules on the bus");
 
@@ -336,9 +338,7 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
   //We should go through and detect anyone we can who is not in recovery so people can better
   //know who they're recovering
-  if(CheckIfInBootLoader()){
-      DisplayRecoveryMessage();
-  }
+  found_in_bootloader = CheckIfInBootLoader();
 
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
@@ -380,6 +380,21 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
+
+      if(found_in_bootloader){
+        //Every second, the TimerTimeout function gets called.
+        //in the case that we are re-detecting to deal with a recovery module later
+        //we need to say that connection_state_ is false until we've dealt with the popup
+        //If we don't, then the timer will cause us to try and talk to another module
+        //which it can't...which will cause an attempt to reconnect, which will pop up a second
+        //recovery message.
+        bool temp_connection = connection_state_;
+        connection_state_ = 0;
+
+        DisplayRecoveryMessage();
+
+        connection_state_ = temp_connection;
+      }
 
       if(num_modules_discovered_ > 0){
         //Update system control to the value stored in detected_module_ids_. This may be 0
@@ -427,8 +442,6 @@ void PortConnection::ModuleIdComboBoxIndexChanged(int index){
 }
 
 void PortConnection::ConnectToSerialPort() {
-  bool found_module_in_recovery = false;
-
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
       QString message = "Detecting Modules . . . ";
