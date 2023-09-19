@@ -464,6 +464,7 @@ void PortConnection::ConnectToSerialPort() {
         DetectNumberOfModulesOnBus();
 
       } catch (const QString &e) {
+        ClearDetections();
         ui_->header_error_label->setText(e);
         delete ser_.ser_port_;
         SetPortConnection(0);
