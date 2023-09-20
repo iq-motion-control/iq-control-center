@@ -1838,8 +1838,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1913,8 +1913,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2665,8 +2665,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -4046,7 +4046,7 @@ QGroupBox:title{
               </property>
              </widget>
             </item>
-            <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+            <item>
              <widget class="QLabel" name="detected_modules_value">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -4064,7 +4064,7 @@ QGroupBox:title{
                <string notr="true">color: rgb(175, 175, 175)</string>
               </property>
               <property name="text">
-               <string/>
+               <string>0</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
