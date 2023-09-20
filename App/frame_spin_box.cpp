@@ -143,16 +143,7 @@ void FrameSpinBox::SaveValue() {
 
       //If we need to restart when we change this parameter, then make the user restart
       if(requires_restart_){
-        iv.pcon->RebootMotor();
-
-        //Pop up a message saying what's going on
-        //Give the user the option to reboot the module after setting with defaults.
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Reboot Required");
-        QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
-
-        msgBox.setText(text);
-        msgBox.exec();
+        iv.pcon->HandleRestartNeeded();
       }
 
     } catch (const QString &e) {

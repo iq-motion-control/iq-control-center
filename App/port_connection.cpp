@@ -36,7 +36,8 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :
   hardware_str_(HARDWARE_STRING),
   electronics_str_(ELECTRONICS_STRING),
   num_modules_discovered_(0),
-  indication_handle_(&ser_, clients_folder_path_)
+  indication_handle_(&ser_, clients_folder_path_),
+  perform_timer_callback_(true)
 {
 
       SetPortConnection(0);
@@ -821,7 +822,7 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 }
 
 void PortConnection::TimerTimeout() {
-  if (connection_state_ == 1) {
+  if (connection_state_ == 1 && perform_timer_callback_) {
     uint8_t obj_id;
     //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
@@ -840,6 +841,7 @@ void PortConnection::TimerTimeout() {
             DetectNumberOfModulesOnBus();
 
         }else{
+          ClearDetections();
           delete ser_.ser_port_;
           SetPortConnection(0);
           QString error_message = "Serial Port Disconnected";
@@ -934,6 +936,9 @@ void PortConnection::GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * u
 void PortConnection::RebootMotor(){
     AddToLog("rebooting module\n");
     sys_map_["system_control_client"]->Set(ser_, std::string("reboot_program"));
+
+    //Don't wait for anything. do this now!
+    ser_.SendNow();
 }
 
 std::map<std::string, Client *> PortConnection::GetSystemControlMap(){
@@ -955,4 +960,43 @@ bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
 
 void PortConnection::PlayIndication(){
     indication_handle_.PlayIndication();
+}
+
+void PortConnection::HandleRestartNeeded(){
+    bool should_redetect = false;
+
+    //Don't let the timer timeout try and talk to us while we're doing this
+    perform_timer_callback_ = false;
+
+    RebootMotor();
+
+    //Pop up a message saying what's going on
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Reboot Required");
+
+     QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+
+     //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+     //if there's no one left, then we should just give up and close the port
+     if(num_modules_discovered_ > 1){
+
+        //We've got others here, make sure to redetect
+        should_redetect = true;
+
+        //pop up a message for them telling what just happened
+        text = text + " We will automatically rescan the network.";
+
+     }
+
+     msgBox.setText(text);
+     msgBox.exec();
+
+     if(should_redetect){
+         //Find who's here now
+         DetectNumberOfModulesOnBus();
+     }
+
+     //Let the timer callback work again
+     perform_timer_callback_ = true;
 }

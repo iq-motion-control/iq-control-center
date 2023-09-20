@@ -315,6 +315,10 @@ class PortConnection : public QObject {
 
   bool ModuleIdAlreadyExists(uint8_t module_id);
 
+  void ClearDetections();
+
+  void HandleRestartNeeded();
+
  public slots:
   void DetectModulesClickedCallback();
 
@@ -355,7 +359,6 @@ class PortConnection : public QObject {
   void GetBootAndUpgradeInformation();
 
   void UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys_control);
-  void ClearDetections();
 
   uint32_t GetLinesInLog();
 
@@ -390,6 +393,8 @@ class PortConnection : public QObject {
   uint8_t num_modules_discovered_; //keep track of the number we've actually found
 
   IndicationHandler indication_handle_;
+
+  bool perform_timer_callback_;
 };
 
 #endif  // CONNECTION_HPP
