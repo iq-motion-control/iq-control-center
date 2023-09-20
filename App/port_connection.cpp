@@ -1001,6 +1001,11 @@ void PortConnection::HandleRestartNeeded(){
      msgBox.exec();
 
      if(should_redetect){
+         //Stop here for 2 seconds to make sure everyone is rebooted!
+         QTime end_pause = QTime::currentTime().addSecs(2);
+         while (QTime::currentTime() < end_pause)
+             QCoreApplication::processEvents(QEventLoop::AllEvents);
+
          //Find who's here now
          DetectNumberOfModulesOnBus();
      }
