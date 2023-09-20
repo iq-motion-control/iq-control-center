@@ -352,7 +352,7 @@ class PortConnection : public QObject {
 
  private:
   void DetectNumberOfModulesOnBus();
-  void DisplayRecoveryMessage();
+  bool DisplayRecoveryMessage();
   void DisplayInvalidFirmwareMessage();
   void GetDeviceInformationResponses();
   int GetFirmwareValid();

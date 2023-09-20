@@ -392,9 +392,11 @@ void PortConnection::DetectNumberOfModulesOnBus(){
         bool temp_connection = connection_state_;
         connection_state_ = 0;
 
-        DisplayRecoveryMessage();
-
-        connection_state_ = temp_connection;
+        //If we're trying to recover right now, then we should stop here!
+        if(DisplayRecoveryMessage()){
+            connection_state_ = temp_connection;
+            return;
+        }
       }
 
       if(num_modules_discovered_ > 0){
@@ -547,7 +549,7 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type){
     return "";
 }
 
-void PortConnection::DisplayRecoveryMessage(){
+bool PortConnection::DisplayRecoveryMessage(){
 
     recovery_port_name_ = selected_port_name_;
 
@@ -598,10 +600,16 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->stackedWidget->setCurrentIndex(6);
       AddToLog("motor connected in recovery mode\n");
 
+      return true;
+
     }else{
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(0);
+
+      return false;
     }
+
+    return false;
 }
 
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
