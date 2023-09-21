@@ -530,6 +530,9 @@ bool Firmware::BootMode() {
         //        QCoreApplication::processEvents();
       }
 
+      //We need to kill our connection, so we should also kill our known detections
+      iv.pcon->ClearDetections();
+
       // delete and unconnects port
       delete ser->ser_port_;
       iv.pcon->SetPortConnection(0);

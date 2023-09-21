@@ -36,7 +36,8 @@ PortConnection::PortConnection(Ui::MainWindow *user_int) :
   hardware_str_(HARDWARE_STRING),
   electronics_str_(ELECTRONICS_STRING),
   num_modules_discovered_(0),
-  indication_handle_(&ser_, clients_folder_path_)
+  indication_handle_(&ser_, clients_folder_path_),
+  perform_timer_callback_(true)
 {
 
       SetPortConnection(0);
@@ -329,6 +330,8 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   uint8_t temp_obj_id = 0;
   uint8_t module_id_with_system_control_zero = NO_OLD_MODULES_FOUND;
 
+  bool found_in_bootloader = false;
+
   AddToLog("\n");
   AddToLog("Detecting modules on the bus");
 
@@ -336,9 +339,7 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
   //We should go through and detect anyone we can who is not in recovery so people can better
   //know who they're recovering
-  if(CheckIfInBootLoader()){
-      DisplayRecoveryMessage();
-  }
+  found_in_bootloader = CheckIfInBootLoader();
 
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
@@ -380,6 +381,23 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
+
+      if(found_in_bootloader){
+        //Every second, the TimerTimeout function gets called.
+        //in the case that we are re-detecting to deal with a recovery module later
+        //we need to say that connection_state_ is false until we've dealt with the popup
+        //If we don't, then the timer will cause us to try and talk to another module
+        //which it can't...which will cause an attempt to reconnect, which will pop up a second
+        //recovery message.
+        bool temp_connection = connection_state_;
+        connection_state_ = 0;
+
+        //If we're trying to recover right now, then we should stop here!
+        if(DisplayRecoveryMessage()){
+            connection_state_ = temp_connection;
+            return;
+        }
+      }
 
       if(num_modules_discovered_ > 0){
         //Update system control to the value stored in detected_module_ids_. This may be 0
@@ -427,8 +445,6 @@ void PortConnection::ModuleIdComboBoxIndexChanged(int index){
 }
 
 void PortConnection::ConnectToSerialPort() {
-  bool found_module_in_recovery = false;
-
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
       QString message = "Detecting Modules . . . ";
@@ -451,6 +467,7 @@ void PortConnection::ConnectToSerialPort() {
         DetectNumberOfModulesOnBus();
 
       } catch (const QString &e) {
+        ClearDetections();
         ui_->header_error_label->setText(e);
         delete ser_.ser_port_;
         SetPortConnection(0);
@@ -532,7 +549,7 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type){
     return "";
 }
 
-void PortConnection::DisplayRecoveryMessage(){
+bool PortConnection::DisplayRecoveryMessage(){
 
     recovery_port_name_ = selected_port_name_;
 
@@ -583,10 +600,16 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->stackedWidget->setCurrentIndex(6);
       AddToLog("motor connected in recovery mode\n");
 
+      return true;
+
     }else{
       ui_->pushButton_home->setChecked(true);
       ui_->stackedWidget->setCurrentIndex(0);
+
+      return false;
     }
+
+    return false;
 }
 
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
@@ -807,7 +830,7 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 }
 
 void PortConnection::TimerTimeout() {
-  if (connection_state_ == 1) {
+  if (connection_state_ == 1 && perform_timer_callback_) {
     uint8_t obj_id;
     //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
@@ -826,6 +849,7 @@ void PortConnection::TimerTimeout() {
             DetectNumberOfModulesOnBus();
 
         }else{
+          ClearDetections();
           delete ser_.ser_port_;
           SetPortConnection(0);
           QString error_message = "Serial Port Disconnected";
@@ -920,6 +944,9 @@ void PortConnection::GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * u
 void PortConnection::RebootMotor(){
     AddToLog("rebooting module\n");
     sys_map_["system_control_client"]->Set(ser_, std::string("reboot_program"));
+
+    //Don't wait for anything. do this now!
+    ser_.SendNow();
 }
 
 std::map<std::string, Client *> PortConnection::GetSystemControlMap(){
@@ -931,11 +958,58 @@ uint8_t PortConnection::GetSysMapObjId(){
 }
 
 bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
-    int already_exists = ui_->selected_module_combo_box->findData(module_id);
+    //findText goes through all of the labels stored in the combo box
+    //Looking for labels rather than the data automatically checks the old firmware case
+    //returns -1 if it's not there
+    int already_exists = ui_->selected_module_combo_box->findText(QString::number(module_id));
 
     return already_exists > -1;
 }
 
 void PortConnection::PlayIndication(){
     indication_handle_.PlayIndication();
+}
+
+void PortConnection::HandleRestartNeeded(){
+    bool should_redetect = false;
+
+    //Don't let the timer timeout try and talk to us while we're doing this
+    perform_timer_callback_ = false;
+
+    RebootMotor();
+
+    //Pop up a message saying what's going on
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Reboot Required");
+
+     QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+
+     //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+     //if there's no one left, then we should just give up and close the port
+     if(num_modules_discovered_ > 1){
+
+        //We've got others here, make sure to redetect
+        should_redetect = true;
+
+        //pop up a message for them telling what just happened
+        text = text + " We will automatically rescan the network.";
+
+     }
+
+     msgBox.setText(text);
+     msgBox.exec();
+
+     if(should_redetect){
+         //Stop here for 2 seconds to make sure everyone is rebooted!
+         QTime end_pause = QTime::currentTime().addSecs(2);
+         while (QTime::currentTime() < end_pause)
+             QCoreApplication::processEvents(QEventLoop::AllEvents);
+
+         //Find who's here now
+         DetectNumberOfModulesOnBus();
+     }
+
+     //Let the timer callback work again
+     perform_timer_callback_ = true;
 }

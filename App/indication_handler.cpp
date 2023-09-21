@@ -2,6 +2,7 @@
 #include "indication_handler.hpp"
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
+#include "main.h"
 
 #include <QTime>
 #include <QTimer>
@@ -14,7 +15,7 @@ IndicationHandler::IndicationHandler(QSerialInterface * ser, std::string path_to
 }
 
 void IndicationHandler::PlayIndication(){
-  if(serial_connection_->ser_port_->isOpen()){
+  if(iv.pcon->GetConnectionState()){
     for(uint8_t i = 0; i < sizeof(indication_notes)/sizeof(indication_notes[0]); i++){
       PlayNote(indication_notes[i], indication_durations[i]);
     }
