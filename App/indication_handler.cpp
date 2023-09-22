@@ -3,6 +3,9 @@
 #include "IQ_api/client_helpers.hpp"
 #include "main.h"
 #include <QDateTime>
+#include <QDebug>
+#include <QTimer>
+#include <QThread>
 
 IndicationHandler::IndicationHandler(QSerialInterface * ser, std::string path_to_clients) :
     serial_connection_(ser),
@@ -22,32 +25,39 @@ void IndicationHandler::PlayIndication(){
 }
 
 void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
-  int current_state = MODULE_BUZZER_IN_NO_CHANGE;
+  int current_state;
 
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "hz", frequency);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "duration", duration);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "volume", 70);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "ctrl_note");
 
-  // First check if the module's buzzer state is "in note" meaning the song has begun playing
-  qint64 timeout = 1; // 1 second timeout while waiting for response from module to prevent Control Center from waiting indefinitely for the module's response
-  current_state = CheckBuzzerState(current_state, MODULE_BUZZER_IN_NO_CHANGE, timeout);
+  serial_connection_->SendNow(); // Use SendNow() as opposed to GetEntryReply() to immediately send the Set commands
 
-  // Keep checking for when the current note is done playing
-  CheckBuzzerState(current_state, MODULE_BUZZER_IN_NOTE, timeout);
+  // First check if the module's buzzer state is "in note" meaning the song has begun playing.
+  qint64 timeout = 1000; // 1 second timeout while waiting for response from module to prevent Control Center from waiting indefinitely for the module's response
+  current_state = CheckBuzzerState(MODULE_BUZZER_IN_NOTE, timeout);
+
+  // Then check if the module's buzzer state is in "no change" meaning the song has finished playing.
+  if (current_state == MODULE_BUZZER_IN_NOTE){
+    CheckBuzzerState(MODULE_BUZZER_IN_NO_CHANGE, timeout);
+  }
+  QThread::msleep(1); // Wait 1 millisecond to allow module to cleanup before moving on to next note (avoid slippage).
 }
 
-int IndicationHandler::CheckBuzzerState(int current_state, int checking_state, qint64 timeout){
-  qint64 start_time = QDateTime::currentSecsSinceEpoch();
+int IndicationHandler::CheckBuzzerState(int checking_state, qint64 timeout){
+  qint64 start_time = QDateTime::currentMSecsSinceEpoch();
   qint64 end_time = start_time + timeout;
+  qint64 current_time;
 
-  while (current_state == checking_state) {
-    qint64 current_time = QDateTime::currentSecsSinceEpoch();
+  int current_state;
+
+  do {
+    current_time = QDateTime::currentMSecsSinceEpoch();
     GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, current_state);
-    if(current_time > end_time) {
-      return current_state; // return out of while loop if timeout condition is met
-    }
   }
+  while (current_state != checking_state && current_time < end_time);
+
   return current_state;
 }
 

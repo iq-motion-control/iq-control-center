@@ -4236,6 +4236,11 @@ QPushButton:hover{
               <property name="autoFillBackground">
                <bool>false</bool>
               </property>
+              <property name="styleSheet">
+               <string notr="true">QComboBox {
+	padding-left: 33px;
+}</string>
+              </property>
               <property name="editable">
                <bool>false</bool>
               </property>
@@ -4432,6 +4437,11 @@ QGroupBox:title{
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">QComboBox {
+	padding-left: 20px;
+}</string>
+              </property>
               <property name="editable">
                <bool>false</bool>
               </property>
@@ -4521,6 +4531,11 @@ QGroupBox:title{
                <font>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QComboBox {
+	padding-left: 8px;
+}</string>
               </property>
               <property name="editable">
                <bool>false</bool>

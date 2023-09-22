@@ -67,7 +67,9 @@ class IndicationHandler : public QObject {
 #endif
 
   void PlayNote(uint16_t frequency, uint16_t duration);
-  int CheckBuzzerState(int current_state, int checking_state, qint64 timeout);
+  void PlayNote2(uint16_t frequency, uint16_t duration);
+  void delay(int millisecondsWait);
+  int CheckBuzzerState(int checking_state, qint64 timeout);
 
   QSerialInterface * serial_connection_;
   std::string path_to_clients_;
