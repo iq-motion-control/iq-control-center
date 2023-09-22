@@ -29,30 +29,28 @@ void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "volume", 70);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "ctrl_note");
 
-  // Set timeout for 1 second to prevent Control Center from waiting indefinitely for the module's response
-  qint64 start_time = QDateTime::currentSecsSinceEpoch();
-  qint64 end_time = start_time + 1; // 1 second timeout
-
   // First check if the module's buzzer state is "in note" meaning the song has begun playing
-  while (response < MODULE_BUZZER_IN_NOTE) {
-    qint64 current_time = QDateTime::currentSecsSinceEpoch();
-    GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, response);
-    if(current_time > end_time) {
-      break; // break out of while loop if timeout condition is met
-    }
-  }
+  // Set timeout for 1 second to prevent Control Center from waiting indefinitely for the module's response
+  response = CheckBuzzerState(response, MODULE_BUZZER_IN_NO_CHANGE, 1);
 
-  // Reset start and end time for next while loop
-  start_time = QDateTime::currentSecsSinceEpoch();
-  end_time = start_time + 1;
   // Keep checking for when the current note is done playing
-  while(response > MODULE_BUZZER_IN_NO_CHANGE){
+  CheckBuzzerState(response, MODULE_BUZZER_IN_NOTE, 1);
+}
+
+int IndicationHandler::CheckBuzzerState(int current_state, int checking_state, qint64 timeout){
+  int response = current_state;
+
+  qint64 start_time = QDateTime::currentSecsSinceEpoch();
+  qint64 end_time = start_time + timeout; // 1 second timeout
+
+  while (response == checking_state) {
     qint64 current_time = QDateTime::currentSecsSinceEpoch();
     GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, response);
     if(current_time > end_time) {
-      break;
+      return response; // return out of while loop if timeout condition is met
     }
   }
+  return response;
 }
 
 void IndicationHandler::UpdateBuzzerObjId(uint8_t obj_id){
