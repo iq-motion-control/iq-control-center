@@ -382,6 +382,8 @@ void PortConnection::DetectNumberOfModulesOnBus(){
       //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
 
+      //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
+      //We should kill all of our known detections, and make the only path forward recovery
       if(found_in_bootloader){
         //Every second, the TimerTimeout function gets called.
         //in the case that we are re-detecting to deal with a recovery module later
@@ -554,19 +556,16 @@ bool PortConnection::DisplayRecoveryMessage(){
     recovery_port_name_ = selected_port_name_;
 
     QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
-        "It appears that a connected module is in Recovery Mode. If you would like to recover this module now, "
-        "please select Recover Now. Otherwise, select Continue. You will be unable to communicate with "
-        "the module in recovery mode until it is recovered. To recover the module after selecting Continue,"
-        " please re-run DETECT, and select Recover Now.");
+        "It appears that a connected module is in Recovery Mode. You MUST recover this module before continuing."
+        " Modules in recovery mode can be located as they will not play the 5 beep startup sequence."
+        " Please take care to ensure that you flash the correct firmware for the module in recovery."
+        "\n\nIMPORTANT: We highly recommend that you physically disconnect all other modules before recovering! "
+        " Failure to do so can result in damage to your module(s)!");
 
-    QAbstractButton * continueButton = msgBox.addButton("Continue", QMessageBox::YesRole);
-    QAbstractButton * recoverButton = msgBox.addButton("Recover Now", QMessageBox::NoRole);
-
-    msgBox.exec();
-
-    if (msgBox.clickedButton() == recoverButton) {
+    if (msgBox.exec()) {
       //If we want to recover now, then close the port. Port gets handled in the recovery process
       //We don't want to close the port now if we're ignoring the recovery guy
       ser_.ser_port_->close();
@@ -602,11 +601,6 @@ bool PortConnection::DisplayRecoveryMessage(){
 
       return true;
 
-    }else{
-      ui_->pushButton_home->setChecked(true);
-      ui_->stackedWidget->setCurrentIndex(0);
-
-      return false;
     }
 
     return false;
