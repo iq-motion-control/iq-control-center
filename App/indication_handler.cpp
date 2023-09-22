@@ -22,7 +22,7 @@ void IndicationHandler::PlayIndication(){
 }
 
 void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
-  int response = MODULE_BUZZER_IN_NO_CHANGE;
+  int current_state = MODULE_BUZZER_IN_NO_CHANGE;
 
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "hz", frequency);
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "duration", duration);
@@ -30,27 +30,25 @@ void IndicationHandler::PlayNote(uint16_t frequency, uint16_t duration){
   buzzer_control_map_["buzzer_control_client"]->Set(*serial_connection_, "ctrl_note");
 
   // First check if the module's buzzer state is "in note" meaning the song has begun playing
-  // Set timeout for 1 second to prevent Control Center from waiting indefinitely for the module's response
-  response = CheckBuzzerState(response, MODULE_BUZZER_IN_NO_CHANGE, 1);
+  qint64 timeout = 1; // 1 second timeout while waiting for response from module to prevent Control Center from waiting indefinitely for the module's response
+  current_state = CheckBuzzerState(current_state, MODULE_BUZZER_IN_NO_CHANGE, timeout);
 
   // Keep checking for when the current note is done playing
-  CheckBuzzerState(response, MODULE_BUZZER_IN_NOTE, 1);
+  CheckBuzzerState(current_state, MODULE_BUZZER_IN_NOTE, timeout);
 }
 
 int IndicationHandler::CheckBuzzerState(int current_state, int checking_state, qint64 timeout){
-  int response = current_state;
-
   qint64 start_time = QDateTime::currentSecsSinceEpoch();
-  qint64 end_time = start_time + timeout; // 1 second timeout
+  qint64 end_time = start_time + timeout;
 
-  while (response == checking_state) {
+  while (current_state == checking_state) {
     qint64 current_time = QDateTime::currentSecsSinceEpoch();
-    GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, response);
+    GetEntryReply(*serial_connection_, buzzer_control_map_["buzzer_control_client"], "ctrl_mode", 1, 0.01f, current_state);
     if(current_time > end_time) {
-      return response; // return out of while loop if timeout condition is met
+      return current_state; // return out of while loop if timeout condition is met
     }
   }
-  return response;
+  return current_state;
 }
 
 void IndicationHandler::UpdateBuzzerObjId(uint8_t obj_id){
