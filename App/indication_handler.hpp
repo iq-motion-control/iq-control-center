@@ -66,8 +66,8 @@ class IndicationHandler : public QObject {
   const uint16_t indication_durations[7] = {indication_speed_swung, indication_speed_straight, indication_speed_swung, indication_speed_straight, longer_note, indication_speed_swung, longer_note};
 #endif
 
-
   void PlayNote(uint16_t frequency, uint16_t duration);
+  int WaitForBuzzerState(int checking_state, qint64 timeout);
 
   QSerialInterface * serial_connection_;
   std::string path_to_clients_;
