@@ -3,8 +3,6 @@
 #include "IQ_api/client_helpers.hpp"
 #include "main.h"
 #include <QDateTime>
-#include <QDebug>
-#include <QTimer>
 #include <QThread>
 
 IndicationHandler::IndicationHandler(QSerialInterface * ser, std::string path_to_clients):
