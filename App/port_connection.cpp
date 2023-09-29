@@ -26,19 +26,39 @@
 #define MAXIMUM_LINES_IN_LOG_FILE 50000 //Using the 4006 as the example, we have ~85 lines/connection -> ~580 connections before delete. Don't want to go
                                         //too much bigger because it slows the program down when we read the size
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :  logging_active_(false), ui_(user_int), ser_(nullptr), hardware_str_(HARDWARE_STRING), electronics_str_(ELECTRONICS_STRING) {
-  SetPortConnection(0);
-  sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+#define DEFAULT_OBJECT_ID 0
+#define NO_OLD_MODULES_FOUND 99
 
-  //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
-  hardware_type_ = -1;
-  electronics_type_ = -1;
+PortConnection::PortConnection(Ui::MainWindow *user_int) :
+  logging_active_(false),
+  ui_(user_int),
+  ser_(nullptr),
+  hardware_str_(HARDWARE_STRING),
+  electronics_str_(ELECTRONICS_STRING),
+  num_modules_discovered_(0),
+  indication_handle_(&ser_, clients_folder_path_),
+  perform_timer_callback_(true)
+{
+
+      SetPortConnection(0);
+
+      sys_map_ = ClientsFromJson(DEFAULT_OBJECT_ID, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+      //init these to a known value so we know what to do on an attempt to connect to a recovery mode module
+      hardware_type_ = -1;
+      electronics_type_ = -1;
 }
 
 void PortConnection::AddToLog(QString text_to_log){
     if(logging_active_){
-        //Get a string of the line we want to write to the log
-        QString logMessage(time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n");
+        QString logMessage;
+
+        if(text_to_log == "\n"){
+            logMessage = "\n";
+        }else{
+            //Get a string of the line we want to write to the log
+            logMessage = time_.currentDateTime().toString(Qt::TextDate) + ": " + text_to_log + "\n";
+        }
 
         //Add that line to the GUI
         //make sure the text cursor is at the end of the document before writing the new line
@@ -185,36 +205,255 @@ int PortConnection::GetCurrentTab(){
 void PortConnection::SetPortConnection(bool state) {
   if (state) {
     connection_state_ = 1;
-    ui_->header_connect_button->setText("DISCONNECT");
+        ui_->connect_button->setText("DISCONNECT");
   } else {
     connection_state_ = 0;
     ports_names_.clear();
     selected_port_name_.clear();
 
-    ui_->header_combo_box->clear();
+    ui_->serial_port_combo_box->clear();
 
     ui_->label_firmware_build_value->setText(QString(""));
     ui_->label_firmware_name->setText(QString(""));
     ui_->label_hardware_name->setText(QString(""));
     ui_->label_bootloader_value->setText(QString(""));
     ui_->label_upgrader_value->setText(QString(""));
-
-    ui_->header_connect_button->setText("CONNECT");
+    
+    ui_->connect_button->setText("CONNECT");
 
     AddToLog("module disconnected");
   }
 }
 
-void PortConnection::ConnectMotor() {
+void PortConnection::ConnectMotor(){
+
+  int firmware_valid = 0;
+
+  //Check if the firmware is valid
+  firmware_valid = GetFirmwareValid();
+
+  SetPortConnection(1);
+
+  //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
+  uint32_t lines_in_log = GetLinesInLog();
+
+  if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
+    ShortenLog(lines_in_log);
+  }
+
+  QString message = "Module Connected with Module ID: " + ui_->selected_module_combo_box->currentText();
+
+  //Write the fact that we connected with the motor to the output log
+  AddToLog("\n");
+  AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud\n");
+  AddToLog("Module variables follow:");
+
+  logging_active_ = false;
+
+  ui_->header_error_label->setText(message);
+
+  if(!firmware_valid){
+    DisplayInvalidFirmwareMessage();
+    message = "Motor Connected Successfully. Please Flash Valid Firmware";
+    ui_->header_error_label->setText(message);
+    ui_->label_firmware_build_value->setText("");
+    //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
+  }else{
+    //Get information about what firmware is on the motor
+    logging_active_ = true;
+    GetDeviceInformationResponses();
+    GetBootAndUpgradeInformation();
+    logging_active_ = false;
+
+    //Send out the hardware and firmware values to other modules of Control Center
+    emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+
+    /**
+     * So...both emitting TypeStyleFound and FindSavedValues end up asking the motor for saved values (though the former
+     * never gets at the advanced values. I haven't figured that out yet, but it's another one of thos legacy things that
+     * I don't want to touch too much yet. Anyway, I only want to log when we get all of the values from the module, so we
+     * turn off logging after we say "we connected" and turn it back on when we go through and get all of the saved values"
+     */
+    logging_active_ = true;
+    emit FindSavedValues();
+  }
+}
+
+void PortConnection::UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys_control){
+    //Make sure to update our "detected modules" box
+    QString discovered_string = QString::number(num_modules_discovered_);
+    ui_->detected_modules_value->setText(discovered_string);
+
+    QString message = "Discovered " + discovered_string + " module IDs";
+    AddToLog("\n");
+    AddToLog(message);
+    ui_->header_error_label->setText(message);
+
+    //Update our combo box
+    ui_->selected_module_combo_box->clear();
+
+    for(uint8_t i = 0; i < num_modules_discovered_; i++){
+
+        //If we found a module ID of 0, and the parameter input is not 99, then we know
+        //we have an old module on the bus. We need to set its label to the input, but its value to 0
+        QString module_id_str;
+
+        if((detected_module_ids_[i] == 0) && (module_id_with_different_sys_control != NO_OLD_MODULES_FOUND)){
+            module_id_str = QString::number(module_id_with_different_sys_control);
+        }else{
+            module_id_str = QString::number(detected_module_ids_[i]);
+        }
+
+      ui_->selected_module_combo_box->addItem(module_id_str, detected_module_ids_[i]);
+      AddToLog("Found module with Module ID: " + module_id_str);
+    }
+
+    // Center align items in selected_module_combo_box
+    for(int i = 0; i < ui_->selected_module_combo_box->count(); i++){
+      ui_->selected_module_combo_box->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
+    }
+}
+
+void PortConnection::DetectModulesClickedCallback(){
+    //If someone clicked detect, and the serial port is actually connected,
+    //then call DetectNumberOfModulesOnBus
+    if(connection_state_ == 1){
+        DetectNumberOfModulesOnBus();
+    }else{
+        QString error = "Could not detect modules. No serial port is connected";
+        AddToLog(error);
+        ui_->header_error_label->setText(error);
+    }
+}
+
+void PortConnection::DetectNumberOfModulesOnBus(){
+  uint8_t temp_obj_id = 0;
+  uint8_t module_id_with_system_control_zero = NO_OLD_MODULES_FOUND;
+
+  bool found_in_bootloader = false;
+
+  AddToLog("\n");
+  AddToLog("Detecting modules on the bus");
+
+  //Before we try to connect with iquart, let's check if anyone in the ST bootloader (recovery mode)
+  //If we get a response to this, then we know that uniquely 1 module is in recovery mode.
+  //We should go through and detect anyone we can who is not in recovery so people can better
+  //know who they're recovering
+  found_in_bootloader = CheckIfInBootLoader();
+
+  //Only try to talk to the modules if we're connected to the PC serial
+  if(ser_.ser_port_->isOpen()){
+
+      QString message = "Detecting Modules . . . ";
+      ui_->header_error_label->setText(message);
+      ui_->header_error_label->repaint();
+
+      //Ensure that we're starting from scratch with our detections
+      ClearDetections();
+
+      //Go through each of the possible module IDs, and see if we get a response from its system control client
+      for(uint8_t object_id = 0; object_id < MAX_MODULE_ID; object_id++){
+        //Update the system control object id so that we are actually targeting different module ids
+        sys_map_["system_control_client"]->UpdateClientObjId((object_id));
+
+        //There's a case here in which someone hasn't updated their firmware, and they have a
+        //Module id that is not 0, but a system control ID that is 0.
+        //Note that if we get a response to 0, there are two possiblities
+            // 1. There is one unique module with Module ID = 0
+            // 2. There is one unique module with Module ID != 0, but system control obj id = 0
+
+        //If that is the case, then we need to know in order to deal with them properly
+        //If we get a response, then store that module id in the array, and increment our discovered modules value
+        if(GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 2, 0.01f, temp_obj_id)){
+            //We got a response on 0, but the value gotten isn't 0 (the case descibed above)
+            if((object_id == 0) && (temp_obj_id != 0)){
+                //We'll have to add it to our known modules as 0 in order to connect with it properly
+                module_id_with_system_control_zero = temp_obj_id;
+                detected_module_ids_[num_modules_discovered_] = 0;
+            }else{
+                detected_module_ids_[num_modules_discovered_] = temp_obj_id;
+            }
+
+          num_modules_discovered_++;
+        }//if we get a response to this object id
+
+      }//for()
+
+      //Update our gui and log with who we've found
+      UpdateGuiWithModuleIds(module_id_with_system_control_zero);
+
+      //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
+      //We should kill all of our known detections, and make the only path forward recovery
+      if(found_in_bootloader){
+        //Every second, the TimerTimeout function gets called.
+        //in the case that we are re-detecting to deal with a recovery module later
+        //we need to say that connection_state_ is false until we've dealt with the popup
+        //If we don't, then the timer will cause us to try and talk to another module
+        //which it can't...which will cause an attempt to reconnect, which will pop up a second
+        //recovery message.
+        bool temp_connection = connection_state_;
+        connection_state_ = 0;
+
+        //If we're trying to recover right now, then we should stop here!
+        if(DisplayRecoveryMessage()){
+            connection_state_ = temp_connection;
+            return;
+        }
+      }
+
+      if(num_modules_discovered_ > 0){
+        //Update system control to the value stored in detected_module_ids_. This may be 0
+        //if you are using old firmware with a non-0 module id
+        sys_map_["system_control_client"]->UpdateClientObjId(detected_module_ids_[0]);
+
+        //The buzzer gets the actual module ID, not necessarily the same value that is stored in detected_module_ids_.
+        //With old firmware the stored value would be 0 (for system control 0), but we actually want to set
+        //buzzer's ID to the stored module ID which is in the combo box
+        indication_handle_.UpdateBuzzerObjId(ui_->selected_module_combo_box->currentText().toUInt());
+
+        //We've found the modules, connect to the lowest module id
+        ConnectMotor();
+
+      }else{
+        //we didn't find anything, so reset to default, and close the port
+        sys_map_["system_control_client"]->UpdateClientObjId(DEFAULT_OBJECT_ID);
+        indication_handle_.UpdateBuzzerObjId(DEFAULT_OBJECT_ID);
+        ser_.ser_port_->close();
+      }
+
+  }else{
+      AddToLog("Could not detect modules. No serial port open.");
+  }
+}
+
+void PortConnection::ModuleIdComboBoxIndexChanged(int index){
+    uint8_t obj_id = detected_module_ids_[index];
+    sys_map_["system_control_client"]->UpdateClientObjId(obj_id);
+
+    //The buzzer gets the actual module ID, not necessarily the same value that is stored in detected_module_ids_.
+    //With old firmware the stored value would be 0 (for system control 0), but we actually want to set
+    //buzzer's ID to the stored module ID which is in the combo box
+    indication_handle_.UpdateBuzzerObjId(ui_->selected_module_combo_box->currentText().toUInt());
+
+    uint8_t temp_id = 0;
+    //Let's check that it's there. if not, don't try to connect
+    if(GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 2, 0.01f, temp_id)){
+        ConnectMotor();
+    }
+
+    //if we don't connect, then all we'll try to do is send the heartbeat to the new module id
+    //when we don't get a response to that, we'll flash the "couldn't find that motor anymore" message
+    //and then auto find the next available
+}
+
+void PortConnection::ConnectToSerialPort() {
   if (connection_state_ == 0) {
     if (!selected_port_name_.isEmpty()) {
-      QString message = "Connecting . . . ";
+      QString message = "Detecting Modules . . . ";
       ui_->header_error_label->setText(message);
       ui_->header_error_label->repaint();
 
       connection_state_ = 0;
-
-      int firmware_valid = 0;
 
       ser_.InitSerial(selected_port_name_, selected_baudrate_);
       try {
@@ -224,61 +463,13 @@ void PortConnection::ConnectMotor() {
           throw QString("CONNECTION ERROR: could not open serial port");
         }
 
-        //Before we try to connect with iquart, let's check if we are in the ST bootloader (recovery mode)
-        if(CheckIfInBootLoader()){
-            DisplayRecoveryMessage();
-        }
+        AddToLog("Successfully opened serial port: " + selected_port_name_);
 
-        //Check if the firmware is valid
-        firmware_valid = GetFirmwareValid();
-
-        SetPortConnection(1);
-
-        //We've succesfully connected at this point, so let's make sure the log is at most our maximum lines
-        uint32_t lines_in_log = GetLinesInLog();
-
-        if(lines_in_log > MAXIMUM_LINES_IN_LOG_FILE){
-            ShortenLog(lines_in_log);
-        }
-
-        QString message = "Motor Connected Successfully";
-
-        //Write the fact that we connected with the motor to the output log
-        AddToLog("New Module Connected");
-        AddToLog(message.toLower() + " on " + selected_port_name_ + " at " + QString::number(selected_baudrate_) + " baud\n");
-        AddToLog("Module variables follow:");
-
-        logging_active_ = false;
-
-        ui_->header_error_label->setText(message);
-
-        if(!firmware_valid){
-            DisplayInvalidFirmwareMessage();
-            message = "Motor Connected Successfully. Please Flash Valid Firmware";
-            ui_->header_error_label->setText(message);
-            ui_->label_firmware_build_value->setText("");
-        //If we have valid firmware, we can go ahead and grab all of the data, if not, don't try
-        }else{
-            //Get information about what firmware is on the motor
-            logging_active_ = true;
-            GetDeviceInformationResponses();
-            GetBootAndUpgradeInformation();
-            logging_active_ = false;
-
-            //Send out the hardware and firmware values to other modules of Control Center
-            emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
-
-            /**
-             * So...both emitting TypeStyleFound and FindSavedValues end up asking the motor for saved values (though the former
-             * never gets at the advanced values. I haven't figured that out yet, but it's another one of thos legacy things that
-             * I don't want to touch too much yet. Anyway, I only want to log when we get all of the values from the module, so we
-             * turn off logging after we say "we connected" and turn it back on when we go through and get all of the saved values"
-            */
-            logging_active_ = true;
-            emit FindSavedValues();
-        }
+        //We were able to connect to the serial port, now let's try and find some modules
+        DetectNumberOfModulesOnBus();
 
       } catch (const QString &e) {
+        ClearDetections();
         ui_->header_error_label->setText(e);
         delete ser_.ser_port_;
         SetPortConnection(0);
@@ -289,11 +480,21 @@ void PortConnection::ConnectMotor() {
       SetPortConnection(0);
     }
   } else if (connection_state_ == 1) {
+    ClearDetections();
     ClearFirmwareChoices();
     delete ser_.ser_port_;
     SetPortConnection(0);
     emit LostConnection();
   }
+}
+
+void PortConnection::ClearDetections(){
+    //Reset our vars
+    num_modules_discovered_ = 0;
+
+    //Reset our GUI
+    ui_->detected_modules_value->setText(QString::number(0));
+    ui_->selected_module_combo_box->clear();
 }
 
 void PortConnection::ClearFirmwareChoices(){
@@ -350,18 +551,29 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type){
     return "";
 }
 
-void PortConnection::DisplayRecoveryMessage(){
+bool PortConnection::DisplayRecoveryMessage(){
+
     recovery_port_name_ = selected_port_name_;
-    ser_.ser_port_->close();
+
     QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle("Recovery Mode Recognized");
     msgBox.setText(
-        "It appears that your motor is currently in recovery mode.\n"
-        "Would you like to recover your motor now?");
-    msgBox.setStandardButtons(QMessageBox::Yes);
-    msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-    if (msgBox.exec() == QMessageBox::Yes) {
+        "It appears that a connected module is in Recovery Mode. You MUST recover this module before continuing."
+        " Modules in recovery mode can be located as they will not play the 5 beep startup sequence."
+        " Please take care to ensure that you flash the correct firmware for the module in recovery."
+        "\n\nIMPORTANT: We highly recommend that you physically disconnect all other modules before recovering! "
+        " Failure to do so can result in damage to your module(s)!");
+
+    if (msgBox.exec()) {
+      //If we want to recover now, then close the port. Port gets handled in the recovery process
+      //We don't want to close the port now if we're ignoring the recovery guy
+      ser_.ser_port_->close();
+
+      //kill our knowledge of anything else on the bus
+      ClearDetections();
+
+      //Don't let people leave
       DisableAllButtons();
 
       //Check to see if we know the type of motor from a previous connection in this session
@@ -387,12 +599,11 @@ void PortConnection::DisplayRecoveryMessage(){
       ui_->stackedWidget->setCurrentIndex(6);
       AddToLog("motor connected in recovery mode\n");
 
-    }else{
-      ui_->pushButton_home->setChecked(true);
-      ui_->stackedWidget->setCurrentIndex(0);
+      return true;
+
     }
 
-    throw QString("Recovery Detected");
+    return false;
 }
 
 void PortConnection::HandleFindingCorrectMotorToRecover(QString detected_module){
@@ -463,6 +674,9 @@ void PortConnection::GetDeviceInformationResponses(){
         throw QString(
         "CONNECTION ERROR: please check selected port and baudrate or reconnect IQ module");
     }
+
+    //At this point we've gotten told what the module's ID is, store it in obj_id_. If this is different than our sys_map_ obj_id, we need to make
+    //sure to use 0 as our system control obj_id instead of obj_id_ we filled here
 
     emit ObjIdFound();
 
@@ -610,14 +824,32 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
 }
 
 void PortConnection::TimerTimeout() {
-  if (connection_state_ == 1) {
+  if (connection_state_ == 1 && perform_timer_callback_) {
     uint8_t obj_id;
+    //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
-      delete ser_.ser_port_;
-      SetPortConnection(0);
-      QString error_message = "Serial Port Disconnected";
-      ui_->header_error_label->setText(error_message);
-      emit LostConnection();
+        //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+        //if there's no one left, then we should just give up and close the port
+        if(num_modules_discovered_ > 1){
+
+            //pop up a message for them telling what just happened
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Module Disconnected");
+            msgBox.setText(
+                "Your currently targeted module has disconnected. We will rescan the network, and reconnect to another module.");
+            msgBox.exec();
+
+            //Find who's here now
+            DetectNumberOfModulesOnBus();
+
+        }else{
+          ClearDetections();
+          delete ser_.ser_port_;
+          SetPortConnection(0);
+          QString error_message = "Serial Port Disconnected";
+          ui_->header_error_label->setText(error_message);
+          emit LostConnection();
+        }
     }
   }
 }
@@ -639,10 +871,10 @@ void PortConnection::PortComboBoxIndexChanged(int index) {
 void PortConnection::FindPorts() {
   ports_names_.clear();
   selected_port_name_.clear();
-  ui_->header_combo_box->clear();
+  ui_->serial_port_combo_box->clear();
   Q_FOREACH (QSerialPortInfo port_info, QSerialPortInfo::availablePorts()) {
     ports_names_.push_back(port_info.portName());
-    ui_->header_combo_box->addItem(port_info.portName());
+    ui_->serial_port_combo_box->addItem(port_info.portName());
   }
   if (ports_names_.size() != 0) {
     PortComboBoxIndexChanged(0);
@@ -650,24 +882,23 @@ void PortConnection::FindPorts() {
 }
 
 void PortConnection::BaudrateComboBoxIndexChanged(int index) {
-  selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+  selected_baudrate_ = ui_->serial_baud_rate_combo_box->currentData().value<int>();
 }
 
 void PortConnection::FindBaudrates() {
-  ui_->header_baudrate_combo_box->clear();
+  ui_->serial_baud_rate_combo_box->clear();
   //QSerialPort only goes up to 115200, and its a back-end library, not part of our project, so best not to modify it. Add our own extra baud rate enum to port_connection to cover this and future cases
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
-  ui_->header_baudrate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
-  selected_baudrate_ = ui_->header_baudrate_combo_box->currentData().value<int>();
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("921600"), Baud921600);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
+  ui_->serial_baud_rate_combo_box->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
+  selected_baudrate_ = ui_->serial_baud_rate_combo_box->currentData().value<int>();
 }
 
 bool PortConnection::CheckIfInBootLoader(){
     //use https://www.st.com/resource/en/application_note/an3155-usart-protocol-used-in-the-stm32-bootloader-stmicroelectronics.pdf
     //As our guide to know if we are in the bootloader
-
     //If we have already sent the initial command, we can send any of the commands available in the bootloader
     //If we get the expected response, we still know we're in the bootloader
     #define INIT_CMD 0x7f
@@ -707,4 +938,72 @@ void PortConnection::GetUidValues(uint32_t * uid1, uint32_t * uid2, uint32_t * u
 void PortConnection::RebootMotor(){
     AddToLog("rebooting module\n");
     sys_map_["system_control_client"]->Set(ser_, std::string("reboot_program"));
+
+    //Don't wait for anything. do this now!
+    ser_.SendNow();
+}
+
+std::map<std::string, Client *> PortConnection::GetSystemControlMap(){
+    return sys_map_;
+}
+
+uint8_t PortConnection::GetSysMapObjId(){
+    return sys_map_["system_control_client"]->GetClientObjId();
+}
+
+bool PortConnection::ModuleIdAlreadyExists(uint8_t module_id){
+    //findText goes through all of the labels stored in the combo box
+    //Looking for labels rather than the data automatically checks the old firmware case
+    //returns -1 if it's not there
+    int already_exists = ui_->selected_module_combo_box->findText(QString::number(module_id));
+
+    return already_exists > -1;
+}
+
+void PortConnection::PlayIndication(){
+    indication_handle_.PlayIndication();
+}
+
+void PortConnection::HandleRestartNeeded(){
+    bool should_redetect = false;
+
+    //Don't let the timer timeout try and talk to us while we're doing this
+    perform_timer_callback_ = false;
+
+    RebootMotor();
+
+    //Pop up a message saying what's going on
+    //Give the user the option to reboot the module after setting with defaults.
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Reboot Required");
+
+     QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+
+     //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+     //if there's no one left, then we should just give up and close the port
+     if(num_modules_discovered_ > 1){
+
+        //We've got others here, make sure to redetect
+        should_redetect = true;
+
+        //pop up a message for them telling what just happened
+        text = text + " We will automatically rescan the network.";
+
+     }
+
+     msgBox.setText(text);
+     msgBox.exec();
+
+     if(should_redetect){
+         //Stop here for 2 seconds to make sure everyone is rebooted!
+         QTime end_pause = QTime::currentTime().addSecs(2);
+         while (QTime::currentTime() < end_pause)
+             QCoreApplication::processEvents(QEventLoop::AllEvents);
+
+         //Find who's here now
+         DetectNumberOfModulesOnBus();
+     }
+
+     //Let the timer callback work again
+     perform_timer_callback_ = true;
 }

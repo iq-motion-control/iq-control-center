@@ -41,7 +41,10 @@ void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_bina
     firmware_binary_button_ = firmware_binary_button;
     recover_progress_bar_ = recover_progress_bar;
     recover_binary_button_ = recover_binary_button;
-    sys_map_ = ClientsFromJson(0, "system_control_client.json", clients_folder_path_, nullptr, nullptr);
+
+    //We should get our map from port connection who has already dealt with all of the module ID/system control ID stuff.
+    //Avoid doing all of the logic again
+    sys_map_ = iv.pcon->GetSystemControlMap();
 
     //If the Control Center closed or crashed without completing a flash, there may be leftover local metadata files.
     //Clearing them out on startup so we start with a fresh slate. Make a temporary metadata handler just to clear out any old files.
@@ -161,8 +164,8 @@ void Firmware::SelectFirmwareClicked() {
 
         //Opens a selected file. It sets the dialog to have a drop down that allows you to search for a bin or zip.
         //Change the order of the tr() to change the default
-        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Binary or Archive"), desktop_dir,
-                                                          tr("Binary (*.bin) ;; Zip (*.zip)"));
+        firmware_bin_path_ = QFileDialog::getOpenFileName(0, ("Select Firmware Archive or Binary"), desktop_dir,
+                                                          tr("  Zip (*.zip) ;; Binary (*.bin)"));
 
         iv.pcon->AddToLog("Firmware file selected: " + firmware_bin_path_);
 
@@ -526,6 +529,9 @@ bool Firmware::BootMode() {
       while (QTime::currentTime() < dieTime) {
         //        QCoreApplication::processEvents();
       }
+
+      //We need to kill our connection, so we should also kill our known detections
+      iv.pcon->ClearDetections();
 
       // delete and unconnects port
       delete ser->ser_port_;

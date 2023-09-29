@@ -32,12 +32,16 @@
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
 
+#include "indication_handler.hpp"
+
 #include <QStandardPaths>
 
 #include <QMetaEnum>
 #include <QMetaObject>
 
 #include <QDateTime>
+
+#define MAX_MODULE_ID 62
 
 #define MAJOR_VERSION_MASK 0x000fc000
 #define MINOR_VERSION_MASK 0x00003f80
@@ -63,6 +67,9 @@
 #define UPGRADE_STYLE_SHIFT 20
 #define UPGRADE_MAJOR_SHIFT 14
 #define UPGRADE_MINOR_SHIFT 7
+
+#define MODULE_ID_SUB_ID 14
+#define MODULE_ID_TYPE_ID 5
 
 #define HARDWARE_STRING "connected module has hardware type: "
 #define ELECTRONICS_STRING "connected module has electronics type: "
@@ -295,9 +302,27 @@ class PortConnection : public QObject {
    */
   void HandleFindingCorrectMotorToRecover(QString detected_module);
 
- public slots:
+  std::string GetClentsFolderPath();
 
+  /**
+   * @brief ConnectMotor populates all tabs based on the information gotten from the motor
+   */
   void ConnectMotor();
+
+  uint8_t GetSysMapObjId();
+
+  std::map<std::string, Client *> GetSystemControlMap();
+
+  bool ModuleIdAlreadyExists(uint8_t module_id);
+
+  void ClearDetections();
+
+  void HandleRestartNeeded();
+
+ public slots:
+  void DetectModulesClickedCallback();
+
+  void ConnectToSerialPort();
 
   void TimerTimeout();
 
@@ -309,7 +334,11 @@ class PortConnection : public QObject {
 
   void BaudrateComboBoxIndexChanged(int index);
 
+  void ModuleIdComboBoxIndexChanged(int index);
+
   void ClearFirmwareChoices();
+
+  void PlayIndication();
 
  signals:
 
@@ -322,11 +351,14 @@ class PortConnection : public QObject {
   void LostConnection();
 
  private:
-  void DisplayRecoveryMessage();
+  void DetectNumberOfModulesOnBus();
+  bool DisplayRecoveryMessage();
   void DisplayInvalidFirmwareMessage();
   void GetDeviceInformationResponses();
   int GetFirmwareValid();
   void GetBootAndUpgradeInformation();
+
+  void UpdateGuiWithModuleIds(uint8_t module_id_with_different_sys_control);
 
   uint32_t GetLinesInLog();
 
@@ -346,6 +378,8 @@ class PortConnection : public QObject {
   QSerialInterface ser_;
 
   uint8_t obj_id_;
+  uint8_t system_control_id_;
+
   int firmware_value_;
   int firmware_style_;
   int hardware_type_;
@@ -354,6 +388,13 @@ class PortConnection : public QObject {
 
   QString hardware_str_;
   QString electronics_str_;
+
+  uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
+  uint8_t num_modules_discovered_; //keep track of the number we've actually found
+
+  IndicationHandler indication_handle_;
+
+  bool perform_timer_callback_;
 };
 
 #endif  // CONNECTION_HPP
