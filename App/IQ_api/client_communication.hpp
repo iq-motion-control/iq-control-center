@@ -47,10 +47,12 @@ class ClientEntryAbstract {
     virtual bool IsFresh() = 0;
 
     const uint8_t       type_idn_;
-    const uint8_t       obj_idn_;
+    uint8_t       obj_idn_;
     const uint8_t       sub_idn_;
     const char          format_;
     const std::string   unit_;
+
+
 };
 
 class ClientEntryVoid: public ClientEntryAbstract {

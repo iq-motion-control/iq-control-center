@@ -20,6 +20,24 @@
 
 #include "client.hpp"
 
+void Client::UpdateClientObjId(uint8_t new_obj_id){
+  //we need to change our object id, as well as that of all of the ClientEntryAbstract objects in our clilent_entry_map_
+  obj_idn_ = new_obj_id;
+
+  //Iterate through the map and update obj_idn
+  //TODO: obj_idn is public inside of ClientEntryAbstract. We should probably change that
+  std::map<std::string, ClientEntryAbstract*>::const_iterator iterator = client_entry_map_.begin();
+  while(iterator != client_entry_map_.end()){
+    iterator->second->obj_idn_ = new_obj_id;
+    iterator++;
+  }
+
+}
+
+uint8_t Client::GetClientObjId(){
+  return obj_idn_;
+}
+
 int Client::Reply(const uint8_t* data, uint8_t len, const std::string& entry_descriptor) {
   ClientEntryAbstract* abstract_entry_ptr = client_entry_map_.at(entry_descriptor);
 
@@ -330,7 +348,7 @@ int8_t ParseMsg(uint8_t* rx_data, uint8_t rx_length,
   return 0;
 }
 
-std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std::string& file_name,
+std::map<std::string, Client*> ClientsFromJson(uint8_t obj_idn, const std::string& file_name,
                                                const std::string& folder_path, bool * using_custom_order,
                                                std::map<std::string, std::string> * client_descriptor_map) {
   JsonCpp json;
@@ -390,7 +408,7 @@ std::map<std::string, Client*> ClientsFromJson(const uint8_t& obj_idn, const std
   return client_map;
 }
 
-void CreateClient(const uint8_t& obj_idn, const Json::Value& custom_client, Client*& client_ptr, bool * using_custom_order, std::map<std::string, std::string> * client_descriptor_map) {
+void CreateClient(uint8_t obj_idn, const Json::Value& custom_client, Client*& client_ptr, bool * using_custom_order, std::map<std::string, std::string> * client_descriptor_map) {
   std::map<std::string, ClientEntryAbstract*> client_entry_map;
   std::map<std::string, std::string> local_client_descriptor_map;
 
@@ -437,10 +455,6 @@ void CreateClientEntry(uint8_t obj_idn, const Json::Value& param, ClientEntryAbs
   uint8_t sub_idn = param["sub_idn"].asUInt();
   std::string unit = param["unit"].asString();
 
-  // Make sure that if system_control, you always use obj_idn = 0
-  if (type_idn == 5) {
-    obj_idn = 0;
-  }
   switch (format) {
     case 'n':  // empty
     {
