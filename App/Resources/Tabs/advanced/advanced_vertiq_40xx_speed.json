@@ -121,10 +121,21 @@
         "sub_idn": 0,
         "format": "I",
         "unit": "bps",
-        "frame_type": 2,
-        "maximum": 921600,
-        "minimum": 9600,
-        "single_step": 9600
+        "frame_type": 1,
+        "list_name": [
+          "921600",
+          "115200",
+          "38400",
+          "19200",
+          "9600"
+        ],          
+        "list_value": [
+          921600,
+          115200,
+          38400,
+          19200,
+          9600
+        ]
       },
       {
         "type_idn": 11,
