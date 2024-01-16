@@ -609,68 +609,29 @@ QLabel {
        <property name="spacing">
         <number>0</number>
        </property>
-       <item row="6" column="1">
-        <widget class="QLabel" name="label_hardware_name">
+       <item row="5" column="1">
+        <widget class="QLabel" name="label_firmware_name">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="font">
+          <font/>
          </property>
          <property name="text">
           <string/>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="label_hardware_style">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Hardware Style</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_firmware_build">
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_firmware_2">
          <property name="font">
           <font/>
          </property>
          <property name="text">
-          <string>Firmware Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Upgrader Version</string>
-         </property>
-         <property name="indent">
-          <number>25</number>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Bootloader Version</string>
+          <string>Firmware Style</string>
          </property>
          <property name="indent">
           <number>25</number>
@@ -690,13 +651,80 @@ QLabel {
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_gui_version">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_firmware_build">
          <property name="font">
           <font/>
          </property>
          <property name="text">
-          <string>GUI Version</string>
+          <string>Firmware Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="label_hardware_name">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_gui_version_value">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>2</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_hardware_style">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Hardware Style</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
          <property name="indent">
           <number>25</number>
@@ -748,52 +776,7 @@ color: white</string>
          </property>
         </widget>
        </item>
-       <item row="9" column="1">
-        <widget class="QLabel" name="label_upgrader_value">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QLabel" name="label_firmware_name">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>2</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="10" column="1">
+       <item row="11" column="1">
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -809,32 +792,66 @@ color: white</string>
          </property>
         </spacer>
        </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_gui_version_value">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_gui_version">
+         <property name="font">
+          <font/>
+         </property>
+         <property name="text">
+          <string>GUI Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Upgrader Version</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QLabel" name="label_upgrader_value">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="font">
-          <font/>
-         </property>
          <property name="text">
           <string/>
          </property>
         </widget>
        </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="label_firmware_2">
-         <property name="font">
-          <font/>
-         </property>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Firmware Style</string>
+          <string>Bootloader Version</string>
          </property>
          <property name="indent">
           <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="module_id_link_label">
+         <property name="text">
+          <string>More Information</string>
+         </property>
+         <property name="indent">
+          <number>25</number>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QLabel" name="link_to_uid_label">
+         <property name="text">
+          <string/>
          </property>
         </widget>
        </item>
@@ -1612,8 +1629,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1143</width>
-                <height>631</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
