@@ -218,7 +218,8 @@ void PortConnection::SetPortConnection(bool state) {
     ui_->label_hardware_name->setText(QString(""));
     ui_->label_bootloader_value->setText(QString(""));
     ui_->label_upgrader_value->setText(QString(""));
-    
+    ui_->link_to_uid_label->setText(QString(""));
+
     ui_->connect_button->setText("CONNECT");
 
     AddToLog("module disconnected");
