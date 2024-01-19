@@ -712,6 +712,19 @@ void PortConnection::GetDeviceInformationResponses(){
     AddToLog("UID1: " + QString::number(uid1) + " UID2: " + QString::number(uid2) + " UID3: " + QString::number(uid3));
     AddToLog("module connected has build version: " + firmware_build_number_string);
 
+    //Fill in the link to go get more information
+    QString module_info_link_portion = "http://id.vertiq.co/" + QString::number(uid1) + "_" + QString::number(uid2) + "_" + QString::number(uid3);
+    QString full_link_to_module_info = "<a href=\"" + module_info_link_portion + "\">Click Here</a>";
+
+    //Make sure to log what we make
+    AddToLog("Generated link for this motor as: " + full_link_to_module_info);
+
+    //Fill in the label
+    ui_->link_to_uid_label->setText(full_link_to_module_info);
+    ui_->link_to_uid_label->setTextFormat(Qt::RichText);
+    ui_->link_to_uid_label->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    ui_->link_to_uid_label->setOpenExternalLinks(true);
+
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
     hardware_type_ = hardware_type;
