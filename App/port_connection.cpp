@@ -718,7 +718,7 @@ void PortConnection::GetDeviceInformationResponses(){
     QString full_link_to_module_info = "<a href=\"" + module_info_link_portion + "\">Click Here</a>";
 
     //Make sure to log what we make
-    AddToLog("Generated link for this motor as: " + full_link_to_module_info);
+    AddToLog("Generated link for this motor as: " + module_info_link_portion);
 
     //Fill in the label
     ui_->link_to_uid_label->setText(full_link_to_module_info);
