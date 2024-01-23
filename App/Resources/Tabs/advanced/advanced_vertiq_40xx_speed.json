@@ -121,10 +121,21 @@
         "sub_idn": 0,
         "format": "I",
         "unit": "bps",
-        "frame_type": 2,
-        "maximum": 921600,
-        "minimum": 9600,
-        "single_step": 9600
+        "frame_type": 1,
+        "list_name": [
+          "921600",
+          "115200",
+          "38400",
+          "19200",
+          "9600"
+        ],          
+        "list_value": [
+          921600,
+          115200,
+          38400,
+          19200,
+          9600
+        ]
       },
       {
         "type_idn": 11,
@@ -406,6 +417,19 @@
           250000,
           125000
         ]
+      },
+      {
+          "type_idn": 59,
+          "descriptor": "Maximum Angular Velocity",
+          "info": "Sets the maximum angular speed the motor will move at when moving to a position.",
+          "sub_idn": 18,
+          "format": "f",
+          "unit": "rad/s",
+          "frame_type": 2,
+          "maximum": 10000,
+          "minimum": -10000,
+          "decimal": 2,
+          "single_step": 0.1
       }
     ]
   }
