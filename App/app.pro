@@ -77,6 +77,7 @@ SOURCES += \
     flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
+    resource_file_handler.cpp \
     switch.cpp \
     IQ_api/client.cpp \
     IQ_api/client_helpers.cpp \

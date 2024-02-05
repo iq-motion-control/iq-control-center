@@ -32,23 +32,23 @@ class TabPopulator : public QObject {
  private:
   Ui::MainWindow *ui_;
   std::map<std::string, std::shared_ptr<Tab>> *tab_map_;
-  JsonCpp json_;
-  Json::Value firmware_styles_;
-  Json::Value json_file_;
-  uint32_t firmware_index_;
-  std::string firmware_name_;
-  std::string hardware_name_;
+//  JsonCpp json_;
+//  Json::Value firmware_styles_;
+//  Json::Value json_file_;
+//  uint32_t firmware_index_;
+//  std::string firmware_name_;
+//  std::string hardware_name_;
 
-  void LoadFirmwareStyles(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
-  Json::Value OpenAndLoadJsonFile(const QString &file_path);
-  Json::Value LoadJsonFile(QFile &my_file);
-  bool IsLegacyJsonFile(Json::Value json_file);
-  Json::Value ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
+//  void LoadFirmwareStyles(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
+//  Json::Value OpenAndLoadJsonFile(const QString &file_path);
+//  Json::Value LoadJsonFile(QFile &my_file);
+//  bool IsLegacyJsonFile(Json::Value json_file);
+//  Json::Value ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
-  void FindFirmwareIndex(const int &firmware_style);
+//  void FindFirmwareIndex(const int &firmware_style);
 
   void GetAndDisplayFirmwareHardwareName();
-  void GetFirmwareName();
+//  void GetFirmwareName();
   void DisplayFirmwareHardwareName();
 
   void CheckMinFirmwareBuildNumber(const int &firmware_build_number);
