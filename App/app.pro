@@ -125,6 +125,7 @@ HEADERS += \
         mainwindow.h \
     port_connection.h \
     qserial_interface.h \
+    resource_file_handler.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \

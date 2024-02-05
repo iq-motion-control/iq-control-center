@@ -87,8 +87,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     tab_populator = new TabPopulator(ui, &tab_map_);
 
     //Connects values between the tab populator and port connection. In this case, we are connecting firmware style, hardware type, firmware build, and firmware versioning style
-    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator,
-            SLOT(PopulateTabs(int,int,int)));
+    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int,int,int,int)), tab_populator,
+            SLOT(PopulateTabs(int,int,int,int,int,int)));
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 

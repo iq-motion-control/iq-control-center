@@ -72,7 +72,9 @@
 #define MODULE_ID_TYPE_ID 5
 
 #define HARDWARE_STRING "connected module has hardware type: "
+#define HARDWARE_MAJOR_STRING "connected module has hardware major version: "
 #define ELECTRONICS_STRING "connected module has electronics type: "
+#define ELECTRONICS_MAJOR_STRING "connected module has electronics major version: "
 
 class PortConnection : public QObject {
   Q_OBJECT
@@ -84,8 +86,10 @@ class PortConnection : public QObject {
   bool guessed_module_type_correctly_ = false;
 
   struct module_connection_values {
-      int hardware_value;
-      int electronics_value;
+      int hardware_type;
+      int hardware_major_version;
+      int electronics_type;
+      int electronics_major_version;
   } previous_handled_connection;
 
   bool logging_active_;
@@ -346,7 +350,7 @@ class PortConnection : public QObject {
 
   void FindSavedValues();
 
-  void TypeStyleFound(int, int, int);
+  void TypeStyleFound(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version, int firmware_style, int firmware_value);
 
   void LostConnection();
 
@@ -383,11 +387,15 @@ class PortConnection : public QObject {
   int firmware_value_;
   int firmware_style_;
   int hardware_type_;
+  int hardware_major_version_;
   int electronics_type_;
+  int electronics_major_version_;
   uint8_t applications_present_on_motor_;
 
   QString hardware_str_;
+  QString hardware_major_str_;
   QString electronics_str_;
+  QString electronics_major_str_;
 
   uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
   uint8_t num_modules_discovered_; //keep track of the number we've actually found

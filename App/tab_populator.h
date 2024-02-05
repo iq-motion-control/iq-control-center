@@ -34,18 +34,21 @@ class TabPopulator : public QObject {
   std::map<std::string, std::shared_ptr<Tab>> *tab_map_;
   JsonCpp json_;
   Json::Value firmware_styles_;
+  Json::Value json_file_;
   uint32_t firmware_index_;
   std::string firmware_name_;
   std::string hardware_name_;
 
-  void LoadFirmwareStylesFromHardwareType(const int &hardware_type);
+  void LoadFirmwareStyles(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
   Json::Value OpenAndLoadJsonFile(const QString &file_path);
   Json::Value LoadJsonFile(QFile &my_file);
+  bool IsLegacyJsonFile(Json::Value json_file);
+  Json::Value ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
   void FindFirmwareIndex(const int &firmware_style);
 
   void GetAndDisplayFirmwareHardwareName();
-  void GetFirmwareHardwareName();
+  void GetFirmwareName();
   void DisplayFirmwareHardwareName();
 
   void CheckMinFirmwareBuildNumber(const int &firmware_build_number);
@@ -61,7 +64,7 @@ class TabPopulator : public QObject {
  signals:
 
  public slots:
-  void PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number);
+  void PopulateTabs(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version, int firmware_style, int firmware_value);
 };
 
 #endif  // TAB_POPULATOR_HPP

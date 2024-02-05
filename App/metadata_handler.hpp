@@ -180,10 +180,14 @@ private:
      */
     int to_flash_electronics_type_;
 
+    int to_flash_electronics_major_version_;
+
     /**
      * @brief to_flash_hardware_type_ The type of hardware that this metadata expects to flash
      */
     int to_flash_hardware_type_;
+
+    int to_flash_hardware_major_version_;
 
     /**
      * @brief allowed_flashing_size_ The number of different styles of flash that can be performed based on this archive

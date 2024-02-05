@@ -158,10 +158,12 @@ QString MetadataHandler::GetErrorType(int target_hardware, int target_electronic
 void MetadataHandler::ReadMetadata(){
     metadata_array_ = ArrayFromJson(GetMetadataJsonPath());
 
-    //Grabbing data from the first entry (hardare and electronics type)
+    //Grabbing data from the first entry (hardware and electronics type)
     QJsonObject safetyObj = metadata_array_.at(0).toObject();
     to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
+    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt();
     to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
+    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt();
 
     //The second entry is an array with the allowed flash types
     QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
