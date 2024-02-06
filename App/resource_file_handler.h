@@ -41,9 +41,13 @@ class ResourceFileHandler : public QObject {
   std::string hardware_name_;
 
   //For keeping track if we have a resource file loaded already or not
-  bool resource_file_loaded_;
+  bool hardware_information_loaded_;
+  bool firmware_information_loaded_;
 
   ResourceFileHandler();
+
+  //Does not load firmware stuff, only hardware stuff
+  bool LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
   //Finds and loads the appropriate resource file, filling in all the details of the resource file handler
   bool LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);

@@ -92,7 +92,6 @@ class PortConnection : public QObject {
       int hardware_major_version;
       int electronics_type;
       int electronics_major_version;
-      int firmware_style;
   } previous_handled_connection;
 
   bool logging_active_;
@@ -116,14 +115,14 @@ class PortConnection : public QObject {
    * @param hardware_type a number specifying hardware type
    * @return The name of the module with hardware_type value (Ex. 30 would return Vertiq 4006 370kv)
    */
-  QString GetHardwareNameFromResources(int hardware_type);
+  QString GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version);
 
   /**
    * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the elctonics and hardware version of the most recent connectoin
    * @param hardware_val a pointer to hold the hardware value
    * @param electronics_val a pointer to hold the elctronics value
    */
-  void FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val);
+  void FindHardwareAndElectronicsFromLog(int * hardware_type, int* hardware_major_version, int * electronics_type, int * electronics_major_version);
 
   /**
    * @brief ExtractValueFromLog find the most recently added value from the log given the starting character and length of the preamble

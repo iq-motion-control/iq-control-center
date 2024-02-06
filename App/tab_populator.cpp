@@ -26,7 +26,7 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
                                 int electronics_major_version, int firmware_style, int firmware_value) {
 
   //FRED NOTE: Debugging stuff
-  qInfo("TAB POPULATOR\n-------------------------------------------------\n");
+  qInfo("\nTAB POPULATOR\n-------------------------------------------------");
   qInfo(qPrintable("Hardware Type: " + QString::number(hardware_type)));
   qInfo(qPrintable("Hardware Major Version: " + QString::number(hardware_major_version)));
   qInfo(qPrintable("Electronics Type: " + QString::number(electronics_type)));
@@ -36,6 +36,8 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
 
   resource_file_handler_->LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version, firmware_style);
 
+  //Fred TODO: Check if the resource files is properly loaded?
+
 //  Fred Notes: This may or may not be able to stay the same, might need two versions for legacy vs. new?
   DisplayFirmwareHardwareName();
 
@@ -44,6 +46,9 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
 
   //Fred Notes: Ideally this can be the same as well? I think it can be, we'll see
   CreateTabFrames();
+
+  //Fred Note: Release the file when we are done? Maybe we want it again, but in that case I guess we can just load it again
+  resource_file_handler_->ReleaseResourceFile();
 }
 
 void TabPopulator::DisplayFirmwareHardwareName() {
