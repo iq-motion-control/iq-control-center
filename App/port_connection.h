@@ -28,6 +28,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include "qserial_interface.h"
 #include "ui_mainwindow.h"
+#include "resource_file_handler.h"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
@@ -75,6 +76,7 @@
 #define HARDWARE_MAJOR_STRING "connected module has hardware major version: "
 #define ELECTRONICS_STRING "connected module has electronics type: "
 #define ELECTRONICS_MAJOR_STRING "connected module has electronics major version: "
+#define FIRMWARE_STYLE_STRING "connected module has firmware style number: "
 
 class PortConnection : public QObject {
   Q_OBJECT
@@ -90,6 +92,7 @@ class PortConnection : public QObject {
       int hardware_major_version;
       int electronics_type;
       int electronics_major_version;
+      int firmware_style;
   } previous_handled_connection;
 
   bool logging_active_;
@@ -104,7 +107,7 @@ class PortConnection : public QObject {
 
   static QDateTime time_;
 
-  PortConnection(Ui::MainWindow *user_in);
+  PortConnection(Ui::MainWindow *user_in, ResourceFileHandler * resource_file_handler);
 
   ~PortConnection() {}
 
@@ -368,6 +371,8 @@ class PortConnection : public QObject {
 
   Ui::MainWindow *ui_;
 
+  ResourceFileHandler * resource_file_handler_;
+
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
 
@@ -396,6 +401,8 @@ class PortConnection : public QObject {
   QString hardware_major_str_;
   QString electronics_str_;
   QString electronics_major_str_;
+
+  QString firmware_style_str_;
 
   uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
   uint8_t num_modules_discovered_; //keep track of the number we've actually found

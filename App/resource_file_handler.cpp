@@ -6,7 +6,10 @@ ResourceFileHandler::ResourceFileHandler(){
 }
 
 //Finds and loads the appropriate resource file and fills up all of our resource file information
-void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
+bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
+    qInfo("RESOURCE FILEHANDLER\n-------------------------------------------------\n");
+
+
     QString current_path = QCoreApplication::applicationDirPath();
     QString hardware_type_file_path =
         current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
@@ -18,6 +21,10 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
 
     //Fred Note: Possibly pointless
     hardware_type_ = hardware_type;
+    hardware_major_version_ = hardware_major_version;
+    electronics_type_ = electronics_type;
+    electronics_major_version_ = electronics_major_version;
+    firmware_style_ = firmware_style;
 
     //Fred Notes: We may be able to tell new from old files quite easily by just checking for a top level array
     if(IsLegacyJsonFile(json_file_)){
@@ -28,11 +35,6 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
         //Hardware name is also just sitting at the top level
         hardware_name_ = firmware_styles_[0]["hardware_name"].asString();
 
-        //Fred Note: Possibly pointless
-        hardware_major_version_ = 0;
-        electronics_type_ = electronics_type;
-        electronics_major_version_ = 0;
-
     }else{
         qInfo("New style file");
         //Need to pull the appropriate list of firmware styles out of this thing based on the hardware major, electronics type, and electronics major.
@@ -41,17 +43,10 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
 
         firmware_styles_ = module_configuration["styles"];
         hardware_name_ = module_configuration["hardware_name"].asString();
-
-        hardware_major_version_ = module_configuration["hardware_major_version"].asInt();
-        electronics_type_ = module_configuration["electronics_type"].asInt();
-        electronics_major_version_ = module_configuration["electronics_major_version"].asInt();
     }
 
     //Fred Note: Having the style in here may complicate things, we'll see. May need to separate out the loading of firmware stuff from the initial resource file load?
     FindFirmwareIndex(firmware_style);
-
-    //Fred Note: Maybe useless
-    firmware_style_ = firmware_styles_[firmware_index_]["style"].asInt();
 
     //These can be pulled out of the firmware styles the same way between legacy and new file types
     minimum_firmware_major_ = firmware_styles_[firmware_index_]["min_major_build"].asInt();
@@ -59,6 +54,9 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
     minimum_firmware_patch_ = firmware_styles_[firmware_index_]["min_patch_build"].asInt();
 
     firmware_name_ = firmware_styles_[firmware_index_]["name"].asString();
+
+    resource_file_loaded_ = true;
+    return true;
 }
 
 void ResourceFileHandler::ReleaseResourceFile(){
@@ -77,6 +75,8 @@ void ResourceFileHandler::ReleaseResourceFile(){
 
     std::string firmware_name = "";
     std::string hardware_name_ = "";
+
+    resource_file_loaded_ = false;
 }
 
 Json::Value  ResourceFileHandler::OpenAndLoadJsonFile(const QString &file_path){
@@ -137,7 +137,10 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
     for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
       if (firmware_style == firmware_styles_[ii]["style"].asInt()) {
         firmware_index_ = ii;
+
         qInfo(qPrintable("Found firmware index: "+QString::number(firmware_index_)));
+
+        return;
       }
     }
     throw QString("Firmware Style Not Handled");

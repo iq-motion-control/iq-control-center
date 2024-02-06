@@ -24,6 +24,7 @@
 #include <QObject>
 #include "IQ_api/json_cpp.hpp"
 #include "tab.h"
+#include "resource_file_handler.h"
 
 #include <map>
 
@@ -31,24 +32,12 @@ class TabPopulator : public QObject {
   Q_OBJECT
  private:
   Ui::MainWindow *ui_;
+  ResourceFileHandler *resource_file_handler_;
+
   std::map<std::string, std::shared_ptr<Tab>> *tab_map_;
-//  JsonCpp json_;
-//  Json::Value firmware_styles_;
-//  Json::Value json_file_;
-//  uint32_t firmware_index_;
-//  std::string firmware_name_;
-//  std::string hardware_name_;
 
-//  void LoadFirmwareStyles(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
-//  Json::Value OpenAndLoadJsonFile(const QString &file_path);
-//  Json::Value LoadJsonFile(QFile &my_file);
-//  bool IsLegacyJsonFile(Json::Value json_file);
-//  Json::Value ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
-//  void FindFirmwareIndex(const int &firmware_style);
-
-  void GetAndDisplayFirmwareHardwareName();
-//  void GetFirmwareName();
+//  void GetAndDisplayFirmwareHardwareName();
   void DisplayFirmwareHardwareName();
 
   void CheckMinFirmwareBuildNumber(const int &firmware_build_number);
@@ -59,8 +48,8 @@ class TabPopulator : public QObject {
   void UpdateTabMap(std::shared_ptr<Tab> &tab, std::string &tab_name);
 
  public:
-  TabPopulator(Ui::MainWindow *ui, std::map<std::string, std::shared_ptr<Tab>> *tab_map);
-  QString GetHardwareType() { return QString::fromStdString(hardware_name_);}
+  TabPopulator(Ui::MainWindow *ui, ResourceFileHandler * resource_file_handler, std::map<std::string, std::shared_ptr<Tab>> *tab_map);
+//  QString GetHardwareType() { return QString::fromStdString(hardware_name_);}
  signals:
 
  public slots:

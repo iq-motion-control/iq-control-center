@@ -112,6 +112,7 @@ private:
   //    QtAutoUpdater::UpdateController *controller;
   //    QtAutoUpdater::UpdateButton *updateButton;
 
+  ResourceFileHandler *resource_file_handler;
   TabPopulator *tab_populator;
   Defaults *def;
 

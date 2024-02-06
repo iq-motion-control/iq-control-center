@@ -46,7 +46,7 @@ class ResourceFileHandler : public QObject {
   ResourceFileHandler();
 
   //Finds and loads the appropriate resource file, filling in all the details of the resource file handler
-  void LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
+  bool LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
 
   //Release the resource file we have right now, clearing out all of our data in it.
   void ReleaseResourceFile();

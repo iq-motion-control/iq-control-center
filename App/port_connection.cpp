@@ -29,14 +29,16 @@
 #define DEFAULT_OBJECT_ID 0
 #define NO_OLD_MODULES_FOUND 99
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :
+PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * resource_file_handler) :
   logging_active_(false),
   ui_(user_int),
+  resource_file_handler_(resource_file_handler),
   ser_(nullptr),
   hardware_str_(HARDWARE_STRING),
   hardware_major_str_(HARDWARE_MAJOR_STRING),
   electronics_str_(ELECTRONICS_STRING),
   electronics_major_str_(ELECTRONICS_MAJOR_STRING),
+  firmware_style_str_(FIRMWARE_STYLE_STRING),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
   perform_timer_callback_(true)
@@ -606,6 +608,7 @@ bool PortConnection::DisplayRecoveryMessage(){
           previous_handled_connection.hardware_major_version = hardware_major_version_;
           previous_handled_connection.electronics_type = electronics_type_;
           previous_handled_connection.electronics_major_version = electronics_major_version_;
+          previous_handled_connection.firmware_style = firmware_style_;
       }
 
       //regardless of where we got the previous connection from, we have it at this point. We can now
@@ -775,12 +778,15 @@ void PortConnection::GetDeviceInformationResponses(){
     AddToLog(electronics_str_ + QString::number(electronics_type));
     AddToLog(electronics_major_str_ + QString::number(electronics_major_version));
 
+    AddToLog(firmware_style_str_ + QString::number(firmware_style));
+
     //FRED TODO: Need major version stuff in here too?
     //Make sure to store who we're connected to in our struct
     previous_handled_connection.hardware_type = hardware_type_;
     previous_handled_connection.hardware_major_version = hardware_major_version_;
     previous_handled_connection.electronics_type = electronics_type_;
     previous_handled_connection.electronics_major_version = electronics_major_version_;
+    previous_handled_connection.firmware_style = firmware_style_;
 }
 
 int PortConnection::GetFirmwareValid(){
