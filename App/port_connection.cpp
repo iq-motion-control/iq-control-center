@@ -38,7 +38,6 @@ PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * r
   hardware_major_str_(HARDWARE_MAJOR_STRING),
   electronics_str_(ELECTRONICS_STRING),
   electronics_major_str_(ELECTRONICS_MAJOR_STRING),
-  firmware_style_str_(FIRMWARE_STYLE_STRING),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
   perform_timer_callback_(true)
@@ -544,10 +543,9 @@ void PortConnection::EnableAllButtons(){
     ui_->pushButton_general->setEnabled(true);
 }
 
-//Fred Notes: Oh man, what is this, a second place we grab the resources? This is not good, makes headaches for me
 QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version){
     if(hardware_type >= 0){
-        resource_file_handler_->LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
+        resource_file_handler_->LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
 
         if(resource_file_handler_->hardware_information_loaded_){
             return QString::fromStdString(resource_file_handler_->hardware_name_);

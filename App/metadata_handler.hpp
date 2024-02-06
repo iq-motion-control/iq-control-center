@@ -77,16 +77,21 @@ public:
 
     /**
      * @brief CheckHardwareAndElectronics Checks the metadata hardware and electronics against the connected motor's or previously connected motor
-     * @param hardware_type the type of hardware that you attempted to flash
-     * @return True if match
+     * @param target_hardware_type The type of the connected hardware that you attempted to flash
+     * @param target_hardware_major_version The major version of the connected hardware that you attempted to flash
+     * @param target_electronics_type The type of the connected electronics that you attempted to flash
+     * @param target_electronics_major_verstion The major version of the connected electronics that you attempted to flash
+     * @return True if the connected hardware and electronics match the hardware and electronics from the metadata of the file you are attempting to flash
      */
     bool CheckHardwareAndElectronics(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version);
 
     /**
-     * @brief GetErrorType Determines if there is a mismatch between the electronics and/or the hardware
-     * @param toFlashElectronicsType
-     * @param toFlashHardwareType
-     * @return
+     * @brief GetErrorType Determines what the source of the mismatched metatdata error is, and returns a string detailing the problem.
+     * @param target_hardware_type The type of the connected hardware that you attempted to flash
+     * @param target_hardware_major_version The major version of the connected hardware that you attempted to flash
+     * @param target_electronics_type The type of the connected electronics that you attempted to flash
+     * @param target_electronics_major_verstion The major version of the connected electronics that you attempted to flash
+     * @return A QString providing details on the nature of the error.
      */
     QString GetErrorType(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version);
 
@@ -180,6 +185,9 @@ private:
      */
     int to_flash_electronics_type_;
 
+    /**
+     * @brief to_flash_electronics_type_ The major version of electronics that this metadata expects to flash
+     */
     int to_flash_electronics_major_version_;
 
     /**
@@ -187,6 +195,9 @@ private:
      */
     int to_flash_hardware_type_;
 
+    /**
+     * @brief to_flash_hardware_type_ The major version of hardware that this metadata expects to flash
+     */
     int to_flash_hardware_major_version_;
 
     /**

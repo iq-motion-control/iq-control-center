@@ -334,8 +334,9 @@ bool Firmware::FlashHardwareElectronicsWarning(int current_tab){
         target_electronics_major_version = iv.pcon->previous_handled_connection.electronics_major_version;
     }
 
-    //Fred Note: I don't think I really need to include major here, this is just checking if we have anything loaded in to even say. The types cover that
-    bool should_put_hardware_electronics_in_msg = (target_hardware_type != -1) && (target_electronics_type != -1);
+    //To provide a proper error message, we need to make sure all of our targets are set to something
+    bool should_put_hardware_electronics_in_msg = (target_hardware_type != -1) && (target_hardware_major_version != -1)
+            && (target_electronics_type != -1) && (target_electronics_major_version != -1);
 
     bool hardware_and_electronics_correct = metadata_handler_.CheckHardwareAndElectronics(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing

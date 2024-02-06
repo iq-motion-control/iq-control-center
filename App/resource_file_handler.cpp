@@ -6,10 +6,8 @@ ResourceFileHandler::ResourceFileHandler(){
 }
 
 
-//Two versions of this to support darn recovery stuff that just wants to get hardware names
-void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
-    qInfo("\nRESOURCE FILE HANDLER\n-------------------------------------------------");
-
+//Finds and loads only the hardware information from the correct resource file. Useful for instances where you only care about the hardware information and not the firmware.
+void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
     QString current_path = QCoreApplication::applicationDirPath();
     QString hardware_type_file_path =
         current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
@@ -21,20 +19,16 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
     loaded_electronics_type_ = electronics_type;
     loaded_electronics_major_version_ = electronics_major_version;
 
-    //Fred Notes: We may be able to tell new from old files quite easily by just checking for a top level array
-    if(IsLegacyJsonFile(json_file_)){
+    if(IsLegacyResourceFile(json_file_)){
         //This is a legacy style file, we can just load up the firmware styles directly out of it
-        qInfo("Legacy file");
         firmware_styles_ = json_file_;
 
         //Hardware name is also just sitting at the top level
         hardware_name_ = firmware_styles_[0]["hardware_name"].asString();
 
     }else{
-        qInfo("New style file");
         //Need to pull the appropriate list of firmware styles out of this thing based on the hardware major, electronics type, and electronics major.
         Json::Value module_configuration = ExtractModuleConfigurationFromNewStyleFile(json_file_, hardware_major_version, electronics_type, electronics_major_version);
-        qInfo(qPrintable(module_configuration["hardware_name"].asCString()));
 
         firmware_styles_ = module_configuration["styles"];
         hardware_name_ = module_configuration["hardware_name"].asString();
@@ -43,13 +37,13 @@ void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
     hardware_information_loaded_ = true;
 }
 
-//Finds and loads the appropriate resource file and fills up all of our resource file information
-void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
-    LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
+//Finds and loads the appropriate resource file and fills up all of our resource file information, including firmware information
+void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
+    //Loading the hardware information gives us the location where we can pull all of the firmware information from
+    LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
 
     loaded_firmware_style_ = firmware_style;
 
-    //Fred Note: Having the style in here may complicate things, we'll see. May need to separate out the loading of firmware stuff from the initial resource file load?
     FindFirmwareIndex(firmware_style);
 
     //These can be pulled out of the firmware styles the same way between legacy and new file types
@@ -103,10 +97,10 @@ Json::Value  ResourceFileHandler::LoadJsonFile(QFile &my_file){
     return my_json_value;
 }
 
-bool  ResourceFileHandler::IsLegacyJsonFile(Json::Value json_file){
+bool  ResourceFileHandler::IsLegacyResourceFile(Json::Value json_file){
     //A very easy way to tell the legacy files from the new ones is that the legacy ones are an array at the top level,
     //while the new ones are not. So if the top level of the file is an array, it must be legacy.
-    return json_file_.isArray();
+    return json_file.isArray();
 }
 
 Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version,
@@ -126,13 +120,10 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            (configuration_electronics_type == electronics_type) &&
            (configuration_electronics_major_version == electronics_major_version)){
 
-
-           qInfo("Found module configuration");
            return possible_module_configurations[configuration];
         }
     }
 
-    //Fred Note: Is it ok that I don't return anything here? Need to test out how this fails to make sure its graceful
     throw QString("Correct configuration could not be found for this module, update app.");
 }
 
@@ -141,9 +132,6 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
     for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
       if (firmware_style == firmware_styles_[ii]["style"].asInt()) {
         firmware_index_ = ii;
-
-        qInfo(qPrintable("Found firmware index: "+QString::number(firmware_index_)));
-
         return;
       }
     }

@@ -36,8 +36,6 @@ class TabPopulator : public QObject {
 
   std::map<std::string, std::shared_ptr<Tab>> *tab_map_;
 
-
-//  void GetAndDisplayFirmwareHardwareName();
   void DisplayFirmwareHardwareName();
 
   void CheckMinFirmwareBuildNumber(const int &firmware_build_number);
@@ -49,7 +47,6 @@ class TabPopulator : public QObject {
 
  public:
   TabPopulator(Ui::MainWindow *ui, ResourceFileHandler * resource_file_handler, std::map<std::string, std::shared_ptr<Tab>> *tab_map);
-//  QString GetHardwareType() { return QString::fromStdString(hardware_name_);}
  signals:
 
  public slots:

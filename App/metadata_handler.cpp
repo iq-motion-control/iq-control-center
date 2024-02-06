@@ -145,7 +145,6 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
 
-    //Fred Note: Annoying that I am repeating this check in here and the CheckHardwareElectronics
     bool electronics_error = (to_flash_electronics_type_!= target_electronics_type) || (to_flash_electronics_major_version_ != target_electronics_major_version);
     bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
 
@@ -235,8 +234,7 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
     //If they're not sure about this return false.
     //If we guessed right, actually compare the values
 
-    //Fred Note: Again, not sure if we really need the major versions here, though we could add them just for completeness
-    //Fred Note: Maybe we should do an or here, if we don't have a value for any one of our things, its going to be a problem checking
+    //This is intended to check if we guessed wrong, so checking only the types is sufficient, no need to check the major versions as well.
     if(target_hardware_type == -1 && target_electronics_type == -1){
         QMessageBox msgBox;
         msgBox.addButton("Yes", QMessageBox::YesRole);
