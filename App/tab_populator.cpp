@@ -36,18 +36,16 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
 
   resource_file_handler_->LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version, firmware_style);
 
-  //Fred TODO: Check if the resource files is properly loaded?
+  //Make sure the resource file is properly loaded with all of the information we need.
+  if(resource_file_handler_->hardware_information_loaded_ && resource_file_handler_->firmware_information_loaded_){
+      DisplayFirmwareHardwareName();
+      CheckMinFirmwareBuildNumber(firmware_value);
+      CreateTabFrames();
+  }else{
+      throw QString("Unable to properly load resource file.");
+  }
 
-//  Fred Notes: This may or may not be able to stay the same, might need two versions for legacy vs. new?
-  DisplayFirmwareHardwareName();
-
-  //Fred Notes: This can probably stay the same as well if we set firmware_styles correctly
-  CheckMinFirmwareBuildNumber(firmware_value);
-
-  //Fred Notes: Ideally this can be the same as well? I think it can be, we'll see
-  CreateTabFrames();
-
-  //Fred Note: Release the file when we are done? Maybe we want it again, but in that case I guess we can just load it again
+  //Release the resource file when we are done with it.
   resource_file_handler_->ReleaseResourceFile();
 }
 

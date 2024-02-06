@@ -7,7 +7,7 @@ ResourceFileHandler::ResourceFileHandler(){
 
 
 //Two versions of this to support darn recovery stuff that just wants to get hardware names
-bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
+void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
     qInfo("\nRESOURCE FILE HANDLER\n-------------------------------------------------");
 
     QString current_path = QCoreApplication::applicationDirPath();
@@ -16,11 +16,10 @@ bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
 
     json_file_ = OpenAndLoadJsonFile(hardware_type_file_path);
 
-    //Fred Note: Possibly pointless
-    hardware_type_ = hardware_type;
-    hardware_major_version_ = hardware_major_version;
-    electronics_type_ = electronics_type;
-    electronics_major_version_ = electronics_major_version;
+    loaded_hardware_type_ = hardware_type;
+    loaded_hardware_major_version_ = hardware_major_version;
+    loaded_electronics_type_ = electronics_type;
+    loaded_electronics_major_version_ = electronics_major_version;
 
     //Fred Notes: We may be able to tell new from old files quite easily by just checking for a top level array
     if(IsLegacyJsonFile(json_file_)){
@@ -42,16 +41,13 @@ bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
     }
 
     hardware_information_loaded_ = true;
-
-    //Fred Notes: Return types may be pointless? or at least under-used?
-    return true;
 }
 
 //Finds and loads the appropriate resource file and fills up all of our resource file information
-bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
+void ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
     LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
 
-    firmware_style_ = firmware_style;
+    loaded_firmware_style_ = firmware_style;
 
     //Fred Note: Having the style in here may complicate things, we'll see. May need to separate out the loading of firmware stuff from the initial resource file load?
     FindFirmwareIndex(firmware_style);
@@ -64,18 +60,17 @@ bool ResourceFileHandler::LoadResourceFile(const int &hardware_type, const int &
     firmware_name_ = firmware_styles_[firmware_index_]["name"].asString();
 
     firmware_information_loaded_ = true;
-    return true;
 }
 
 void ResourceFileHandler::ReleaseResourceFile(){
     firmware_styles_ = Json::Value::null;
     firmware_index_ = -1;
 
-    hardware_type_ = -1;
-    hardware_major_version_ = -1;
-    electronics_type_ = -1;
-    electronics_major_version_ = -1;
-    firmware_style_ = -1;
+    loaded_hardware_type_ = -1;
+    loaded_hardware_major_version_ = -1;
+    loaded_electronics_type_ = -1;
+    loaded_electronics_major_version_ = -1;
+    loaded_firmware_style_ = -1;
 
     minimum_firmware_major_ = -1;
     minimum_firmware_minor_ = -1;

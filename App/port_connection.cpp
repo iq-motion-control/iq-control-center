@@ -241,9 +241,6 @@ void PortConnection::SetPortConnection(bool state) {
 
     ui_->connect_button->setText("CONNECT");
 
-    //Fred Notes: May be good to release resource files on disconnect?
-    resource_file_handler_->ReleaseResourceFile();
-
     AddToLog("module disconnected");
   }
 }
@@ -549,11 +546,18 @@ void PortConnection::EnableAllButtons(){
 
 //Fred Notes: Oh man, what is this, a second place we grab the resources? This is not good, makes headaches for me
 QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version){
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //! Fred Notes: Why even have this go through port connection? Can we just have people using the resource file handler themselves?
     if(hardware_type >= 0){
         resource_file_handler_->LoadResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
-        return QString::fromStdString(resource_file_handler_->hardware_name_);
+
+        if(resource_file_handler_->hardware_information_loaded_){
+            return QString::fromStdString(resource_file_handler_->hardware_name_);
+        }else{
+            QString error_string = "Unable to load resources to fetch hardware name.";
+            AddToLog(error_string);
+            throw QString(error_string);
+        }
+
+        //Release the resource file when we are done with it.
         resource_file_handler_->ReleaseResourceFile();
     }
 
@@ -590,16 +594,9 @@ bool PortConnection::DisplayRecoveryMessage(){
       if(hardware_type_ == -1 && electronics_type_ == -1){
           //Ok...so we are trying to connect to a motor that can't talk to us. Let's use the "cache" method in which we assume that the most
           //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
-
-          //!!!!!!!!!!!!!!!!!!!!!!!!!
-          //! FRED TODO: UPDATE THIS
           FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_type, &previous_handled_connection.hardware_major_version, &previous_handled_connection.electronics_type, &previous_handled_connection.electronics_major_version);
       }else{
-
-          //FRED NOTES: Does this do anything? If we have the value still saved in the hardware and electronics type, does that not imply its still
-          //saved in the previous connection stuff? It's not like we ever clear it. Can we get rid of this?!?!?!?!?!
-
-          //hardware_type_ and electronics_type_ are values that get filled in during module connection
+          //Values were filled in during module connection
           previous_handled_connection.hardware_type = hardware_type_;
           previous_handled_connection.hardware_major_version = hardware_major_version_;
           previous_handled_connection.electronics_type = electronics_type_;

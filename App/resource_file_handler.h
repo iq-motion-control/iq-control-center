@@ -26,39 +26,40 @@ class ResourceFileHandler : public QObject {
   void FindFirmwareIndex(const int &firmware_style);
 
  public:
-  //Fred Note: May not need these guys, just there for completeness at the moment
-  int hardware_type_;
-  int hardware_major_version_;
-  int electronics_type_;
-  int electronics_major_version_;
-  int firmware_style_;
+  //These provide a record of the what sort of resource file we have loaded.
+  //If you want to check the details of what we loaded, refer to these
+  int loaded_hardware_type_;
+  int loaded_hardware_major_version_;
+  int loaded_electronics_type_;
+  int loaded_electronics_major_version_;
+  int loaded_firmware_style_;
+
+  //You can just load hardware information, or you can specify the style as well
+  //and load the full firmware information. These booleans can tell you at a glance
+  //what subset of the information you have. Loading just the hardware information
+  //is useful in certain scenarios, especially zip file checking and recovery.
+  bool hardware_information_loaded_;
+  bool firmware_information_loaded_;
+
+  //The information loaded from the resource file for later consumption.
+  std::string hardware_name_;
+
+  std::string firmware_name_;
 
   int minimum_firmware_major_;
   int minimum_firmware_minor_;
   int minimum_firmware_patch_;
 
-  std::string firmware_name_;
-  std::string hardware_name_;
-
-  //For keeping track if we have a resource file loaded already or not
-  bool hardware_information_loaded_;
-  bool firmware_information_loaded_;
-
   ResourceFileHandler();
 
   //Does not load firmware stuff, only hardware stuff
-  bool LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
+  void LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
   //Finds and loads the appropriate resource file, filling in all the details of the resource file handler
-  bool LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
+  void LoadResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
 
   //Release the resource file we have right now, clearing out all of our data in it.
   void ReleaseResourceFile();
-
-  Json::Value GetFirmwareStyles();
-  std::string GetFirmwareName();
-  std::string GetHardwareName();
-
 };
 
 #endif // RESOURCE_FILE_HANDLER_H
