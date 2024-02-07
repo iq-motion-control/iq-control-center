@@ -162,10 +162,10 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_type, int 
             && last_electronics_major_version_instance_index != -1 && last_electronics_type_instance_index != -1){
 
         int hardware_type_starting_char =  last_hardware_type_instance_index + hardware_str_.size();
-        int hardware_major_version_starting_char = last_hardware_major_version_instance_index + hardware_str_.size();
+        int hardware_major_version_starting_char = last_hardware_major_version_instance_index + hardware_major_str_.size();
 
         int electronics_type_starting_char = last_electronics_type_instance_index + electronics_str_.size();
-        int electronics_major_version_starting_char = last_electronics_major_version_instance_index + electronics_str_.size();
+        int electronics_major_version_starting_char = last_electronics_major_version_instance_index + electronics_major_str_.size();
 
         *hardware_type =  ExtractValueFromLog(fileLines, hardware_type_starting_char);
         *hardware_major_version = ExtractValueFromLog(fileLines, hardware_major_version_starting_char);
@@ -173,7 +173,8 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_type, int 
         *electronics_type =  ExtractValueFromLog(fileLines, electronics_type_starting_char);
         *electronics_major_version = ExtractValueFromLog(fileLines, electronics_major_version_starting_char);
 
-        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_type) + " Electronics: " + QString::number(*electronics_type));
+        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_type) + "." + QString::number(*hardware_major_version) +
+                 " Electronics: " + QString::number(*electronics_type) + "." + QString::number(*electronics_major_version));
 
         return;
     }
