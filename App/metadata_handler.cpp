@@ -135,8 +135,8 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
     QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_, to_flash_hardware_major_version_, to_flash_electronics_type_, to_flash_electronics_major_version_);
 
     //Message if there is an electronics type error
-    QString electronicsError = "Firmware is for the wrong electronics. File expected to be flashing: " + QString::number(target_electronics_type) + "." + QString::number(target_electronics_major_version)
-                                        + ", but the module was reported as: " + QString::number(to_flash_electronics_type_) + "." + QString::number(to_flash_electronics_major_version_);
+    QString electronicsError = "Firmware is for the wrong electronics. File expected to be flashing: " + QString::number(to_flash_electronics_type_) + "." + QString::number(to_flash_electronics_major_version_)
+                                        + ", but the module was reported as: " + QString::number(target_electronics_type) + "." + QString::number(target_electronics_major_version);
     //Message if there is a hardware error
     QString hardwareError = "Firmware is for the wrong hardware. File expected to be flashing: " + correct_hardware + " (" + QString::number(to_flash_hardware_type_)
              +"." + QString::number(to_flash_hardware_major_version_) + ")" + ", but the module was reported as: " + wrong_hardware + " (" + QString::number(target_hardware_type)
