@@ -166,9 +166,15 @@ void MetadataHandler::ReadMetadata(){
     //Grabbing data from the first entry (hardware and electronics type)
     QJsonObject safetyObj = metadata_array_.at(0).toObject();
     to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
-    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt();
     to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
-    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt();
+
+    //Older zip file metadata files may not contain this information on major versions. If the key is not present,
+    //the value function call will return an undefined value. toInt will return its default value when
+    //called on an undefined value, and I have explicitly set the default value to be 0 here to show
+    //that we want to assume a major version of 0 if there is no major version specified in the zip file
+    //metdata
+    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
+    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
 
     //The second entry is an array with the allowed flash types
     QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
