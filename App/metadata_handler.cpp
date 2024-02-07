@@ -149,14 +149,11 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
     bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
 
     if(electronics_error && hardware_error ){
-        qInfo("Both errors");
         errorType = electronicsError + "\n" + hardwareError;
     }
     else if(electronics_error){
-        qInfo("Electronics error");
         errorType = electronicsError;
     }else{
-        qInfo("Hardware Error");
         errorType = hardwareError;
     }
 ;
