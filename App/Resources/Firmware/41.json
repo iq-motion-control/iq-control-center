@@ -1,19 +1,48 @@
-[
-  {
-    "hardware_name": "Vertiq 4006 770kv (Steel)"
-  },
-  {
-    "style": 1,
-    "min_major_build": 0,
-    "min_minor_build": 0,
-    "min_patch_build": 0,
-    "name": "vertiq_40xx_speed"
-  },  
-  {
-    "style": 2,
-    "min_major_build": 0,
-    "min_minor_build": 0,
-    "min_patch_build": 0,
-    "name": "vertiq_40xx_servo"
-  }
-]
+{
+  "possible_module_configurations": [
+    {
+      "hardware_major_version": 1,
+      "electronics_type": 20,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 4006 770kv (Gen 2)",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_speed"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_servo"
+        }
+      ]
+    },
+    {
+      "hardware_major_version": 0,
+      "electronics_type": 20,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 4006 770kv Beta (Gen 2)",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 1,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_speed"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 1,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_servo"
+        }
+      ]
+    }
+  ]
+}
