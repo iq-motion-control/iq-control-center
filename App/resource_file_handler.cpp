@@ -103,8 +103,7 @@ bool  ResourceFileHandler::IsLegacyResourceFile(Json::Value json_file){
     return json_file.isArray();
 }
 
-Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version,
-                                                                             const int& electronics_type, const int& electronics_major_version){
+Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Json::Value json_file, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
     //We need to search through the list of possible module configurations and find one that matches our full module definition
     Json::Value possible_module_configurations = json_file["possible_module_configurations"];
     uint8_t number_of_possible_module_configurations = possible_module_configurations.size();

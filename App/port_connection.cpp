@@ -550,14 +550,15 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
 
         if(resource_file_handler_->hardware_information_loaded_){
             return QString::fromStdString(resource_file_handler_->hardware_name_);
+            resource_file_handler_->ReleaseResourceFile();
         }else{
+            resource_file_handler_->ReleaseResourceFile();
+
             QString error_string = "Unable to load resources to fetch hardware name.";
             AddToLog(error_string);
             throw QString(error_string);
         }
 
-        //Release the resource file when we are done with it.
-        resource_file_handler_->ReleaseResourceFile();
     }
 
     return "";
