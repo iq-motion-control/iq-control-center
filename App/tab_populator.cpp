@@ -19,70 +19,29 @@
 */
 #include "tab_populator.h"
 
-TabPopulator::TabPopulator(Ui::MainWindow *ui, std::map<std::string, std::shared_ptr<Tab>> *tab_map)
-    : ui_(ui), tab_map_(tab_map) {}
+TabPopulator::TabPopulator(Ui::MainWindow *ui, ResourceFileHandler * resource_file_handler, std::map<std::string, std::shared_ptr<Tab>> *tab_map)
+    : ui_(ui), resource_file_handler_(resource_file_handler), tab_map_(tab_map) {}
 
-void TabPopulator::PopulateTabs(int hardware_type, int firmware_style, int firmware_build_number) {
-  LoadFirmwareStylesFromHardwareType(hardware_type);
-  FindFirmwareIndex(firmware_style);
-  GetAndDisplayFirmwareHardwareName();
-  CheckMinFirmwareBuildNumber(firmware_build_number);
-  CreateTabFrames();
-}
+void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, int electronics_type,
+                                int electronics_major_version, int firmware_style, int firmware_value) {
+  resource_file_handler_->LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version, firmware_style);
 
-void TabPopulator::LoadFirmwareStylesFromHardwareType(const int &hardware_type) {
-  QString current_path = QCoreApplication::applicationDirPath();
-  QString hardware_type_file_path =
-      current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
-  firmware_styles_ = OpenAndLoadJsonFile(hardware_type_file_path);
-}
-
-Json::Value TabPopulator::OpenAndLoadJsonFile(const QString &file_path) {
-  Json::Value my_json_value;
-  QFile my_file(file_path);
-  if (my_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    my_json_value = LoadJsonFile(my_file);
-    my_file.close();
-  } else {
-    throw QString("Resource File Missing, Update App");
+  //Make sure the resource file is properly loaded with all of the information we need.
+  if(resource_file_handler_->hardware_information_loaded_ && resource_file_handler_->firmware_information_loaded_){
+      DisplayFirmwareHardwareName();
+      CheckMinFirmwareBuildNumber(firmware_value);
+      CreateTabFrames();
+  }else{
+      throw QString("Unable to properly load resource file.");
   }
-  return my_json_value;
-}
 
-Json::Value TabPopulator::LoadJsonFile(QFile &my_file) {
-  std::istringstream iss(QTextStream(&my_file).readAll().toStdString());
-  std::string errs;
-  Json::Value my_json_value;
-  Json::parseFromStream(json_.rbuilder, iss, &my_json_value, &errs);
-  return my_json_value;
-}
-
-void TabPopulator::FindFirmwareIndex(const int &firmware_style) {
-  uint32_t num_of_firmware_styles = firmware_styles_.size();
-  for (uint32_t ii = 0; ii < num_of_firmware_styles; ++ii) {
-    if (firmware_style == firmware_styles_[ii]["style"].asInt()) {
-      firmware_index_ = ii;
-      return;
-    }
-  }
-  throw QString("Firmware Style Not Handled");
-}
-
-void TabPopulator::GetAndDisplayFirmwareHardwareName() {
-  GetFirmwareHardwareName();
-  DisplayFirmwareHardwareName();
-  return;
-}
-
-void TabPopulator::GetFirmwareHardwareName() {
-  firmware_name_ = firmware_styles_[firmware_index_]["name"].asString();
-  hardware_name_ = firmware_styles_[0]["hardware_name"].asString();
-  return;
+  //Release the resource file when we are done with it.
+  resource_file_handler_->ReleaseResourceFile();
 }
 
 void TabPopulator::DisplayFirmwareHardwareName() {
-  QString firmware_display_name = QString::fromStdString(firmware_name_).split("-")[0];
-  QString harwdware_display_name = QString::fromStdString(hardware_name_);
+  QString firmware_display_name = QString::fromStdString(resource_file_handler_->firmware_name_).split("-")[0];
+  QString harwdware_display_name = QString::fromStdString(resource_file_handler_->hardware_name_);
   ui_->label_firmware_name->setText(firmware_display_name);
   ui_->label_hardware_name->setText(harwdware_display_name);
 
@@ -100,19 +59,19 @@ void TabPopulator::CheckMinFirmwareBuildNumber(const int &firmware_build_number)
   int firmware_build_patch = firmware_build_number & PATCH_VERSION_MASK;
 
   //Check each of the values, if major or minor are above the minimum version, assume we are good to go
-  if(firmware_build_major > firmware_styles_[firmware_index_]["min_major_build"].asInt()){
+  if(firmware_build_major > resource_file_handler_->minimum_firmware_major_){
         return;
-  }else if((firmware_build_major == firmware_styles_[firmware_index_]["min_major_build"].asInt()) &&
-            firmware_build_minor > firmware_styles_[firmware_index_]["min_minor_build"].asInt()){
+  }else if((firmware_build_major == resource_file_handler_->minimum_firmware_major_) &&
+            firmware_build_minor > resource_file_handler_->minimum_firmware_minor_){
         return;
   }
 
   //If the major and minor are less than than or equal to their build go here
-  if(firmware_build_major < firmware_styles_[firmware_index_]["min_major_build"].asInt()){
+  if(firmware_build_major < resource_file_handler_->minimum_firmware_major_){
       DisplayUpdateFirmwareWarning();
-  }else if(firmware_build_minor < firmware_styles_[firmware_index_]["min_minor_build"].asInt()){
+  }else if(firmware_build_minor < resource_file_handler_->minimum_firmware_minor_){
       DisplayUpdateFirmwareWarning();
-  }else if(firmware_build_patch < firmware_styles_[firmware_index_]["min_patch_build"].asInt()){
+  }else if(firmware_build_patch < resource_file_handler_->minimum_firmware_patch_){
       DisplayUpdateFirmwareWarning();
   }
 
@@ -152,12 +111,12 @@ void TabPopulator::UpdateTabMap(std::shared_ptr<Tab> &tab, std::string &tab_name
 std::map<QWidget *, std::vector<std::string>> TabPopulator::LinkTabWidgetAndFirmwareFiles() {
   std::map<QWidget *, std::vector<std::string>> tab_widget_firmware_files;
   tab_widget_firmware_files[ui_->general_scroll_area] = {"/Resources/Tabs/general/",
-                                                         "general_" + firmware_name_ + ".json"};
+                                                         "general_" + resource_file_handler_->firmware_name_ + ".json"};
   tab_widget_firmware_files[ui_->tuning_scroll_area] = {"/Resources/Tabs/tuning/",
-                                                        "tuning_" + firmware_name_ + ".json"};
+                                                        "tuning_" + resource_file_handler_->firmware_name_ + ".json"};
   tab_widget_firmware_files[ui_->advanced_scroll_area] = {"/Resources/Tabs/advanced/",
-                                                          "advanced_" + firmware_name_ + ".json"};
+                                                          "advanced_" + resource_file_handler_->firmware_name_ + ".json"};
   tab_widget_firmware_files[ui_->testing_scroll_area] = {"/Resources/Tabs/testing/",
-                                                         "testing_" + firmware_name_ + ".json"};
+                                                         "testing_" + resource_file_handler_->firmware_name_ + ".json"};
   return tab_widget_firmware_files;
 }

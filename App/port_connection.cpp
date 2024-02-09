@@ -29,12 +29,15 @@
 #define DEFAULT_OBJECT_ID 0
 #define NO_OLD_MODULES_FOUND 99
 
-PortConnection::PortConnection(Ui::MainWindow *user_int) :
+PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * resource_file_handler) :
   logging_active_(false),
   ui_(user_int),
+  resource_file_handler_(resource_file_handler),
   ser_(nullptr),
   hardware_str_(HARDWARE_STRING),
+  hardware_major_str_(HARDWARE_MAJOR_STRING),
   electronics_str_(ELECTRONICS_STRING),
+  electronics_major_str_(ELECTRONICS_MAJOR_STRING),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
   perform_timer_callback_(true)
@@ -136,7 +139,7 @@ void PortConnection::ShortenLog(uint32_t current_num_lines){
     newLogFile.close(); //don't forget to close your files!
 }
 
-void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val){
+void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_type, int * hardware_major_version, int * electronics_type, int * electronics_major_version){
     QString fileLines;
 
     QFile file(path_to_log_file);
@@ -147,26 +150,42 @@ void PortConnection::FindHardwareAndElectronicsFromLog(int * hardware_val, int *
     }
 
     //lastIndexOf returns -1 if it can't find the string
-    int last_hardware_instance_index = fileLines.lastIndexOf(hardware_str_);
-    int last_electronics_instance_index = fileLines.lastIndexOf(electronics_str_);
+    int last_hardware_type_instance_index = fileLines.lastIndexOf(hardware_str_);
+    int last_hardware_major_version_instance_index = fileLines.lastIndexOf(hardware_major_str_);
+
+    int last_electronics_type_instance_index = fileLines.lastIndexOf(electronics_str_);
+    int last_electronics_major_version_instance_index = fileLines.lastIndexOf(electronics_major_str_);
 
     //so long as we can find the strings in the log we can extract the values. otherwise they need to be -1
     //to indicate an issue
-    if(last_hardware_instance_index != -1 && last_electronics_instance_index != -1){
-        int hardware_starting_char =  last_hardware_instance_index + hardware_str_.size();
-        int electronics_starting_char = last_electronics_instance_index + electronics_str_.size();
+    if(last_hardware_type_instance_index != -1 && last_hardware_major_version_instance_index != -1
+            && last_electronics_major_version_instance_index != -1 && last_electronics_type_instance_index != -1){
 
-        *hardware_val =  ExtractValueFromLog(fileLines, hardware_starting_char);
-        *electronics_val =  ExtractValueFromLog(fileLines, electronics_starting_char);
+        int hardware_type_starting_char =  last_hardware_type_instance_index + hardware_str_.size();
+        int hardware_major_version_starting_char = last_hardware_major_version_instance_index + hardware_major_str_.size();
 
-        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_val) + " Electronics: " + QString::number(*electronics_val));
+        int electronics_type_starting_char = last_electronics_type_instance_index + electronics_str_.size();
+        int electronics_major_version_starting_char = last_electronics_major_version_instance_index + electronics_major_str_.size();
+
+        *hardware_type =  ExtractValueFromLog(fileLines, hardware_type_starting_char);
+        *hardware_major_version = ExtractValueFromLog(fileLines, hardware_major_version_starting_char);
+
+        *electronics_type =  ExtractValueFromLog(fileLines, electronics_type_starting_char);
+        *electronics_major_version = ExtractValueFromLog(fileLines, electronics_major_version_starting_char);
+
+        AddToLog("Found last connection from log. Hardware: " + QString::number(*hardware_type) + "." + QString::number(*hardware_major_version) +
+                 " Electronics: " + QString::number(*electronics_type) + "." + QString::number(*electronics_major_version));
 
         return;
     }
 
     //If we couldn't find any connection instances, spit back invalid numbers
-    *hardware_val =  -1;
-    *electronics_val = -1;
+    *hardware_type =  -1;
+    *hardware_major_version = -1;
+
+    *electronics_type = -1;
+    *electronics_major_version = -1;
+
     AddToLog("Could not find any previous connections in the log");
 }
 
@@ -267,7 +286,7 @@ void PortConnection::ConnectMotor(){
     logging_active_ = false;
 
     //Send out the hardware and firmware values to other modules of Control Center
-    emit TypeStyleFound(hardware_type_, firmware_style_, firmware_value_);
+    emit TypeStyleFound(hardware_type_, hardware_major_version_, electronics_type_, electronics_major_version_, firmware_style_, firmware_value_);
 
     /**
      * So...both emitting TypeStyleFound and FindSavedValues end up asking the motor for saved values (though the former
@@ -525,28 +544,21 @@ void PortConnection::EnableAllButtons(){
     ui_->pushButton_general->setEnabled(true);
 }
 
-QString PortConnection::GetHardwareNameFromResources(int hardware_type){
-
-    MetadataHandler temp_metadata_handler;
-
-    /**
-     * We have access to the Port Connection's electronics type and hardware type, but we do not have access to
-     * the tab_populator's version of the resource files. So, we need to grab them ourself
-     */
-    //Only try to do this if the hardware type is a real value, and not -1 thrown in recovery
+QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version){
     if(hardware_type >= 0){
-        QString current_path = QCoreApplication::applicationDirPath();
-        QString hardware_type_file_path =
-            current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
+        resource_file_handler_->LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
 
-        /**
-         * Get the hardware type from the resource files. This is the
-         * type of motor people should download for. Hardware name
-         * is something like "vertiq 8018 150Kv
-         */
-        QString hardwareName = temp_metadata_handler.ArrayFromJson(hardware_type_file_path).at(0).toObject().value("hardware_name").toString();
+        if(resource_file_handler_->hardware_information_loaded_){
+            return QString::fromStdString(resource_file_handler_->hardware_name_);
+            resource_file_handler_->ReleaseResourceFile();
+        }else{
+            resource_file_handler_->ReleaseResourceFile();
 
-        return hardwareName;
+            QString error_string = "Unable to load resources to fetch hardware name.";
+            AddToLog(error_string);
+            throw QString(error_string);
+        }
+
     }
 
     return "";
@@ -582,17 +594,19 @@ bool PortConnection::DisplayRecoveryMessage(){
       if(hardware_type_ == -1 && electronics_type_ == -1){
           //Ok...so we are trying to connect to a motor that can't talk to us. Let's use the "cache" method in which we assume that the most
           //recent connection is the same type of module as they're trying to recover. This is a value we can steal from the persistent log!
-          FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_value, &previous_handled_connection.electronics_value);
+          FindHardwareAndElectronicsFromLog(&previous_handled_connection.hardware_type, &previous_handled_connection.hardware_major_version, &previous_handled_connection.electronics_type, &previous_handled_connection.electronics_major_version);
       }else{
-
-          //hardware_type_ and electronics_type_ are values that get filled in during module connection
-          previous_handled_connection.hardware_value = hardware_type_;
-          previous_handled_connection.electronics_value = electronics_type_;
+          //Values were filled in during module connection
+          previous_handled_connection.hardware_type = hardware_type_;
+          previous_handled_connection.hardware_major_version = hardware_major_version_;
+          previous_handled_connection.electronics_type = electronics_type_;
+          previous_handled_connection.electronics_major_version = electronics_major_version_;
       }
 
       //regardless of where we got the previous connection from, we have it at this point. We can now
       //grab the hardware name from the hardware value
-      QString previously_connected_module = GetHardwareNameFromResources(previous_handled_connection.hardware_value);
+      QString previously_connected_module = GetHardwareNameFromResources(previous_handled_connection.hardware_type, previous_handled_connection.hardware_major_version,
+                                                                         previous_handled_connection.electronics_type, previous_handled_connection.electronics_major_version);
 
       //Pop up our message and determine if our guess is correct about what module is connected
       HandleFindingCorrectMotorToRecover(previously_connected_module);
@@ -663,9 +677,12 @@ void PortConnection::GetDeviceInformationResponses(){
     int electronics_value = 1;
 
     int hardware_type = 1;
-    int firmware_style = 1;
-    int electronics_type = 1;
+    int hardware_major_version = 0;
 
+    int electronics_type = 1;
+    int electronics_major_version = 0;
+
+    int firmware_style = 1;
     //Update the firmware build number to work with Major, Minor, Patch
     int firmware_build_major = 0;
     int firmware_build_minor = 0;
@@ -694,12 +711,18 @@ void PortConnection::GetDeviceInformationResponses(){
         }
      }
 
+    //Hardware value holds the type, major version, and batch. We only care about the type and major version.
+    hardware_type = (hardware_value >> 16);
+    hardware_major_version = ((hardware_value & 0x0000FF00) >> 8);
+
+
+    //Electronics value holds the type, major version, and batch. We only care about the type and major version.
+    electronics_type = electronics_value >> 16;
+    electronics_major_version = ((electronics_value & 0x0000FF00) >> 8);
+
     //Firmware value holds the raw 32 bits of firmware information
     //This information comes from the Product ID Convention sheet
-    hardware_type = (hardware_value >> 16);
     firmware_style = (firmware_value >> 20);
-    electronics_type = electronics_value >> 16;
-
     firmware_build_major = (firmware_value & MAJOR_VERSION_MASK) >> MAJOR_VERSION_SHIFT;
     firmware_build_minor = (firmware_value & MINOR_VERSION_MASK) >> MINOR_VERSION_SHIFT;
     firmware_build_patch = firmware_value & PATCH_VERSION_MASK;
@@ -728,18 +751,27 @@ void PortConnection::GetDeviceInformationResponses(){
 
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
+
     hardware_type_ = hardware_type;
+    hardware_major_version_ = hardware_major_version;
+
     electronics_type_ = electronics_type;
+    electronics_major_version_ = electronics_major_version;
 
     //add these to the log so that it is easer to protect people from bricking their motor in recovery mode
     //We can parse the log to see the most recent connection if we don't have the value saved (which we don't
     //if someone opens the control center fresh and tries to connect to a recovery mode module)
     AddToLog(hardware_str_ + QString::number(hardware_type));
+    AddToLog(hardware_major_str_ + QString::number(hardware_major_version));
+
     AddToLog(electronics_str_ + QString::number(electronics_type));
+    AddToLog(electronics_major_str_ + QString::number(electronics_major_version));
 
     //Make sure to store who we're connected to in our struct
-    previous_handled_connection.hardware_value = hardware_type_;
-    previous_handled_connection.electronics_value = electronics_type_;
+    previous_handled_connection.hardware_type = hardware_type_;
+    previous_handled_connection.hardware_major_version = hardware_major_version_;
+    previous_handled_connection.electronics_type = electronics_type_;
+    previous_handled_connection.electronics_major_version = electronics_major_version_;
 }
 
 int PortConnection::GetFirmwareValid(){

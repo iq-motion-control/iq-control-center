@@ -40,7 +40,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
-    iv.pcon = new PortConnection(ui);
+    resource_file_handler = new ResourceFileHandler();
+
+    iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
 
     //create our LocalData folder (definition comes from port connection (where logging happens)
@@ -84,11 +86,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     //Connect a lost connection with the motor to clearing all tabs in the window
     connect(iv.pcon, SIGNAL(LostConnection()), this, SLOT(ClearTabs()));
-    tab_populator = new TabPopulator(ui, &tab_map_);
+
+    tab_populator = new TabPopulator(ui, resource_file_handler, &tab_map_);
 
     //Connects values between the tab populator and port connection. In this case, we are connecting firmware style, hardware type, firmware build, and firmware versioning style
-    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int)), tab_populator,
-            SLOT(PopulateTabs(int,int,int)));
+    connect(iv.pcon, SIGNAL(TypeStyleFound(int,int,int,int,int,int)), tab_populator,
+            SLOT(PopulateTabs(int,int,int,int,int,int)));
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 

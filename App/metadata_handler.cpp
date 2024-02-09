@@ -128,25 +128,30 @@ QString MetadataHandler::GetMetadataJsonPath(){
     return "";
 }
 
-QString MetadataHandler::GetErrorType(int target_hardware, int target_electronics){
+QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version){
     QString errorType = "";
 
-    QString wrong_hardware = pcon_->GetHardwareNameFromResources(target_hardware);
-    QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_);
+    QString wrong_hardware = pcon_->GetHardwareNameFromResources(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
+    QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_, to_flash_hardware_major_version_, to_flash_electronics_type_, to_flash_electronics_major_version_);
 
     //Message if there is an electronics type error
-    QString electronicsError = "Firmware is for the wrong Electronics Type. Expected " + errorType.number(target_electronics)
-                                        + " and got " + errorType.number(to_flash_electronics_type_);
+    QString electronicsError = "Firmware is for the wrong electronics. File expected to be flashing: " + QString::number(to_flash_electronics_type_) + "." + QString::number(to_flash_electronics_major_version_)
+                                        + ", but the module was reported as: " + QString::number(target_electronics_type) + "." + QString::number(target_electronics_major_version);
     //Message if there is a hardware error
-    QString hardwareError = "Firmware is for the wrong Hardware Type. File expected to be flashing: " + correct_hardware + " (" + errorType.number(to_flash_hardware_type_)
-             + ")" + " but the module was reported as: " + wrong_hardware + " (" + errorType.number(target_hardware) + ")";
+    QString hardwareError = "Firmware is for the wrong hardware. File expected to be flashing: " + correct_hardware + " (" + QString::number(to_flash_hardware_type_)
+             +"." + QString::number(to_flash_hardware_major_version_) + ")" + ", but the module was reported as: " + wrong_hardware + " (" + QString::number(target_hardware_type)
+            +"."+ QString::number(target_hardware_major_version) + ")";
 
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
-    if((to_flash_electronics_type_ != target_electronics) && (to_flash_hardware_type_ != target_hardware)){
+
+    bool electronics_error = (to_flash_electronics_type_!= target_electronics_type) || (to_flash_electronics_major_version_ != target_electronics_major_version);
+    bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
+
+    if(electronics_error && hardware_error ){
         errorType = electronicsError + "\n" + hardwareError;
     }
-    else if(to_flash_electronics_type_ != target_electronics){
+    else if(electronics_error){
         errorType = electronicsError;
     }else{
         errorType = hardwareError;
@@ -158,10 +163,18 @@ QString MetadataHandler::GetErrorType(int target_hardware, int target_electronic
 void MetadataHandler::ReadMetadata(){
     metadata_array_ = ArrayFromJson(GetMetadataJsonPath());
 
-    //Grabbing data from the first entry (hardare and electronics type)
+    //Grabbing data from the first entry (hardware and electronics type)
     QJsonObject safetyObj = metadata_array_.at(0).toObject();
     to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
     to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
+
+    //Older zip file metadata files may not contain this information on major versions. If the key is not present,
+    //the value function call will return an undefined value. toInt will return its default value when
+    //called on an undefined value, and I have explicitly set the default value to be 0 here to show
+    //that we want to assume a major version of 0 if there is no major version specified in the zip file
+    //metdata
+    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
+    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
 
     //The second entry is an array with the allowed flash types
     QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
@@ -215,16 +228,17 @@ void MetadataHandler::DeleteExtractedFolder(){
     }
 }
 
-bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware, int target_electronics){
+bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version){
 
-    QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_);
+    QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_, to_flash_hardware_major_version_, to_flash_electronics_type_, to_flash_electronics_major_version_);
 
     //If the targets come in as -1, then we know we guessed wrong. Flash a warning
     //"Hey you're about to flash firmware meant for [get name for the module]. you sure about this?"
     //If they're not sure about this return false.
     //If we guessed right, actually compare the values
 
-    if(target_hardware == -1 && target_electronics == -1){
+    //This is intended to check if we guessed wrong, so checking only the types is sufficient, no need to check the major versions as well.
+    if(target_hardware_type == -1 && target_electronics_type == -1){
         QMessageBox msgBox;
         msgBox.addButton("Yes", QMessageBox::YesRole);
         QAbstractButton * wrongButton = msgBox.addButton("No", QMessageBox::NoRole);
@@ -245,8 +259,10 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware, int targe
         return true;
     }
 
-    return (to_flash_electronics_type_ == target_electronics) &&
-            (to_flash_hardware_type_ == target_hardware);
+    return (to_flash_electronics_type_ == target_electronics_type) &&
+            (to_flash_electronics_major_version_ == target_electronics_major_version) &&
+            (to_flash_hardware_type_ == target_hardware_type) &&
+            (to_flash_hardware_major_version_ == target_hardware_major_version);
 }
 
 QString MetadataHandler::GetExtractPath(){

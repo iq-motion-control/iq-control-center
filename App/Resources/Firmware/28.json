@@ -1,20 +1,48 @@
-[
-  {
-    "hardware_name": "Vertiq 8108 85kv"
-  },
-  {
-    "style": 1,
-    "min_major_build": 0,
-    "min_minor_build": 0,
-    "min_patch_build": 7,
-    "name": "vertiq_8108_speed"
-  },
-  {
-    "style": 2,
-    "min_major_build": 0,
-    "min_minor_build": 0,
-    "min_patch_build": 2,
-    "name": "vertiq_8108_servo"
-  }
-  
-]
+{
+  "possible_module_configurations": [
+    {
+      "hardware_major_version": 1,
+      "electronics_type": 16,
+      "electronics_major_version": 1,
+      "hardware_name": "Vertiq 8108 85kv (Gen 2)",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_8108_speed"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_8108_servo"
+        }
+      ]
+    },
+    {
+      "hardware_major_version": 0,
+      "electronics_type": 16,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 8108 85kv",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 7,
+          "name": "vertiq_8108_speed"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 2,
+          "name": "vertiq_8108_servo"
+        }
+      ]
+    }
+  ]
+}

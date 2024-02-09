@@ -28,6 +28,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include "qserial_interface.h"
 #include "ui_mainwindow.h"
+#include "resource_file_handler.h"
 
 #include "IQ_api/client.hpp"
 #include "IQ_api/client_helpers.hpp"
@@ -72,7 +73,9 @@
 #define MODULE_ID_TYPE_ID 5
 
 #define HARDWARE_STRING "connected module has hardware type: "
+#define HARDWARE_MAJOR_STRING "connected module has hardware major version: "
 #define ELECTRONICS_STRING "connected module has electronics type: "
+#define ELECTRONICS_MAJOR_STRING "connected module has electronics major version: "
 
 class PortConnection : public QObject {
   Q_OBJECT
@@ -84,8 +87,10 @@ class PortConnection : public QObject {
   bool guessed_module_type_correctly_ = false;
 
   struct module_connection_values {
-      int hardware_value;
-      int electronics_value;
+      int hardware_type;
+      int hardware_major_version;
+      int electronics_type;
+      int electronics_major_version;
   } previous_handled_connection;
 
   bool logging_active_;
@@ -100,23 +105,28 @@ class PortConnection : public QObject {
 
   static QDateTime time_;
 
-  PortConnection(Ui::MainWindow *user_in);
+  PortConnection(Ui::MainWindow *user_in, ResourceFileHandler * resource_file_handler);
 
   ~PortConnection() {}
 
   /**
-   * @brief GetHardwareNameFromResources given a hardware type number, go into our resource files and grab out the module name
-   * @param hardware_type a number specifying hardware type
+   * @brief GetHardwareNameFromResources given the hardware type and version and electronics type and version, go into our resource files and grab out the module name
+   * @param hardware_type The hardware type of the module to get the hardware name for
+   * @param hardware_major_version The hardware major version of the module to get the hardware name for
+   * @param electronics_type The electronics type of the module to get the hardware name for
+   * @param electronics_major_version The electronics major version of the module to get the hardware name for
    * @return The name of the module with hardware_type value (Ex. 30 would return Vertiq 4006 370kv)
    */
-  QString GetHardwareNameFromResources(int hardware_type);
+  QString GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version);
 
   /**
-   * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the elctonics and hardware version of the most recent connectoin
-   * @param hardware_val a pointer to hold the hardware value
-   * @param electronics_val a pointer to hold the elctronics value
+   * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the electronics and hardware type and major version of the most recent connection
+   * @param hardware_type A pointer to hold the hardware type
+   * @param hardware_major_version A pointer to hold the hardware major version
+   * @param electronics_type A pointer to hold the electronics type
+   * @param electronics_major_version A pointer to hold the electronics major version
    */
-  void FindHardwareAndElectronicsFromLog(int * hardware_val, int * electronics_val);
+  void FindHardwareAndElectronicsFromLog(int * hardware_type, int* hardware_major_version, int * electronics_type, int * electronics_major_version);
 
   /**
    * @brief ExtractValueFromLog find the most recently added value from the log given the starting character and length of the preamble
@@ -346,7 +356,7 @@ class PortConnection : public QObject {
 
   void FindSavedValues();
 
-  void TypeStyleFound(int, int, int);
+  void TypeStyleFound(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version, int firmware_style, int firmware_value);
 
   void LostConnection();
 
@@ -363,6 +373,9 @@ class PortConnection : public QObject {
   uint32_t GetLinesInLog();
 
   Ui::MainWindow *ui_;
+
+  //Object that handles finding and extracting information from resource files. Useful for extracting names during recovery and flash checking.
+  ResourceFileHandler * resource_file_handler_;
 
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
@@ -383,11 +396,15 @@ class PortConnection : public QObject {
   int firmware_value_;
   int firmware_style_;
   int hardware_type_;
+  int hardware_major_version_;
   int electronics_type_;
+  int electronics_major_version_;
   uint8_t applications_present_on_motor_;
 
   QString hardware_str_;
+  QString hardware_major_str_;
   QString electronics_str_;
+  QString electronics_major_str_;
 
   uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
   uint8_t num_modules_discovered_; //keep track of the number we've actually found

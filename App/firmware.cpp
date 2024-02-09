@@ -312,34 +312,43 @@ bool Firmware::CheckPathAndConnection(){
 }
 
 bool Firmware::FlashHardwareElectronicsWarning(int current_tab){
-    int target_hardware = -1;
-    int target_electronics = -1;
+    int target_hardware_type = -1;
+    int target_hardware_major_version = -1;
+    int target_electronics_type = -1;
+    int target_electronics_major_version = -1;
 
     //We've already set previous_handled_connection in port connection to either
     //the last module connected during this session, or the last connected module
     //as read through the log
     if(current_tab == RECOVERY_TAB){
         if(iv.pcon->guessed_module_type_correctly_){
-            target_hardware = iv.pcon->previous_handled_connection.hardware_value;
-            target_electronics = iv.pcon->previous_handled_connection.electronics_value;
+            target_hardware_type = iv.pcon->previous_handled_connection.hardware_type;
+            target_hardware_major_version = iv.pcon->previous_handled_connection.hardware_major_version;
+            target_electronics_type = iv.pcon->previous_handled_connection.electronics_type;
+            target_electronics_major_version = iv.pcon->previous_handled_connection.electronics_major_version;
         }
     }else{
-        target_hardware = iv.pcon->previous_handled_connection.hardware_value;
-        target_electronics = iv.pcon->previous_handled_connection.electronics_value;
+        target_hardware_type = iv.pcon->previous_handled_connection.hardware_type;
+        target_hardware_major_version = iv.pcon->previous_handled_connection.hardware_major_version;
+        target_electronics_type = iv.pcon->previous_handled_connection.electronics_type;
+        target_electronics_major_version = iv.pcon->previous_handled_connection.electronics_major_version;
     }
 
-    bool should_put_hardware_electronics_in_msg = (target_hardware != -1) && (target_electronics != -1);
-    bool hardware_and_electronics_correct = metadata_handler_.CheckHardwareAndElectronics(target_hardware, target_electronics);
+    //To provide a proper error message, we need to make sure all of our targets are set to something
+    bool should_put_hardware_electronics_in_msg = (target_hardware_type != -1) && (target_hardware_major_version != -1)
+            && (target_electronics_type != -1) && (target_electronics_major_version != -1);
+
+    bool hardware_and_electronics_correct = metadata_handler_.CheckHardwareAndElectronics(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
     //A wrong value could be a mismatched Kv or incorrect motor type
     if(!(hardware_and_electronics_correct)){
 
         //Hardware name needs to either be from what's in the dropdown, or from the previously handled connection value
-        QString hardwareName = iv.pcon->GetHardwareNameFromResources(target_hardware);
+        QString hardwareName = iv.pcon->GetHardwareNameFromResources(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
 
         //Determine which thing they have wrong
         QString errorType;
-        errorType = metadata_handler_.GetErrorType(target_hardware, target_electronics);
+        errorType = metadata_handler_.GetErrorType(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("WARNING!");

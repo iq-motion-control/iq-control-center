@@ -36,7 +36,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=5 \
-           PATCH=1
+           PATCH=2
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -77,6 +77,7 @@ SOURCES += \
     flash_loading_bar.cpp \
         main.cpp \
         mainwindow.cpp \
+    resource_file_handler.cpp \
     switch.cpp \
     IQ_api/client.cpp \
     IQ_api/client_helpers.cpp \
@@ -125,6 +126,7 @@ HEADERS += \
         mainwindow.h \
     port_connection.h \
     qserial_interface.h \
+    resource_file_handler.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \
