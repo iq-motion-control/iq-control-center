@@ -189,17 +189,9 @@ void MainWindow::show_update_message_box(){
     msgBox.setWindowTitle("Software Update");
     msgBox.setText(
         "A new IQ Control Center update is now available.\n"
-        "Would you like to update now?");
-    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-
-    if (msgBox.exec() == QMessageBox::Yes) {
-        // Perform software update
-        updater();
-    }else{
-        // Close window
-        ui->stackedWidget->setCurrentIndex(0);
-    }
+        "Please navigate to 'Check for Updates' under Menu in the top left corner of the application.");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
 }
 
 void MainWindow::on_pushButton_home_clicked(){
