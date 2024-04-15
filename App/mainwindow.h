@@ -98,6 +98,8 @@ class MainWindow : public QMainWindow {
 
   void on_export_defaults_pushbutton_clicked();
 
+  void show_update_message_box();
+
 
 private:
   std::map<std::string, double> advanced_special_value_map;
