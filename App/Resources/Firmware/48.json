@@ -1,10 +1,10 @@
 {
   "possible_module_configurations": [
-    {
+	{
       "hardware_major_version": 0,
       "electronics_type": 21,
-      "electronics_major_version": 0,
-      "hardware_name": "Vertiq 6008 300kv Aluminum Alpha (Gen 2)",
+      "electronics_major_version": 1,
+      "hardware_name": "Vertiq 6008 660kv Steel Beta (Gen 2)",
       "styles": [
         {
           "style": 1,
