@@ -372,7 +372,7 @@ void PortConnection::DetectNumberOfModulesOnBus(){
       ClearDetections();
 
       //Go through each of the possible module IDs, and see if we get a response from its system control client
-      for(uint8_t object_id = 0; object_id < MAX_MODULE_ID; object_id++){
+      for(uint8_t object_id = 0; object_id <= MAX_MODULE_ID; object_id++){
         //Update the system control object id so that we are actually targeting different module ids
         sys_map_["system_control_client"]->UpdateClientObjId((object_id));
 
