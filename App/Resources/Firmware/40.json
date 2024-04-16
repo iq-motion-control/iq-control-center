@@ -4,7 +4,7 @@
       "hardware_major_version": 0,
       "electronics_type": 21,
       "electronics_major_version": 0,
-      "hardware_name": "Vertiq 6008 300kv Steel Alpha (Gen 2)",
+      "hardware_name": "Vertiq 60-08 300kv Steel Alpha (Gen 2)",
       "styles": [
         {
           "style": 1,
@@ -26,7 +26,7 @@
       "hardware_major_version": 1,
       "electronics_type": 21,
       "electronics_major_version": 1,
-      "hardware_name": "Vertiq 6008 300kv Steel Beta (Gen 2)",
+      "hardware_name": "Vertiq 60-08 300kv Steel Beta (Gen 2)",
       "styles": [
         {
           "style": 1,
@@ -48,7 +48,7 @@
       "hardware_major_version": 2,
       "electronics_type": 21,
       "electronics_major_version": 1,
-      "hardware_name": "Vertiq 6008 300kv Steel Beta Alt 1 (Gen 2)",
+      "hardware_name": "Vertiq 60-08 300kv Steel Beta Alt 1 (Gen 2)",
       "styles": [
         {
           "style": 1,
@@ -70,7 +70,7 @@
       "hardware_major_version": 3,
       "electronics_type": 21,
       "electronics_major_version": 1,
-      "hardware_name": "Vertiq 6008 300kv Steel Beta Alt 2 (Gen 2)",
+      "hardware_name": "Vertiq 60-08 300kv Steel Beta Alt 2 (Gen 2)",
       "styles": [
         {
           "style": 1,
