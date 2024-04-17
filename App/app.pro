@@ -48,7 +48,7 @@ DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/
 DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
 
-unix {
+unix:!macx {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool\\\"
 DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
