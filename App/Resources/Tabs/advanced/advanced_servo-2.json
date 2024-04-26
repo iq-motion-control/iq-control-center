@@ -97,7 +97,7 @@
         "format": "B",
         "unit": "",
         "frame_type": 2,
-        "maximum": 63,
+        "maximum": 62,
         "minimum": 0,
         "single_step": 1
       },
