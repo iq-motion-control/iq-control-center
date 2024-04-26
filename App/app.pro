@@ -190,8 +190,8 @@ unix{
     else{
         CMAKE_CXXFLAGS += -std=gnu++14
 
-        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
-        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+        INCLUDEPATH += "/home/vertiq/ZipPack_Linux/include"
+        LIBS += -L"/home/vertiq/ZipPack_Linux/lib"
 
         LIBS += -lquazip -lz
     }
