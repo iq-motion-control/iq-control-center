@@ -176,11 +176,22 @@ void MainWindow::readOutput() {
     }
     else if ((data.find("<updates>") != std::string::npos) || (error.find("<updates>") != std::string::npos)){
         ui->header_error_label->setText("UPDATE AVAILABLE: CLICK MENU IN TOP LEFT");
+        show_update_message_box();
     }
     else{
         ui->header_error_label->setText("Error Checking For Updates!");
     }
     delete process;
+}
+
+void MainWindow::show_update_message_box(){
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Software Update");
+    msgBox.setText(
+        "A new IQ Control Center update is now available.\n"
+        "Please navigate to 'Check for Updates' under Menu in the top left corner of the application.");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
 }
 
 void MainWindow::on_pushButton_home_clicked(){

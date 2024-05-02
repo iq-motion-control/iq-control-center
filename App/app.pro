@@ -36,7 +36,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
            MINOR=5 \
-           PATCH=2
+           PATCH=3
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
@@ -48,7 +48,7 @@ DEFINES += MAINTENANCETOOL_PATH=\\\"../../../maintenancetool.app/Contents/MacOS/
 DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
 
-unix {
+unix:!macx {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool\\\"
 DEFINES += MAINTENANCETOOL_FLAGS=\\\"ch\\\"
 }
@@ -190,8 +190,8 @@ unix{
     else{
         CMAKE_CXXFLAGS += -std=gnu++14
 
-        INCLUDEPATH += "/home/iq/ZipPack_Linux/include"
-        LIBS += -L"/home/iq/ZipPack_Linux/lib"
+        INCLUDEPATH += "/home/vertiq/ZipPack_Linux/include"
+        LIBS += -L"/home/vertiq/ZipPack_Linux/lib"
 
         LIBS += -lquazip -lz
     }
