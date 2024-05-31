@@ -17,6 +17,19 @@
       },
       {
         "type_idn": 50,
+        "descriptor": "Volts Limit Starting Voltage",
+        "info": "The voltage at which the safeties will start to attempt to limit the regeneration of the motor",
+        "sub_idn": 29,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 2,
+        "maximum": 32768,
+        "minimum": 0,
+        "single_step": 0.1,
+        "decimal": 1
+      },
+      {
+        "type_idn": 50,
         "descriptor": "Speed Redline Start",
         "info": "A safety feature that begins derating the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
         "sub_idn": 38,
