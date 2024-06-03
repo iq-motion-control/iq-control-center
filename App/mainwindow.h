@@ -85,7 +85,7 @@ class MainWindow : public QMainWindow {
 
   void updater();
 
-  void import_resource_pack();
+  void importResourcePack();
 
   void readOutput();
 
@@ -130,6 +130,7 @@ private:
   void write_metadata_to_file(QJsonArray * json_array);
 
   void import_defaults_file_from_path(QString json_to_import);
+  void importResourcePackFromPath(QString zipFileToImport);
 
   void display_successful_import();
   void GetDefaultsMap(Json::Value defaults, std::map<std::string, double> * default_value_map);

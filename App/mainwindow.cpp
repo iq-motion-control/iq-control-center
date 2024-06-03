@@ -165,14 +165,15 @@ void MainWindow::updater() {
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
 }
 
-void MainWindow::import_resource_pack() {
+void MainWindow::importResourcePack() {
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-            //Open up the file window to let people pick the json they want to add to the Control Center
+    //Open up the file window to let users pick the resource pack .zip file to import into Control Center
     QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
+    importResourcePackFromPath(zipFileToImport);
 }
 
 void MainWindow::readOutput() {
@@ -606,6 +607,10 @@ void MainWindow::display_successful_import(){
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
     def->RefreshFilesInDefaults();
+}
+
+void MainWindow::importResourcePackFromPath(QString zipFileToImport) {
+    return;
 }
 
 void MainWindow::import_defaults_file_from_path(QString json_to_import){
