@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   // Connect the Help Buttons to the maintenance tool
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
+  connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(import_resource_pack()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -162,6 +163,16 @@ void MainWindow::updater() {
     arguments << "--su";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+}
+
+void MainWindow::import_resource_pack() {
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+            //Open up the file window to let people pick the json they want to add to the Control Center
+    QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
+                                                          tr("Zip (*.zip)"));
 }
 
 void MainWindow::readOutput() {

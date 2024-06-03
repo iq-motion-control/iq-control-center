@@ -85,6 +85,8 @@ class MainWindow : public QMainWindow {
 
   void updater();
 
+  void import_resource_pack();
+
   void readOutput();
 
   void ClearTabs();
