@@ -27,6 +27,7 @@
 #include "defaults.h"
 #include "firmware.h"
 #include "home.h"
+#include "resource_pack.h"
 #include "tab.h"
 #include "tab_populator.h"
 
@@ -84,7 +85,6 @@ class MainWindow : public QMainWindow {
   void ShowMotorSavedValues();
 
   void updater();
-
   void importResourcePack();
 
   void readOutput();
@@ -117,6 +117,7 @@ private:
   //    QtAutoUpdater::UpdateButton *updateButton;
 
   ResourceFileHandler *resource_file_handler;
+  ResourcePack *resourcePack;
   TabPopulator *tab_populator;
   Defaults *def;
 
@@ -130,7 +131,6 @@ private:
   void write_metadata_to_file(QJsonArray * json_array);
 
   void import_defaults_file_from_path(QString json_to_import);
-  void importResourcePackFromPath(QString zipFileToImport);
 
   void display_successful_import();
   void GetDefaultsMap(Json::Value defaults, std::map<std::string, double> * default_value_map);

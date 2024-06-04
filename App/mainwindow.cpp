@@ -21,7 +21,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -33,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   // Connect the Help Buttons to the maintenance tool
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
-  connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(import_resource_pack()));
+  connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(importResourcePack()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -42,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   try {
     resource_file_handler = new ResourceFileHandler();
+    resourcePack = new ResourcePack();
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
@@ -168,12 +168,13 @@ void MainWindow::updater() {
 void MainWindow::importResourcePack() {
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
+
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
     QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
-    importResourcePackFromPath(zipFileToImport);
+    resourcePack->importResourcePackFromPath(zipFileToImport);
 }
 
 void MainWindow::readOutput() {
@@ -609,9 +610,15 @@ void MainWindow::display_successful_import(){
     def->RefreshFilesInDefaults();
 }
 
-void MainWindow::importResourcePackFromPath(QString zipFileToImport) {
-    return;
-}
+//void MainWindow::importResourcePackFromPath(QString zipFileToImport) {
+//    if(zipFileToImport != ""){
+//        iv.pcon->AddToLog("Resource Pack selected: " + zipFileToImport);
+//        using_metadata_ = true;
+//        metadata_handler_.Init(iv.pcon);
+//        //extract the archive, then we can treat it normally as a folder
+//        metadata_handler_.ExtractMetadata(zipFileToImport);
+//    }
+//}
 
 void MainWindow::import_defaults_file_from_path(QString json_to_import){
     //if you actually picked a file
