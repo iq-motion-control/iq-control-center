@@ -6,6 +6,8 @@ ResourcePack::ResourcePack(){
   currentAppPath = QCoreApplication::applicationDirPath();
 }
 
+ResourcePack::~ResourcePack(){}
+
 void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
   QFileInfo fileInfo(zipFilePath);
   // Get the base name of the zip file, which is the name of the file minus '.zip'.
