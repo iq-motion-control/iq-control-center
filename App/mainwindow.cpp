@@ -41,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   try {
     resource_file_handler = new ResourceFileHandler();
-//    resourcePack = new ResourcePack();
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
@@ -176,6 +175,7 @@ void MainWindow::importResourcePack() {
     QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
     resourcePack->importResourcePackFromPath(zipFileToImport);
+    delete resourcePack;
 }
 
 void MainWindow::readOutput() {
@@ -610,16 +610,6 @@ void MainWindow::display_successful_import(){
     iv.pcon->AddToLog(success_message);
     def->RefreshFilesInDefaults();
 }
-
-//void MainWindow::importResourcePackFromPath(QString zipFileToImport) {
-//    if(zipFileToImport != ""){
-//        iv.pcon->AddToLog("Resource Pack selected: " + zipFileToImport);
-//        using_metadata_ = true;
-//        metadata_handler_.Init(iv.pcon);
-//        //extract the archive, then we can treat it normally as a folder
-//        metadata_handler_.ExtractMetadata(zipFileToImport);
-//    }
-//}
 
 void MainWindow::import_defaults_file_from_path(QString json_to_import){
     //if you actually picked a file
