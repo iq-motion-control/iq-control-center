@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   try {
     resource_file_handler = new ResourceFileHandler();
-    resourcePack = new ResourcePack();
+//    resourcePack = new ResourcePack();
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
@@ -171,6 +171,7 @@ void MainWindow::importResourcePack() {
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
+    resourcePack = new ResourcePack();
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
     QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
