@@ -8,8 +8,8 @@
 
 #include <QFile>
 #include <QFileDialog>
-
 #include <QStandardPaths>
+#include <QTemporaryDir>
 
 class ResourcePack : public QObject{
     Q_OBJECT
@@ -18,14 +18,10 @@ class ResourcePack : public QObject{
     ResourcePack();
     void importResourcePackFromPath(QString zipFileToImport);
 
-  private slots:
-
   private:
-    QString resourcePackPath;
-    QString resourcePackExtractPath = "";
+    QString currentAppPath;
+    QString resourcePackExtractPath;
     QString resourcePackBaseName;
-    QDir resourcePackTempDir;
-    void copyToResourceDir();
     void updateResourceFilePermissions(QString filePath);
 
 };
