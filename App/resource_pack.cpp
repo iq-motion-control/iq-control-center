@@ -9,45 +9,77 @@ ResourcePack::ResourcePack(){
 ResourcePack::~ResourcePack(){}
 
 void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
+  iv.pcon->AddToLog("zipFilePath: " + zipFilePath);
+
   QFileInfo fileInfo(zipFilePath);
   // Get the base name of the zip file, which is the name of the file minus '.zip'.
-  resourcePackBaseName = fileInfo.baseName();
+  //resourcePackBaseName = fileInfo.baseName();
+  QSysInfo sysInfo;
+  QString kernelType = sysInfo.kernelType();
+  if(kernelType == "darwin"){
+      iv.pcon->AddToLog("kernelType: " + kernelType);
+      QString tempDirPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/control_center_resources";
+//      QString dumpPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/Dump";
+      QDir tempDir(tempDirPath);
+      iv.pcon->AddToLog("TempDirPath:" + tempDirPath);
+      if(tempDir.path() != ""){
+        //resourcePackExtractPath = tempDirPath;
+        iv.pcon->AddToLog("Temporary directory path:" + tempDir.path());
+        JlCompress extractTool;
+        QStringList stringList = extractTool.getFileList(zipFilePath);
+//        iv.pcon->AddToLog("String List:"+stringList)
+        for(uint8_t i=0; i< stringList.length(); i++){
+            QString filePath = stringList.at(i);
+            iv.pcon->AddToLog("Temporary resource file path:" + filePath);
+            //QString extracted_file = extractTool.extractFile(zipFilePath,filePath,"/Users/iqmotioncontrol/Desktop/Dump/" + filePath);
+            QString extracted_file = extractTool.extractFile(zipFilePath,filePath,tempDirPath+"/"+filePath);
+            iv.pcon->AddToLog("Extracted:"+extracted_file);
+//            setFilePermissions("/Users/iqmotioncontrol/Desktop/Dump/" + filePath);
 
-  if(zipFilePath != ""){
-    iv.pcon->AddToLog("Resource Pack selected: " + zipFilePath);
-    JlCompress extractTool;
+            setFilePermissions(tempDirPath+"/"+filePath);
 
-    // Create a temporary directory to store the extracted files. This object gets automatically deleted once out of scope.
-    QTemporaryDir tempDir;
-    if(tempDir.isValid()){
-      resourcePackExtractPath = tempDir.path();
-      iv.pcon->AddToLog("Temporary directory path:" + resourcePackExtractPath);
+            //setFilePermissions(tempDirPath + filePath);
 
-      // Extract contents of .zip file into temporary directory.
-      extractTool.extractDir(zipFilePath, resourcePackExtractPath);
-      QDirIterator dirIt(resourcePackExtractPath, QDirIterator::Subdirectories);
-
-      // Iterate through each resource file in the temporary directory and copy to the main Resources directory
-      while(dirIt.hasNext()){
-        QString filePath = dirIt.next();
-        if(filePath.contains(".json")){
-            // Get the path of each resource file.
-            QStringList splitPath = filePath.split(resourcePackBaseName);
-
-            // Set the appropriate read permissions to make sure they can be accessed.
-            setFilePermissions(filePath);
-
-            QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
-            iv.pcon->AddToLog("Copying file: " + filePath + " to: " + resourcesPath);
-            QFile::copy(filePath, resourcesPath);
         }
+
       }
-      displayMessageBox();
-    }else{
-      iv.pcon->AddToLog("Temporary directory not valid!");
-    }
   }else{
-    iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
+      if(zipFilePath != ""){
+        iv.pcon->AddToLog("Resource Pack selected: " + zipFilePath);
+        JlCompress extractTool;
+
+        // Create a temporary directory to store the extracted files. This object gets automatically deleted once out of scope.
+        QTemporaryDir tempDir;
+        if(tempDir.isValid()){
+          resourcePackExtractPath = tempDir.path();
+          iv.pcon->AddToLog("Temporary directory path:" + resourcePackExtractPath);
+
+          // Extract contents of .zip file into temporary directory.
+          extractTool.extractDir(zipFilePath, resourcePackExtractPath);
+          QDirIterator dirIt(resourcePackExtractPath, QDirIterator::Subdirectories);
+
+          // Iterate through each resource file in the temporary directory and copy to the main Resources directory
+          while(dirIt.hasNext()){
+            QString filePath = dirIt.next();
+            if(filePath.contains(".json")){
+                // Get the path of each resource file.
+                QStringList splitPath = filePath.split(resourcePackBaseName);
+
+                // Set the appropriate read permissions to make sure they can be accessed.
+                setFilePermissions(filePath);
+
+                QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
+                iv.pcon->AddToLog("Copying file: " + filePath + " to: " + resourcesPath);
+                QFile::copy(filePath, resourcesPath);
+            }
+          }
+          displayMessageBox();
+        }else{
+          iv.pcon->AddToLog("Temporary directory not valid!");
+        }
+      }else{
+        iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
+      }
   }
 }
 
@@ -69,7 +101,16 @@ void ResourcePack::displayMessageBox(){
 
 void ResourcePack::setFilePermissions(QString filePath){
     // Using a QTemporaryFile object because it automatically gets deleted once out of scope.
-    QTemporaryFile tempFile(filePath);
-    tempFile.setPermissions(filePath, QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::ReadUser);
-    iv.pcon->AddToLog("Updated permissions for: " + filePath);
+    QFile * tempFile = new QFile(filePath);
+//    if(tempFile->setPermissions(filePath, QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ReadGroup | QFileDevice::WriteGroup | QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ReadUser | QFileDevice::WriteUser
+    if(tempFile->setPermissions(filePath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
+                                | QFileDevice::WriteOther | QFileDevice::WriteOwner | QFileDevice::WriteGroup | QFileDevice::WriteUser
+                                | QFileDevice::ExeOther | QFileDevice::ExeOwner | QFileDevice::ExeGroup | QFileDevice::ExeUser
+                                )){;
+        iv.pcon->AddToLog("Updated permissions for: " + filePath);
+    }else{
+        iv.pcon->AddToLog("Failed to update permissions: "+ filePath);
+    }
+
+    delete tempFile;
 }
