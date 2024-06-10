@@ -61,10 +61,6 @@ class ResourcePack : public QObject{
      */
     QString currentAppPath;
     /**
-    * @brief resourcePackExtractPath The path of the temporary directory used to store the extracted resource files. This temporary directory will be automatically deleted after the resource files are copied to the application's Resources directory.
-    */
-    QString resourcePackExtractPath;
-    /**
      * @brief resourcePackBaseName The name of the .zip file that contains the resource files to be imported. This name is used when copying files from the temporary directory to the application's Resources directory.
      */
     QString resourcePackBaseName;
