@@ -16,13 +16,12 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
   resourcePackBaseName = fileInfo.baseName();
   iv.pcon->AddToLog("resourcePackBaseName:" + resourcePackBaseName);
 
-  QSysInfo sysInfo;
-  QString kernelType = sysInfo.kernelType();
-  if(kernelType == "darwin"){
-      iv.pcon->AddToLog("kernelType: " + kernelType);
+//  QSysInfo sysInfo;
+//  QString kernelType = sysInfo.kernelType();
+//  if(kernelType == "darwin"){
+//      iv.pcon->AddToLog("kernelType: " + kernelType);
       QString tempDirPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/control_center_resources";
       QDir tempDir(tempDirPath);
-
 
       iv.pcon->AddToLog("TempDirPath:" + tempDirPath);
 
@@ -33,62 +32,68 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
 
         for(uint8_t i=0; i< stringList.length(); i++){
             QString filePath = stringList.at(i);
-            iv.pcon->AddToLog("Temporary resource file path:" + filePath);
-            QString extracted_file = extractTool.extractFile(zipFilePath,filePath,tempDirPath+"/"+filePath);
-            iv.pcon->AddToLog("Extracted:"+extracted_file);
+            QString tempFilePath = tempDirPath + "/" + filePath;
 
-            setFilePermissions(tempDirPath+"/"+filePath);
-
-            QStringList splitPath = filePath.split(resourcePackBaseName);
-            iv.pcon->AddToLog("splitPath[0]: " + splitPath[0]);
-            iv.pcon->AddToLog("splitPath[1]: " + splitPath[1]);
-
-            QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
-            iv.pcon->AddToLog("Copying file: " + tempDirPath+"/"+filePath + " to: " + resourcesPath);
-
-            QFile::copy(tempDirPath+"/"+filePath, resourcesPath);
-
-        }
-
-      }
-  }else{
-      if(zipFilePath != ""){
-        iv.pcon->AddToLog("Resource Pack selected: " + zipFilePath);
-        JlCompress extractTool;
-
-        // Create a temporary directory to store the extracted files. This object gets automatically deleted once out of scope.
-        QTemporaryDir tempDir;
-        if(tempDir.isValid()){
-          resourcePackExtractPath = tempDir.path();
-          iv.pcon->AddToLog("Temporary directory path:" + resourcePackExtractPath);
-
-          // Extract contents of .zip file into temporary directory.
-          extractTool.extractDir(zipFilePath, resourcePackExtractPath);
-          QDirIterator dirIt(resourcePackExtractPath, QDirIterator::Subdirectories);
-
-          // Iterate through each resource file in the temporary directory and copy to the main Resources directory
-          while(dirIt.hasNext()){
-            QString filePath = dirIt.next();
             if(filePath.contains(".json")){
-                // Get the path of each resource file.
-                QStringList splitPath = filePath.split(resourcePackBaseName);
+              iv.pcon->AddToLog("Temporary resource file path:" + filePath);
+//              QString extracted_file = extractTool.extractFile(zipFilePath,filePath,tempDirPath+"/"+filePath);
+              QString extracted_file = extractTool.extractFile(zipFilePath, filePath, tempFilePath);
+              iv.pcon->AddToLog("Extracted:" + extracted_file);
 
-                // Set the appropriate read permissions to make sure they can be accessed.
-                setFilePermissions(filePath);
+//              setFilePermissions(tempDirPath+"/"+filePath);
+              setFilePermissions(tempFilePath);
 
-                QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
-                iv.pcon->AddToLog("Copying file: " + filePath + " to: " + resourcesPath);
-                QFile::copy(filePath, resourcesPath);
+              QStringList splitPath = filePath.split(resourcePackBaseName);
+              iv.pcon->AddToLog("splitPath[0]: " + splitPath[0]);
+              iv.pcon->AddToLog("splitPath[1]: " + splitPath[1]);
+
+              QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
+//              iv.pcon->AddToLog("Copying file: " + tempDirPath+"/"+filePath + " to: " + resourcesPath);
+              iv.pcon->AddToLog("Copying file: " + tempFilePath + " to: " + resourcesPath);
+
+//              QFile::copy(tempDirPath+"/"+filePath, resourcesPath);
+              QFile::copy(tempFilePath, resourcesPath);
             }
-          }
-          displayMessageBox();
-        }else{
-          iv.pcon->AddToLog("Temporary directory not valid!");
         }
-      }else{
-        iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
       }
-  }
+//  }else{
+//      if(zipFilePath != ""){
+//        iv.pcon->AddToLog("Resource Pack selected: " + zipFilePath);
+//        JlCompress extractTool;
+
+//        // Create a temporary directory to store the extracted files. This object gets automatically deleted once out of scope.
+//        QTemporaryDir tempDir;
+//        if(tempDir.isValid()){
+//          resourcePackExtractPath = tempDir.path();
+//          iv.pcon->AddToLog("Temporary directory path:" + resourcePackExtractPath);
+
+//          // Extract contents of .zip file into temporary directory.
+//          extractTool.extractDir(zipFilePath, resourcePackExtractPath);
+//          QDirIterator dirIt(resourcePackExtractPath, QDirIterator::Subdirectories);
+
+//          // Iterate through each resource file in the temporary directory and copy to the main Resources directory
+//          while(dirIt.hasNext()){
+//            QString filePath = dirIt.next();
+//            if(filePath.contains(".json")){
+//                // Get the path of each resource file.
+//                QStringList splitPath = filePath.split(resourcePackBaseName);
+
+//                // Set the appropriate read permissions to make sure they can be accessed.
+//                setFilePermissions(filePath);
+
+//                QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
+//                iv.pcon->AddToLog("Copying file: " + filePath + " to: " + resourcesPath);
+//                QFile::copy(filePath, resourcesPath);
+//            }
+//          }
+//          displayMessageBox();
+//        }else{
+//          iv.pcon->AddToLog("Temporary directory not valid!");
+//        }
+//      }else{
+//        iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
+//      }
+//  }
 }
 
 void ResourcePack::displayMessageBox(){
