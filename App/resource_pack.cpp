@@ -51,6 +51,8 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
           }
         }
       }
+      // Display a message box telling the user to restart Control Center after successfully importing the resource pack.
+      displayMessageBox();
     }else{
       iv.pcon->AddToLog("Temporary directory not valid!");
     }
