@@ -21,27 +21,24 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
   if(kernelType == "darwin"){
       iv.pcon->AddToLog("kernelType: " + kernelType);
       QString tempDirPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + "/control_center_resources";
-//      QString dumpPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/Dump";
       QDir tempDir(tempDirPath);
+
+
       iv.pcon->AddToLog("TempDirPath:" + tempDirPath);
+
       if(tempDir.path() != ""){
-        //resourcePackExtractPath = tempDirPath;
         iv.pcon->AddToLog("Temporary directory path:" + tempDir.path());
         JlCompress extractTool;
         QStringList stringList = extractTool.getFileList(zipFilePath);
 
-//        iv.pcon->AddToLog("String List:"+stringList)
         for(uint8_t i=0; i< stringList.length(); i++){
             QString filePath = stringList.at(i);
             iv.pcon->AddToLog("Temporary resource file path:" + filePath);
-            //QString extracted_file = extractTool.extractFile(zipFilePath,filePath,"/Users/iqmotioncontrol/Desktop/Dump/" + filePath);
             QString extracted_file = extractTool.extractFile(zipFilePath,filePath,tempDirPath+"/"+filePath);
             iv.pcon->AddToLog("Extracted:"+extracted_file);
-//            setFilePermissions("/Users/iqmotioncontrol/Desktop/Dump/" + filePath);
 
             setFilePermissions(tempDirPath+"/"+filePath);
 
-            //setFilePermissions(tempDirPath + filePath);
             QStringList splitPath = filePath.split(resourcePackBaseName);
             iv.pcon->AddToLog("splitPath[0]: " + splitPath[0]);
             iv.pcon->AddToLog("splitPath[1]: " + splitPath[1]);
