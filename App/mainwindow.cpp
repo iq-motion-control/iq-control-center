@@ -172,9 +172,13 @@ void MainWindow::importResourcePack() {
 
     resourcePack = new ResourcePack();
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
-    QString zipFileToImport = QFileDialog::getOpenFileName(0, ("Select Resource Pack .zip file"), openDir,
+    QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
-    resourcePack->importResourcePackFromPath(zipFileToImport);
+    if(zipFileToImport != NULL){
+      resourcePack->importResourcePackFromPath(zipFileToImport);
+    }else{
+      iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
+    }
     delete resourcePack;
 }
 
