@@ -54,6 +54,12 @@ class ResourcePack : public QObject{
      * @param zipFilePath The path of the .zip file that contains the resource files to be imported
      */
     void importResourcePackFromPath(QString zipFilePath);
+    /**
+     * @brief displayMessageBox Displays a message box indicating that the resource files were imported successfully. It also tells the user to close and restart the application to properly load the resource files.
+     * @param title The text displayed on the title of the message box
+     * @param message The test displayed in the body of the message box
+     */
+    void displayMessageBox(QString title, QString message);
 
   private:
     /**
@@ -64,10 +70,6 @@ class ResourcePack : public QObject{
      * @brief resourcePackBaseName The name of the .zip file that contains the resource files to be imported. This name is used when copying files from the temporary directory to the application's Resources directory.
      */
     QString resourcePackBaseName;
-    /**
-     * @brief displayMessageBox Displays a message box indicating that the resource files were imported successfully. It also tells the user to close and restart the application to properly load the resource files.
-     */
-    void displayMessageBox();
     /**
      * @brief setFilePermissions Sets the appropriate Read permissions for the extracted resource files
      * @param filePath The file path of the extracted resource file that needs the appropriate permissions

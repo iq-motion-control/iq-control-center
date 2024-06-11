@@ -74,7 +74,7 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
         }
       }
       // Display a message box telling the user to restart Control Center after successfully importing the resource pack.
-      displayMessageBox();
+      displayMessageBox("Application restart required", "Resource files imported successfully. Please close and restart the application to properly load the imported resource files.");
     }else{
       iv.pcon->AddToLog("Temporary directory not valid!");
     }
@@ -89,16 +89,14 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
   }
 }
 
-void ResourcePack::displayMessageBox(){
+void ResourcePack::displayMessageBox(QString title, QString message){
       QMessageBox msgBox;
-      msgBox.setWindowTitle("Application restart required");
+      msgBox.setWindowTitle(title);
 
-      QString msg;
-      msg = "Resource files imported successfully. Please close and restart the application to properly load the imported resource files.";
-      msgBox.setText(msg);
+      msgBox.setText(message);
       msgBox.setStandardButtons(QMessageBox::Ok);
       msgBox.setDefaultButton(QMessageBox::Ok);
-      iv.pcon->AddToLog(msg);
+      iv.pcon->AddToLog(message);
 
       if(msgBox.exec() == QMessageBox::Ok){
           return;

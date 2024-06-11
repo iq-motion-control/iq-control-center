@@ -165,12 +165,13 @@ void MainWindow::updater() {
 }
 
 void MainWindow::importResourcePack() {
+    ResourcePack * resourcePack = new ResourcePack();
+    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    ResourcePack * resourcePack = new ResourcePack();
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
     QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
