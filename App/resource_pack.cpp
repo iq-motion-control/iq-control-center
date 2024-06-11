@@ -48,8 +48,6 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
             iv.pcon->AddToLog("Copying file: " + tempResourceFilePath + " to: " + resourcesPath);
 
             QFile::copy(tempResourceFilePath, resourcesPath);
-          }else{
-            iv.pcon->AddToLog("");
           }
         }
       }
