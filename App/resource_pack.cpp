@@ -56,6 +56,12 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
     }else{
       iv.pcon->AddToLog("Temporary directory not valid!");
     }
+    // Remove temporary directory including all of its contents
+    if (tempDir.removeRecursively()){
+      iv.pcon->AddToLog("Temporary directory deleted");
+    }else{
+      iv.pcon->AddToLog("Failed to delete temporary directory: " + tempDirPath);
+    }
   }else {
     iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
   }
