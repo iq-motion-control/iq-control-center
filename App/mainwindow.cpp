@@ -170,7 +170,7 @@ void MainWindow::importResourcePack() {
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
-    resourcePack = new ResourcePack();
+    ResourcePack * resourcePack = new ResourcePack();
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
     QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
