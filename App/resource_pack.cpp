@@ -26,8 +26,10 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       JlCompress extractTool;
       QStringList resourcePackFileList = extractTool.getFileList(zipFilePath);
 
-      for(uint8_t i=0; i< resourcePackFileList.length(); i++){
-        QString filePath = resourcePackFileList.at(i);
+      // After we retrieve the string list of resource files from the resource pack,
+      // loop through each item in the list to extract the file and copy to the main Resources directory.
+      for(uint8_t resourceFileIndex=0; resourceFileIndex < resourcePackFileList.length(); resourceFileIndex++){
+        QString filePath = resourcePackFileList.at(resourceFileIndex);
         QString tempResourceFilePath = tempDirPath + "/" + filePath;
 
         if(filePath.contains(".json")){
@@ -47,7 +49,7 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
 
             QFile::copy(tempResourceFilePath, resourcesPath);
           }else{
-            iv.pcon->AddToLog("Invalid .json file!");
+            iv.pcon->AddToLog("");
           }
         }
       }
