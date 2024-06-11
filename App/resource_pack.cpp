@@ -44,10 +44,32 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
             // Get the name of the resource file without including the name of the .zip folder
             QStringList splitPath = filePath.split(resourcePackBaseName);
 
-            QString resourcesPath = currentAppPath + "/Resources" + splitPath[1];
-            iv.pcon->AddToLog("Copying file: " + tempResourceFilePath + " to: " + resourcesPath);
+            QString resourcePath = currentAppPath + "/Resources" + splitPath[1];
+            iv.pcon->AddToLog("Copying file: " + tempResourceFilePath + " to: " + resourcePath);
 
-            QFile::copy(tempResourceFilePath, resourcesPath);
+            QFile source(tempResourceFilePath);
+            QFile target(resourcePath);
+
+            // Need to check if the resource file already exists in the main Resources folder
+            // because the copy function will fail if it already exists
+            if(target.exists()){
+              iv.pcon->AddToLog("Resource file already exists: " + resourcePath);
+              // Delete the old resource file before copying the new one
+              // Need to set the required permissions before deleting old resource file
+              setFilePermissions(resourcePath);
+              if(target.remove()){
+                iv.pcon->AddToLog("Successfully removed old resource file.");
+              }else{
+                iv.pcon->AddToLog("Error: unable to remove old resource file.");
+              }
+            }
+
+            // Copy resource file from temp directory to main Resource directory
+            if(source.copy(target.fileName())){
+              iv.pcon->AddToLog("Copying successful");
+            }else{
+              iv.pcon->AddToLog("Copying failed");
+            }
           }
         }
       }
