@@ -26,6 +26,19 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       JlCompress extractTool;
       QStringList resourcePackFileList = extractTool.getFileList(zipFilePath);
 
+      // Get a list of files/folders from the Resources directory
+      //QStringList mainResourcesFileList = extractTool.getFileList(currentAppPath + "/Resources");
+      QDir directory(currentAppPath + "/Resources");
+      directory.setFilter(QDir::Dirs | QDir::Files | QDir::NoDot | QDir:: NoDotDot);
+      QDirIterator dirIt(directory, QDirIterator::Subdirectories);
+      // QStringList mainResourcesFileList = directory.entryList();
+      // for(uint8_t i = 0; i < mainResourcesFileList.length(); i++){
+      //   setFilePermissions(mainResourcesFileList.at(i));
+      // }
+      while(dirIt.hasNext()){
+        setFilePermissions(dirIt.next());
+      }
+
       // After we retrieve the string list of resource files from the resource pack,
       // loop through each item in the list to extract the file and copy to the main Resources directory.
       for(uint8_t resourceFileIndex=0; resourceFileIndex < resourcePackFileList.length(); resourceFileIndex++){
@@ -62,6 +75,8 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
               }else{
                 iv.pcon->AddToLog("Error: unable to remove old resource file.");
               }
+            }else{
+              iv.pcon->AddToLog("Apparently this doesn't exist: " + resourcePath);
             }
 
             // Copy resource file from temp directory to main Resource directory
