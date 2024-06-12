@@ -26,15 +26,14 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       JlCompress extractTool;
       QStringList resourcePackFileList = extractTool.getFileList(zipFilePath);
 
-      // Get a list of files/folders from the Resources directory
-      //QStringList mainResourcesFileList = extractTool.getFileList(currentAppPath + "/Resources");
-      QDir directory(currentAppPath + "/Resources");
-      directory.setFilter(QDir::Dirs | QDir::Files | QDir::NoDot | QDir:: NoDotDot);
-      QDirIterator dirIt(directory, QDirIterator::Subdirectories);
-      // QStringList mainResourcesFileList = directory.entryList();
-      // for(uint8_t i = 0; i < mainResourcesFileList.length(); i++){
-      //   setFilePermissions(mainResourcesFileList.at(i));
-      // }
+      // Create a QDir object that represents the main Resources directory of the Control Center app
+      QDir mainResourcesDirectory(currentAppPath + "/Resources");
+      // Set filters to only look at files and directories
+      mainResourcesDirectory.setFilter(QDir::Dirs | QDir::Files | QDir::NoDot | QDir:: NoDotDot);
+
+      // Create a QDirIterator object to recursively iterate through each file and folder in the main Resources directory
+      QDirIterator dirIt(mainResourcesDirectory, QDirIterator::Subdirectories);
+      // Set the correct file permissions in order to delete old resource files before copying over the new ones
       while(dirIt.hasNext()){
         setFilePermissions(dirIt.next());
       }
@@ -60,7 +59,9 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
             QString resourcePath = currentAppPath + "/Resources" + splitPath[1];
             iv.pcon->AddToLog("Copying file: " + tempResourceFilePath + " to: " + resourcePath);
 
+            // The source represents the new resource file that will be copied over to the main Resources directory from the temporary directory
             QFile source(tempResourceFilePath);
+            // The target represents the location where the new resource file will be copied to
             QFile target(resourcePath);
 
             // Need to check if the resource file already exists in the main Resources folder
@@ -75,8 +76,6 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
               }else{
                 iv.pcon->AddToLog("Error: unable to remove old resource file.");
               }
-            }else{
-              iv.pcon->AddToLog("Apparently this doesn't exist: " + resourcePath);
             }
 
             // Copy resource file from temp directory to main Resource directory

@@ -33,15 +33,16 @@
  *                  Firmware
  *                      48.json
  *                  Tabs
- *                      Advanced
+ *                      advanced
  *                          advanced_vertiq_60xx_speed.json
- *                      General
+ *                      general
  *                          general_vertiq_60xx_speed.json
- *                      Testing
+ *                      testing
  *                          testing_vertiq_60xx_speed.json
- *                      Tuning
+ *                      tuning
  *                          tuning_vertiq_60xx_speed.json
  *
+ *      Note: It is really important that the folders are named exactly like above (folder names are case-sensitive)
  */
 class ResourcePack : public QObject{
     Q_OBJECT
