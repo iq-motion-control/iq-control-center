@@ -78,6 +78,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     resource_file_handler.cpp \
+    resource_pack.cpp \
     switch.cpp \
     IQ_api/client.cpp \
     IQ_api/client_helpers.cpp \
@@ -127,6 +128,7 @@ HEADERS += \
     port_connection.h \
     qserial_interface.h \
     resource_file_handler.h \
+    resource_pack.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \

@@ -4697,6 +4697,7 @@ QPushButton:hover{
      <string>Menu</string>
     </property>
     <addaction name="actionCheck_for_Updates"/>
+    <addaction name="actionImport_Resource_Pack"/>
    </widget>
    <addaction name="menuHelp"/>
   </widget>
@@ -4711,6 +4712,11 @@ QPushButton:hover{
    </property>
    <property name="text">
     <string>Check for Updates</string>
+   </property>
+  </action>
+  <action name="actionImport_Resource_Pack">
+   <property name="text">
+    <string>Import Resource Pack</string>
    </property>
   </action>
  </widget>
