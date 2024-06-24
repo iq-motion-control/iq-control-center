@@ -19,10 +19,10 @@
  *              Defaults
  *              Firmware
  *              Tabs
- *                  Advanced
- *                  General
- *                  Testing
- *                  Tuning
+ *                  advanced
+ *                  general
+ *                  testing
+ *                  tuning
  *      3) add .json resource files in the appropriate folders
  *      4) Compress the ResourcePack directory and name it ResourcePack.zip
  *      5) This is what the final file structure of the .zip file would look like:
