@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "tuning_vertiq_4014_speed",
+    "descriptor": "tuning_vertiq_40xx_speed",
     "Entries": [
       {
         "descriptor": "Convection Thermal Conductivity Coefficient",
