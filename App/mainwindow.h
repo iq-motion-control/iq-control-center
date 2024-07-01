@@ -27,6 +27,7 @@
 #include "defaults.h"
 #include "firmware.h"
 #include "home.h"
+#include "resource_pack.h"
 #include "tab.h"
 #include "tab_populator.h"
 
@@ -84,6 +85,7 @@ class MainWindow : public QMainWindow {
   void ShowMotorSavedValues();
 
   void updater();
+  void importResourcePack();
 
   void readOutput();
 

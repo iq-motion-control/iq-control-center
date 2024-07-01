@@ -21,7 +21,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -33,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   // Connect the Help Buttons to the maintenance tool
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
+  connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(importResourcePack()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -162,6 +162,25 @@ void MainWindow::updater() {
     arguments << "--su";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+}
+
+void MainWindow::importResourcePack() {
+    ResourcePack * resourcePack = new ResourcePack();
+    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::ExistingFile);
+
+    QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+
+    //Open up the file window to let users pick the resource pack .zip file to import into Control Center
+    QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
+                                                          tr("Zip (*.zip)"));
+    if(zipFileToImport != NULL){
+      resourcePack->importResourcePackFromPath(zipFileToImport);
+    }else{
+      iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
+    }
+    delete resourcePack;
 }
 
 void MainWindow::readOutput() {
