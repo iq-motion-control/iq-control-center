@@ -300,7 +300,7 @@
                 "minimum": 1,
                 "single_step": 1
             },
-			{
+            {
                 "type_idn": 86,
                 "descriptor": "Consecutive Disarming Throttles to Disarm",
                 "info": "Number of consecutive disarming throttles needed to disarm the module",
@@ -310,7 +310,7 @@
                 "frame_type": 2,
                 "maximum": 100000,
                 "minimum": 1,
-				"default_value": 1,
+                "default_value": 1,
                 "single_step": 1
             },
             {
