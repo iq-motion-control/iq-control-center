@@ -35,8 +35,8 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=5 \
-           PATCH=3
+           MINOR=6 \
+           PATCH=0
 
 win32 {
 DEFINES += MAINTENANCETOOL_PATH=\\\"../maintenancetool.exe\\\"
