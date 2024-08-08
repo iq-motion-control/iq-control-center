@@ -302,6 +302,19 @@
             },
             {
                 "type_idn": 86,
+                "descriptor": "Consecutive Disarming Throttles to Disarm",
+                "info": "Number of consecutive disarming throttles needed to disarm the module",
+                "sub_idn": 13,
+                "format": "I",
+                "unit": "Throttles",
+                "frame_type": 2,
+                "maximum": 100000,
+                "minimum": 1,
+                "default_value": 1,
+                "single_step": 1
+            },
+            {
+                "type_idn": 86,
                 "descriptor": "Disarm Behavior",
                 "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
                 "sub_idn": 9,
