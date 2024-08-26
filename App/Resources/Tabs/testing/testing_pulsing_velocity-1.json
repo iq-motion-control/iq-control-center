@@ -43,16 +43,16 @@
       },
       {
         "type_idn": 74,
-        "descriptor": "Pulsing Voltage",
+        "descriptor": "Pulsing Velocity",
         "info": "The amplitude of the pulse.",
         "sub_idn": 3,
         "format": "f",
-        "unit": "V",
+        "unit": "rad/s",
         "frame_type": 4,
-        "maximum": 25,
-        "minimum": -25,
+        "maximum": 3450,
+        "minimum": -3450,
         "decimal": 2,
-        "single_step": 0.01
+        "single_step": 0.1
       },
       {
         "type_idn": 74,
@@ -64,7 +64,7 @@
         "frame_type": 4,
         "maximum": 6.28,
         "minimum": -6.28,
-        "decimal": 0,
+        "decimal": 2,
         "single_step": 0.01
       },
       {
