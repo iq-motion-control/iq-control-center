@@ -232,23 +232,6 @@
 		  15,
 		  255
         ]
-      },
-	  {
-	  "type_idn": 89,
-        "descriptor": "Pulsing Scaling Mode",
-        "info": "This mode determines how the module will decide on its maximum pulsing voltage for scaling incoming pulsing commands. In Supply Voltage mode, the supply voltage is used as the maximum pulsing voltage. In Voltage Limit mode, the pulsing voltage limit set by the user is used as the maximum pulsing voltage.",
-        "sub_idn": 0,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Supply Voltage",
-          "Scaling Limit"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
       }
     ]
   }
