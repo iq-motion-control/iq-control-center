@@ -22,5 +22,12 @@
     "min_minor_build": 0,
     "min_patch_build": 27,
     "name": "pulsing-1"
+  },
+  {
+    "style": 6,
+    "min_major_build": 0,
+    "min_minor_build": 0,
+    "min_patch_build": 0,
+    "name": "pulsing_velocity-1"
   }
 ]
