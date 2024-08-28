@@ -57,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
-    timer->start(1000);
+    timer->start(50);
 
     //Find available COM ports and display options in the PORT tab
     connect(ui->serial_port_combo_box, SIGNAL(CustomComboBoxSelected()), iv.pcon, SLOT(FindPorts()));
