@@ -20,7 +20,7 @@ bool ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_
     loaded_electronics_major_version_ = electronics_major_version;
 
     if(json_file_ == Json::Value::null){
-      // Resource File
+      // The json_file_ will be null if it was unable to be opened.
       hardware_information_loaded_ = false;
       return hardware_information_loaded_;
     }
@@ -97,7 +97,6 @@ Json::Value  ResourceFileHandler::OpenAndLoadJsonFile(const QString &file_path){
     else {
     // In this case, the Motor Type number isn't found. For example, if I manually update my module from M28 to M626
     // the 626.json file doesn't exist, so it can't be opened.
-//      my_json_value = NULL;
       my_json_value = Json::Value::null;
     }
     return my_json_value;
