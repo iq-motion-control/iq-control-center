@@ -114,9 +114,9 @@ class ResourceFileHandler : public QObject {
    * @param electronics_type The electronics type of the configuration to load from the resource file.
    * @param electronics_major_version The electronics major version of the configuration to load from the resource file.
    * @param firmware_style The firmware style of the configuration to load information from.
-   * @return None
+   * @return True if resource file is loaded, False otherwise
    */
-  void LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
+  bool LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
 
   /**
    * @brief ReleaseResourceFile Clear all of the resource file and configuration data from this handler. Generally encouraged to do after using the information so

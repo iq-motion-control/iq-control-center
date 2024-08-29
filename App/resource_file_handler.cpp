@@ -45,7 +45,7 @@ bool ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_
 }
 
 //Finds and loads the appropriate resource file and fills up all of our resource file information, including firmware information
-void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
+bool ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
     //Loading the hardware information gives us the location where we can pull all of the firmware information from
     if (LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version)){
       loaded_firmware_style_ = firmware_style;
@@ -64,6 +64,7 @@ void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_
     else{
       firmware_information_loaded_ = false;
     }
+    return firmware_information_loaded_;
 }
 
 void ResourceFileHandler::ReleaseResourceFile(){
