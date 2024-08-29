@@ -135,7 +135,6 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            return possible_module_configurations[configuration];
         }
     }
-    // Rephrase this exception such that this branch of logic should never occur. If the json file never existed, it should never be tried to be loaded
     throw QString("Correct configuration could not be found for this module, update app.");
 }
 
