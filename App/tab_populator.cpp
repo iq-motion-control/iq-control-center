@@ -24,15 +24,21 @@ TabPopulator::TabPopulator(Ui::MainWindow *ui, ResourceFileHandler * resource_fi
 
 void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, int electronics_type,
                                 int electronics_major_version, int firmware_style, int firmware_value) {
-  resource_file_handler_->LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version, firmware_style);
+  bool config_loaded = resource_file_handler_->LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version, firmware_style);
 
   //Make sure the resource file is properly loaded with all of the information we need.
-  if(resource_file_handler_->hardware_information_loaded_ && resource_file_handler_->firmware_information_loaded_){
-      DisplayFirmwareHardwareName();
-      CheckMinFirmwareBuildNumber(firmware_value);
-      CreateTabFrames();
+  if(config_loaded){
+    if(resource_file_handler_->hardware_information_loaded_ && resource_file_handler_->firmware_information_loaded_){
+        DisplayFirmwareHardwareName();
+        CheckMinFirmwareBuildNumber(firmware_value);
+        CreateTabFrames();
+    }else{
+        QString error_message = "Hardware or Firmware info could not be loaded from resource file.";
+        throw error_message;
+    }
   }else{
-      throw QString("Unable to properly load resource file.");
+      QString error_message = "Unable to properly load resource file.";
+      throw error_message;
   }
 
   //Release the resource file when we are done with it.
