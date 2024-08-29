@@ -103,9 +103,9 @@ class ResourceFileHandler : public QObject {
    * @param hardware_major_version The hardware major version of the configuration to load from the resource file.
    * @param electronics_type The electronics type of the configuration to load from the resource file.
    * @param electronics_major_version The electronics major version of the configuration to load from the resource file.
-   * @return None
+   * @return True if resource file is loaded, False otherwise
    */
-  void LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
+  bool LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
   /**
    * @brief LoadConfigurationFromResourceFile Finds the appropriate resource file and loads both the hardware and firmware information for the correct configuration into the ResourceFileHandler.

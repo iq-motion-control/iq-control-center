@@ -7,7 +7,7 @@ ResourceFileHandler::ResourceFileHandler(){
 
 
 //Finds and loads only the hardware information from the correct resource file. Useful for instances where you only care about the hardware information and not the firmware.
-void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
+bool ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
     QString current_path = QCoreApplication::applicationDirPath();
     QString hardware_type_file_path =
         current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
@@ -18,6 +18,12 @@ void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_
     loaded_hardware_major_version_ = hardware_major_version;
     loaded_electronics_type_ = electronics_type;
     loaded_electronics_major_version_ = electronics_major_version;
+
+    if(json_file_ == Json::Value::null){
+      // Resource File
+      hardware_information_loaded_ = false;
+      return hardware_information_loaded_;
+    }
 
     if(IsLegacyResourceFile(json_file_)){
         //This is a legacy style file, we can just load up the firmware styles directly out of it
@@ -35,25 +41,29 @@ void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_
     }
 
     hardware_information_loaded_ = true;
+    return hardware_information_loaded_;
 }
 
 //Finds and loads the appropriate resource file and fills up all of our resource file information, including firmware information
 void ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style){
     //Loading the hardware information gives us the location where we can pull all of the firmware information from
-    LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version);
+    if (LoadConfigurationFromResourceFile(hardware_type, hardware_major_version, electronics_type, electronics_major_version)){
+      loaded_firmware_style_ = firmware_style;
 
-    loaded_firmware_style_ = firmware_style;
+      FindFirmwareIndex(firmware_style);
 
-    FindFirmwareIndex(firmware_style);
+      //These can be pulled out of the firmware styles the same way between legacy and new file types
+      minimum_firmware_major_ = firmware_styles_[firmware_index_]["min_major_build"].asInt();
+      minimum_firmware_minor_ = firmware_styles_[firmware_index_]["min_minor_build"].asInt();
+      minimum_firmware_patch_ = firmware_styles_[firmware_index_]["min_patch_build"].asInt();
 
-    //These can be pulled out of the firmware styles the same way between legacy and new file types
-    minimum_firmware_major_ = firmware_styles_[firmware_index_]["min_major_build"].asInt();
-    minimum_firmware_minor_ = firmware_styles_[firmware_index_]["min_minor_build"].asInt();
-    minimum_firmware_patch_ = firmware_styles_[firmware_index_]["min_patch_build"].asInt();
+      firmware_name_ = firmware_styles_[firmware_index_]["name"].asString();
 
-    firmware_name_ = firmware_styles_[firmware_index_]["name"].asString();
-
-    firmware_information_loaded_ = true;
+      firmware_information_loaded_ = true;
+    }
+    else{
+      firmware_information_loaded_ = false;
+    }
 }
 
 void ResourceFileHandler::ReleaseResourceFile(){
@@ -83,8 +93,12 @@ Json::Value  ResourceFileHandler::OpenAndLoadJsonFile(const QString &file_path){
     if (my_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       my_json_value = LoadJsonFile(my_file);
       my_file.close();
-    } else {
-      throw QString("Resource File Missing, Update App");
+    }
+    else {
+    // In this case, the Motor Type number isn't found. For example, if I manually update my module from M28 to M626
+    // the 626.json file doesn't exist, so it can't be opened.
+//      my_json_value = NULL;
+      my_json_value = Json::Value::null;
     }
     return my_json_value;
 }
@@ -122,7 +136,7 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            return possible_module_configurations[configuration];
         }
     }
-
+    // Rephrase this exception such that this branch of logic should never occur. If the json file never existed, it should never be tried to be loaded
     throw QString("Correct configuration could not be found for this module, update app.");
 }
 
