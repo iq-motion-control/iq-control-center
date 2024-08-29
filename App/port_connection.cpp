@@ -232,17 +232,22 @@ void PortConnection::SetPortConnection(bool state) {
 
     ui_->serial_port_combo_box->clear();
 
-    ui_->label_firmware_build_value->setText(QString(""));
-    ui_->label_firmware_name->setText(QString(""));
-    ui_->label_hardware_name->setText(QString(""));
-    ui_->label_bootloader_value->setText(QString(""));
-    ui_->label_upgrader_value->setText(QString(""));
+    EraseInformationPanel();
+
     ui_->link_to_uid_label->setText(QString(""));
 
     ui_->connect_button->setText("CONNECT");
 
     AddToLog("module disconnected");
   }
+}
+
+void PortConnection::EraseInformationPanel(){
+    ui_->label_firmware_build_value->setText(QString(""));
+    ui_->label_firmware_name->setText(QString(""));
+    ui_->label_hardware_name->setText(QString(""));
+    ui_->label_bootloader_value->setText(QString(""));
+    ui_->label_upgrader_value->setText(QString(""));
 }
 
 void PortConnection::ConnectMotor(){
@@ -286,6 +291,7 @@ void PortConnection::ConnectMotor(){
     logging_active_ = false;
 
     //Send out the hardware and firmware values to other modules of Control Center
+    // This will trigger the PopulateTabs Slot in mainwindow
     emit TypeStyleFound(hardware_type_, hardware_major_version_, electronics_type_, electronics_major_version_, firmware_style_, firmware_value_);
 
     /**
@@ -489,10 +495,15 @@ void PortConnection::ConnectToSerialPort() {
         DetectNumberOfModulesOnBus();
 
       } catch (const QString &e) {
+        // This handles the case where the resource file is unable to be properly loaded
+        // TODO: SetPortConnection(0) will reset everything in the Information panel
         ClearDetections();
         ui_->header_error_label->setText(e);
-        delete ser_.ser_port_;
-        SetPortConnection(0);
+        // Although the resource file was unable to be loaded successfully, Control Center still knows
+        // the firmware_style and hardware_type, so we can display that in the Information Panel
+        // The module should not be disconnected at this point because the user should be able to flash a different firmware file
+        ui_->label_firmware_name->setText(QString::number(firmware_style_)); // The F number will be displayed in the Information Panel
+        ui_->label_hardware_name->setText(QString::number(hardware_type_));  // The M number will be displayed in the Information Panel
       }
     } else {
       QString error_message = "NO PORT SELECTED: please select a port from the drop down menu";
@@ -777,6 +788,7 @@ void PortConnection::GetDeviceInformationResponses(){
 int PortConnection::GetFirmwareValid(){
     int firmware_valid;
     //Check to see if the firmware is valid
+    // This will return 0 if the hardware_version in memory doesn't match the hardware_version in the firmware
     if(!GetEntryReply(ser_, sys_map_["system_control_client"], "firmware_valid", 5, 0.05f,
                       firmware_valid)){
 
