@@ -344,7 +344,12 @@ void PortConnection::DetectModulesClickedCallback(){
     //If someone clicked detect, and the serial port is actually connected,
     //then call DetectNumberOfModulesOnBus
     if(connection_state_ == 1){
+      try {
         DetectNumberOfModulesOnBus();
+      } catch (const QString &e){
+        // Catches the error thrown by TabPopulator::PopulateTabs() when resource file cannot be loaded.
+        ui_->header_error_label->setText(e);
+      }
     }else{
         QString error = "Could not detect modules. No serial port is connected";
         AddToLog(error);
@@ -495,9 +500,6 @@ void PortConnection::ConnectToSerialPort() {
         DetectNumberOfModulesOnBus();
 
       } catch (const QString &e) {
-        // This handles the case where the resource file is unable to be properly loaded
-        // TODO: SetPortConnection(0) will reset everything in the Information panel
-        ClearDetections();
         ui_->header_error_label->setText(e);
         // Although the resource file was unable to be loaded successfully, Control Center still knows
         // the firmware_style and hardware_type, so we can display that in the Information Panel
