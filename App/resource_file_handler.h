@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QCoreApplication>
 #include <QTextStream>
+#include <QMessageBox>
 #include "IQ_api/json_cpp.hpp"
 
 //This loads in and holds onto the information from a resource file in a convenient shared location. It doesn't perform any checks, or care about what is connected,
@@ -124,6 +125,19 @@ class ResourceFileHandler : public QObject {
    * @return None
    */
   void ReleaseResourceFile();
+
+
+  /**
+   * @brief DisplayInvalidStyleWarning Displays a warning message indicating that the resource file could not be properly loaded for the connected module.
+   * Includes Hardware, Electronics, and Firmware Styles of the connected module.
+   * @param errorMessage The error message to display to the user
+   * @param hardwareStyle The detected Hardware Style of the connected module
+   * @param electronicsStyle The detected Electronics Style of the connected module
+   * @param firmwareStyle The detected Firmware Style of the connected module
+   * @return None
+   */
+  void DisplayInvalidStyleWarning(const QString &errorMessage, const int &hardwareStyle, const int &electronicsStyle, const int &firmwareStyle);
+
 };
 
 #endif // RESOURCE_FILE_HANDLER_H

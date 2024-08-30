@@ -136,7 +136,9 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            return possible_module_configurations[configuration];
         }
     }
-    throw QString("Electronics Style could not be properly loaded from the resource file. Please update the application or contact Support.");
+    QString errorMessage= "Electronics Style could not be properly loaded from the resource file. Please update the application or contact Support.";
+    DisplayInvalidStyleWarning(errorMessage, loaded_hardware_type_, loaded_electronics_type_, loaded_firmware_style_);
+    throw QString(errorMessage);
 }
 
 void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
@@ -147,5 +149,24 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
         return;
       }
     }
-    throw QString("Firmware Style could not be properly loaded from the reource file. Please update the application or contact Support.");
+    QString errorMessage = "Firmware Style could not be properly loaded from the reource file. Please update the application or contact Support.";
+    DisplayInvalidStyleWarning(errorMessage, loaded_hardware_type_, loaded_electronics_type_, loaded_firmware_style_);
+    throw QString(errorMessage);
+}
+
+void ResourceFileHandler::DisplayInvalidStyleWarning(const QString &errorMessage, const int &hardwareStyle, const int &electronicsStyle, const int &firmwareStyle){
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("WARNING!");
+    msgBox.setIcon(QMessageBox::Warning);
+    QString hardwareInfo= "Hardware Style: " + QString::number(hardwareStyle);
+    QString electronicsInfo= "Electronics Style: " + QString::number(electronicsStyle);
+    QString firmwareInfo= "Firmware Style: " + QString::number(firmwareStyle);
+
+    QString moduleInfo = "Reported Style Information:\n" + hardwareInfo + "\n" + electronicsInfo + "\n" + firmwareInfo;
+    QString message = errorMessage + "\n\n" + moduleInfo +
+        "\n\n" + "Firmware files can be found on your module's page at www.vertiq.co";
+    msgBox.setText(message);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setDefaultButton(QMessageBox::Ok);
+    msgBox.exec();
 }
