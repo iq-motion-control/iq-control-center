@@ -136,7 +136,7 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            return possible_module_configurations[configuration];
         }
     }
-    throw QString("Correct configuration could not be found for this module. Please update the application or contact Support.");
+    throw QString("Electronics Style could not be properly loaded from the resource file. Please update the application or contact Support.");
 }
 
 void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
@@ -147,5 +147,5 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
         return;
       }
     }
-    throw QString("Firmware Style Not Handled");
+    throw QString("Firmware Style could not be properly loaded from the reource file. Please update the application or contact Support.");
 }
