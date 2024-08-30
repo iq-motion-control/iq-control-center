@@ -149,7 +149,7 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
         return;
       }
     }
-    QString errorMessage = "Firmware Style could not be properly loaded from the reource file. Please update the application or contact Support.";
+    QString errorMessage = "Firmware Style could not be properly loaded from the resource file. Please update the application or contact Support.";
     DisplayInvalidStyleWarning(errorMessage, loaded_hardware_type_, loaded_electronics_type_, loaded_firmware_style_);
     throw QString(errorMessage);
 }
