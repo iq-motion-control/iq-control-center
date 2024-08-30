@@ -32,8 +32,9 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
       CheckMinFirmwareBuildNumber(firmware_value);
       CreateTabFrames();
   }else{
-      QString error_message = "Hardware Style could not be properly loaded from the resource file. Please update the application or contact Support.";
-      throw error_message;
+      QString errorMessage = "Hardware Style could not be properly loaded from the resource file. Please update the application or contact Support.";
+      resource_file_handler_->DisplayInvalidStyleWarning(errorMessage, hardware_type, electronics_type, firmware_style);
+      throw errorMessage;
   }
   //Release the resource file when we are done with it.
   resource_file_handler_->ReleaseResourceFile();
