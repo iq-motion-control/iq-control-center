@@ -1,0 +1,144 @@
+[
+  {
+    "descriptor": "testing_vertiq_81xx_g2_position",
+    "Entries": [
+      {
+        "type_idn": 59,
+        "descriptor": "PWM",
+        "info": "Commands the motor to spin with the given PWM.  This will apply a voltage to the motor equal to supply voltage times PWM.",
+        "sub_idn": 9,
+        "format": "f",
+        "unit": "pwm",
+        "frame_type": 4,
+        "maximum": 1,
+        "minimum": -1,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Voltage",
+        "info": "Commands the motor to spin with the given voltage.",
+        "sub_idn": 10,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 4,
+        "maximum": 25,
+        "minimum": -25,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Angle",
+        "info": "Commands the motor to go to the given angle.",
+        "sub_idn": 3,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 4,
+        "maximum": null,
+        "minimum": null,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Velocity",
+        "info": "Commands the motor to spin at the given velocity.",
+        "sub_idn": 4,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 4,
+        "maximum": 450,
+        "minimum": -450,
+        "decimal": 2,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Coast",
+        "info": "Puts the motor into coast mode.  The motor will gently decelerate to zero velocity.",
+        "sub_idn": 2,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Brake",
+        "info": "Puts the motor into brake mode.  The motor will quickly decelerate to zero velocity.",
+        "sub_idn": 1,
+        "format": "n",
+        "unit": "",
+        "frame_type": 5
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Trajectory Angular Displacement",
+        "info": "The final location of the trajectory.  This alone will not move the motor.  A Trajectory Duration or Trajectory Average Velocity is required after sending the desired Trajectory Angular Displacement.",
+        "sub_idn": 19,
+        "format": "f",
+        "unit": "rad",
+        "frame_type": 4,
+        "maximum": null,
+        "minimum": null,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Trajectory Angular Velocity",
+        "info": "The final velocity of the trajectory.  This will default to 0 if no Trajectory Angular Velocity is specified.  This alone will not move the motor.  A Trajectory Angular Displacement is required as well as a Trajectory Duration or Trajectory Average Velocity.",
+        "sub_idn": 20,
+        "format": "f",
+        "unit": "rad/2",
+        "frame_type": 4,
+        "maximum": 450,
+        "minimum": -450,
+        "decimal": 1,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Trajectory Angular Acceleration",
+        "info": "The final acceleration of the trajectory.  This will default to 0 if no Trajectory Angular Acceleration is specified.  This alone will not move the motor.  A Trajectory Angular Displacement is required as well as a Trajectory Duration or Trajectory Average Velocity.",
+        "sub_idn": 21,
+        "format": "f",
+        "unit": "rad/s^2",
+        "frame_type": 4,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 1,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Trajectory Duration",
+        "info": "The time duration of the trajectory.  The receipt of this command initiates the trajectory.  This may be used in place of Trajectory Average Speed.",
+        "sub_idn": 22,
+        "format": "f",
+        "unit": "s",
+        "frame_type": 4,
+        "maximum": null,
+        "minimum": 0.1,
+        "default_value": 1.0,
+        "decimal": 1,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 59,
+        "descriptor": "Trajectory Average Speed",
+        "info": "The average speed of the trajectory.  The receipt of this command initiates the trajectory.  This may be used in place of Trajectory Duration.",
+        "sub_idn": 26,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 4,
+        "maximum": 450,
+        "minimum": 0,
+        "default_value": 1.0,
+        "decimal": 1,
+        "single_step": 0.1
+      }
+    ]
+  }
+]
