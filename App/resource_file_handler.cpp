@@ -136,7 +136,7 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
            return possible_module_configurations[configuration];
         }
     }
-    QString errorMessage= "Electronics Style could not be properly loaded from the resource file. Please update the application or contact Support.";
+    QString errorMessage= "Electronics Style could not be properly loaded from the resource file. Please update the application or contact Support at support@vertiq.co";
     DisplayInvalidStyleWarning(errorMessage, loaded_hardware_type_, loaded_electronics_type_, loaded_firmware_style_);
     throw QString(errorMessage);
 }
@@ -149,7 +149,7 @@ void  ResourceFileHandler::FindFirmwareIndex(const int &firmware_style){
         return;
       }
     }
-    QString errorMessage = "Firmware Style could not be properly loaded from the resource file. Please update the application or contact Support.";
+    QString errorMessage = "Firmware Style could not be properly loaded from the resource file. Please update the application or contact Support at support@vertiq.co";
     DisplayInvalidStyleWarning(errorMessage, loaded_hardware_type_, loaded_electronics_type_, loaded_firmware_style_);
     throw QString(errorMessage);
 }

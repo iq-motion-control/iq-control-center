@@ -32,7 +32,7 @@ void TabPopulator::PopulateTabs(int hardware_type, int hardware_major_version, i
       CheckMinFirmwareBuildNumber(firmware_value);
       CreateTabFrames();
   }else{
-      QString errorMessage = "Hardware Style could not be properly loaded from the resource file. Please update the application or contact Support.";
+      QString errorMessage = "Hardware Style could not be properly loaded from the resource file. Please update the application or contact Support at support@vertiq.co";
       resource_file_handler_->DisplayInvalidStyleWarning(errorMessage, hardware_type, electronics_type, firmware_style);
       throw errorMessage;
   }
