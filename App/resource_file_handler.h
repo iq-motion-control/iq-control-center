@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QCoreApplication>
 #include <QTextStream>
+#include <QMessageBox>
 #include "IQ_api/json_cpp.hpp"
 
 //This loads in and holds onto the information from a resource file in a convenient shared location. It doesn't perform any checks, or care about what is connected,
@@ -103,9 +104,9 @@ class ResourceFileHandler : public QObject {
    * @param hardware_major_version The hardware major version of the configuration to load from the resource file.
    * @param electronics_type The electronics type of the configuration to load from the resource file.
    * @param electronics_major_version The electronics major version of the configuration to load from the resource file.
-   * @return None
+   * @return True if resource file is loaded, False otherwise
    */
-  void LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
+  bool LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version);
 
   /**
    * @brief LoadConfigurationFromResourceFile Finds the appropriate resource file and loads both the hardware and firmware information for the correct configuration into the ResourceFileHandler.
@@ -114,9 +115,9 @@ class ResourceFileHandler : public QObject {
    * @param electronics_type The electronics type of the configuration to load from the resource file.
    * @param electronics_major_version The electronics major version of the configuration to load from the resource file.
    * @param firmware_style The firmware style of the configuration to load information from.
-   * @return None
+   * @return True if resource file is loaded, False otherwise
    */
-  void LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
+  bool LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version, const int& firmware_style);
 
   /**
    * @brief ReleaseResourceFile Clear all of the resource file and configuration data from this handler. Generally encouraged to do after using the information so
@@ -124,6 +125,19 @@ class ResourceFileHandler : public QObject {
    * @return None
    */
   void ReleaseResourceFile();
+
+
+  /**
+   * @brief DisplayInvalidStyleWarning Displays a warning message indicating that the resource file could not be properly loaded for the connected module.
+   * Includes Hardware, Electronics, and Firmware Styles of the connected module.
+   * @param errorMessage The error message to display to the user
+   * @param hardwareStyle The detected Hardware Style of the connected module
+   * @param electronicsStyle The detected Electronics Style of the connected module
+   * @param firmwareStyle The detected Firmware Style of the connected module
+   * @return None
+   */
+  void DisplayInvalidStyleWarning(const QString &errorMessage, const int &hardwareStyle, const int &electronicsStyle, const int &firmwareStyle);
+
 };
 
 #endif // RESOURCE_FILE_HANDLER_H
