@@ -172,6 +172,11 @@ class PortConnection : public QObject {
   void SetPortConnection(bool state);
 
   /**
+   * @brief Clear firmware, hardware, bootloader, and upgrader values from the Information Panel
+   */
+  void EraseInformationPanel();
+
+  /**
    * @brief FindBaudrates Adds different baud rates to the dropdown UI
    */
   void FindBaudrates();

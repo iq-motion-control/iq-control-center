@@ -1,0 +1,170 @@
+[
+    {
+      "descriptor": "general_vertiq_81xx_position",
+      "Entries": [
+        {
+          "type_idn": 59,
+          "descriptor": "Trajectory Queue Mode",
+            "info": "Append mode will add a trajectory segment to the queue.  Overwrite mode will immediately execute any commanded trajectory as if the queue length is one.",
+          "sub_idn": 27,
+          "format": "b",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "Append",
+            "Overwrite"
+          ],
+          "list_value": [
+            0,
+            1
+            ]
+        },
+        {
+          "type_idn": 59,
+          "descriptor": "Meters per radian",
+            "info": "Rotational to linear conversion. For applications like driving lead screws.",
+          "sub_idn": 13,
+          "format": "f",
+          "unit": "m/rad",
+          "frame_type": 2,
+          "maximum": 1,
+          "minimum": -1,
+          "decimal": 6,
+          "single_step": 0.000001,
+          "nan": true
+        },
+        {
+          "type_idn": 79,
+          "descriptor": "Anticogging Pro",
+            "info": "This electrically cancels cogging torque to make your motor smoother.",
+          "sub_idn": 0,
+          "format": "B",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "Off",
+            "On"
+          ],
+          "list_value": [
+            0,
+            1
+            ]
+        },
+        {
+          "type_idn": 78,
+          "descriptor": "Unit minimum",
+            "info": "Minimum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 1000ms (or equivalent).",
+          "sub_idn": 1,
+          "format": "f",
+          "unit": "",
+          "frame_type": 2,
+          "maximum": 32768,
+          "minimum": -32768,
+          "decimal": 6,
+          "single_step": 9.58738e-5
+        },
+        {
+          "type_idn": 78,
+          "descriptor": "Unit maximum",
+            "info": "Maximum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 2000ms (or equivalent).",
+          "sub_idn": 2,
+          "format": "f",
+          "unit": "",
+          "frame_type": 2,
+          "maximum": 32768,
+          "minimum": -32768,
+          "decimal": 6,
+          "single_step": 9.58738e-5
+        },
+        {
+          "type_idn": 78,
+          "descriptor": "Servo mode",
+            "info": "Maps the input to PWM mode, voltage mode, velocity mode, or position mode.  This selection determines the units of Unit maximum and Unit minimum.",
+          "sub_idn": 0,
+          "format": "B",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "PWM",
+            "Voltage",
+            "Velocity",
+            "Position"
+          ],
+          "list_value": [
+            0,
+            1,
+            2,
+            3
+            ]
+        },
+        {
+          "type_idn": 76,
+          "descriptor": "Communication",
+          "info": "These are standard hobby communication methods. Match your module's communication method with your flight controller's communication method.",
+          "sub_idn": 0,
+          "format": "B",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "Autodetect",
+            "Hobby Disabled",
+            "Standard PWM",
+            "OneShot125",
+            "OneShot42",
+            "MultiShot",
+            "DShot150",
+            "DShot300",
+            "DShot600",
+            "DShot1200"
+          ],
+          "list_value": [
+            255,
+            254,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "type_idn": 59,
+          "descriptor": "Maximum Angular Velocity",
+          "info": "Sets the maximum angular speed the motor will move at when moving to a position.",
+          "sub_idn": 18,
+          "format": "f",
+          "unit": "rad/s",
+          "frame_type": 2,
+          "maximum": 10000,
+          "minimum": -10000,
+          "decimal": 2,
+          "single_step": 0.1
+        },
+        {
+          "type_idn": 59,
+          "descriptor": "Zero Angle",
+          "info": "The zero angle of the module.",
+          "sub_idn": 31,
+          "format": "f",
+          "unit": "rads",
+          "frame_type": 2,
+          "maximum": 3.14,
+          "minimum": -3.14,
+          "single_step": 0.1,
+          "decimal": 2
+        },
+        {
+          "type_idn": 59,
+          "descriptor": "Sample Zero Angle",
+          "info": "Samples a new zero angle based on the current angle.",
+          "sub_idn": 30,
+          "format": "n",
+          "unit": "",
+          "frame_type": 5
+        }
+      ]
+    }
+  ]

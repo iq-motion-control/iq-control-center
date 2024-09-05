@@ -11,14 +11,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_8108_speed"
+          "name": "vertiq_81xx_g2_speed"
         },
         {
           "style": 2,
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_8108_servo"
+          "name": "vertiq_81xx_g2_servo"
         }
       ]
     },
@@ -33,14 +33,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 7,
-          "name": "vertiq_8108_speed"
+          "name": "vertiq_81xx_speed"
         },
         {
           "style": 2,
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 2,
-          "name": "vertiq_8108_servo"
+          "name": "vertiq_81xx_servo"
         }
       ]
     }
