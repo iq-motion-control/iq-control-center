@@ -714,10 +714,9 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
         break;
     }
 
-    //Let people pick a directory/name to save to/with, and save that path
-    QString dir = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                                    "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
-                                                    tr("json (*.json"));
+    QString supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                        file_beginning + ui->label_firmware_name->text() + ".json",
+                                        tr("json (*.json"));
 
     //Write to the json file
     QJsonDocument output_doc;
@@ -729,10 +728,9 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     QString text(bytes); // add to text string for easy string replace
     text.replace("entries", "Entries");
 
-    QString path = dir;
-    QFile file(path);
+    QFile file(supportFilePath);
 
-    file.setPermissions(path, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
+    file.setPermissions(supportFilePath, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
                               QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::ReadGroup);
 
     if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
@@ -745,37 +743,50 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
         msgBox.setWindowTitle("File Generated");
 
         QString text;
+        file.close();
 
         switch(fileExport){
-            case exportFileTypes::SUPPORT_FILE:
-                text.append("Your support file has been succesfully generated at: " + path + ". "
-                               "If you are not already in contact with a member of the Vertiq support team, please email this file "
-                               "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+            case exportFileTypes::SUPPORT_FILE: {
+                QString logPath = export_log(supportFilePath); // Also save log file with the at the same location
 
-                msgBox.setStandardButtons(QMessageBox::Ok);
+                JlCompress compressTool;
+                QStringList support_files = {supportFilePath, logPath};
+                QString compressPath = supportFilePath;
+                compressPath = compressPath.replace(".json", ".zip");
+                if (compressTool.compressFiles(compressPath, support_files)){
+                    text.append("Your support file has been succesfully generated at: " + compressPath + ". "
+                                "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
+                                "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
 
-            break;
+                    msgBox.setStandardButtons(QMessageBox::Ok);
+                }
+                if(QFile::exists(supportFilePath)){
+                  QFile::remove(supportFilePath);
+                }
+                if(QFile::exists(logPath)){
+                  QFile::remove(logPath);
+                }
+                break;
+            }
 
-            case exportFileTypes::DEFAULTS_FILE:
-
+            case exportFileTypes::DEFAULTS_FILE: {
                 //If someone exports their defaults file, they'll probably want to use it again later on. So give them that option.
-                text.append("Your module's current state has been saved in " + path + ". Would you like to add these defaults"
+                text.append("Your module's current state has been saved in " + supportFilePath + ". Would you like to add these defaults"
                             " to the Control Center now? If no, you will have to use the Import button to do so manually later.");
 
                 msgBox.setStandardButtons(QMessageBox::No);
                 msgBox.addButton(QMessageBox::Yes);
-
-            break;
+                break;
+            }
         }
 
         msgBox.setText(text);
 
-        file.close();
 
         //If they click yes to import their export, then we'll have to directly import the file into the Defaults folder
         if(msgBox.exec() == QMessageBox::Yes){
             iv.pcon->AddToLog("Importing defaults file from current module state.");
-            import_defaults_file_from_path(path);
+            import_defaults_file_from_path(supportFilePath);
         }
 
     } else {
@@ -785,50 +796,32 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     }
 }
 
-void MainWindow::on_export_log_button_clicked(){
+QString MainWindow::export_log(QString path){
     //Grab the project log
     QFile currentLog(iv.pcon->path_to_log_file);
+    QString logFilePath = path;
+    logFilePath = logFilePath.replace(".json", "_log.txt");
 
-    QFileDialog dialog(this, tr("Open Directory"),
-                       "/home/log.txt",
-                       tr("txt (*.txt"));
-    dialog.setFileMode(QFileDialog::AnyFile);
+    QFile logFile(logFilePath);
+    logFile.setPermissions(logFilePath, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
+                              QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::ReadGroup);
 
-    //Let people pick a directory/name to save to/with, and save that path
-    QString dir = dialog.getSaveFileName(this, tr("Open Directory"),
-                                                    "/home/log.txt",
-                                                    tr("text files (*.txt)"));
+    if(!(logFilePath.isEmpty())){
+        // Remove the log file if it already exists or else copy will fail
+        if(QFile::exists(logFilePath)){
+            QFile::remove(logFilePath);
+        }
 
-    //If the file already exists, kill it
-    if(!(dir.isEmpty()) && QFile::exists(dir)){
-        QFile::remove(dir);
-    }
-
-    if(!(dir.isEmpty())){
-
-        //Pop up with where the log went (if successful)
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Exporting Log");
-        QString text;
-
-            //Copy the data from the project log to the user's desired location
-            if(currentLog.copy(dir)){
-
-                text.append("Your log file has been succesfully exported to: " + dir + ".");
-            }else{
-                text.append("Failed to export log.");
-            }
-
-            msgBox.setText(text);
-
-            iv.pcon->AddToLog(text);
-
-            msgBox.setStandardButtons(QMessageBox::Ok);
-            msgBox.exec();
-
+        //Copy the data from the project log to the user's desired location
+        if(currentLog.copy(logFilePath)){
+            iv.pcon->AddToLog("Your log file has been succesfully exported");
+        }else{
+            iv.pcon->AddToLog("Failed to export log.");
+        }
     }else{
         ui->header_error_label->setText("Unable to open output file location, please try again.");
     }
+  return logFilePath;
 }
 
 void MainWindow::on_clear_log_button_clicked(){

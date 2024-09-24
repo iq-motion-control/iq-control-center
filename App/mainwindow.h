@@ -78,7 +78,7 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_firmware_clicked();
 
-  void on_export_log_button_clicked();
+  QString export_log(QString path);
 
   void on_clear_log_button_clicked();
 
