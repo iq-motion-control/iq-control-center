@@ -713,9 +713,9 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
             file_beginning.append("custom_defaults_");
         break;
     }
-
+    //Let people pick a directory/name to save to/with, and save that path
     QString supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                        file_beginning + ui->label_firmware_name->text() + ".json",
+                                        "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
                                         tr("json (*.json"));
 
     //Write to the json file
@@ -759,6 +759,10 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
                                 "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
 
                     msgBox.setStandardButtons(QMessageBox::Ok);
+                }else{
+                    text.append("Could not generate support file. Please contact the Vertiq support team at support@vertiq.co with your name and complication, "
+                        "and we will respond as soon as possible.");
+
                 }
                 if(QFile::exists(supportFilePath)){
                   QFile::remove(supportFilePath);
