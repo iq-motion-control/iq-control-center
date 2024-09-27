@@ -701,22 +701,31 @@ void MainWindow::on_export_defaults_pushbutton_clicked(){
 }
 
 void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileExport){
-
     QString file_beginning;
+    QString supportFilePath = "";
 
     switch(fileExport){
-        case exportFileTypes::SUPPORT_FILE:
+        case exportFileTypes::SUPPORT_FILE:{
             file_beginning.append("user_support_file_");
-        break;
+            // The FileDialog box will indicate that the generated Suppport file is a .zip file
+            // The user can decide where to save this .zip file
+            supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                "/home/" + file_beginning + ui->label_firmware_name->text(),
+                                                tr("zip (*.zip"));
 
-        case exportFileTypes::DEFAULTS_FILE:
+            // Although we are creating a .zip in the end, we need to save the support file as a .json to include it in the .zip file
+            supportFilePath.replace(".zip", ".json");
+            break;
+        }
+
+        case exportFileTypes::DEFAULTS_FILE:{
             file_beginning.append("custom_defaults_");
-        break;
+            supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
+                                                tr("json (*.json"));
+            break;
+        }
     }
-    //Let people pick a directory/name to save to/with, and save that path
-    QString supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                        "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
-                                        tr("json (*.json"));
 
     //Write to the json file
     QJsonDocument output_doc;
