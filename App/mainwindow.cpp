@@ -620,34 +620,48 @@ void MainWindow::on_generate_support_button_clicked(){
         write_user_support_file();
     }else{
         // Allow user to specify where the log file should be saved
-        QString tempLogFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"), "/home/user_support_log", tr("zip (*.zip"));
+        QMessageBox disconnectedWarningMessageBox;
+        disconnectedWarningMessageBox.setIcon(QMessageBox::Warning);
+        disconnectedWarningMessageBox.setWindowTitle("No Module Connected!");
+        QString disconnectedWarning = "There is currently no module connected. Logs from Control Center can still be generated as part of a support package, "
+            "but the support information from a specific motor will not be generated. If possible, we recommend connecting a motor before generating a support file "
+            "to generate the most complete support information. Press 'OK' to continue generating the log file without connecting your module, or 'Cancel' and try again "
+            "after connecting your module.";
+        disconnectedWarningMessageBox.setText(disconnectedWarning);
+        disconnectedWarningMessageBox.setStandardButtons(QMessageBox::Cancel | QMessageBox::Ok);
+        if(disconnectedWarningMessageBox.exec() == QMessageBox::Ok){
+            QString tempLogFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"), "/home/user_support_log", tr("zip (*.zip"));
 
-        // Although the file dialog displayed .zip as the filetype, the log file must be saved as a .txt file before being compressed into a .zip file
-        tempLogFilePath = tempLogFilePath.replace(".zip", ".txt");
-        QString logPath = exportLog(tempLogFilePath);
+            // Although the file dialog displayed .zip as the filetype, the log file must be saved as a .txt file before being compressed into a .zip file
+            if(tempLogFilePath.length() > 0){
+              tempLogFilePath = tempLogFilePath.replace(".zip", ".txt");
+              QString logPath = exportLog(tempLogFilePath);
 
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Generate Log File");
+              QMessageBox msgBox;
+              msgBox.setWindowTitle("Generate Log File");
 
-        QString text;
+              QString text;
 
-        QStringList support_files = {logPath};
-        QString compressPath = logPath;
-        if (compressSupportFiles(compressPath, support_files)){
-            text.append("Your log file has been successfully generated at: " + compressPath + ". "
-                        "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
-                        "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+              QStringList support_files = {logPath};
+              QString compressPath = logPath;
+              if (compressSupportFiles(compressPath, support_files)){
+                  logPath = logPath.replace(".txt", ".zip"); // Replace the .txt extension with .zip since the compressed file extension is .zip
+                  text.append("Your log file has been successfully generated at: " + logPath + ". "
+                              "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
+                              "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
 
-            iv.pcon->AddToLog(text);
-            msgBox.setStandardButtons(QMessageBox::Ok);
+                  iv.pcon->AddToLog(text);
+                  msgBox.setStandardButtons(QMessageBox::Ok);
 
-          // Remove the .txt file because the .zip file already contains the log file
-          if(QFile::exists(tempLogFilePath)){
-              QFile::remove(tempLogFilePath);
-          }
+                // Remove the .txt file because the .zip file already contains the log file
+                if(QFile::exists(tempLogFilePath)){
+                    QFile::remove(tempLogFilePath);
+                }
+              }
+              msgBox.setText(text);
+              msgBox.exec();
+            }
         }
-        msgBox.setText(text);
-        msgBox.exec();
     }
 }
 
