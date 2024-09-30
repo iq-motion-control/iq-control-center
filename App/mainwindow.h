@@ -78,7 +78,6 @@ class MainWindow : public QMainWindow {
 
   void on_pushButton_firmware_clicked();
 
-  QString export_log(QString path);
 
   void on_clear_log_button_clicked();
 
@@ -133,6 +132,9 @@ private:
 
   void display_successful_import();
   void GetDefaultsMap(Json::Value defaults, std::map<std::string, double> * default_value_map);
+
+  QString exportLog(QString path);
+  bool compressSupportFiles(QString supportFilePath, QStringList supportFiles);
 };
 
 #endif  // MAINWINDOW_H

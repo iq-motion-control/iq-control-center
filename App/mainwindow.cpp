@@ -600,30 +600,40 @@ void MainWindow::write_user_support_file(){
     write_data_to_json(tab_array, exportFileTypes::SUPPORT_FILE);
 }
 
+bool MainWindow::compressSupportFiles(QString supportFilePath, QStringList supportFiles){
+    JlCompress compressTool;
+    QString compressPath = supportFilePath;
+    // The supportFilePath will either contain .txt or .json since this file needs to be generated before being zipped
+    // The .zip file that will be generated will use the same name as the support file.
+    if(compressPath.contains(".txt")){
+      compressPath = compressPath.replace(".txt", ".zip");
+    }
+    if(compressPath.contains(".json")){
+      compressPath = compressPath.replace(".json", ".zip");
+    }
+    return compressTool.compressFiles(compressPath, supportFiles);
+}
+
 void MainWindow::on_generate_support_button_clicked(){
     //If we're connected then go get the values, otherwise just spit out a message to connect the motor
     if (iv.pcon->GetConnectionState() == 1) {
         write_user_support_file();
     }else{
         // Allow user to specify where the log file should be saved
-        QString tempLogFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                                "/home/user_support_log" + ui->label_firmware_name->text(),
-                                                tr("zip (*.zip"));
+        QString tempLogFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"), "/home/user_support_log", tr("zip (*.zip"));
 
         // Although the file dialog displayed .zip as the filetype, the log file must be saved as a .txt file before being compressed into a .zip file
         tempLogFilePath = tempLogFilePath.replace(".zip", ".txt");
-        QString logPath = export_log(tempLogFilePath);
+        QString logPath = exportLog(tempLogFilePath);
 
         QMessageBox msgBox;
         msgBox.setWindowTitle("Generate Log File");
 
         QString text;
 
-        JlCompress compressTool;
         QStringList support_files = {logPath};
         QString compressPath = logPath;
-        compressPath = compressPath.replace(".txt", ".zip");
-        if (compressTool.compressFiles(compressPath, support_files)){
+        if (compressSupportFiles(compressPath, support_files)){
             text.append("Your log file has been successfully generated at: " + compressPath + ". "
                         "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
                         "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
@@ -774,8 +784,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     file.setPermissions(supportFilePath, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
                               QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::ReadGroup);
 
-    if( file.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) )
-    {
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){
         QTextStream iStream( &file );
         iStream.setCodec( "utf-8" );
         iStream << text;
@@ -788,13 +797,11 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
         switch(fileExport){
             case exportFileTypes::SUPPORT_FILE: {
-                QString logPath = export_log(supportFilePath); // Also save log file with the at the same location
+                QString logPath = exportLog(supportFilePath); // Also save log file with the at the same location
 
-                JlCompress compressTool;
-                QStringList support_files = {supportFilePath, logPath};
+                QStringList supportFiles = {supportFilePath, logPath};
                 QString compressPath = supportFilePath;
-                compressPath = compressPath.replace(".json", ".zip");
-                if (compressTool.compressFiles(compressPath, support_files)){
+                if (compressSupportFiles(compressPath, supportFiles)){
                     text.append("Your support file has been succesfully generated at: " + compressPath + ". "
                                 "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
                                 "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
@@ -805,6 +812,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
                         "and we will respond as soon as possible.");
 
                 }
+                // Remove the support files that were used to .zip file compression to reduce duplicate files.
                 if(QFile::exists(supportFilePath)){
                   QFile::remove(supportFilePath);
                 }
@@ -813,7 +821,6 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
                 }
                 break;
             }
-
             case exportFileTypes::DEFAULTS_FILE: {
                 //If someone exports their defaults file, they'll probably want to use it again later on. So give them that option.
                 text.append("Your module's current state has been saved in " + supportFilePath + ". Would you like to add these defaults"
@@ -824,16 +831,12 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
                 break;
             }
         }
-
         msgBox.setText(text);
-
-
         //If they click yes to import their export, then we'll have to directly import the file into the Defaults folder
         if(msgBox.exec() == QMessageBox::Yes){
             iv.pcon->AddToLog("Importing defaults file from current module state.");
             import_defaults_file_from_path(supportFilePath);
         }
-
     } else {
        QString error_text("Unable to open output file location, please try again.");
        ui->header_error_label->setText(error_text);
@@ -841,7 +844,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
     }
 }
 
-QString MainWindow::export_log(QString path){
+QString MainWindow::exportLog(QString path){
     //Grab the project log
     QFile currentLog(iv.pcon->path_to_log_file);
     QString logFilePath = path;
@@ -862,7 +865,7 @@ QString MainWindow::export_log(QString path){
 
         //Copy the data from the project log to the user's desired location
         if(currentLog.copy(logFilePath)){
-            iv.pcon->AddToLog("Your log file has been succesfully exported");
+            iv.pcon->AddToLog("Your log file has been succesfully exported.");
         }else{
             iv.pcon->AddToLog("Failed to export log.");
         }
