@@ -605,7 +605,39 @@ void MainWindow::on_generate_support_button_clicked(){
     if (iv.pcon->GetConnectionState() == 1) {
         write_user_support_file();
     }else{
-        ui->header_error_label->setText("Please connect your module before attempting to generate your support file.");
+        // Allow user to specify where the log file should be saved
+        QString tempLogFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
+                                                "/home/user_support_log" + ui->label_firmware_name->text(),
+                                                tr("zip (*.zip"));
+
+        // Although the file dialog displayed .zip as the filetype, the log file must be saved as a .txt file before being compressed into a .zip file
+        tempLogFilePath = tempLogFilePath.replace(".zip", ".txt");
+        QString logPath = export_log(tempLogFilePath);
+
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Generate Log File");
+
+        QString text;
+
+        JlCompress compressTool;
+        QStringList support_files = {logPath};
+        QString compressPath = logPath;
+        compressPath = compressPath.replace(".txt", ".zip");
+        if (compressTool.compressFiles(compressPath, support_files)){
+            text.append("Your log file has been successfully generated at: " + compressPath + ". "
+                        "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
+                        "to support@vertiq.co with your name and complication, and we will respond as soon as possible.");
+
+            iv.pcon->AddToLog(text);
+            msgBox.setStandardButtons(QMessageBox::Ok);
+
+          // Remove the .txt file because the .zip file already contains the log file
+          if(QFile::exists(tempLogFilePath)){
+              QFile::remove(tempLogFilePath);
+          }
+        }
+        msgBox.setText(text);
+        msgBox.exec();
     }
 }
 
@@ -813,7 +845,10 @@ QString MainWindow::export_log(QString path){
     //Grab the project log
     QFile currentLog(iv.pcon->path_to_log_file);
     QString logFilePath = path;
-    logFilePath = logFilePath.replace(".json", "_log.txt");
+
+    if(logFilePath.contains(".json")){
+        logFilePath = logFilePath.replace(".json", "_log.txt");
+    }
 
     QFile logFile(logFilePath);
     logFile.setPermissions(logFilePath, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
