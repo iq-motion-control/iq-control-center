@@ -350,23 +350,6 @@
     },
 	  {
         "type_idn": 80,
-        "descriptor": "Arming by DroneCAN ArmingStatus",
-        "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
-        "sub_idn": 12,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Disabled",
-          "Enabled"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-    },
-	  {
-        "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
         "sub_idn": 11,
