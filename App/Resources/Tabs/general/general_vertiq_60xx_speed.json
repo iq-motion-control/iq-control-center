@@ -543,6 +543,53 @@
                 "default_value": 0,
                 "decimal": 0,
                 "single_step": 1
+            },
+            {
+                "type_idn": 88,
+                "descriptor": "Throttle Control Value Index",
+                "info": "The IFCI control value index for the throttle",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "Unconfigured"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    255
+                ]
             }
         ]
     }
