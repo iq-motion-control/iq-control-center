@@ -55,6 +55,7 @@ class Tab: public QWidget
     bool SaveSpecialDefaults(std::map<std::string,double> frame_value_map);
 
     std::map<std::string,Frame*> get_frame_map();
+    std::map<std::string,FrameVariables*> get_frame_variables_map();
 
     QGridLayout *gridLayout_;
 

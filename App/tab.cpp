@@ -262,6 +262,10 @@ std::map<std::string,Frame*> Tab::get_frame_map(){
     return frame_map_;
 }
 
+std::map<std::string,FrameVariables*> Tab::get_frame_variables_map(){
+    return frame_variables_map_;
+}
+
 void Tab::ConnectFrameCombo(FrameCombo *fc)
 {
   connect(fc->push_button_save_, SIGNAL(clicked()),fc, SLOT(SaveValue()));
