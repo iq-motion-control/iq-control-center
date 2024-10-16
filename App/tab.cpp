@@ -19,7 +19,6 @@
 */
 
 #include "tab.h"
-#include <QDebug>
 #include "mainwindow.h"
 
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
