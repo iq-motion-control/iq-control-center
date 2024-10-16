@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
 #include "frame_variables.h"
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
@@ -100,7 +101,6 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
     case 1: {
       uint8_t list_size = param["list_name"].size();
       for (uint8_t ii = 0; ii < list_size; ++ii) {
-        // This the values that are in the "list_name" field in the resource files
         std::string name = param["list_name"][ii].asString();
         int value = param["list_value"][ii].asInt();
         frame_variables_ptr->combo_frame_.list_names.push_back(name);
