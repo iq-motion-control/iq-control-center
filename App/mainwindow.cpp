@@ -478,7 +478,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
     //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
     //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
     //Each Frame stores the value that we got from the motor
-    std::map< QString, std::map<int, QString> > frameVariablesMap;
+    std::map<QString, std::map<int, QString>> frameVariablesMap;
 
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
       //If we're doing a defaults file export, we don't want anything to do with the testing tab.
@@ -494,7 +494,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
             // Get the name of the client
             QString client = QString::fromStdString(elem.first);
             // Create the inner map object that holds the list_value and list_name
-            std::map< int, QString> valueNameMap;
+            std::map<int, QString> valueNameMap;
               for (uint8_t j = 0; j < elem.second->combo_frame_.list_names.size(); j++) {
                   // This is the list_name, which is a client endpoint value
                   QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[j]);
