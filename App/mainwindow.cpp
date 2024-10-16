@@ -478,7 +478,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
     //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
     //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
     //Each Frame stores the value that we got from the motor
-    std::map< QString, std::map< uint8_t, QString> > frameVariablesMap;
+    std::map< QString, std::map<int, QString> > frameVariablesMap;
 
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
       //If we're doing a defaults file export, we don't want anything to do with the testing tab.
@@ -491,13 +491,13 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
 //          qDebug() << elem.second->frame_type_;
           if (elem.second->frame_type_ == 1){
             QString client = QString::fromStdString(elem.first);
-            std::map< uint8_t, QString> valueNameMap;
+            std::map< int, QString> valueNameMap;
             qDebug() << "Client: " << client;
               for (uint8_t j = 0; j < elem.second->combo_frame_.list_names.size(); j++) {
                   qDebug() << "Index: " << j;
                   QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[j]);
                   qDebug() << "Value String: " << value_string;
-                  uint8_t value_number = elem.second->combo_frame_.list_values[j];
+                  int value_number = elem.second->combo_frame_.list_values[j];
                   qDebug() << "Value Number: " << value_number;
                   valueNameMap.insert({value_number, value_string});
                   qDebug () << valueNameMap;
@@ -533,7 +533,9 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
               {
                   FrameCombo *fc = (FrameCombo *)(curFrame);
 //                  qDebug() << frame->first.c_str();
+                  QString readable_value = frameVariablesMap[frame->first.c_str()][fc->value_];
                   current_tab_json_object->insert("value", fc->value_);
+                  current_tab_json_object->insert("readable_value", readable_value);
 
 
                   attach_new_object = true;
