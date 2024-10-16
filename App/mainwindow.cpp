@@ -478,12 +478,38 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
     //If we're connected, then we have a map of tabs (general, tuning, advanced, testing)
     //Tabs store all of our Frames (velocity kd, timeout, Voltage, etc.)
     //Each Frame stores the value that we got from the motor
+    std::map< QString, std::map< uint8_t, QString> > frameVariablesMap;
+
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
       //If we're doing a defaults file export, we don't want anything to do with the testing tab.
       //This could be especially dangerous if the file gets saved with say 1000rpm and someone loads it
       //with a prop on
+    qDebug() << "Getting frame variables in tab: " << QString::fromStdString(tab.first);
+      std::map<std::string,FrameVariables*> fv = tab.second->get_frame_variables_map();
+      for(const auto& elem : fv)
+      {
+//          qDebug() << elem.second->frame_type_;
+          if (elem.second->frame_type_ == 1){
+            QString client = QString::fromStdString(elem.first);
+            std::map< uint8_t, QString> valueNameMap;
+            qDebug() << "Client: " << client;
+              for (uint8_t j = 0; j < elem.second->combo_frame_.list_names.size(); j++) {
+                  qDebug() << "Index: " << j;
+                  QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[j]);
+                  qDebug() << "Value String: " << value_string;
+                  uint8_t value_number = elem.second->combo_frame_.list_values[j];
+                  qDebug() << "Value Number: " << value_number;
+                  valueNameMap.insert({value_number, value_string});
+                  qDebug () << valueNameMap;
+              }
+            frameVariablesMap.insert({client, valueNameMap});
+          }
+      }
+      qDebug() << "Finished making frameVariablesMap\n";
+      for(const auto& elem : frameVariablesMap){
+          qDebug() << elem;
+      }
       if(!((exportStyle == exportFileTypes::DEFAULTS_FILE) && (tab.first.find("testing") != std::string::npos))){
-
           QJsonObject top_level_tab_obj;
 
           QJsonArray tab_frame_array;
@@ -506,7 +532,10 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
               case 1:
               {
                   FrameCombo *fc = (FrameCombo *)(curFrame);
+//                  qDebug() << frame->first.c_str();
                   current_tab_json_object->insert("value", fc->value_);
+
+
                   attach_new_object = true;
                 break;
               }
