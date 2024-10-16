@@ -17,8 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-#include<QDebug>
-
 #include "frame_variables.h"
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
@@ -66,22 +64,6 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
       frame_variables_map = CreateFrameVariablesMap(JSON[i], using_custom_order);
     }
   }
-
-//  for(const auto& elem : frame_variables_map)
-//  {
-//    qDebug() << "here";
-//    qDebug() << "Client: " << QString::fromStdString(elem.first);
-//    qDebug() << elem.second->frame_type_;
-//    if (elem.second->frame_type_ == 1){
-// //      for(const auto& value : elem.second->combo_frame_.list_names){
-
-//      for (uint8_t j = 0; j < elem.second->combo_frame_.list_names.size(); ++j) {
-// //        qDebug() << "Value: " << QString::fromStdString(value);
-//        qDebug() << "Value String: " << QString::fromStdString(elem.second->combo_frame_.list_names[j]);
-//        qDebug() << "Value Number: " << elem.second->combo_frame_.list_values[j];
-//      }
-//    }
-//  }
   return frame_variables_map;
 }
 
@@ -120,7 +102,6 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       for (uint8_t ii = 0; ii < list_size; ++ii) {
         // This the values that are in the "list_name" field in the resource files
         std::string name = param["list_name"][ii].asString();
-//        qDebug() << QString::fromStdString(name);
         int value = param["list_value"][ii].asInt();
         frame_variables_ptr->combo_frame_.list_names.push_back(name);
         frame_variables_ptr->combo_frame_.list_values.push_back(value);
