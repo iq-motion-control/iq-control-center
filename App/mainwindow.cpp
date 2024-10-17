@@ -481,29 +481,28 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
     std::map<QString, std::map<int, QString>> frameVariablesMap;
 
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
-
-      // Get the frame_variables_map_ from each tab object.
-      // This contains the client, and the list_names and list_values that will be used to get the readable client entry value
-      std::map<std::string,FrameVariables*> fv = tab.second->get_frame_variables_map();
-      for(const auto& elem : fv){
-          // Only the comboboxes have list_names
-          if (elem.second->frame_type_ == 1){
-            // Get the name of the client
-            QString client = QString::fromStdString(elem.first);
-            // Create the inner map object that holds the list_value and list_name
-            std::map<int, QString> valueNameMap;
-              for (uint8_t listNameIndex = 0; listNameIndex < elem.second->combo_frame_.list_names.size(); listNameIndex++) {
-                  // This is the list_name, which is a client endpoint value
-                  QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[listNameIndex]);
-                  // This is the enumerated number that represents the client endpoint value
-                  int value_number = elem.second->combo_frame_.list_values[listNameIndex];
-                  // Insert this pairing into the map object that holds the mapping between list_value and list_name for this client
-                  valueNameMap.insert({value_number, value_string});
-              }
-            // Insert the client and its value map into the final outer object
-            frameVariablesMap.insert({client, valueNameMap});
-          }
-      }
+        // Get the frame_variables_map_ from each tab object.
+        // This contains the client, and the list_names and list_values that will be used to get the readable client entry value
+        std::map<std::string,FrameVariables*> fv = tab.second->get_frame_variables_map();
+        for(const auto& elem : fv){
+            // Only the comboboxes have list_names
+            if (elem.second->frame_type_ == 1){
+                // Get the name of the client
+                QString client = QString::fromStdString(elem.first);
+                // Create the inner map object that holds the list_value and list_name
+                std::map<int, QString> valueNameMap;
+                for (uint8_t listNameIndex = 0; listNameIndex < elem.second->combo_frame_.list_names.size(); listNameIndex++) {
+                    // This is the list_name, which is a client endpoint value
+                    QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[listNameIndex]);
+                    // This is the enumerated number that represents the client endpoint value
+                    int value_number = elem.second->combo_frame_.list_values[listNameIndex];
+                    // Insert this pairing into the map object that holds the mapping between list_value and list_name for this client
+                    valueNameMap.insert({value_number, value_string});
+                }
+                // Insert the client and its value map into the final outer object
+                frameVariablesMap.insert({client, valueNameMap});
+            }
+        }
       //If we're doing a defaults file export, we don't want anything to do with the testing tab.
       //This could be especially dangerous if the file gets saved with say 1000rpm and someone loads it
       //with a prop on
