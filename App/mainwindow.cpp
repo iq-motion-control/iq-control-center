@@ -481,9 +481,6 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
     std::map<QString, std::map<int, QString>> frameVariablesMap;
 
     for (std::pair<std::string, std::shared_ptr<Tab>> tab : tab_map_) {
-      //If we're doing a defaults file export, we don't want anything to do with the testing tab.
-      //This could be especially dangerous if the file gets saved with say 1000rpm and someone loads it
-      //with a prop on
 
       // Get the frame_variables_map_ from each tab object.
       // This contains the client, and the list_names and list_values that will be used to get the readable client entry value
@@ -495,11 +492,11 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
             QString client = QString::fromStdString(elem.first);
             // Create the inner map object that holds the list_value and list_name
             std::map<int, QString> valueNameMap;
-              for (uint8_t j = 0; j < elem.second->combo_frame_.list_names.size(); j++) {
+              for (uint8_t listNameIndex = 0; listNameIndex < elem.second->combo_frame_.list_names.size(); listNameIndex++) {
                   // This is the list_name, which is a client endpoint value
-                  QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[j]);
+                  QString value_string = QString::fromStdString(elem.second->combo_frame_.list_names[listNameIndex]);
                   // This is the enumerated number that represents the client endpoint value
-                  int value_number = elem.second->combo_frame_.list_values[j];
+                  int value_number = elem.second->combo_frame_.list_values[listNameIndex];
                   // Insert this pairing into the map object that holds the mapping between list_value and list_name for this client
                   valueNameMap.insert({value_number, value_string});
               }
@@ -507,6 +504,9 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
             frameVariablesMap.insert({client, valueNameMap});
           }
       }
+      //If we're doing a defaults file export, we don't want anything to do with the testing tab.
+      //This could be especially dangerous if the file gets saved with say 1000rpm and someone loads it
+      //with a prop on
       if(!((exportStyle == exportFileTypes::DEFAULTS_FILE) && (tab.first.find("testing") != std::string::npos))){
           QJsonObject top_level_tab_obj;
 
