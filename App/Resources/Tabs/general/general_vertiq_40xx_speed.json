@@ -549,7 +549,6 @@
                 "descriptor": "Throttle Control Value Index",
                 "info": "The IFCI throttle control value index",
                 "sub_idn": 2,
-                "sub_idn": 2,
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
