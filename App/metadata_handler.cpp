@@ -128,14 +128,18 @@ QString MetadataHandler::GetMetadataJsonPath(){
     return "";
 }
 
+//Create a QStringList of the version numbers (type.major version) from our paired list of types and major versions
 QStringList MetadataHandler::MakeListOfVersionNumbers(QJsonArray types, QJsonArray major_versions){
+    //Start with an empty list, so it stays empty if there's nothing in these arrays or we abort
     QStringList version_numbers ={};
-    //Our types and major versions lists are linked, they need to be the same size. Return early and cry about it
+
+    //Our types and major versions lists are linked, they need to be the same size. Return early and cry about it if they aren't
     if(types.size() != major_versions.size()){
         pcon_->AddToLog("Type and Version List lengths do not match! Aborting Creating of Version Numbers List!");
         return version_numbers;
     }
 
+    //Run through the arrays, and put the matching and type major versions together. E.g. [34, 34] and [1, 2] become 34.1 and 34.2
     for(int version_pair_index = 0; version_pair_index <types.size(); version_pair_index++){
         int type = types.at(version_pair_index).toInt();
         int major_version = major_versions.at(version_pair_index).toInt();
@@ -164,15 +168,12 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
              + ", but the module was reported as: " + wrong_hardware + " (" + QString::number(target_hardware_type)
             +"."+ QString::number(target_hardware_major_version) + ")";
 
-    //If they're both wrong print everything that's wrong
-    //Otherwise just print whats wrong
-
-//    bool electronics_error = (to_flash_electronics_type_!= target_electronics_type) || (to_flash_electronics_major_version_ != target_electronics_major_version);
-//    bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
     //The one that doesn't have the target in its to flash list is the one with the error. So we can just check if its in the lists and invert it.
     bool hardware_error = !(CheckIfTargetVersionInVersionLists(to_flash_hardware_types_, to_flash_hardware_major_versions_, target_hardware_type, target_hardware_major_version));
     bool electronics_error = !(CheckIfTargetVersionInVersionLists(to_flash_electronics_types_, to_flash_electronics_major_versions_, target_electronics_type, target_electronics_major_version));
 
+    //If they're both wrong print everything that's wrong
+    //Otherwise just print whats wrong
     if(electronics_error && hardware_error ){
         errorType = electronicsError + "\n" + hardwareError;
     }
@@ -185,24 +186,31 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
     return errorType;
 }
 
-//FRED NOTE: PROBABLY A MORE SPECIFIC NAME
-QJsonArray MetadataHandler::GetListFromJSONObjectEntry(QJsonObject object, QString key, int undefined_value){
+QJsonArray MetadataHandler::GetMetadataVersionEntryAsArray(QJsonObject object, QString key){
+    //Get the value, we expect it to either be an integer or an array of integers.
     QJsonValue raw = object.value(key);
+
+    //Start with an empty list, so it stays empty if we put nothing in it
+    QJsonArray array = {};
 
     //It may be an integer already, or it may be an array already. If its an array, great.
     if(raw.isArray()){
-        return raw.toArray();
+        array = raw.toArray();
     }else{
-        //It's undefined, lets set it to our undefined value first as an integer, to keep our old backwards compatibility
+        //It's undefined, lets set it to our undefined value of 0 first as an integer, to keep our old backwards compatibility.
+        //We would previously set undefined things to 0 as well using ToInt. Then, we can treat it like any other integer.
+        //Older zip file metadata files may not contain this information on major versions. If the key is not present,
+        //the value function call will return an undefined value. We want to assume a major version of 0 if hasn't been
+        //been defined.
         if(raw.isUndefined()){
-            raw = QJsonValue(undefined_value);
+            raw = QJsonValue(0);
         }
 
         //Ok it either came in as an integer, or we made it one after it was undefined. Now we can shove it into an array
-        QJsonArray array;
         array.append(raw);
-        return array;
     }
+
+    return array;
 }
 
 void MetadataHandler::ReadMetadata(){
@@ -211,39 +219,13 @@ void MetadataHandler::ReadMetadata(){
     //Grabbing data from the first entry (hardware and electronics type)
     QJsonObject safetyObj = metadata_array_.at(0).toObject();
 
-    //Get these, they may be integers or lists. We need to still handle the old single integer style.
-    //But those will hopefully just get spat out as arrays by toArray?
-    //We need to handle it appropriately, since both single integers and lists can be a thing.
-    to_flash_electronics_types_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_electronics_type");
-    to_flash_hardware_types_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_hardware_type");
+    //Get arrays of our types and major versions. If its just a single integer, it'll be converted to an array of length 1
+    //and everything else will handle it the same as if it was multiple values.
+    to_flash_electronics_types_ = GetMetadataVersionEntryAsArray(safetyObj, "to_flash_electronics_type");
+    to_flash_hardware_types_ = GetMetadataVersionEntryAsArray(safetyObj, "to_flash_hardware_type");
 
-    QJsonDocument doc;
-    doc.setArray(to_flash_electronics_types_);
-    pcon_->AddToLog("Electronic Types: "+ QString(doc.toJson()));
-
-    doc.setArray(to_flash_hardware_types_);
-    pcon_->AddToLog("Hardware Types: "+ QString(doc.toJson()));
-
-
-    //Older zip file metadata files may not contain this information on major versions. If the key is not present,
-    //the value function call will return an undefined value. toInt will return its default value when
-    //called on an undefined value, and I have explicitly set the default value to be 0 here to show
-    //that we want to assume a major version of 0 if there is no major version specified in the zip file
-    //metdata
-//    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
-//    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
-
-    to_flash_electronics_major_versions_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_electronics_major");
-    to_flash_hardware_major_versions_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_hardware_major");
-
-    doc.setArray(to_flash_electronics_major_versions_);
-    pcon_->AddToLog("Electronic Majors: "+ QString(doc.toJson()));
-
-    doc.setArray(to_flash_hardware_major_versions_);
-    pcon_->AddToLog("Hardware Majors: "+ QString(doc.toJson()));
-
-    //FRED TODO: Should I do a check to confirm that the type and major version lists are the same length?
-    //Or handle that later?
+    to_flash_electronics_major_versions_ = GetMetadataVersionEntryAsArray(safetyObj, "to_flash_electronics_major");
+    to_flash_hardware_major_versions_ = GetMetadataVersionEntryAsArray(safetyObj, "to_flash_hardware_major");
 
     //The second entry is an array with the allowed flash types
     QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
@@ -262,40 +244,6 @@ void MetadataHandler::ReadMetadata(){
 
     FindBinariesInFolder();
 }
-
-//void MetadataHandler::ReadMetadata(){
-//    metadata_array_ = ArrayFromJson(GetMetadataJsonPath());
-
-//    //Grabbing data from the first entry (hardware and electronics type)
-//    QJsonObject safetyObj = metadata_array_.at(0).toObject();
-//    to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
-//    to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
-
-//    //Older zip file metadata files may not contain this information on major versions. If the key is not present,
-//    //the value function call will return an undefined value. toInt will return its default value when
-//    //called on an undefined value, and I have explicitly set the default value to be 0 here to show
-//    //that we want to assume a major version of 0 if there is no major version specified in the zip file
-//    //metdata
-//    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
-//    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
-
-//    //The second entry is an array with the allowed flash types
-//    QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
-//    allowed_flashing_size_ = allowedFlashingArray.size();
-//    for(int i = 0; i < allowed_flashing_size_; i++){
-//        QJsonObject obj(allowedFlashingArray.at(i).toObject());
-//        flash_types_[i].Init(obj.value("type").toString(), obj.value("start").toString(),
-//                                        obj.value("length").toInt(), obj.value("major").toInt(),
-//                                        obj.value("minor").toInt(), obj.value("patch").toInt(),
-//                                        obj.value("style").toInt());
-//    }
-
-//    //Third entry is firmware style
-//    firmware_style_ = metadata_array_.at(FIRMWARE_STYLE_INDEX).toObject().value("firmware style").toString();
-//    //Last entry is version data and release
-
-//    FindBinariesInFolder();
-//}
 
 QStringList MetadataHandler::GetFlashTypes(){
     QStringList retList;
@@ -333,7 +281,6 @@ void MetadataHandler::DeleteExtractedFolder(){
 
 bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version){
 
-    //FRED NOTE: Need to fix the get name stuff eventually, but not yet
     QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_types_, to_flash_hardware_major_versions_, to_flash_electronics_types_, to_flash_electronics_major_versions_);
 
     //If the targets come in as -1, then we know we guessed wrong. Flash a warning
@@ -350,7 +297,7 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
         msgBox.setWindowTitle("Is Firmware Correct?");
 
         QString text = "You are about to flash firmware meant for the module(s): " + target_module_name + ". Before selecting Recover "
-                       "please ensure this is firmware is correct for your module. Is this firmware correct?";
+                       "please ensure this firmware is correct for your module. Is this firmware correct?";
 
         msgBox.setText(text);
         msgBox.exec();
@@ -363,23 +310,17 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
         return true;
     }
 
-
-    //FRED NOTE: Now this is where we actually do the check normally. Before it was easy, just compare the numbers. Now we need to be a bit smarter. Need to iterate through
-    //and see if we can find our match
-
+    //Check if our lists of types and majors contain a matching pair for our target electronics and hardware.
+    //Need both of them to match for it to be right to flash our module
     bool hardware_match = CheckIfTargetVersionInVersionLists(to_flash_hardware_types_, to_flash_hardware_major_versions_, target_hardware_type, target_hardware_major_version);
     bool electronics_match = CheckIfTargetVersionInVersionLists(to_flash_electronics_types_, to_flash_electronics_major_versions_, target_electronics_type, target_electronics_major_version);
-    pcon_->AddToLog("Hardware Match: "+QString(hardware_match));
-    pcon_->AddToLog("Electronics Match: "+QString(electronics_match));
 
     return (hardware_match && electronics_match);
 }
 
-//Well, I guess we need to:
-//-grab the paired type and major version
-//-See if they match our target
-//-If not, grab the next pair and repeat
-//-If we ever match, tell us
+//We want to see if the given paired list of types and major versions contains a match for our target type and major version
+//It's only a match if a type and its paired major version both match with the type and major version of the target
+//So, if we had [34, 34] and [1,2] that would give us pairs of 34.1 and 34.2, we would match if either of those are our target.
 bool MetadataHandler::CheckIfTargetVersionInVersionLists(QJsonArray types, QJsonArray major_versions, int target_type, int target_major_version){
     //Our types and major versions lists are linked, they need to be the same size
     if(types.size() != major_versions.size()){
@@ -387,12 +328,14 @@ bool MetadataHandler::CheckIfTargetVersionInVersionLists(QJsonArray types, QJson
         return false;
     }
 
+    //Run through our paired lists, pull out the type and major version at that index, and see if it matches our target.
+    //If it does, we're done, this list contains a fine match for our target
     for(int version_pair_index = 0; version_pair_index <types.size(); version_pair_index++){
         int to_flash_type = types.at(version_pair_index).toInt();
         int to_flash_major_version = major_versions.at(version_pair_index).toInt();
 
         if(((to_flash_type == target_type) && (to_flash_major_version == target_major_version))){
-            //Perfect match!
+            //Perfect match, we found what we are looking for, return thte successful result
             return true;
         }
     }

@@ -577,7 +577,9 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
     return "";
 }
 
-//This version will get all the hardware names that match our arrays, and give you them all globbed together
+//This overloaded version will get all the hardware names that match our arrays, and give you them all globbed together
+//into a nice string. Useful for when we have multiple possible acceptable type and major version combinations, lets us
+//report all of them back easily
 QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, QJsonArray hardware_major_versions, QJsonArray electronics_types, QJsonArray electronics_major_versions){
     //Whoa, our list size are messed up, abort. We need each pair of lists to match each other in size
     if((hardware_types.size() != hardware_major_versions.size()) || (electronics_types.size() != electronics_major_versions.size())){
@@ -596,14 +598,15 @@ QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, 
             int current_electronics_type = electronics_types.at(electronics_pair_index).toInt();
             int current_electronics_major_version = electronics_major_versions.at(electronics_pair_index).toInt();
 
+            //We can use the normal integer version of this same function to get the strings, we just need to run through all of the possibilities and save them up
             QString current_name = GetHardwareNameFromResources(current_hardware_type, current_hardware_major_version, current_electronics_type, current_electronics_major_version);
             if(current_name != ""){
-                /*combined_names = combined_names+"("+current_name+")"*/;
                 list_of_names.append(current_name);
             }
         }
     }
-    //Skip any duplicates
+
+    //Skip any duplicates, not useful to display the same name multiple times to the user
     list_of_names.removeDuplicates();
     QString combined_names = list_of_names.join(",");
     return combined_names;

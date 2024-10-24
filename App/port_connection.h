@@ -119,8 +119,15 @@ class PortConnection : public QObject {
    */
   QString GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version);
 
+  /**
+   * @brief GetHardwareNameFromResources given the hardware types and versions and electronics types and versions, go into our resource files and grab out all the module names specified by those paired lists.
+   * @param hardware_types The hardware types of the modules to get the hardware names for. Paired with hardware_major_versions
+   * @param hardware_major_versions The hardware major versions of the modules to get the hardware names for. Paired with hardware_types
+   * @param electronics_types The electronics types of the modules to get the hardware names for. Paired with electronics_major_versions
+   * @param electronics_major_versions The electronics major versions of the modules to get the hardware name for. Paired with electronics_types
+   * @return The names of all possible modules with the combinations of types and major versions specified by these arrays.
+   */
   QString GetHardwareNameFromResources(QJsonArray hardware_types, QJsonArray hardware_major_versions, QJsonArray electronics_types, QJsonArray electronics_major_versions);
-
 
   /**
    * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the electronics and hardware type and major version of the most recent connection
