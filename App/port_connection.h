@@ -119,6 +119,9 @@ class PortConnection : public QObject {
    */
   QString GetHardwareNameFromResources(int hardware_type, int hardware_major_version, int electronics_type, int electronics_major_version);
 
+  QString GetHardwareNameFromResources(QJsonArray hardware_types, QJsonArray hardware_major_versions, QJsonArray electronics_types, QJsonArray electronics_major_versions);
+
+
   /**
    * @brief FindHardwareAndElectronicsFromLog Go into the persistent log, and find the electronics and hardware type and major version of the most recent connection
    * @param hardware_type A pointer to hold the hardware type

@@ -181,24 +181,44 @@ private:
     QJsonArray metadata_array_;
 
     /**
+//     * @brief to_flash_electronics_type_ The type of electronics that this metadata expects to flash
+//     */
+//    int to_flash_electronics_type_;
+
+//    /**
+//     * @brief to_flash_electronics_type_ The major version of electronics that this metadata expects to flash
+//     */
+//    int to_flash_electronics_major_version_;
+
+//    /**
+//     * @brief to_flash_hardware_type_ The type of hardware that this metadata expects to flash
+//     */
+//    int to_flash_hardware_type_;
+
+//    /**
+//     * @brief to_flash_hardware_type_ The major version of hardware that this metadata expects to flash
+//     */
+//    int to_flash_hardware_major_version_;
+
+    /**
      * @brief to_flash_electronics_type_ The type of electronics that this metadata expects to flash
      */
-    int to_flash_electronics_type_;
+    QJsonArray to_flash_electronics_types_;
 
     /**
      * @brief to_flash_electronics_type_ The major version of electronics that this metadata expects to flash
      */
-    int to_flash_electronics_major_version_;
+    QJsonArray to_flash_electronics_major_versions_;
 
     /**
      * @brief to_flash_hardware_type_ The type of hardware that this metadata expects to flash
      */
-    int to_flash_hardware_type_;
+    QJsonArray to_flash_hardware_types_;
 
     /**
      * @brief to_flash_hardware_type_ The major version of hardware that this metadata expects to flash
      */
-    int to_flash_hardware_major_version_;
+    QJsonArray to_flash_hardware_major_versions_;
 
     /**
      * @brief allowed_flashing_size_ The number of different styles of flash that can be performed based on this archive
@@ -251,6 +271,13 @@ private:
      * @return The path
      */
     QString GetUpgradeBinPath();
+
+    QJsonArray GetListFromJSONObjectEntry(QJsonObject object, QString key, int undefined_value=0);
+
+    bool CheckIfTargetVersionInVersionLists(QJsonArray types, QJsonArray major_versions, int target_type, int target_major_version);
+
+    //Make a list of the possible version numbers from these types and major version, e.g. [34.1, 34.2, 35.2]
+    QStringList MakeListOfVersionNumbers(QJsonArray types, QJsonArray major_versions);
 
 };
 

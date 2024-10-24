@@ -577,6 +577,39 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
     return "";
 }
 
+//This version will get all the hardware names that match our arrays, and give you them all globbed together
+QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, QJsonArray hardware_major_versions, QJsonArray electronics_types, QJsonArray electronics_major_versions){
+    //Whoa, our list size are messed up, abort. We need each pair of lists to match each other in size
+    if((hardware_types.size() != hardware_major_versions.size()) || (electronics_types.size() != electronics_major_versions.size())){
+        this->AddToLog("Type and Version List lengths do not match! Aborting getting hardware name!");
+        return "";
+    }
+
+    //Go through all the combos, grab whatever names come out, save them in a list, glob them up into a nice string to show all the possibilities.
+    QStringList list_of_names;
+    QString empty_list = list_of_names.join(",");
+    for(int hardware_pair_index = 0; hardware_pair_index < hardware_types.size(); hardware_pair_index++){
+        int current_hardware_type = hardware_types.at(hardware_pair_index).toInt();
+        int current_hardware_major_version = hardware_major_versions.at(hardware_pair_index).toInt();
+
+        for(int electronics_pair_index = 0; electronics_pair_index < electronics_types.size(); electronics_pair_index++){
+            int current_electronics_type = electronics_types.at(electronics_pair_index).toInt();
+            int current_electronics_major_version = electronics_major_versions.at(electronics_pair_index).toInt();
+
+            QString current_name = GetHardwareNameFromResources(current_hardware_type, current_hardware_major_version, current_electronics_type, current_electronics_major_version);
+            if(current_name != ""){
+                /*combined_names = combined_names+"("+current_name+")"*/;
+                list_of_names.append(current_name);
+            }
+        }
+    }
+    //Skip any duplicates
+    list_of_names.removeDuplicates();
+    QString combined_names = list_of_names.join(",");
+    return combined_names;
+}
+
+
 bool PortConnection::DisplayRecoveryMessage(){
 
     recovery_port_name_ = selected_port_name_;

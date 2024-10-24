@@ -128,25 +128,50 @@ QString MetadataHandler::GetMetadataJsonPath(){
     return "";
 }
 
+QStringList MetadataHandler::MakeListOfVersionNumbers(QJsonArray types, QJsonArray major_versions){
+    QStringList version_numbers ={};
+    //Our types and major versions lists are linked, they need to be the same size. Return early and cry about it
+    if(types.size() != major_versions.size()){
+        pcon_->AddToLog("Type and Version List lengths do not match! Aborting Creating of Version Numbers List!");
+        return version_numbers;
+    }
+
+    for(int version_pair_index = 0; version_pair_index <types.size(); version_pair_index++){
+        int type = types.at(version_pair_index).toInt();
+        int major_version = major_versions.at(version_pair_index).toInt();
+
+        QString version_number = QString::number(type)+"."+QString::number(major_version);
+        version_numbers.append(version_number);
+    }
+
+    return version_numbers;
+}
+
 QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version){
     QString errorType = "";
 
     QString wrong_hardware = pcon_->GetHardwareNameFromResources(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
-    QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_, to_flash_hardware_major_version_, to_flash_electronics_type_, to_flash_electronics_major_version_);
+    QString correct_hardware = pcon_->GetHardwareNameFromResources(to_flash_hardware_types_, to_flash_hardware_major_versions_, to_flash_electronics_types_, to_flash_electronics_major_versions_);
+
+    QStringList to_flash_hardware_version_numbers = MakeListOfVersionNumbers(to_flash_hardware_types_, to_flash_hardware_major_versions_);
+    QStringList to_flash_electronics_version_numbers = MakeListOfVersionNumbers(to_flash_electronics_types_, to_flash_electronics_major_versions_);
 
     //Message if there is an electronics type error
-    QString electronicsError = "Firmware is for the wrong electronics. File expected to be flashing: " + QString::number(to_flash_electronics_type_) + "." + QString::number(to_flash_electronics_major_version_)
+    QString electronicsError = "Firmware is for the wrong electronics. File expected to be flashing: (" + to_flash_electronics_version_numbers.join(",") + ")"
                                         + ", but the module was reported as: " + QString::number(target_electronics_type) + "." + QString::number(target_electronics_major_version);
     //Message if there is a hardware error
-    QString hardwareError = "Firmware is for the wrong hardware. File expected to be flashing: " + correct_hardware + " (" + QString::number(to_flash_hardware_type_)
-             +"." + QString::number(to_flash_hardware_major_version_) + ")" + ", but the module was reported as: " + wrong_hardware + " (" + QString::number(target_hardware_type)
+    QString hardwareError = "Firmware is for the wrong hardware. File expected to be flashing: " + correct_hardware + " (" + to_flash_hardware_version_numbers.join(",") + ")"
+             + ", but the module was reported as: " + wrong_hardware + " (" + QString::number(target_hardware_type)
             +"."+ QString::number(target_hardware_major_version) + ")";
 
     //If they're both wrong print everything that's wrong
     //Otherwise just print whats wrong
 
-    bool electronics_error = (to_flash_electronics_type_!= target_electronics_type) || (to_flash_electronics_major_version_ != target_electronics_major_version);
-    bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
+//    bool electronics_error = (to_flash_electronics_type_!= target_electronics_type) || (to_flash_electronics_major_version_ != target_electronics_major_version);
+//    bool hardware_error = (to_flash_hardware_type_!= target_hardware_type) || (to_flash_hardware_major_version_ != target_hardware_major_version);
+    //The one that doesn't have the target in its to flash list is the one with the error. So we can just check if its in the lists and invert it.
+    bool hardware_error = !(CheckIfTargetVersionInVersionLists(to_flash_hardware_types_, to_flash_hardware_major_versions_, target_hardware_type, target_hardware_major_version));
+    bool electronics_error = !(CheckIfTargetVersionInVersionLists(to_flash_electronics_types_, to_flash_electronics_major_versions_, target_electronics_type, target_electronics_major_version));
 
     if(electronics_error && hardware_error ){
         errorType = electronicsError + "\n" + hardwareError;
@@ -160,21 +185,65 @@ QString MetadataHandler::GetErrorType(int target_hardware_type, int target_hardw
     return errorType;
 }
 
+//FRED NOTE: PROBABLY A MORE SPECIFIC NAME
+QJsonArray MetadataHandler::GetListFromJSONObjectEntry(QJsonObject object, QString key, int undefined_value){
+    QJsonValue raw = object.value(key);
+
+    //It may be an integer already, or it may be an array already. If its an array, great.
+    if(raw.isArray()){
+        return raw.toArray();
+    }else{
+        //It's undefined, lets set it to our undefined value first as an integer, to keep our old backwards compatibility
+        if(raw.isUndefined()){
+            raw = QJsonValue(undefined_value);
+        }
+
+        //Ok it either came in as an integer, or we made it one after it was undefined. Now we can shove it into an array
+        QJsonArray array;
+        array.append(raw);
+        return array;
+    }
+}
+
 void MetadataHandler::ReadMetadata(){
     metadata_array_ = ArrayFromJson(GetMetadataJsonPath());
 
     //Grabbing data from the first entry (hardware and electronics type)
     QJsonObject safetyObj = metadata_array_.at(0).toObject();
-    to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
-    to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
+
+    //Get these, they may be integers or lists. We need to still handle the old single integer style.
+    //But those will hopefully just get spat out as arrays by toArray?
+    //We need to handle it appropriately, since both single integers and lists can be a thing.
+    to_flash_electronics_types_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_electronics_type");
+    to_flash_hardware_types_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_hardware_type");
+
+    QJsonDocument doc;
+    doc.setArray(to_flash_electronics_types_);
+    pcon_->AddToLog("Electronic Types: "+ QString(doc.toJson()));
+
+    doc.setArray(to_flash_hardware_types_);
+    pcon_->AddToLog("Hardware Types: "+ QString(doc.toJson()));
+
 
     //Older zip file metadata files may not contain this information on major versions. If the key is not present,
     //the value function call will return an undefined value. toInt will return its default value when
     //called on an undefined value, and I have explicitly set the default value to be 0 here to show
     //that we want to assume a major version of 0 if there is no major version specified in the zip file
     //metdata
-    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
-    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
+//    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
+//    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
+
+    to_flash_electronics_major_versions_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_electronics_major");
+    to_flash_hardware_major_versions_ = GetListFromJSONObjectEntry(safetyObj, "to_flash_hardware_major");
+
+    doc.setArray(to_flash_electronics_major_versions_);
+    pcon_->AddToLog("Electronic Majors: "+ QString(doc.toJson()));
+
+    doc.setArray(to_flash_hardware_major_versions_);
+    pcon_->AddToLog("Hardware Majors: "+ QString(doc.toJson()));
+
+    //FRED TODO: Should I do a check to confirm that the type and major version lists are the same length?
+    //Or handle that later?
 
     //The second entry is an array with the allowed flash types
     QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
@@ -193,6 +262,40 @@ void MetadataHandler::ReadMetadata(){
 
     FindBinariesInFolder();
 }
+
+//void MetadataHandler::ReadMetadata(){
+//    metadata_array_ = ArrayFromJson(GetMetadataJsonPath());
+
+//    //Grabbing data from the first entry (hardware and electronics type)
+//    QJsonObject safetyObj = metadata_array_.at(0).toObject();
+//    to_flash_electronics_type_ = safetyObj.value("to_flash_electronics_type").toInt();
+//    to_flash_hardware_type_ = safetyObj.value("to_flash_hardware_type").toInt();
+
+//    //Older zip file metadata files may not contain this information on major versions. If the key is not present,
+//    //the value function call will return an undefined value. toInt will return its default value when
+//    //called on an undefined value, and I have explicitly set the default value to be 0 here to show
+//    //that we want to assume a major version of 0 if there is no major version specified in the zip file
+//    //metdata
+//    to_flash_electronics_major_version_ = safetyObj.value("to_flash_electronics_major").toInt(0);
+//    to_flash_hardware_major_version_ = safetyObj.value("to_flash_hardware_major").toInt(0);
+
+//    //The second entry is an array with the allowed flash types
+//    QJsonArray allowedFlashingArray = metadata_array_.at(1).toObject().value("allowed_flashing").toArray();
+//    allowed_flashing_size_ = allowedFlashingArray.size();
+//    for(int i = 0; i < allowed_flashing_size_; i++){
+//        QJsonObject obj(allowedFlashingArray.at(i).toObject());
+//        flash_types_[i].Init(obj.value("type").toString(), obj.value("start").toString(),
+//                                        obj.value("length").toInt(), obj.value("major").toInt(),
+//                                        obj.value("minor").toInt(), obj.value("patch").toInt(),
+//                                        obj.value("style").toInt());
+//    }
+
+//    //Third entry is firmware style
+//    firmware_style_ = metadata_array_.at(FIRMWARE_STYLE_INDEX).toObject().value("firmware style").toString();
+//    //Last entry is version data and release
+
+//    FindBinariesInFolder();
+//}
 
 QStringList MetadataHandler::GetFlashTypes(){
     QStringList retList;
@@ -230,7 +333,8 @@ void MetadataHandler::DeleteExtractedFolder(){
 
 bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int target_hardware_major_version, int target_electronics_type, int target_electronics_major_version){
 
-    QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_type_, to_flash_hardware_major_version_, to_flash_electronics_type_, to_flash_electronics_major_version_);
+    //FRED NOTE: Need to fix the get name stuff eventually, but not yet
+    QString target_module_name = pcon_->GetHardwareNameFromResources(to_flash_hardware_types_, to_flash_hardware_major_versions_, to_flash_electronics_types_, to_flash_electronics_major_versions_);
 
     //If the targets come in as -1, then we know we guessed wrong. Flash a warning
     //"Hey you're about to flash firmware meant for [get name for the module]. you sure about this?"
@@ -245,7 +349,7 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
 
         msgBox.setWindowTitle("Is Firmware Correct?");
 
-        QString text = "You are about to flash firmware meant for the module: " + target_module_name + ". Before selecting Recover "
+        QString text = "You are about to flash firmware meant for the module(s): " + target_module_name + ". Before selecting Recover "
                        "please ensure this is firmware is correct for your module. Is this firmware correct?";
 
         msgBox.setText(text);
@@ -259,11 +363,44 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
         return true;
     }
 
-    return (to_flash_electronics_type_ == target_electronics_type) &&
-            (to_flash_electronics_major_version_ == target_electronics_major_version) &&
-            (to_flash_hardware_type_ == target_hardware_type) &&
-            (to_flash_hardware_major_version_ == target_hardware_major_version);
+
+    //FRED NOTE: Now this is where we actually do the check normally. Before it was easy, just compare the numbers. Now we need to be a bit smarter. Need to iterate through
+    //and see if we can find our match
+
+    bool hardware_match = CheckIfTargetVersionInVersionLists(to_flash_hardware_types_, to_flash_hardware_major_versions_, target_hardware_type, target_hardware_major_version);
+    bool electronics_match = CheckIfTargetVersionInVersionLists(to_flash_electronics_types_, to_flash_electronics_major_versions_, target_electronics_type, target_electronics_major_version);
+    pcon_->AddToLog("Hardware Match: "+QString(hardware_match));
+    pcon_->AddToLog("Electronics Match: "+QString(electronics_match));
+
+    return (hardware_match && electronics_match);
 }
+
+//Well, I guess we need to:
+//-grab the paired type and major version
+//-See if they match our target
+//-If not, grab the next pair and repeat
+//-If we ever match, tell us
+bool MetadataHandler::CheckIfTargetVersionInVersionLists(QJsonArray types, QJsonArray major_versions, int target_type, int target_major_version){
+    //Our types and major versions lists are linked, they need to be the same size
+    if(types.size() != major_versions.size()){
+        pcon_->AddToLog("Type and Version List lengths do not match! Aborting flash!");
+        return false;
+    }
+
+    for(int version_pair_index = 0; version_pair_index <types.size(); version_pair_index++){
+        int to_flash_type = types.at(version_pair_index).toInt();
+        int to_flash_major_version = major_versions.at(version_pair_index).toInt();
+
+        if(((to_flash_type == target_type) && (to_flash_major_version == target_major_version))){
+            //Perfect match!
+            return true;
+        }
+    }
+
+    //We never matched
+    return false;
+}
+
 
 QString MetadataHandler::GetExtractPath(){
     return extract_path_;

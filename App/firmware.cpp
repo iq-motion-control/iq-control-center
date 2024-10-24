@@ -240,6 +240,8 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
     //Use that to find the one to grab the data from
     metadata_handler_.ReadMetadata();
 
+    //FRED NOTE: Temporarily removing some things to build it back up
+
     //If the wrong type of motor is connect for the selected file, don't let them move forward
     //When we have gotten to this point, we've either confirmed that our guess at the correct type of module
     //was a correct guess, or the user said we were wrong, and we'll warn them as they pick firmware
@@ -312,6 +314,7 @@ bool Firmware::CheckPathAndConnection(){
 }
 
 bool Firmware::FlashHardwareElectronicsWarning(int current_tab){
+    //FRED NOTE: The target stuff is fine, there's still only ever just one target type and version. The motor really is just one thing
     int target_hardware_type = -1;
     int target_hardware_major_version = -1;
     int target_electronics_type = -1;
@@ -339,6 +342,8 @@ bool Firmware::FlashHardwareElectronicsWarning(int current_tab){
             && (target_electronics_type != -1) && (target_electronics_major_version != -1);
 
     bool hardware_and_electronics_correct = metadata_handler_.CheckHardwareAndElectronics(target_hardware_type, target_hardware_major_version, target_electronics_type, target_electronics_major_version);
+
+    //FRED NOTE: Temporarily commented out as I build up to it
     //If the value we are meant to flash does not match the current motor throw a warning and don't allow flashing
     //A wrong value could be a mismatched Kv or incorrect motor type
     if(!(hardware_and_electronics_correct)){
