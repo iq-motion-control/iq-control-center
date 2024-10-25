@@ -135,7 +135,7 @@ QStringList MetadataHandler::MakeListOfVersionNumbers(QJsonArray types, QJsonArr
 
     //Our types and major versions lists are linked, they need to be the same size. Return early and cry about it if they aren't
     if(types.size() != major_versions.size()){
-        pcon_->AddToLog("Type and Version List lengths do not match! Aborting Creating of Version Numbers List!");
+        pcon_->AddToLog("Type and version list lengths do not match. Aborting creation of version numbers list.");
         return version_numbers;
     }
 
@@ -324,7 +324,7 @@ bool MetadataHandler::CheckHardwareAndElectronics(int target_hardware_type, int 
 bool MetadataHandler::CheckIfTargetVersionInVersionLists(QJsonArray types, QJsonArray major_versions, int target_type, int target_major_version){
     //Our types and major versions lists are linked, they need to be the same size
     if(types.size() != major_versions.size()){
-        pcon_->AddToLog("Type and Version List lengths do not match! Aborting flash!");
+        pcon_->AddToLog("Type and version list lengths do not match. Aborting checking for matching versions.");
         return false;
     }
 

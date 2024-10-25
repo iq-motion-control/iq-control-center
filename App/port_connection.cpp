@@ -583,7 +583,7 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
 QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, QJsonArray hardware_major_versions, QJsonArray electronics_types, QJsonArray electronics_major_versions){
     //Whoa, our list size are messed up, abort. We need each pair of lists to match each other in size
     if((hardware_types.size() != hardware_major_versions.size()) || (electronics_types.size() != electronics_major_versions.size())){
-        this->AddToLog("Type and Version List lengths do not match! Aborting getting hardware name!");
+        this->AddToLog("Type and version list lengths do not match. Aborting getting hardware name.");
         return "";
     }
 
