@@ -1629,8 +1629,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1882,8 +1882,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1957,8 +1957,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2709,8 +2709,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -3707,7 +3707,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:22pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Need help interacting with your Vertiq module through the IQ Control Center?&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;Please read and complete our &lt;/span&gt;&lt;a href=&quot;https://iqmotion.readthedocs.io/en/latest/tutorials/testing_with_control_center.html&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; text-decoration: underline; color:#afafaf; background-color:transparent;&quot;&gt;Getting Started with Speed Modules Using IQ Control Center&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt; Read-The-Docs tutorial. This tutorial walks you through a sample module's hardware setup, Control Center-module connection, and various module configurations available to you (including spinning your module for the first time!).&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;Please read and follow each step in our &lt;/span&gt;&lt;a href=&quot;https://iqmotion.readthedocs.io/en/latest/control_center_docs/control_center_start_guide.html&quot;&gt;&lt;span style=&quot; font-family:'Lato'; font-size:12pt; text-decoration: underline; color:#afafaf; background-color:transparent;&quot;&gt;IQ Control Center Manual&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;. This manual walks you through a sample module's hardware setup, Control Center-module connection, and various module configurations available to you (including spinning your module for the first time!).&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'.SF NS Text'; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;Still need help or support?&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Helvetica'; font-size:12pt; font-weight:600;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
