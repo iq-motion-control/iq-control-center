@@ -19,7 +19,6 @@
 */
 
 #include "tab.h"
-#include <QDebug>
 #include "mainwindow.h"
 
 Tab::Tab(QWidget *parent, uint8_t obj_idn, std::vector<std::string> client_file) :
@@ -260,6 +259,10 @@ bool Tab::SetNewBaudRate(double value){
 
 std::map<std::string,Frame*> Tab::get_frame_map(){
     return frame_map_;
+}
+
+std::map<std::string,FrameVariables*> Tab::get_frame_variables_map(){
+    return frame_variables_map_;
 }
 
 void Tab::ConnectFrameCombo(FrameCombo *fc)

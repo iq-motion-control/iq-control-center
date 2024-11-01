@@ -10,7 +10,7 @@
         "format": "f",
         "unit": "V",
         "frame_type": 2,
-        "maximum": 50.4,
+        "maximum": 60.0,
         "minimum": -0.1,
         "single_step": 0.1,
         "nan": true,

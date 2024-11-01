@@ -347,7 +347,7 @@
           0,
           1
         ]
-      },
+    },
 	  {
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
