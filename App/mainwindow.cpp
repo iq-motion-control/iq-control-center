@@ -851,10 +851,12 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
                 QStringList supportFiles = {supportFilePath, logPath};
                 QString compressPath = supportFilePath;
-                file.setPermissions(compressPath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
+                QFile compressFile(compressPath);
+                compressFile.setPermissions(compressPath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
                                                          | QFileDevice::WriteOther | QFileDevice::WriteOwner | QFileDevice::WriteGroup | QFileDevice::WriteUser
                                                          | QFileDevice::ExeOther | QFileDevice::ExeOwner | QFileDevice::ExeGroup | QFileDevice::ExeUser
                                     );
+                compressFile.close();
                 if (compressSupportFiles(compressPath, supportFiles)){
                     text.append("Your support file has been succesfully generated at: " + compressPath + ". "
                                 "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
