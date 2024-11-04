@@ -670,6 +670,14 @@ void MainWindow::on_generate_support_button_clicked(){
 
               QStringList support_files = {logPath};
               QString compressPath = logPath;
+
+              // Set required permissions for the path of the .zip file that will be created
+              QFile file(compressPath);
+              file.setPermissions(compressPath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
+                                                    | QFileDevice::WriteOther | QFileDevice::WriteOwner | QFileDevice::WriteGroup | QFileDevice::WriteUser
+                                                    | QFileDevice::ExeOther | QFileDevice::ExeOwner | QFileDevice::ExeGroup | QFileDevice::ExeUser
+                                  );
+
               if (compressSupportFiles(compressPath, support_files)){
                   logPath = logPath.replace(".txt", ".zip"); // Replace the .txt extension with .zip since the compressed file extension is .zip
                   text.append("Your log file has been successfully generated at: " + logPath + ". "
@@ -684,6 +692,7 @@ void MainWindow::on_generate_support_button_clicked(){
                     QFile::remove(tempLogFilePath);
                 }
               }
+              file.close();
               msgBox.setText(text);
               msgBox.exec();
             }
@@ -792,9 +801,8 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
             // The FileDialog box will indicate that the generated Suppport file is a .zip file
             // The user can decide where to save this .zip file
             supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
-                                                "/home/" + file_beginning + ui->label_firmware_name->text(),
+                                                "/home/" + file_beginning + ui->label_firmware_name->text() + ".zip",
                                                 tr("zip (*.zip"));
-
             // Although we are creating a .zip in the end, we need to save the support file as a .json to include it in the .zip file
             supportFilePath.replace(".zip", ".json");
             break;
@@ -821,8 +829,10 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
     QFile file(supportFilePath);
 
-    file.setPermissions(supportFilePath, QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::WriteGroup |
-                              QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::ReadGroup);
+    file.setPermissions(supportFilePath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
+                                             | QFileDevice::WriteOther | QFileDevice::WriteOwner | QFileDevice::WriteGroup | QFileDevice::WriteUser
+                                             | QFileDevice::ExeOther | QFileDevice::ExeOwner | QFileDevice::ExeGroup | QFileDevice::ExeUser
+                        );
 
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)){
         QTextStream iStream( &file );
@@ -841,6 +851,12 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
 
                 QStringList supportFiles = {supportFilePath, logPath};
                 QString compressPath = supportFilePath;
+                QFile compressFile(compressPath);
+                compressFile.setPermissions(compressPath, QFileDevice::ReadOther | QFileDevice::ReadOwner | QFileDevice::ReadGroup | QFileDevice::ReadUser
+                                                         | QFileDevice::WriteOther | QFileDevice::WriteOwner | QFileDevice::WriteGroup | QFileDevice::WriteUser
+                                                         | QFileDevice::ExeOther | QFileDevice::ExeOwner | QFileDevice::ExeGroup | QFileDevice::ExeUser
+                                    );
+                compressFile.close();
                 if (compressSupportFiles(compressPath, supportFiles)){
                     text.append("Your support file has been succesfully generated at: " + compressPath + ". "
                                 "If you are not already in contact with a member of the Vertiq support team, please email the .zip file "
