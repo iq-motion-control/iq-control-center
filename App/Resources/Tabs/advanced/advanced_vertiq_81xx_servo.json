@@ -67,19 +67,6 @@
       },
       {
         "type_idn": 69,
-        "descriptor": "Amps Bias",
-        "info": "The offset of the current sensor from 0.",
-        "sub_idn": 11,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 1,
-        "minimum": -1,
-        "single_step": 0.01,
-        "decimal": 2
-      },
-      {
-        "type_idn": 69,
         "descriptor": "Power Filter Cutoff",
         "info": "The cutoff frequency of the low pass filter on the voltage and current measurements.",
         "sub_idn": 6,
