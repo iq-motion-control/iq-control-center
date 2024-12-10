@@ -395,7 +395,7 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
         //If that is the case, then we need to know in order to deal with them properly
         //If we get a response, then store that module id in the array, and increment our discovered modules value
-        if(GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 2, 0.01f, temp_obj_id)){
+        if(GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 1, 0.025f, temp_obj_id)){
             //We got a response on 0, but the value gotten isn't 0 (the case descibed above)
             if((object_id == 0) && (temp_obj_id != 0)){
                 //We'll have to add it to our known modules as 0 in order to connect with it properly
