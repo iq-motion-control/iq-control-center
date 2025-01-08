@@ -414,7 +414,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 80,
         "descriptor": "DroneCAN Bitrate",
         "info": "The bitrate used by the CAN bus",
@@ -426,13 +426,15 @@
           "1000000",
           "500000",
           "250000",
-          "125000"
+          "125000",
+          "Auto Detect"
         ],
         "list_value": [
           1000000,
           500000,
           250000,
-          125000
+          125000,
+          0
         ]
       },
       {

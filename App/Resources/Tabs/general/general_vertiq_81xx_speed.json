@@ -116,7 +116,7 @@
                 "unit": "ID",
                 "frame_type": 2,
                 "maximum": 127,
-                "minimum": 1,
+                "minimum": 0,
                 "decimal": 0,
                 "single_step": 1
             },
