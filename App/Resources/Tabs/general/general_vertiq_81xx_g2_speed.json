@@ -598,11 +598,19 @@
                 "sub_idn": 1,
                 "format": "B",
                 "unit": "",
-                "frame_type": 2,
-                "maximum": 3,
-                "minimum": 0,
-                "decimal": 0,
-                "single_step": 1
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
             },
             {
                 "type_idn": 104,
@@ -611,11 +619,19 @@
                 "sub_idn": 2,
                 "format": "B",
                 "unit": "",
-                "frame_type": 2,
-                "maximum": 3,
-                "minimum": 0,
-                "decimal": 0,
-                "single_step": 1
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
             },
             {
                 "type_idn": 104,
@@ -624,13 +640,20 @@
                 "sub_idn": 3,
                 "format": "B",
                 "unit": "",
-                "frame_type": 2,
-                "maximum": 3,
-                "minimum": 0,
-                "decimal": 0,
-                "single_step": 1
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
             }
-
         ]
     }
 ]
