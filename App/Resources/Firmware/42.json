@@ -4,6 +4,72 @@
         "hardware_major_version": 0,
         "electronics_type": 16,
         "electronics_major_version": 1,
+        "hardware_name": "Vertiq 8117 110kv (Gen 2) Beta",
+        "styles": [
+          {
+            "style": 1,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_speed"
+          },
+          {
+            "style": 2,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_servo"
+          }
+        ]
+      },
+	  {
+        "hardware_major_version": 0,
+        "electronics_type": 16,
+        "electronics_major_version": 2,
+        "hardware_name": "Vertiq 8117 110kv (Gen 2) Beta",
+        "styles": [
+          {
+            "style": 1,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_speed"
+          },
+          {
+            "style": 2,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_servo"
+          }
+        ]
+      },
+	  {
+        "hardware_major_version": 1,
+        "electronics_type": 16,
+        "electronics_major_version": 1,
+        "hardware_name": "Vertiq 8117 110kv (Gen 2)",
+        "styles": [
+          {
+            "style": 1,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_speed"
+          },
+          {
+            "style": 2,
+            "min_major_build": 0,
+            "min_minor_build": 0,
+            "min_patch_build": 0,
+            "name": "vertiq_81xx_g2_servo"
+          }
+        ]
+      },
+	  {
+        "hardware_major_version": 1,
+        "electronics_type": 16,
+        "electronics_major_version": 2,
         "hardware_name": "Vertiq 8117 110kv (Gen 2)",
         "styles": [
           {
