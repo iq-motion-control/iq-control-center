@@ -21,6 +21,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
+#include "QDebug"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -466,6 +467,17 @@ void MainWindow::write_version_info_to_file(QJsonArray * json_array){
     version_information.insert("Hardware Name", ui->label_hardware_name->text());
     version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
     version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
+
+    int hardwareType = iv.pcon->GetHardwareType();
+    int electronicsType = iv.pcon->GetElectronicsType();
+    int firmwareType = iv.pcon->GetFirmwareStyle();
+
+    QString sku = "M" + QString::number(hardwareType) + "-E" + QString::number(electronicsType) + "-F" + QString::number(firmwareType);
+    qDebug() << "hardwareType: " << hardwareType;
+    qDebug() << "electronicsType: " << electronicsType;
+    qDebug() << "firmwareType: " << firmwareType;
+
+    version_information.insert("SKU:", sku);
 
     build_info.insert("Build information", version_information);
 
