@@ -249,10 +249,34 @@ class PortConnection : public QObject {
   void SetHardwareType(const int &setter) { hardware_type_ = setter; }
 
   /**
+   * @brief GetHardwareMajorVersion
+   * @return int hardware major version
+   */
+  int GetHardwareMajorVersion() { return hardware_major_version_; }
+
+  /**
+   * @brief SetHardwareMajorVersion
+   * @param setter
+   */
+  void SetHardwareMajorVersion(const int &setter) { hardware_major_version_ = setter; }
+
+  /**
    * @brief GetElectronicsType
-   * @return
+   * @return int electronics type
    */
   int GetElectronicsType() { return electronics_type_; }
+
+  /**
+   * @brief GetElectronicsMajorVersion
+   * @return int electronics major version
+   */
+  int GetElectronicsMajorVersion() { return electronics_major_version_; }
+
+  /**
+   * @brief SetElectronicsMajorVersion
+   * @param setter
+   */
+  void SetElectronicsMajorVersion(const int &setter) { electronics_major_version_ = setter; }
 
   /**
    * @brief SaveNewBootloaderVersion Sends a command to the motor to save the bootloader version being flashed

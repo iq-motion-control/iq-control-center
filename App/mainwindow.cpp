@@ -21,7 +21,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
-#include "QDebug"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -468,15 +467,17 @@ void MainWindow::write_version_info_to_file(QJsonArray * json_array){
     version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
     version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
 
+    // Get the hardware, electronics, and firmware types from the PortConnection object
     int hardwareType = iv.pcon->GetHardwareType();
+    int hardwareMajorVersion = iv.pcon->GetHardwareMajorVersion();
     int electronicsType = iv.pcon->GetElectronicsType();
+    int electronicsMajorVersion = iv.pcon->GetElectronicsMajorVersion();
     int firmwareType = iv.pcon->GetFirmwareStyle();
 
-    QString sku = "M" + QString::number(hardwareType) + "-E" + QString::number(electronicsType) + "-F" + QString::number(firmwareType);
-    qDebug() << "hardwareType: " << hardwareType;
-    qDebug() << "electronicsType: " << electronicsType;
-    qDebug() << "firmwareType: " << firmwareType;
-
+    // Generate SKU based on hardware, electronics, and firmware types and major versions
+    // ex: M16.2-E16.2-F1
+    QString sku = "M" + QString::number(hardwareType) + "." + QString::number(hardwareMajorVersion) + "-E" + QString::number(electronicsType) + "." + QString::number(electronicsMajorVersion) + "-F" + QString::number(firmwareType);
+    // Insert SKU into Build information section of support file
     version_information.insert("SKU:", sku);
 
     build_info.insert("Build information", version_information);
