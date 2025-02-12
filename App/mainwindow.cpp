@@ -467,7 +467,7 @@ void MainWindow::write_version_info_to_file(QJsonArray * json_array){
     version_information.insert("Bootloader Version", ui->label_bootloader_value->text());
     version_information.insert("Upgrader Version", ui->label_upgrader_value->text());
 
-    // Get the hardware, electronics, and firmware types from the PortConnection object
+    // Get the hardware, electronics, and firmware types and major versions from the PortConnection object
     int hardwareType = iv.pcon->GetHardwareType();
     int hardwareMajorVersion = iv.pcon->GetHardwareMajorVersion();
     int electronicsType = iv.pcon->GetElectronicsType();
