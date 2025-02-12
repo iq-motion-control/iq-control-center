@@ -239,7 +239,7 @@ class PortConnection : public QObject {
 
   /**
    * @brief GetHardwareType
-   * @return
+   * @return int hardware type
    */
   int GetHardwareType() { return hardware_type_; }
   /**
