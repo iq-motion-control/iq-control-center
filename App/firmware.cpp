@@ -260,10 +260,28 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     QFileInfo info(firmware_bin_path_);
     buttonInUse->setText(info.fileName());
 
-    //Pop up a warning window about dangers of flashing a binary
     QMessageBox msgBox;
     msgBox.setWindowTitle("WARNING!");
     msgBox.setIcon(QMessageBox::Warning);
+
+    // Check if firmware_bin_path_ is 'app.bin', 'boot.bin', or 'upgrade.bin'. If so, prevent user from flashing this file.
+    // Otherwise display the warning box and let the user continue flashing at their own risk.
+    QStringList invalidBinaryList = { "app.bin", "boot.bin", "upgrade.bin" };
+    for (const QString& invalidBinary: invalidBinaryList) {
+        if (firmware_bin_path_.contains(invalidBinary, Qt::CaseSensitive)) {
+            QString warningMessage = "Flashing " + firmware_bin_path_ + " will damage your motor. Please choose another file or contact support@vertiq.co for any issues with your motor.";
+            msgBox.setText(warningMessage);
+            msgBox.addButton(QMessageBox::Ok);
+            if(msgBox.exec() == QMessageBox::Ok){
+                buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
+                firmware_bin_path_ = "";
+                iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+                return;
+            }
+            return;
+        }
+    }
+    //Pop up a warning window about dangers of flashing a binary
     msgBox.setText(
         "As flashing raw binaries can be dangerous, we strongly advise using a provided archive if available. If you flash firmware "
         "that is not meant for your motor (wrong section (boot, application, upgrade), hardware, electronics, etc.), "
@@ -288,7 +306,6 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
 
     iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
-
 }
 
 bool Firmware::CheckPathAndConnection(){
