@@ -352,7 +352,7 @@
       {
         "type_idn": 60,
         "descriptor": "Report Telemetry as Speed",
-        "info": "Updates all telemetry sources to report the modules speed rather than velocity",
+        "info": "Updates all telemetry sources to report the module's speed rather than velocity.",
         "sub_idn": 11,
         "format": "B",
         "unit": "enum",
