@@ -359,6 +359,23 @@
         "decimal": 2,
         "single_step": 0.01
       },
+      {
+        "type_idn": 60,
+        "descriptor": "Report Telemetry as Speed",
+        "info": "Updates all telemetry sources to report the module's speed rather than velocity.",
+        "sub_idn": 11,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Disabled",
+          "Enabled"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
 	  {
         "type_idn": 86,
         "descriptor": "Arming State",
