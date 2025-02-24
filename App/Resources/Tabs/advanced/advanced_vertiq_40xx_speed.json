@@ -332,6 +332,23 @@
         ]
       },
 	  {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Telemetry Style",
+        "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
+        "sub_idn": 13,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Use New-Style Telemetry",
+          "Use Old-Style Telemetry"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	  {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Percentage",
         "info": "Determines the throtlte percentage to treat as the zero spin throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
