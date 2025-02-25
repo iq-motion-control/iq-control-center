@@ -116,7 +116,7 @@
                 "unit": "ID",
                 "frame_type": 2,
                 "maximum": 127,
-                "minimum": 1,
+                "minimum": 0,
                 "decimal": 0,
                 "single_step": 1
             },
@@ -438,6 +438,69 @@
                     14,
                     15,
                     255
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "DroneCAN Throttle Priority",
+                "info": "DroneCAN's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 1,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "Hobby Throttle Priority",
+                "info": "Hobby protocols' priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "IQUART Throttle Priority",
+                "info": "IQUART's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 3,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
                 ]
             }
         ]

@@ -299,6 +299,23 @@
       },
       {
         "type_idn": 86,
+        "descriptor": "Always Armed",
+        "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
+        "sub_idn": 1,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Normal Arming",
+          "Always Armed"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+      {
+        "type_idn": 86,
         "descriptor": "Manual Arming Throttle Source",
         "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
         "sub_idn": 11,
@@ -319,23 +336,6 @@
         ]
       },
       {
-        "type_idn": 86,
-        "descriptor": "Always Armed",
-        "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
-        "sub_idn": 1,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Normal Arming",
-          "Always Armed"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-      },
-      {
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -346,6 +346,40 @@
         "list_name": [
           "Normal Arming",
           "Bypass Arming"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "Arming by DroneCAN ArmingStatus",
+        "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
+        "sub_idn": 12,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Disabled",
+          "Enabled"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Telemetry Style",
+        "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
+        "sub_idn": 13,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Use New-Style Telemetry",
+          "Use Old-Style Telemetry"
         ],
         "list_value": [
           0,

@@ -299,27 +299,6 @@
       },
 	  {
         "type_idn": 86,
-        "descriptor": "Manual Arming Throttle Source",
-        "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
-        "sub_idn": 11,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Unknown",
-          "Hobby",
-		  "DroneCAN",
-		  "IQUART"
-        ],
-        "list_value": [
-          0,
-          1,
-		  2,
-		  3
-        ]
-      },
-	  {
-        "type_idn": 86,
         "descriptor": "Always Armed",
         "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
         "sub_idn": 1,
@@ -363,6 +342,23 @@
         "list_name": [
           "Normal Arming",
           "Bypass Arming"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Telemetry Style",
+        "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
+        "sub_idn": 13,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Use New-Style Telemetry",
+          "Use Old-Style Telemetry"
         ],
         "list_value": [
           0,
@@ -431,7 +427,28 @@
           1
         ]
       },
-	  {
+      {
+        "type_idn": 86,
+        "descriptor": "Manual Arming Throttle Source",
+        "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
+        "sub_idn": 11,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Unknown",
+          "Hobby",
+          "DroneCAN",
+          "IQUART"
+        ],
+        "list_value": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      {
         "type_idn": 80,
         "descriptor": "DroneCAN Bitrate",
         "info": "The bitrate used by the CAN bus",
