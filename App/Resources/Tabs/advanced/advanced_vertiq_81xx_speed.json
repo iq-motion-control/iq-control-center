@@ -351,8 +351,8 @@
           0,
           1
         ]
-    },
-	  {
+      },
+    {
         "type_idn": 80,
         "descriptor": "Arming by DroneCAN ArmingStatus",
         "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
