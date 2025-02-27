@@ -143,30 +143,24 @@ void FrameCombo::SaveValue() {
 
 void FrameCombo::GetSavedValue() {
   if (iv.pcon->GetConnectionState() == 1) {
-    try {
-      if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
-                         saved_value_)){
-        std::string error_start = "";
-        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
-        iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
-        throw QString(error_string.c_str()) + " , please try again";
-      }
-
-      int key = 0;
-      for (auto &i : index_value_) {
-        if (i.second == saved_value_) {
-          key = i.first;
-          break;  // to stop searching
-        }
-      }
-      int combo_box_index = key;
-      combo_box_->setCurrentIndex(combo_box_index);
-
-      iv.pcon->AddToLog(QString(client_entry_.first.c_str()) + " value index gotten as: " + QString::number(combo_box_index));
-
-    } catch (const QString &e) {
-      iv.label_message->setText(e);
+    if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 5, 0.05f,
+                       saved_value_)){
+      std::string error_start = "";
+      std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
+      iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
     }
+
+    int key = 0;
+    for (auto &i : index_value_) {
+      if (i.second == saved_value_) {
+        key = i.first;
+        break;  // to stop searching
+      }
+    }
+    int combo_box_index = key;
+    combo_box_->setCurrentIndex(combo_box_index);
+
+    iv.pcon->AddToLog(QString(client_entry_.first.c_str()) + " value index gotten as: " + QString::number(combo_box_index));
   } else {
     iv.pcon->AddToLog("No Motor Connected. Could not get " + QString((client_entry_.first).c_str()));
     QString error_message = "No Motor Connected, Please Connect Motor";

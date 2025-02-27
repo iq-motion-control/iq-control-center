@@ -112,20 +112,15 @@ void FrameReadOnly::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
 
 void FrameReadOnly::GetSavedReadOnlyValue() {
   if (iv.pcon->GetConnectionState() == 1) {
-    try {
-      if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f, saved_value_)){
-          std::string error_start = "";
-          std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
-          iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
-          throw QString(error_string.c_str()) + " , please try again";
-      }
-      if (has_nan_ && std::isnan(saved_value_)) {
-        saved_value_ = nan_value_;
-      }
-      spin_box_->setValue(saved_value_);
-    } catch (const QString &e) {
-      iv.label_message->setText(e);
+    if (!GetEntryReply(*iv.pcon->GetQSerialInterface(), client_, client_entry_.first, 2, 0.05f, saved_value_)){
+        std::string error_start = "";
+        std::string error_string =   "COULDN'T GET SAVED VALUE: " + error_start + (client_entry_.first).c_str();
+        iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
     }
+    if (has_nan_ && std::isnan(saved_value_)) {
+      saved_value_ = nan_value_;
+    }
+    spin_box_->setValue(saved_value_);
   } else {
     iv.pcon->AddToLog("No Motor Connected. Could not get " + QString((client_entry_.first).c_str()));
     QString error_message = "NO MOTOR CONNECTED, PLEASE CONNECT MOTOR";
