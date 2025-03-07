@@ -109,7 +109,14 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
-  //We need to properly make them into matched lists for backwards and forwards compatibility
+  /**
+   * @brief Modifies the given type and major version arrays to make sure they are proper matched lists of the same length, to account for backwards compatibility with old metadata files
+   * @param hardware_types The hardware types of the modules to get the hardware names for.
+   * @param hardware_major_versions The hardware major versions of the modules to get the hardware names for.
+   * @param electronics_types The electronics types of the modules to get the hardware names for.
+   * @param electronics_major_versions The electronics major versions of the modules to get the hardware name for.
+   * @return None
+   */
   void SanitizeHardwareAndElectronicsLists(QJsonArray &hardware_types, QJsonArray &hardware_major_versions, QJsonArray &electronics_types, QJsonArray &electronics_major_versions);
 
   /**
