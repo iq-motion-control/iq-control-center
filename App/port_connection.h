@@ -109,6 +109,9 @@ class PortConnection : public QObject {
 
   ~PortConnection() {}
 
+  //We need to properly make them into matched lists for backwards and forwards compatibility
+  void SanitizeHardwareAndElectronicsLists(QJsonArray &hardware_types, QJsonArray &hardware_major_versions, QJsonArray &electronics_types, QJsonArray &electronics_major_versions);
+
   /**
    * @brief GetHardwareNameFromResources given the hardware type and version and electronics type and version, go into our resource files and grab out the module name
    * @param hardware_type The hardware type of the module to get the hardware name for

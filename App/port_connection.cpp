@@ -577,6 +577,37 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
     return "";
 }
 
+void PortConnection::SanitizeHardwareAndElectronicsLists(QJsonArray &hardware_types, QJsonArray &hardware_major_versions, QJsonArray &electronics_types, QJsonArray &electronics_major_versions){
+    //Make sure they are at least coherent within each other
+    qDebug("Sanitizing");
+    if(hardware_types.size() == hardware_major_versions.size() && electronics_types.size() == electronics_major_versions.size()){
+        //These lists aren't the same size, so they can't be matched up properly
+        if(electronics_types.size() != hardware_types.size()){
+            //Old style metadata can have just one value, so if that is the case we need to stretch it out to make it a proper matched list set
+            if(electronics_types.size() == 1){
+                qDebug("Expanding Electronics");
+
+                //Duplicate our one entry until we are long enough
+                while(electronics_types.size() < hardware_types.size()){
+                 electronics_types.append(electronics_types[0]);
+                 electronics_major_versions.append(electronics_major_versions[0]);
+                }
+            }else if(hardware_types.size() == 1){
+                //Duplicate our one entry until we are long enough
+                while(hardware_types.size() < electronics_types.size()){
+                 hardware_types.append(hardware_types[0]);
+                 hardware_major_versions.append(hardware_major_versions[0]);
+                }
+            }else{
+                //Ok, I don't know how to sanitize these lists if they are bigger than a size of 1, I better complain
+                QString error_str("Hardware and Electronics Lists Do Not Match And Cannot Be Sanitized");
+                AddToLog(error_str);
+                throw(error_str);
+            }
+        }
+    }
+}
+
 //This overloaded version will get all the hardware names that match our arrays, and give you them all globbed together
 //into a nice string. Useful for when we have multiple possible acceptable type and major version combinations, lets us
 //report all of them back easily
@@ -590,19 +621,34 @@ QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, 
     //Go through all the combos, grab whatever names come out, save them in a list, glob them up into a nice string to show all the possibilities.
     QStringList list_of_names;
     QString empty_list = list_of_names.join(",");
-    for(int hardware_pair_index = 0; hardware_pair_index < hardware_types.size(); hardware_pair_index++){
-        int current_hardware_type = hardware_types.at(hardware_pair_index).toInt();
-        int current_hardware_major_version = hardware_major_versions.at(hardware_pair_index).toInt();
+    qDebug("In the HW Name");
 
-        for(int electronics_pair_index = 0; electronics_pair_index < electronics_types.size(); electronics_pair_index++){
-            int current_electronics_type = electronics_types.at(electronics_pair_index).toInt();
-            int current_electronics_major_version = electronics_major_versions.at(electronics_pair_index).toInt();
+    //Make sure we have niced matched lists, helps with backwards compatibility with older metadatas in zips
+    SanitizeHardwareAndElectronicsLists(hardware_types, hardware_major_versions, electronics_types, electronics_major_versions);
 
-            //We can use the normal integer version of this same function to get the strings, we just need to run through all of the possibilities and save them up
-            QString current_name = GetHardwareNameFromResources(current_hardware_type, current_hardware_major_version, current_electronics_type, current_electronics_major_version);
-            if(current_name != ""){
-                list_of_names.append(current_name);
-            }
+    //FRED DEBUG: Just printing out my lists here, this is temporary
+    for(int i = 0; i < hardware_types.size(); i++){
+        qDebug("HW Type List: %i",hardware_types[i].toInt());
+        qDebug("HW Major Version List: %i",hardware_major_versions[i].toInt());
+    }
+
+    for(int i = 0; i < electronics_types.size(); i++){
+        qDebug("E Type List: %i",electronics_types[i].toInt());
+        qDebug("E Major Version List: %i",electronics_major_versions[i].toInt());
+    }
+
+    //Our sanitization has ensured we now have matched lists to work with, so we can run straight through the lists
+    for(int matched_list_index = 0; matched_list_index < hardware_types.size(); matched_list_index++){
+        int current_hardware_type = hardware_types.at(matched_list_index).toInt();
+        int current_hardware_major_version = hardware_major_versions.at(matched_list_index).toInt();
+
+        int current_electronics_type = electronics_types.at(matched_list_index).toInt();
+        int current_electronics_major_version = electronics_major_versions.at(matched_list_index).toInt();
+
+        //We can use the normal integer version of this same function to get the strings, we just need to run through all of the possibilities and save them up
+        QString current_name = GetHardwareNameFromResources(current_hardware_type, current_hardware_major_version, current_electronics_type, current_electronics_major_version);
+        if(current_name != ""){
+            list_of_names.append(current_name);
         }
     }
 
