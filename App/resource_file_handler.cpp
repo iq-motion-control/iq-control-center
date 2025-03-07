@@ -121,11 +121,6 @@ Json::Value  ResourceFileHandler::ExtractModuleConfigurationFromNewStyleFile(Jso
     //We need to search through the list of possible module configurations and find one that matches our full module definition
     Json::Value possible_module_configurations = json_file["possible_module_configurations"];
     uint8_t number_of_possible_module_configurations = possible_module_configurations.size();
-    qDebug("Hi");
-    qDebug("Number of Possible Configs: %i", number_of_possible_module_configurations);
-    qDebug("Hardware Major: %i", hardware_major_version);
-    qDebug("Electornics Type: %i", electronics_type);
-    qDebug("Electronics Major: %i", electronics_major_version);
 
     for(uint8_t configuration = 0; configuration < number_of_possible_module_configurations; configuration++){
         //Extract all the key info from each configuration, check if it matches

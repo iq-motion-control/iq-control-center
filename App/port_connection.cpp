@@ -579,14 +579,11 @@ QString PortConnection::GetHardwareNameFromResources(int hardware_type, int hard
 
 void PortConnection::SanitizeHardwareAndElectronicsLists(QJsonArray &hardware_types, QJsonArray &hardware_major_versions, QJsonArray &electronics_types, QJsonArray &electronics_major_versions){
     //Make sure they are at least coherent within each other
-    qDebug("Sanitizing");
     if(hardware_types.size() == hardware_major_versions.size() && electronics_types.size() == electronics_major_versions.size()){
         //These lists aren't the same size, so they can't be matched up properly
         if(electronics_types.size() != hardware_types.size()){
             //Old style metadata can have just one value, so if that is the case we need to stretch it out to make it a proper matched list set
             if(electronics_types.size() == 1){
-                qDebug("Expanding Electronics");
-
                 //Duplicate our one entry until we are long enough
                 while(electronics_types.size() < hardware_types.size()){
                  electronics_types.append(electronics_types[0]);
@@ -621,21 +618,9 @@ QString PortConnection::GetHardwareNameFromResources(QJsonArray hardware_types, 
     //Go through all the combos, grab whatever names come out, save them in a list, glob them up into a nice string to show all the possibilities.
     QStringList list_of_names;
     QString empty_list = list_of_names.join(",");
-    qDebug("In the HW Name");
 
     //Make sure we have niced matched lists, helps with backwards compatibility with older metadatas in zips
     SanitizeHardwareAndElectronicsLists(hardware_types, hardware_major_versions, electronics_types, electronics_major_versions);
-
-    //FRED DEBUG: Just printing out my lists here, this is temporary
-    for(int i = 0; i < hardware_types.size(); i++){
-        qDebug("HW Type List: %i",hardware_types[i].toInt());
-        qDebug("HW Major Version List: %i",hardware_major_versions[i].toInt());
-    }
-
-    for(int i = 0; i < electronics_types.size(); i++){
-        qDebug("E Type List: %i",electronics_types[i].toInt());
-        qDebug("E Major Version List: %i",electronics_major_versions[i].toInt());
-    }
 
     //Our sanitization has ensured we now have matched lists to work with, so we can run straight through the lists
     for(int matched_list_index = 0; matched_list_index < hardware_types.size(); matched_list_index++){
