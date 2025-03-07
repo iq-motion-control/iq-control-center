@@ -110,6 +110,16 @@ class PortConnection : public QObject {
   ~PortConnection() {}
 
   /**
+   * @brief Modifies the given type and major version arrays to make sure they are proper matched lists of the same length, to account for backwards compatibility with old metadata files
+   * @param hardware_types The hardware types of the modules to get the hardware names for.
+   * @param hardware_major_versions The hardware major versions of the modules to get the hardware names for.
+   * @param electronics_types The electronics types of the modules to get the hardware names for.
+   * @param electronics_major_versions The electronics major versions of the modules to get the hardware name for.
+   * @return None
+   */
+  void SanitizeHardwareAndElectronicsLists(QJsonArray &hardware_types, QJsonArray &hardware_major_versions, QJsonArray &electronics_types, QJsonArray &electronics_major_versions);
+
+  /**
    * @brief GetHardwareNameFromResources given the hardware type and version and electronics type and version, go into our resource files and grab out the module name
    * @param hardware_type The hardware type of the module to get the hardware name for
    * @param hardware_major_version The hardware major version of the module to get the hardware name for
