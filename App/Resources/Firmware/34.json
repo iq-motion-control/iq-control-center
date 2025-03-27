@@ -19,6 +19,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_40xx_servo"
+        },
+		{
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_hyperdrive_speed"
         }
       ]
     },
@@ -41,6 +48,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_40xx_servo"
+        },
+		{
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_hyperdrive_speed"
         }
       ]
     },
@@ -63,6 +77,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_40xx_servo"
+        },
+		{
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_40xx_hyperdrive_speed"
         }
       ]
     },
