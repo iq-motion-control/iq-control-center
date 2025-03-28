@@ -163,7 +163,7 @@
       {
         "type_idn": 102,
         "descriptor": "Motor Current Slew Limit Enable",
-        "info": "Enables the motor current slew limit, which limits how quickly the motor current can change",
+        "info": "Enables the motor current slew limit which limits how quickly the motor current can change",
         "sub_idn": 17,
         "format": "B",
         "unit": "enum",
@@ -180,7 +180,7 @@
       {
         "type_idn": 102,
         "descriptor": "Motor Current Slew Limit",
-        "info": "Sets the motor current slew limit of the motor in A/s. Only has an effect of the slew limit is enabled.",
+        "info": "Sets the motor current slew limit of the motor in A/s. Only has an effect if the slew limit is enabled.",
         "sub_idn": 16,
         "format": "f",
         "unit": "A/s",

@@ -36,7 +36,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 4100,
+        "maximum": 1600,
         "minimum": 0,
         "single_step": 1
       },
@@ -48,7 +48,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 4200,
+        "maximum": 1700,
         "minimum": 0,
         "single_step": 1
       },
@@ -485,7 +485,7 @@
       {
           "type_idn": 102,
           "descriptor": "Motoring Supply Current Limit Enable",
-          "info": "Enables the motoring supply current limit feature, which will attempt to limit the maximum current draw from the supply when motoring",
+          "info": "Enables the motoring supply current limit feature which will attempt to limit the maximum current draw from the supply when motoring",
           "sub_idn": 7,
           "format": "B",
           "unit": "enum",
@@ -502,7 +502,7 @@
       {
           "type_idn": 102,
           "descriptor": "Regenerating Supply Current Limit Enable",
-          "info": "Enables the regenerating supply current limit feature, which will attempt to limit the maximum current sent to the supply when regenerating",
+          "info": "Enables the regenerating supply current limit feature which will attempt to limit the maximum current sent to the supply when regenerating",
           "sub_idn": 10,
           "format": "B",
           "unit": "enum",
