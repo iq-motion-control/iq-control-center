@@ -177,7 +177,7 @@
           0
         ]
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Motor Current Slew Limit",
         "info": "Sets the motor current slew limit of the motor in A/s. Only has an effect of the slew limit is enabled.",

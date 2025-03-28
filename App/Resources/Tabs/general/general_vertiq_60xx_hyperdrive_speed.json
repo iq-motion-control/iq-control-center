@@ -654,7 +654,7 @@
                     3
                 ]
             },
-			{
+            {
                 "type_idn": 105,
                 "descriptor": "Field Weakening",
                 "info": "Determines whether the motor will attempt to field weaken or if it will limit its drive voltage to the supply voltage.",

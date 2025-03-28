@@ -482,41 +482,41 @@
           "decimal": 2,
           "single_step": 0.1
       },
-	  {
-		  "type_idn": 102,
-		  "descriptor": "Motoring Supply Current Limit Enable",
-		  "info": "Enables the motoring supply current limit feature, which will attempt to limit the maximum current draw from the supply when motoring",
-		  "sub_idn": 7,
-		  "format": "B",
-		  "unit": "enum",
-		  "frame_type": 1,
-		  "list_name": [
-			"Disabled",
-			"Enabled"
-		  ],
-		  "list_value": [
-			0,
-			1
-		  ]
-	  },
-	  {
-		  "type_idn": 102,
-		  "descriptor": "Regenerating Supply Current Limit Enable",
-		  "info": "Enables the regenerating supply current limit feature, which will attempt to limit the maximum current sent to the supply when regenerating",
-		  "sub_idn": 10,
-		  "format": "B",
-		  "unit": "enum",
-		  "frame_type": 1,
-		  "list_name": [
-			"Disabled",
-			"Enabled"
-		  ],
-		  "list_value": [
-			0,
-			1
-		  ]
-	  },
-	  {
+      {
+          "type_idn": 102,
+          "descriptor": "Motoring Supply Current Limit Enable",
+          "info": "Enables the motoring supply current limit feature, which will attempt to limit the maximum current draw from the supply when motoring",
+          "sub_idn": 7,
+          "format": "B",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "Disabled",
+            "Enabled"
+          ],
+          "list_value": [
+            0,
+            1
+          ]
+      },
+      {
+          "type_idn": 102,
+          "descriptor": "Regenerating Supply Current Limit Enable",
+          "info": "Enables the regenerating supply current limit feature, which will attempt to limit the maximum current sent to the supply when regenerating",
+          "sub_idn": 10,
+          "format": "B",
+          "unit": "enum",
+          "frame_type": 1,
+          "list_name": [
+            "Disabled",
+            "Enabled"
+          ],
+          "list_value": [
+            0,
+            1
+          ]
+      },
+      {
         "type_idn": 102,
         "descriptor": "Motoring Supply Current Limit",
         "info": "The supply current to limit the supply current draw to when using the motoring supply current limit",
@@ -529,7 +529,7 @@
         "single_step": 0.1,
         "decimal": 1
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Motoring Supply Current Limit Kp",
         "info": "Kp for the closed loop adjustment available when using the motoring supply current limiter",
@@ -542,7 +542,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Motoring Supply Current Limit Ki",
         "info": "Ki for the closed loop adjustment available when using the motoring supply current limiter",
@@ -555,7 +555,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Motoring Supply Current Limit Kd",
         "info": "Kd for the closed loop adjustment available when using the motoring supply current limiter",
@@ -568,7 +568,7 @@
         "decimal": 3,
         "single_step": 0.001
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Motoring Supply Current Limit Max Adjust",
         "info": "The maximum amount of closed loop adjustment that the motoring supply current limiter can add to its feed-forward limit.",
@@ -581,7 +581,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Regnerating Supply Current Limit",
         "info": "The supply current to limit the supply current regenerated when using the regenerating supply current limit",
@@ -594,7 +594,7 @@
         "single_step": 0.1,
         "decimal": 1
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Regenerating Supply Current Limit Kp",
         "info": "Kp for the closed loop adjustment available when using the regenerating supply current limiter",
@@ -607,7 +607,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Regenerating Supply Current Limit Ki",
         "info": "Ki for the closed loop adjustment available when using the regenerating supply current limiter",
@@ -620,7 +620,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Regenerating Supply Current Limit Kd",
         "info": "Kd for the closed loop adjustment available when using the regenerating supply current limiter",
@@ -633,7 +633,7 @@
         "decimal": 3,
         "single_step": 0.001
       },
-	  {
+      {
         "type_idn": 102,
         "descriptor": "Regenerating Supply Current Limit Max Adjust",
         "info": "The maximum amount of closed loop adjustment that the regenerating supply current limiter can add to its feed-forward limit.",
