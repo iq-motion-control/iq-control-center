@@ -1,6 +1,6 @@
 [
     {
-        "descriptor": "general_vertiq_6008_speed",
+        "descriptor": "general_vertiq_60xx_hyperdrive_speed",
         "Entries": [
             {
                 "type_idn": 60,
