@@ -41,8 +41,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
+    // Load default resource files that are packaged with the application
     loadDefaultResourceFiles();
-    resource_file_handler = new ResourceFileHandler();
+    // Create a ResourceFileHandler object and pass in the path to the SessionResourceFiles directory in AppData
+    resource_file_handler = new ResourceFileHandler(appDataSessionResourcesPath);
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
@@ -167,15 +169,15 @@ void MainWindow::updater() {
 }
 
 void MainWindow::importResourcePack() {
-    ResourcePack * resourcePack = new ResourcePack();
+    ResourcePack * resourcePack = new ResourcePack(appDataSessionResourcesPath, appDataImportedResourcesPath);
 //    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
-//    QFileDialog dialog;
-//    dialog.setFileMode(QFileDialog::ExistingFile);
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::ExistingFile);
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
-    QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
+    QString zipFileToImport = dialog.getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
     if(zipFileToImport != NULL){
       resourcePack->importResourcePackFromPath(zipFileToImport);
@@ -187,11 +189,9 @@ void MainWindow::importResourcePack() {
 
 void MainWindow::loadDefaultResourceFiles(){
     qDebug() << "In loadDefaultResourceFiles";
-    QString currentAppPath = QCoreApplication::applicationDirPath();
-    QString appDataResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
-    QDir appDataResourcesDirectory(appDataResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
 
-    QString mainResourcesDirectory(currentAppPath + "/Resources/");
     // Create a QDir object that represents the main Resources directory of the Control Center app
     // This object iterates through each directory and file, including subdirectories
     QDirIterator dirIterator(mainResourcesDirectory,
@@ -209,7 +209,7 @@ void MainWindow::loadDefaultResourceFiles(){
         // Get the name of the file/directory minus everything before the "Resources" directory
         QString fileName = sourcePath.mid(mainResourcesDirectory.length());
         // Construct the destination path where the file/directory is created in AppData
-        QString destinationPath = appDataResourcesPath + fileName;
+        QString destinationPath = appDataSessionResourcesPath + fileName;
 
         // Create the directory in AppData if the file is a directory
         if (fileInfo.isDir()){
