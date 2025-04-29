@@ -2,19 +2,18 @@
 #include "resource_pack.h"
 #include "QDebug"
 
-ResourcePack::ResourcePack(){
-  // Get current application path to use for importing Resource Pack.
-  currentAppPath = QCoreApplication::applicationDirPath();
+ResourcePack::ResourcePack(QString appDataSessionResourcesPath, QString appDataImportedResourcesPath){
+  // Set the SessionResourceFiles path in AppData provided by mainwindow
+  this->appDataSessionResourcesPath = appDataSessionResourcesPath;
+  // Set the ImportedResourceFiles path in AppData provided by mainwindow
+  this->appDataImportedResourcesPath = appDataImportedResourcesPath;
 
-  // Get the AppData folder to store imported resource files
-  const QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-
-  appDataImportedResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/ImportedResourceFiles/";
-  appDataImportedResourcesDirectory = QDir(appDataImportedResourcesPath);
-
-//   Make the Resources directory in AppData if it doesn't already exist
+  // Create the QDir object for the ImportedResourceFiles directory in AppData
+  appDataImportedResourcesDirectory = QDir(this->appDataImportedResourcesPath);
+  // Make the ImportedResourceFiles directory in AppData if it doesn't already exist
   if (!appDataImportedResourcesDirectory.exists()){
-    qDebug() << "appDataResourcesDirectory does not exist. Creating now: " << appDataImportedResourcesPath;
+    qDebug() << "ImportedResourcesFiles does not exist in AppData. Creating now: " << this->appDataImportedResourcesPath;
+    iv.pcon->AddToLog("ImportedResourcFiles does not exist in AppData. Creating now: " + this->appDataImportedResourcesPath);
     appDataImportedResourcesDirectory.mkpath(".");
   }
 }
@@ -38,8 +37,6 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       QStringList extractedResourceFiles = extractTool.extractDir(zipFilePath, appDataImportedResourcesPath);
 
       // Copy extracted files into SessionResourceFiles
-      QString appDataSessionResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
-//      QDir appDataSessionResourcesDirectory(appDataSessionResourcesPath);
       if(!extractedResourceFiles.isEmpty()){
         // Use qAsConst() here to apply const to QStringList because QtCreator complains
         for(const QString& resourceFile : qAsConst(extractedResourceFiles)) {

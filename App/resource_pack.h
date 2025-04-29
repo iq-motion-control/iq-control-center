@@ -48,7 +48,7 @@ class ResourcePack : public QObject{
     Q_OBJECT
 
   public:
-    ResourcePack();
+    ResourcePack(QString appDataSessionResourcesPath, QString appDataImportedResourcesPath);
    ~ResourcePack();
     /**
      * @brief importResourcePackFromPath Extracts resource files from the .zip file specified by the zipFilePath parameter and copies them to the application's Resources directory
@@ -68,7 +68,11 @@ class ResourcePack : public QObject{
      */
     QString appDataPath;
     /**
-     * @brief appDataResourcesPath The AppData/Resources path of the Control Center application. This is used to store imported resource files.
+     * @brief appDataSessionResourcesPath The SessionResourceFiles path in AppData. This is passed in by mainwindow.
+     */
+    QString appDataSessionResourcesPath;
+    /**
+     * @brief appDataImportedResourcesPath The AppData/Resources path in AppData. This is passed in by mainwindow.
      */
     QString appDataImportedResourcesPath;
     /**
