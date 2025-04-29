@@ -27,7 +27,7 @@ class ResourceFileHandler : public QObject {
   //The index in the firmware_styles list that holds the style we want to load for
   uint32_t firmware_index_;
 
-  // The path of the SessionRe
+  // The path of the SessionResourceFiles directory in AppData. This is provided by mainwindow.
   QString appDataSessionResourcesPath;
 
   /**
