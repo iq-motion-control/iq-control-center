@@ -171,7 +171,6 @@ void MainWindow::updater() {
 
 void MainWindow::importResourcePack() {
     ResourcePack * resourcePack = new ResourcePack(appDataSessionResourcesPath, appDataImportedResourcesPath);
-//    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
 
