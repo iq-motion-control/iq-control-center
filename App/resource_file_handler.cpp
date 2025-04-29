@@ -1,6 +1,10 @@
 #include "resource_file_handler.h"
+#include <QStandardPaths>
+#include <QDebug>
 
-ResourceFileHandler::ResourceFileHandler(){
+ResourceFileHandler::ResourceFileHandler(QString appDataSessionResourcesPath){
+    // Sets the appDataSessionResourcesPath with provided path from mainwindow
+    this->appDataSessionResourcesPath = appDataSessionResourcesPath;
     //Reset everything
     ReleaseResourceFile();
 }
@@ -8,10 +12,10 @@ ResourceFileHandler::ResourceFileHandler(){
 
 //Finds and loads only the hardware information from the correct resource file. Useful for instances where you only care about the hardware information and not the firmware.
 bool ResourceFileHandler::LoadConfigurationFromResourceFile(const int &hardware_type, const int &hardware_major_version, const int& electronics_type, const int& electronics_major_version){
-    QString current_path = QCoreApplication::applicationDirPath();
     QString hardware_type_file_path =
-        current_path + "/Resources/Firmware/" + QString::number(hardware_type) + ".json";
+        appDataSessionResourcesPath + "Firmware/" + QString::number(hardware_type) + ".json";
 
+    qDebug() << "Loading firmware file: " << hardware_type_file_path;
     json_file_ = OpenAndLoadJsonFile(hardware_type_file_path);
 
     loaded_hardware_type_ = hardware_type;
