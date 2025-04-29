@@ -21,6 +21,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
+#include "QDebug"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -40,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
+    loadDefaultResourceFiles();
     resource_file_handler = new ResourceFileHandler();
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
@@ -166,9 +168,9 @@ void MainWindow::updater() {
 
 void MainWindow::importResourcePack() {
     ResourcePack * resourcePack = new ResourcePack();
-    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::ExistingFile);
+//    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
+//    QFileDialog dialog;
+//    dialog.setFileMode(QFileDialog::ExistingFile);
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
@@ -181,6 +183,47 @@ void MainWindow::importResourcePack() {
       iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
     }
     delete resourcePack;
+}
+
+void MainWindow::loadDefaultResourceFiles(){
+    qDebug() << "In loadDefaultResourceFiles";
+    QString currentAppPath = QCoreApplication::applicationDirPath();
+    QString appDataResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
+    QDir appDataResourcesDirectory(appDataResourcesPath);
+
+    QString mainResourcesDirectory(currentAppPath + "/Resources/");
+    // Create a QDir object that represents the main Resources directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(mainResourcesDirectory,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "Resources" directory
+        QString fileName = sourcePath.mid(mainResourcesDirectory.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          qDebug() << "Creating folder:" << destinationPath;
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          qDebug() << "Copying file:" << destinationPath;
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
 }
 
 void MainWindow::readOutput() {
