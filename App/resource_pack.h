@@ -64,10 +64,6 @@ class ResourcePack : public QObject{
 
   private:
     /**
-     * @brief appDataPath The AppData path of the Control Center application. This is used to store imported resource files.
-     */
-    QString appDataPath;
-    /**
      * @brief appDataSessionResourcesPath The SessionResourceFiles path in AppData. This is passed in by mainwindow.
      */
     QString appDataSessionResourcesPath;
@@ -79,14 +75,6 @@ class ResourcePack : public QObject{
      * @brief appDataResourcesDirectory The AppData/Resources path of the Control Center application. This is used to store imported resource files.
      */
     QDir appDataImportedResourcesDirectory;
-    /**
-     * @brief currentAppPath The current path of the Control Center application. This is used to locate the application's Resources directory.
-     */
-    QString currentAppPath;
-    /**
-     * @brief resourcePackBaseName The name of the .zip file that contains the resource files to be imported. This name is used when copying files from the temporary directory to the application's Resources directory.
-     */
-    QString resourcePackBaseName;
     /**
      * @brief setFilePermissions Sets the appropriate Read permissions for the extracted resource files
      * @param filePath The file path of the extracted resource file that needs the appropriate permissions
