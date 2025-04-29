@@ -64,6 +64,18 @@ class ResourcePack : public QObject{
 
   private:
     /**
+     * @brief appDataPath The AppData path of the Control Center application. This is used to store imported resource files.
+     */
+    QString appDataPath;
+    /**
+     * @brief appDataResourcesPath The AppData/Resources path of the Control Center application. This is used to store imported resource files.
+     */
+    QString appDataImportedResourcesPath;
+    /**
+     * @brief appDataResourcesDirectory The AppData/Resources path of the Control Center application. This is used to store imported resource files.
+     */
+    QDir appDataImportedResourcesDirectory;
+    /**
      * @brief currentAppPath The current path of the Control Center application. This is used to locate the application's Resources directory.
      */
     QString currentAppPath;
