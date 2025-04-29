@@ -1,6 +1,5 @@
 #include "main.h"
 #include "resource_pack.h"
-#include "QDebug"
 
 ResourcePack::ResourcePack(QString appDataSessionResourcesPath, QString appDataImportedResourcesPath){
   // Set the SessionResourceFiles path in AppData provided by mainwindow
@@ -12,7 +11,6 @@ ResourcePack::ResourcePack(QString appDataSessionResourcesPath, QString appDataI
   appDataImportedResourcesDirectory = QDir(this->appDataImportedResourcesPath);
   // Make the ImportedResourceFiles directory in AppData if it doesn't already exist
   if (!appDataImportedResourcesDirectory.exists()){
-    qDebug() << "ImportedResourcesFiles does not exist in AppData. Creating now: " << this->appDataImportedResourcesPath;
     iv.pcon->AddToLog("ImportedResourcFiles does not exist in AppData. Creating now: " + this->appDataImportedResourcesPath);
     appDataImportedResourcesDirectory.mkpath(".");
   }
@@ -32,7 +30,7 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       JlCompress extractTool;
       QStringList resourcePackFileList = extractTool.getFileList(zipFilePath);
 
-      qDebug() << "Extracting from: " << zipFilePath << "to: " << appDataImportedResourcesPath;
+      iv.pcon->AddToLog("Extracting from: " + zipFilePath + " to: " + appDataImportedResourcesPath);
       // Extracts contents from zip file to ImportedResourceFiles in AppData
       QStringList extractedResourceFiles = extractTool.extractDir(zipFilePath, appDataImportedResourcesPath);
 
@@ -40,22 +38,19 @@ void ResourcePack::importResourcePackFromPath(QString zipFilePath) {
       if(!extractedResourceFiles.isEmpty()){
         // Use qAsConst() here to apply const to QStringList because QtCreator complains
         for(const QString& resourceFile : qAsConst(extractedResourceFiles)) {
-          qDebug() << " appDataImportedResourcesPath:" << appDataImportedResourcesPath;
-          qDebug() << "zipFileInfo basename: " << zipFileInfo.baseName();
           int appDataImportedResourcesPathLength = appDataImportedResourcesPath.length() + zipFileBaseName.length() + 1; // add 1 to include the trailing slash after the basename
           // Get the path of the imported resource file only keeping everything after the zipFileBaseName
           QString fileName = resourceFile.mid(appDataImportedResourcesPathLength);
           QFileInfo fileInfo(resourceFile);
           if(fileInfo.isFile()){
-            qDebug() << "Resource file: " << fileName;
             QString destinationFilePath = appDataSessionResourcesPath + fileName;
-            qDebug() << "Copying Resource file: " << resourceFile << " to: " << destinationFilePath;
+            iv.pcon->AddToLog("Copying Resource file: " + resourceFile + " to: " + destinationFilePath);
             // Remove existing resource file, new resource file will overwrite any existing ones
             QFile::remove(destinationFilePath);
             QFile::copy(resourceFile, destinationFilePath);
           }
         }
-        qDebug() << "Extracted Resource Files";
+        iv.pcon->AddToLog("Extracted Resource Files");
         displayMessageBox("Application restart required", "Resource files imported successfully. Please close and restart the application to properly load the imported resource files.");
       } else{
         iv.pcon->AddToLog("Failed to extract resource pack!");

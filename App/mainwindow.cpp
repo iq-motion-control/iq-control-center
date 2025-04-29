@@ -21,7 +21,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
-#include "QDebug"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -41,13 +40,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
-    // Load default resource files that are packaged with the application
-    loadDefaultResourceFiles();
     // Create a ResourceFileHandler object and pass in the path to the SessionResourceFiles directory in AppData
     resource_file_handler = new ResourceFileHandler(appDataSessionResourcesPath);
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
+
 
     //create our LocalData folder (definition comes from port connection (where logging happens)
     //Also create a folder to hold all of the user default files
@@ -58,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Write that the control center opened to the log
     iv.pcon->logging_active_ = true;
     iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
+
+    // Load default resource files that are packaged with the application
+    loadDefaultResourceFiles();
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -188,7 +189,7 @@ void MainWindow::importResourcePack() {
 }
 
 void MainWindow::loadDefaultResourceFiles(){
-    qDebug() << "In loadDefaultResourceFiles";
+    iv.pcon->AddToLog("Loading resource files into: " + appDataSessionResourcesPath);
     // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
     QDir appDataResourcesDirectory(appDataSessionResourcesPath);
 
@@ -213,11 +214,9 @@ void MainWindow::loadDefaultResourceFiles(){
 
         // Create the directory in AppData if the file is a directory
         if (fileInfo.isDir()){
-          qDebug() << "Creating folder:" << destinationPath;
           appDataResourcesDirectory.mkpath(destinationPath);
         } else {
         // Copy the file to AppData if it is a file
-          qDebug() << "Copying file:" << destinationPath;
           // Need to remove any existing file or else copy will fail
           QFile::remove(destinationPath);
           QFile::copy(sourcePath, destinationPath);
