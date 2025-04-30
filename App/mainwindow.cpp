@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // Load default resource files that are packaged with the application
     loadDefaultResourceFiles();
+    // Load previously imported resource files
+    loadImportedResourceFiles();
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -208,6 +210,44 @@ void MainWindow::loadDefaultResourceFiles(){
         QString sourcePath = fileInfo.absoluteFilePath();
         // Get the name of the file/directory minus everything before the "Resources" directory
         QString fileName = sourcePath.mid(mainResourcesDirectory.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataSessionResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
+}
+
+void MainWindow::loadImportedResourceFiles(){
+    iv.pcon->AddToLog("Loading imported resource files from " + appDataImportedResourcesPath +
+                      " to:"  + appDataSessionResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
+
+    // Create a QDir object that represents the ImportedResourceFiles directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(appDataImportedResourcesPath,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "ImportedResourceFiles" directory
+        QString fileName = sourcePath.mid(appDataImportedResourcesPath.length());
         // Construct the destination path where the file/directory is created in AppData
         QString destinationPath = appDataSessionResourcesPath + fileName;
 
