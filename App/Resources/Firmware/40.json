@@ -94,7 +94,8 @@
           "name": "vertiq_60xx_servo"
         }
       ]
-    },	{
+    },	
+    {
       "hardware_major_version": 4,
       "electronics_type": 21,
       "electronics_major_version": 1,
