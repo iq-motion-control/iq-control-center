@@ -85,6 +85,8 @@ class MainWindow : public QMainWindow {
 
   void updater();
   void importResourcePack();
+  void loadDefaultResourceFiles();
+  void loadImportedResourceFiles();
 
   void readOutput();
 
@@ -110,6 +112,12 @@ private:
   uint8_t advanced_index = 0;
   uint8_t tuning_index = 0;
   uint8_t general_index = 0;
+
+  QString currentAppPath = QCoreApplication::applicationDirPath();
+  QString mainResourcesDirectory = currentAppPath + "/Resources/";
+  QString appDataSessionResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
+  QString appDataImportedResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/ImportedResourceFiles/";
+
 
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;

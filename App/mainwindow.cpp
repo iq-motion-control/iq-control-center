@@ -40,10 +40,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
-    resource_file_handler = new ResourceFileHandler();
+    // Create a ResourceFileHandler object and pass in the path to the SessionResourceFiles directory in AppData
+    resource_file_handler = new ResourceFileHandler(appDataSessionResourcesPath);
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
+
 
     //create our LocalData folder (definition comes from port connection (where logging happens)
     //Also create a folder to hold all of the user default files
@@ -54,6 +56,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Write that the control center opened to the log
     iv.pcon->logging_active_ = true;
     iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
+
+    // Load default resource files that are packaged with the application
+    loadDefaultResourceFiles();
+    // Load previously imported resource files
+    loadImportedResourceFiles();
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -165,15 +172,14 @@ void MainWindow::updater() {
 }
 
 void MainWindow::importResourcePack() {
-    ResourcePack * resourcePack = new ResourcePack();
-    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
+    ResourcePack * resourcePack = new ResourcePack(appDataSessionResourcesPath, appDataImportedResourcesPath);
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
-    QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
+    QString zipFileToImport = dialog.getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
     if(zipFileToImport != NULL){
       resourcePack->importResourcePackFromPath(zipFileToImport);
@@ -181,6 +187,81 @@ void MainWindow::importResourcePack() {
       iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
     }
     delete resourcePack;
+}
+
+void MainWindow::loadDefaultResourceFiles(){
+    iv.pcon->AddToLog("Loading resource files into: " + appDataSessionResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
+
+    // Create a QDir object that represents the main Resources directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(mainResourcesDirectory,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "Resources" directory
+        QString fileName = sourcePath.mid(mainResourcesDirectory.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataSessionResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
+}
+
+void MainWindow::loadImportedResourceFiles(){
+    iv.pcon->AddToLog("Loading imported resource files from " + appDataImportedResourcesPath +
+                      " to:"  + appDataSessionResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
+
+    // Create a QDir object that represents the ImportedResourceFiles directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(appDataImportedResourcesPath,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "ImportedResourceFiles" directory
+        QString fileName = sourcePath.mid(appDataImportedResourcesPath.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataSessionResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
 }
 
 void MainWindow::readOutput() {
