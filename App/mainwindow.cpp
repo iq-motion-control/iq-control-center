@@ -21,6 +21,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "common_icon_creation.h"
+#include "QDebug"
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
   ui->setupUi(this);
@@ -169,6 +170,7 @@ void MainWindow::updater() {
     arguments << "--su";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+    updateShowMessageBoxSetting(true);
 }
 
 void MainWindow::importResourcePack() {
@@ -276,7 +278,12 @@ void MainWindow::readOutput() {
     }
     else if ((data.find("<updates>") != std::string::npos) || (error.find("<updates>") != std::string::npos)){
         ui->header_error_label->setText("UPDATE AVAILABLE: CLICK MENU IN TOP LEFT");
-        show_update_message_box();
+        // Check if message box indicating an update is available should be shown
+        // If the 'show_update_message_box' setting is not set in settings.json, then the default value is true
+        bool show_update_message_box_setting = appSettings.get("show_update_message_box", true).toBool();
+        if(show_update_message_box_setting){
+          show_update_message_box();
+        }
     }
     else{
         ui->header_error_label->setText("Error Checking For Updates!");
@@ -291,7 +298,20 @@ void MainWindow::show_update_message_box(){
         "A new IQ Control Center update is now available.\n"
         "Please navigate to 'Check for Updates' under Menu in the top left corner of the application.");
     msgBox.setStandardButtons(QMessageBox::Ok);
+
+    // Add a button labeled 'Don't show again' to allow user to disable showing of update message box when clicked
+    QAbstractButton* dontShowAgainButton = msgBox.addButton("Don't show again", QMessageBox::ActionRole);
+
     msgBox.exec();
+
+    // If the 'Don't show again' button is clicked, update settings.json
+    if (msgBox.clickedButton() == dontShowAgainButton){
+        updateShowMessageBoxSetting(false);
+    }
+}
+
+void MainWindow::updateShowMessageBoxSetting(bool value){
+    appSettings.set("show_update_message_box", value);
 }
 
 void MainWindow::on_pushButton_home_clicked(){

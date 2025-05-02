@@ -24,6 +24,7 @@
 #include <QBoxLayout>
 #include <QMainWindow>
 
+#include "app_settings.h"
 #include "defaults.h"
 #include "firmware.h"
 #include "home.h"
@@ -103,6 +104,8 @@ class MainWindow : public QMainWindow {
 
   void show_update_message_box();
 
+  void updateShowMessageBoxSetting(bool value);
+
 
 private:
   std::map<std::string, double> advanced_special_value_map;
@@ -117,6 +120,8 @@ private:
   QString mainResourcesDirectory = currentAppPath + "/Resources/";
   QString appDataSessionResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
   QString appDataImportedResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/ImportedResourceFiles/";
+
+  AppSettings appSettings;
 
 
   Ui::MainWindow *ui;
