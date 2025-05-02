@@ -1,12 +1,10 @@
 #include "app_settings.h"
-#include "QDebug"
 
 AppSettings::AppSettings(){
   QDir appSettingsDir(appDataSettingsPath);
 
   // Create the Settings directory in AppData if it does not exist
   if(!appSettingsDir.exists()){
-    qDebug() << "Settings directory does not exist in AppData. Creating now: " << appDataSettingsPath;
     appSettingsDir.mkpath(".");
   }
 
@@ -23,16 +21,13 @@ bool AppSettings::load() {
     if (settingsFile.open(QIODevice::WriteOnly)) {
       settingsFile.write(QJsonDocument(QJsonObject()).toJson());
       settingsFile.close();
-      qDebug() << "Created new settings file at:" << settingsFilePath;
     } else {
-      qWarning() << "Failed to create settings file:" << settingsFilePath;
       return false;
     }
   }
 
   // Open the settings.json file for reading
   if (!settingsFile.open(QIODevice::ReadOnly)) {
-    qWarning() << "Could not open settings file for reading:" << settingsFilePath;
     return false;
   }
 
@@ -42,12 +37,10 @@ bool AppSettings::load() {
   QJsonParseError parseError;
   QJsonDocument settingsJsonDoc = QJsonDocument::fromJson(data, &parseError);
   if (parseError.error != QJsonParseError::NoError) {
-    qWarning() << "Failed to parse JSON:" << parseError.errorString();
     return false;
   }
 
   if (!settingsJsonDoc.isObject()) {
-    qWarning() << "Settings file does not contain a valid JSON object.";
     return false;
   }
 
@@ -74,6 +67,7 @@ void AppSettings::set(const QString& key, const QVariant& value) {
 
 bool AppSettings::save() const {
   QFile settingsFile(settingsFilePath);
+  // This will overwrite everything in settings.json with the values in the settingsJsonObject
   if (settingsFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
     QJsonDocument settingsJsonDoc(settingsJsonObject);
     settingsFile.write(settingsJsonDoc.toJson(QJsonDocument::Indented));
