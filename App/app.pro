@@ -63,6 +63,7 @@ CONFIG += static
 
 
 SOURCES += \
+    app_settings.cpp \
     common_icon_creation.cpp \
     flash_type.cpp \
     frame_read_only.cpp \
@@ -106,6 +107,7 @@ SOURCES += \
 
 
 HEADERS += \
+    app_settings.h \
     common_icon_creation.h \
     flash_type.hpp \
     frame_read_only.h \
