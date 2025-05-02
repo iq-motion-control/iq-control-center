@@ -1,0 +1,19 @@
+[
+  {
+    "descriptor": "tuning_vertiq_60xx_speed",
+    "Entries": [
+      {
+        "descriptor": "Convection Thermal Conductivity Coefficient",
+        "value": 0.028
+      },
+      {
+        "descriptor": "Velocity FF1",
+        "value": 0.06586
+      },
+      {
+        "descriptor": "Velocity FF2",
+        "value": 0.0000283
+      }
+    ]
+  }
+]
