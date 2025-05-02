@@ -7,8 +7,12 @@
         "value": 0.031
       },
       {
+        "descriptor": "Velocity FF1",
+        "value": 0.0241754
+      },
+      {
         "descriptor": "Velocity FF2",
-        "value": 0.00000413
+        "value": 0.00000412
       }
     ]
   }
