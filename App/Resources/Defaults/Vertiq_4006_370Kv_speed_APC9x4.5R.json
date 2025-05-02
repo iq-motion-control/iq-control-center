@@ -4,11 +4,15 @@
     "Entries": [
       {
         "descriptor": "Convection Thermal Conductivity Coefficient",
-        "value": 0.023
+        "value": 0.025
+      },
+      {
+        "descriptor": "Velocity FF1",
+        "value": 0.026091
       },
       {
         "descriptor": "Velocity FF2",
-        "value": 0.000000803
+        "value": 0.00000130
       }
     ]
   }
