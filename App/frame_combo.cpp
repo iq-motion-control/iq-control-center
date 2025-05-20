@@ -117,7 +117,7 @@ bool FrameCombo::SetFrameValue(int new_value){
         iv.pcon->AddToLog("Rejected new combo frame value: " + QString::number(new_value));
     }
 
-    //Since failure to se is possible, it is nice to let the upper level have a chance to know that if it cares
+    //Since failure to set is possible, it is nice to let the upper level have a chance to know that if it cares
     return value_allowed;
 }
 
