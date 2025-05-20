@@ -47,7 +47,9 @@ class FrameCombo : public Frame {
   QPushButton *push_button_default_;
   QPushButton *push_button_save_;
   QPushButton *push_button_info_;
-  int value_;
+
+  double GetFrameValue();
+  bool SetFrameValue(int new_value);
 
  public slots:
   void SaveValue();
@@ -64,6 +66,7 @@ class FrameCombo : public Frame {
   Client *client_;
   std::map<int, int> index_value_;
   std::pair<std::string, ClientEntryAbstract *> client_entry_;
+  int value_;
   int saved_value_;
   QString info_;
   QSpacerItem *horizontal_spacer_;

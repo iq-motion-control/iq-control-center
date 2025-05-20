@@ -63,7 +63,9 @@ class FrameSpinBox: public Frame
     QPushButton *push_button_save_;
     QDoubleSpinBox *spin_box_;
     QPushButton *push_button_info_;
-    double value_;
+
+    double GetFrameValue();
+    void SetFrameValue(double new_value);
 
   public slots:
     void SaveValue();
@@ -79,6 +81,7 @@ class FrameSpinBox: public Frame
 
     Client *client_;
     std::map<int, int> index_value_ ;
+    double value_;
     double saved_value_ = std::numeric_limits<double>::quiet_NaN();
     double nan_value_;
     bool has_nan_ = 0;

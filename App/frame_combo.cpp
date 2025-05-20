@@ -83,6 +83,33 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
   value_ = index_value_[combo_box_->currentIndex()];
 }
 
+double FrameCombo::GetFrameValue(){
+    return value_;
+}
+
+bool FrameCombo::SetFrameValue(int new_value){
+    //Want to find if this value is one of the values we said is allowed. Finding keys is much easier than finding values sadly,
+    //so chug through the list to see if this is allowed. If not, we won't set to something illegal.
+    bool value_allowed = false;
+    for (auto it = index_value_.begin(); it != index_value_.end(); it++){
+        if(it->second == new_value){
+            iv.pcon->AddToLog("Combo box value found at key: " + QString::number(it->first));
+            value_allowed = true;
+            break;
+        }
+    }
+
+    if(value_allowed){
+        iv.pcon->AddToLog("Setting new combo frame value: " + QString::number(new_value));
+        value_ = new_value;
+    }else{
+        iv.pcon->AddToLog("Rejected new combo frame value: " + QString::number(new_value));
+    }
+
+    //Since failure to se is possible, it is nice to let the upper level have a chance to know that if it cares
+    return value_allowed;
+}
+
 void FrameCombo::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
   QWhatsThis::showText(globalPos, info_, push_button_info_);
