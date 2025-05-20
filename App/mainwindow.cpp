@@ -464,7 +464,7 @@ bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
           //For each of the values in the Entries array
           for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
             //Grab the desciptor for each entry and its value
-            std::string value_descriptor = defaults_values[jj]["descriptor"].asString();             //Grab the desciptor for each entry and its value
+            std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
 
             if(!defaults_values[jj]["value"].isNull()){
                 double value = defaults_values[jj]["value"].asDouble();
