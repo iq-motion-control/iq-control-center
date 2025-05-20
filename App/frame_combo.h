@@ -62,6 +62,7 @@ class FrameCombo : public Frame {
 
   void AddStarToLabel();
   void RemoveStarFromLabel();
+  void UpdateValueFromIndex(int index);
 
   Client *client_;
   std::map<int, int> index_value_;

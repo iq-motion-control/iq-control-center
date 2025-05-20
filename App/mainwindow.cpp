@@ -648,16 +648,32 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
                   FrameCombo *fc = (FrameCombo *)(curFrame);
                   // Use the map object we created earlier to get the list_name for the list_value of this client
                   QString readable_value = frameVariablesMap[frame->first.c_str()][fc->GetFrameValue()];
-                  current_tab_json_object->insert("value", fc->GetFrameValue());
-                  current_tab_json_object->insert("readable_value", readable_value);
-                  attach_new_object = true;
+
+                  //INT_MIN indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
+                  //It's ok for support files, that may be interesting information to see
+                  if(fc->GetFrameValue() == INT_MIN && exportStyle == exportFileTypes::DEFAULTS_FILE){
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      attach_new_object = false;
+                  }else{
+                      current_tab_json_object->insert("value", fc->GetFrameValue());
+                      current_tab_json_object->insert("readable_value", readable_value);
+                      attach_new_object = true;
+                  }
                 break;
               }
               case 2:
               {
                   FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
-                  current_tab_json_object->insert("value", fsb->GetFrameValue());
-                  attach_new_object = true;
+
+                  //nan indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
+                  //It's ok for support files, that may be interesting information to see
+                  if(std::isnan(fsb->GetFrameValue()) && exportStyle == exportFileTypes::DEFAULTS_FILE){
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      attach_new_object = false;
+                  }else{
+                      current_tab_json_object->insert("value", fsb->GetFrameValue());
+                      attach_new_object = true;
+                  }
                 break;
               }
               case 3:
