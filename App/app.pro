@@ -35,7 +35,7 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=8 \
+           MINOR=9 \
            PATCH=0
 
 win32 {
@@ -168,12 +168,12 @@ CONFIG("win32-g++"){
 
     #if 32 bit build
     contains(QT_ARCH, i386){
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        INCLUDEPATH += "C:/Users/benqu/ZipPack/include"
         LIBS += -L"C:/Users/fkumm/ZipPack/lib"
     }
     ##64 bit build
     else{
-        INCLUDEPATH += "C:/Users/fkumm/ZipPack/include"
+        INCLUDEPATH += "C:/Users/benqu/ZipPack/include"
         LIBS += -L"C:/Users/fkumm/ZipPack/lib"
     }
 
