@@ -356,17 +356,8 @@ std::map<std::string, Client*> ClientsFromJson(uint8_t obj_idn, const std::strin
 
   std::map<std::string, Client*> client_map;
 
-  QString path;
   QString file_path = QString::fromStdString(folder_path + file_name);
-
-  if (file_path[0] != ":") {
-    QString current_path = QCoreApplication::applicationDirPath();
-    path = current_path + file_path;
-  } else {
-    path = file_path;
-  }
-
-  QFile myfile(path);
+  QFile myfile(file_path);
   if (myfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
     std::istringstream iss(QTextStream(&myfile).readAll().toStdString());
     std::string errs;
