@@ -111,13 +111,21 @@ void TabPopulator::UpdateTabMap(std::shared_ptr<Tab> &tab, std::string &tab_name
 
 std::map<QWidget *, std::vector<std::string>> TabPopulator::LinkTabWidgetAndFirmwareFiles() {
   std::map<QWidget *, std::vector<std::string>> tab_widget_firmware_files;
-  tab_widget_firmware_files[ui_->general_scroll_area] = {"/Resources/Tabs/general/",
+  // Create the paths to each tab from the resource files stored in AppData
+  std::string general_resource_path = (resource_file_handler_->appDataSessionResourcesPath + "Tabs/general/").toStdString();
+  tab_widget_firmware_files[ui_->general_scroll_area] = {general_resource_path,
                                                          "general_" + resource_file_handler_->firmware_name_ + ".json"};
-  tab_widget_firmware_files[ui_->tuning_scroll_area] = {"/Resources/Tabs/tuning/",
+
+  std::string tuning_resource_path = (resource_file_handler_->appDataSessionResourcesPath + "Tabs/tuning/").toStdString();
+  tab_widget_firmware_files[ui_->tuning_scroll_area] = {tuning_resource_path,
                                                         "tuning_" + resource_file_handler_->firmware_name_ + ".json"};
-  tab_widget_firmware_files[ui_->advanced_scroll_area] = {"/Resources/Tabs/advanced/",
+
+  std::string advanced_resource_path = (resource_file_handler_->appDataSessionResourcesPath + "Tabs/advanced/").toStdString();
+  tab_widget_firmware_files[ui_->advanced_scroll_area] = {advanced_resource_path,
                                                           "advanced_" + resource_file_handler_->firmware_name_ + ".json"};
-  tab_widget_firmware_files[ui_->testing_scroll_area] = {"/Resources/Tabs/testing/",
+
+  std::string testing_resource_path = (resource_file_handler_->appDataSessionResourcesPath + "Tabs/testing/").toStdString();
+  tab_widget_firmware_files[ui_->testing_scroll_area] = {testing_resource_path,
                                                          "testing_" + resource_file_handler_->firmware_name_ + ".json"};
   return tab_widget_firmware_files;
 }

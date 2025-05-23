@@ -33,7 +33,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-//#include <map>
 #include <map>
 
 #include <QCoreApplication>

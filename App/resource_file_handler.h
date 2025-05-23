@@ -27,8 +27,6 @@ class ResourceFileHandler : public QObject {
   //The index in the firmware_styles list that holds the style we want to load for
   uint32_t firmware_index_;
 
-  // The path of the SessionResourceFiles directory in AppData. This is provided by mainwindow.
-  QString appDataSessionResourcesPath;
 
   /**
    * @brief OpenAndLoadJsonFile Opens and returns the contents of the JSON file at the provided path
@@ -96,6 +94,9 @@ class ResourceFileHandler : public QObject {
   int minimum_firmware_major_;
   int minimum_firmware_minor_;
   int minimum_firmware_patch_;
+
+  // The path of the SessionResourceFiles directory in AppData. This is provided by mainwindow.
+  QString appDataSessionResourcesPath;
 
   ResourceFileHandler(QString appDataSessionResourcesPath);
 
