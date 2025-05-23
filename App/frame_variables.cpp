@@ -27,8 +27,7 @@ std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string
   Json::Value JSON;
   std::map<std::string, FrameVariables *> frame_variables_map;
 
-  QString current_path = QCoreApplication::applicationDirPath();
-  QString path = current_path + QString::fromStdString(folder_path + file_name);
+  QString path = QString::fromStdString(folder_path + file_name);
   QFile myfile(path);
 
   if (myfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
