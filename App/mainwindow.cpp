@@ -102,7 +102,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
-    def = new Defaults(ui->default_box, "/Resources/Defaults/", iv.pcon->path_to_user_defaults_repo_.toStdString());
+    // Create the path to the Defaults directory in AppData where the resource files are stored
+    QString default_resources_path = appDataSessionResourcesPath + "Defaults/";
+    def = new Defaults(ui->default_box, default_resources_path.toStdString(), iv.pcon->path_to_user_defaults_repo_.toStdString());
 
     connect(ui->default_box, QOverload<int>::of(&QComboBox::activated), def,
             &Defaults::DefaultComboBoxIndexChanged);
