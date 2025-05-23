@@ -31,8 +31,7 @@ Defaults::Defaults(QComboBox* comb, std::string folder_path, std::string user_de
 void Defaults::RefreshFilesInDefaults(){
 
     //Grab all of the vertiq default files
-    QString current_path = QCoreApplication::applicationDirPath();
-    QString path = current_path + QString::fromStdString(folder_path_);
+    QString path = QString::fromStdString(folder_path_);
     QDir dir(path);
 
     //Grab the user's default files
