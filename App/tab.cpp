@@ -186,8 +186,8 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
                 break;
 
               //Let's make sure that the value we're trying to save is different than what's on there already
-              if(!IsClose(fc->value_, default_value.second)){
-                  fc->value_ = default_value.second;
+              if(!IsClose(fc->GetFrameValue(), default_value.second)){
+                  fc->SetFrameValue(default_value.second);
                   fc->SaveValue();
               }
 
@@ -200,8 +200,8 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
                 break;
 
               //Let's make sure that the value we're trying to save is different than what's on there already
-              if(!IsClose(fsb->value_, default_value.second)){
-                  fsb->value_ = default_value.second;
+              if(!IsClose(fsb->GetFrameValue(), default_value.second)){
+                  fsb->SetFrameValue(default_value.second);
                   fsb->SaveValue();
               }
             }
@@ -248,8 +248,8 @@ bool Tab::SetNewBaudRate(double value){
     }
 
     //Let's make sure that the value we're trying to save is different than what's on there already
-    if(!IsClose(fsb->value_, value)){
-        fsb->value_ = value;
+    if(!IsClose(fsb->GetFrameValue(), value)){
+        fsb->SetFrameValue(value);
         fsb->SaveValue();
         baud_changed = true;
     }

@@ -465,21 +465,25 @@ bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
 
           //For each of the values in the Entries array
           for (uint8_t jj = 0; jj < defaults_values.size(); ++jj) {
-             //Grab the desciptor for each entry and its value
+            //Grab the desciptor for each entry and its value
             std::string value_descriptor = defaults_values[jj]["descriptor"].asString();
-            double value = defaults_values[jj]["value"].asDouble();
 
-            //Put the value into the correct map with its descriptor as the key
-            if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
-              default_value_map[value_descriptor] = value;
-            }else if(tab_descriptor.find("advanced") != std::string::npos){
-              advanced_special_value_map[value_descriptor] = value;
-            }else if(tab_descriptor.find("tuning") != std::string::npos){
-                tuning_special_value_map[value_descriptor] = value;
-            }else if(tab_descriptor.find("general") != std::string::npos){
-                general_special_value_map[value_descriptor] = value;
+            if(!defaults_values[jj]["value"].isNull()){
+                double value = defaults_values[jj]["value"].asDouble();
+
+                //Put the value into the correct map with its descriptor as the key
+                if(!SPECIAL_DEFAULTS.contains(QString(value_descriptor.c_str()))){
+                  default_value_map[value_descriptor] = value;
+                }else if(tab_descriptor.find("advanced") != std::string::npos){
+                  advanced_special_value_map[value_descriptor] = value;
+                }else if(tab_descriptor.find("tuning") != std::string::npos){
+                    tuning_special_value_map[value_descriptor] = value;
+                }else if(tab_descriptor.find("general") != std::string::npos){
+                    general_special_value_map[value_descriptor] = value;
+                }
+            }else{
+               iv.pcon->AddToLog("Null value in defaults file for " + QString(value_descriptor.c_str()));
             }
-
           }
 
           //Create a map iterator, and look to see if the tab targeted by this defaults file matches
@@ -645,17 +649,33 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
               {
                   FrameCombo *fc = (FrameCombo *)(curFrame);
                   // Use the map object we created earlier to get the list_name for the list_value of this client
-                  QString readable_value = frameVariablesMap[frame->first.c_str()][fc->value_];
-                  current_tab_json_object->insert("value", fc->value_);
-                  current_tab_json_object->insert("readable_value", readable_value);
-                  attach_new_object = true;
+                  QString readable_value = frameVariablesMap[frame->first.c_str()][fc->GetFrameValue()];
+
+                  //INT_MIN indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
+                  //It's ok for support files, that may be interesting information to see
+                  if(fc->GetFrameValue() == INT_MIN && exportStyle == exportFileTypes::DEFAULTS_FILE){
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      attach_new_object = false;
+                  }else{
+                      current_tab_json_object->insert("value", fc->GetFrameValue());
+                      current_tab_json_object->insert("readable_value", readable_value);
+                      attach_new_object = true;
+                  }
                 break;
               }
               case 2:
               {
                   FrameSpinBox *fsb = (FrameSpinBox *)(curFrame);
-                  current_tab_json_object->insert("value", fsb->value_);
-                  attach_new_object = true;
+
+                  //nan indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
+                  //It's ok for support files, that may be interesting information to see
+                  if(std::isnan(fsb->GetFrameValue()) && exportStyle == exportFileTypes::DEFAULTS_FILE){
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      attach_new_object = false;
+                  }else{
+                      current_tab_json_object->insert("value", fsb->GetFrameValue());
+                      attach_new_object = true;
+                  }
                 break;
               }
               case 3:
