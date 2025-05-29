@@ -35,7 +35,7 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=8 \
+           MINOR=9 \
            PATCH=0
 
 win32 {
