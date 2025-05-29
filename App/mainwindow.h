@@ -24,6 +24,7 @@
 #include <QBoxLayout>
 #include <QMainWindow>
 
+#include "app_settings.h"
 #include "defaults.h"
 #include "firmware.h"
 #include "home.h"
@@ -85,6 +86,8 @@ class MainWindow : public QMainWindow {
 
   void updater();
   void importResourcePack();
+  void loadDefaultResourceFiles();
+  void loadImportedResourceFiles();
 
   void readOutput();
 
@@ -101,6 +104,8 @@ class MainWindow : public QMainWindow {
 
   void show_update_message_box();
 
+  void updateShowMessageBoxSetting(bool value);
+
 
 private:
   std::map<std::string, double> advanced_special_value_map;
@@ -110,6 +115,14 @@ private:
   uint8_t advanced_index = 0;
   uint8_t tuning_index = 0;
   uint8_t general_index = 0;
+
+  QString currentAppPath = QCoreApplication::applicationDirPath();
+  QString mainResourcesDirectory = currentAppPath + "/Resources/";
+  QString appDataSessionResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/SessionResourceFiles/";
+  QString appDataImportedResourcesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/ImportedResourceFiles/";
+
+  AppSettings appSettings;
+
 
   Ui::MainWindow *ui;
   //    QtAutoUpdater::UpdateController *controller;

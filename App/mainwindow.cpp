@@ -40,10 +40,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->label_gui_version_value->setText(gui_version);
 
   try {
-    resource_file_handler = new ResourceFileHandler();
+    // Create a ResourceFileHandler object and pass in the path to the SessionResourceFiles directory in AppData
+    resource_file_handler = new ResourceFileHandler(appDataSessionResourcesPath);
 
     iv.pcon = new PortConnection(ui, resource_file_handler);
     iv.label_message = ui->header_error_label;
+
 
     //create our LocalData folder (definition comes from port connection (where logging happens)
     //Also create a folder to hold all of the user default files
@@ -54,6 +56,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Write that the control center opened to the log
     iv.pcon->logging_active_ = true;
     iv.pcon->AddToLog("IQ Control Center Opened with version " + gui_version);
+
+    // Load default resource files that are packaged with the application
+    loadDefaultResourceFiles();
+    // Load previously imported resource files
+    loadImportedResourceFiles();
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), iv.pcon, SLOT(TimerTimeout()));
@@ -95,7 +102,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(iv.pcon, SIGNAL(FindSavedValues()), this, SLOT(ShowMotorSavedValues()));
 
-    def = new Defaults(ui->default_box, "/Resources/Defaults/", iv.pcon->path_to_user_defaults_repo_.toStdString());
+    // Create the path to the Defaults directory in AppData where the resource files are stored
+    QString default_resources_path = appDataSessionResourcesPath + "Defaults/";
+    def = new Defaults(ui->default_box, default_resources_path.toStdString(), iv.pcon->path_to_user_defaults_repo_.toStdString());
 
     connect(ui->default_box, QOverload<int>::of(&QComboBox::activated), def,
             &Defaults::DefaultComboBoxIndexChanged);
@@ -162,18 +171,18 @@ void MainWindow::updater() {
     arguments << "--su";
     process->start(file, arguments);
     connect(process, SIGNAL(finished(int)), process, SLOT(deleteLater()));
+    updateShowMessageBoxSetting(true);
 }
 
 void MainWindow::importResourcePack() {
-    ResourcePack * resourcePack = new ResourcePack();
-    resourcePack->displayMessageBox("Administrator privleges required", "If you did not run IQ Control Center as an administrator, please close this application and run it as an administrator. This is required to import a Resource Pack.");
+    ResourcePack * resourcePack = new ResourcePack(appDataSessionResourcesPath, appDataImportedResourcesPath);
     QFileDialog dialog;
     dialog.setFileMode(QFileDialog::ExistingFile);
 
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
     //Open up the file window to let users pick the resource pack .zip file to import into Control Center
-    QString zipFileToImport = QFileDialog::getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
+    QString zipFileToImport = dialog.getOpenFileName(this, ("Select Resource Pack .zip file"), openDir,
                                                           tr("Zip (*.zip)"));
     if(zipFileToImport != NULL){
       resourcePack->importResourcePackFromPath(zipFileToImport);
@@ -181,6 +190,81 @@ void MainWindow::importResourcePack() {
       iv.pcon->AddToLog("Import Resource Pack clicked but no .zip file selected.");
     }
     delete resourcePack;
+}
+
+void MainWindow::loadDefaultResourceFiles(){
+    iv.pcon->AddToLog("Loading resource files into: " + appDataSessionResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
+
+    // Create a QDir object that represents the main Resources directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(mainResourcesDirectory,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "Resources" directory
+        QString fileName = sourcePath.mid(mainResourcesDirectory.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataSessionResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
+}
+
+void MainWindow::loadImportedResourceFiles(){
+    iv.pcon->AddToLog("Loading imported resource files from " + appDataImportedResourcesPath +
+                      " to:"  + appDataSessionResourcesPath);
+    // Create a QDir object with the AppData/SessionResourceFiles path defined in the constructor
+    QDir appDataResourcesDirectory(appDataSessionResourcesPath);
+
+    // Create a QDir object that represents the ImportedResourceFiles directory of the Control Center app
+    // This object iterates through each directory and file, including subdirectories
+    QDirIterator dirIterator(appDataImportedResourcesPath,
+                             QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot,
+                             QDirIterator::Subdirectories);
+
+    while(dirIterator.hasNext()){
+      // Grab the next file/directory in the Resources directory
+      dirIterator.next();
+      // Create a fileInfo object to get the name of the file/directory
+      QFileInfo fileInfo = dirIterator.fileInfo();
+      // Only look at non-hidden files/directories
+      if(!fileInfo.isHidden()){
+        QString sourcePath = fileInfo.absoluteFilePath();
+        // Get the name of the file/directory minus everything before the "ImportedResourceFiles" directory
+        QString fileName = sourcePath.mid(appDataImportedResourcesPath.length());
+        // Construct the destination path where the file/directory is created in AppData
+        QString destinationPath = appDataSessionResourcesPath + fileName;
+
+        // Create the directory in AppData if the file is a directory
+        if (fileInfo.isDir()){
+          appDataResourcesDirectory.mkpath(destinationPath);
+        } else {
+        // Copy the file to AppData if it is a file
+          // Need to remove any existing file or else copy will fail
+          QFile::remove(destinationPath);
+          QFile::copy(sourcePath, destinationPath);
+        }
+      }
+    }
 }
 
 void MainWindow::readOutput() {
@@ -195,7 +279,12 @@ void MainWindow::readOutput() {
     }
     else if ((data.find("<updates>") != std::string::npos) || (error.find("<updates>") != std::string::npos)){
         ui->header_error_label->setText("UPDATE AVAILABLE: CLICK MENU IN TOP LEFT");
-        show_update_message_box();
+        // Check if message box indicating an update is available should be shown
+        // If the 'show_update_message_box' setting is not set in settings.json, then the default value is true
+        bool show_update_message_box_setting = appSettings.get("show_update_message_box", true).toBool();
+        if(show_update_message_box_setting){
+          show_update_message_box();
+        }
     }
     else{
         ui->header_error_label->setText("Error Checking For Updates!");
@@ -210,7 +299,20 @@ void MainWindow::show_update_message_box(){
         "A new IQ Control Center update is now available.\n"
         "Please navigate to 'Check for Updates' under Menu in the top left corner of the application.");
     msgBox.setStandardButtons(QMessageBox::Ok);
+
+    // Add a button labeled 'Don't show again' to allow user to disable showing of update message box when clicked
+    QAbstractButton* dontShowAgainButton = msgBox.addButton("Don't show again", QMessageBox::ActionRole);
+
     msgBox.exec();
+
+    // If the 'Don't show again' button is clicked, update settings.json
+    if (msgBox.clickedButton() == dontShowAgainButton){
+        updateShowMessageBoxSetting(false);
+    }
+}
+
+void MainWindow::updateShowMessageBoxSetting(bool value){
+    appSettings.set("show_update_message_box", value);
 }
 
 void MainWindow::on_pushButton_home_clicked(){

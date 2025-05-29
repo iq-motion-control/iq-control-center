@@ -1,0 +1,676 @@
+[
+    {
+        "descriptor": "general_vertiq_40xx_hyperdrive_speed",
+        "Entries": [
+            {
+                "type_idn": 60,
+                "descriptor": "Motor Direction",
+                "info": "Set the motor's spinning direction (clockwise vs. counter clockwise) and flight mode (2D non-reversible vs. 3D reversible)",
+                "sub_idn": 3,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "uncofigured",
+                    "3D counter clockwise",
+                    "3D clockwise",
+                    "2D counter clockwise",
+                    "2D clockwise"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            },
+            {
+                "type_idn": 60,
+                "descriptor": "Mode",
+                "info": "PWM Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use PWM. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
+                "sub_idn": 0,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "PWM",
+                    "Voltage",
+                    "Velocity"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2
+                ]
+            },
+            {
+                "type_idn": 76,
+                "descriptor": "Communication",
+                "info": "These are standard hobby communication methods. Match your module's communication method with your flight controller's communication method.",
+                "sub_idn": 0,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Autodetect",
+                    "Hobby Disabled",
+                    "Standard PWM",
+                    "OneShot125",
+                    "OneShot42",
+                    "MultiShot",
+                    "DShot150",
+                    "DShot300",
+                    "DShot600",
+                    "DShot1200"
+                ],
+                "list_value": [
+                    255,
+                    254,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8
+                ]
+            },
+            {
+                "type_idn": 60,
+                "descriptor": "Safe Factor",
+                "info": "Scales down the values coming from the FC.  Set this to 0.1 to make everything 1/10th the command.  Set this to 1 for normal use.",
+                "sub_idn": 7,
+                "format": "f",
+                "unit": "PU",
+                "frame_type": 2,
+                "maximum": 1,
+                "minimum": 0,
+                "decimal": 2,
+                "single_step": 0.01
+            },
+            {
+                "type_idn": 60,
+                "descriptor": "FC 2D/3D Mode",
+                "info": "The FC and the ESC must agree upon the meaning of the signal coming out of the ESC.  When FCs are in 3D mode they remap negative signals.  This parameter keeps the FC and ESC in agreement.",
+                "sub_idn": 8,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "2D",
+                    "3D"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 80,
+                "descriptor": "DroneCAN Node ID",
+                "info": "The ID used by the motor to uniquely identify itself on the DroneCAN bus. The motor needs to be power cycled after changing this setting to re-join the bus with this new ID. Note that this ID must not be used by any other nodes on the bus, so if you are connecting multiple motors to a DroneCAN bus make sure they are each configured with a unique ID. Legal node IDs start at 1 and go up 127. It is best to avoid using 1 as your node ID, because this ID is often used by flight controllers. Picking node IDs in the middle of the range is generally safer.",
+                "sub_idn": 0,
+                "format": "I",
+                "unit": "ID",
+                "frame_type": 2,
+                "maximum": 127,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 80,
+                "descriptor": "DroneCAN ESC Index",
+                "info": "The ESC index used to identify this motor when ESC commands are set on the DroneCAN bus. Each ESC/motor on the bus needs a unique index to identify what commands are intended for it. The counting of these indexes starts from 0, so typically when integrating with a flight controller motor 1 will have an ESC index of 0, motor 2 will have an ESC index of 1, etc. The ESC indexes start at 0, and go up to 19. The exact ordering to use with the ESC indexes will depend on how your controller numbers and orders its motors.",
+                "sub_idn": 1,
+                "format": "I",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 19,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 80,
+                "descriptor": "DroneCAN Telemetry Frequency",
+                "info": "The frequency with which telemetry will be sent on the DroneCAN bus.",
+                "sub_idn": 9,
+                "format": "I",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 1000,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Stow Target Angle",
+                "info": "The angle in radians the module will stow at with respect to the zero angle",
+                "sub_idn": 1,
+                "format": "f",
+                "unit": "rads",
+                "frame_type": 2,
+                "maximum": 3.14,
+                "minimum": -3.14,
+                "single_step": 0.1,
+                "decimal": 2
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Stow Zero Angle",
+                "info": "The zero angle",
+                "sub_idn": 0,
+                "format": "f",
+                "unit": "rads",
+                "frame_type": 2,
+                "maximum": 3.14,
+                "minimum": -3.14,
+                "single_step": 0.1,
+                "decimal": 2
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Sample Zero Angle",
+                "info": "Samples a new zero angle based on the current angle",
+                "sub_idn": 3,
+                "format": "n",
+                "unit": "",
+                "frame_type": 5
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Hold Stow",
+                "info": "Determines if we should actively hold the stow angle when we have stowed, or coast after reaching our destination.",
+                "sub_idn": 8,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Coast When Stowed",
+                    "Hold Stow Angle"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Arm Throttle Upper Limit",
+                "info": "The upper limit of the arming region, in terms of throttle percentage.",
+                "sub_idn": 3,
+                "format": "f",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 1,
+                "minimum": -1,
+                "default_value": 0.1,
+                "decimal": 4,
+                "single_step": 0.01
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Arm Throttle Lower Limit",
+                "info": "The lower limit of the arming region, in terms of throttle percentage.",
+                "sub_idn": 4,
+                "format": "f",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 1,
+                "minimum": -1,
+                "default_value": 0.05,
+                "decimal": 4,
+                "single_step": 0.01
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm Throttle Upper Limit",
+                "info": "The upper limit of the disarming region, in terms of throttle percentage.",
+                "sub_idn": 6,
+                "format": "f",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 1,
+                "minimum": -1,
+                "default_value": 0.05,
+                "decimal": 4,
+                "single_step": 0.01
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm Throttle Lower Limit",
+                "info": "The lower limit of the disarming region, in terms of throttle percentage.",
+                "sub_idn": 7,
+                "format": "f",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 1,
+                "minimum": -1,
+                "default_value": 0,
+                "decimal": 4,
+                "single_step": 0.01
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Arm On Throttle",
+                "info": "Determines if the throttle input will be used to transition to the armed state. When this is set to Do Not Arm On Throttle, throttle messages will not cause the module to arm.",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Do Not Arm On Throttle",
+                    "Arm On Throttle"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm On Throttle",
+                "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disrm On Throttle, throttle messages will not cause the module to disarm.",
+                "sub_idn": 5,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Do Not Disarm On Throttle",
+                    "Disarm On Throttle"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Consecutive Arming Throttles to Arm",
+                "info": "The low end of the calibration in us",
+                "sub_idn": 8,
+                "format": "I",
+                "unit": "Throttles",
+                "frame_type": 2,
+                "maximum": 100000,
+                "minimum": 1,
+                "single_step": 1
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Consecutive Disarming Throttles to Disarm",
+                "info": "Number of consecutive disarming throttles needed to disarm the module",
+                "sub_idn": 13,
+                "format": "I",
+                "unit": "Throttles",
+                "frame_type": 2,
+                "maximum": 100000,
+                "minimum": 1,
+                "default_value": 1,
+                "single_step": 1
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm Behavior",
+                "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 9,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm Song Playback Option",
+                "info": "Determines how many times the disarming song will play on a disarm.",
+                "sub_idn": 10,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Never Play",
+                    "Play Once",
+                    "Play Continuosly"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2
+                ]
+            },
+            {
+                "type_idn": 52,
+                "descriptor": "Timeout Behavior",
+                "info": "Determines what behavior to perform when a timeout error occurs. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 18,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 52,
+                "descriptor": "Timeout Song Playback Option",
+                "info": "Determines how many times the timeout song will play on a timeout error.",
+                "sub_idn": 19,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Never Play",
+                    "Play Once",
+                    "Play Continuosly"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2
+                ]
+            },
+            {
+                "type_idn": 101,
+                "descriptor": "White LED Intensity",
+                "info": "The intensity of the white LED when using a standard Vertiq LED board.",
+                "sub_idn": 0,
+                "format": "B",
+                "unit": "%",
+                "frame_type": 2,
+                "maximum": 100,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 101,
+                "descriptor": "White LED Strobing Active",
+                "info": "Determines if the white LED's strobing feature is active when using a standard Vertiq LED board.",
+                "sub_idn": 1,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Inactive",
+                    "Active"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 101,
+                "descriptor": "White LED Strobing Period",
+                "info": "The period of the strobe pattern when using the white LED's strobing feature with a standard Vertiq LED board.",
+                "sub_idn": 2,
+                "format": "f",
+                "unit": "seconds",
+                "frame_type": 2,
+                "maximum": 1000,
+                "minimum": 0.1,
+                "default_value": 1,
+                "decimal": 1,
+                "single_step": 0.1
+            },
+            {
+                "type_idn": 101,
+                "descriptor": "White LED Strobing Pattern",
+                "info": "A 32 bit bitmask that defines the white LED's strobing pattern when using a standard Vertiq LED board. The pattern is divided into 32 equal portions throughout its period, and a 1 in the bitmask means that the LED will be on, and a 0 means that the LED will be off.",
+                "sub_idn": 3,
+                "format": "I",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 4294967295,
+                "minimum": 0,
+                "default_value": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Red",
+                "info": "Sets the red component of the RGB LED when using a standard Vertiq LED Board. Ranges from 0 to 255.",
+                "sub_idn": 0,
+                "format": "B",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 255,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Green",
+                "info": "Sets the green component of the RGB LED when using a standard Vertiq LED Board. Ranges from 0 to 255.",
+                "sub_idn": 1,
+                "format": "B",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 255,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Blue",
+                "info": "Sets the blue component of the RGB LED when using a standard Vertiq LED Board. Ranges from 0 to 255.",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 255,
+                "minimum": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Update Color",
+                "info": "Updates the color of the RGB LED on a standard Vertiq LED Board to the most recent color settings. Must be used after changing the color settings to update the LED to new colors.",
+                "sub_idn": 3,
+                "format": "n",
+                "unit": "",
+                "frame_type": 5
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Strobing Active",
+                "info": "Determines if the RGB LED's strobing feature is active when using a standard Vertiq LED board.",
+                "sub_idn": 4,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Inactive",
+                    "Active"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Strobing Period",
+                "info": "The period of the strobe pattern when using the RGB LED's strobing feature with a standard Vertiq LED board.",
+                "sub_idn": 5,
+                "format": "f",
+                "unit": "seconds",
+                "frame_type": 2,
+                "maximum": 1000,
+                "minimum": 0.1,
+                "default_value": 1,
+                "decimal": 1,
+                "single_step": 0.1
+            },
+            {
+                "type_idn": 100,
+                "descriptor": "RGB LED Strobing Pattern",
+                "info": "A 32 bit bitmask that defines the RGB LED's strobing pattern when using a standard Vertiq LED board. The pattern is divided into 32 equal portions throughout its period, and a 1 in the bitmask means that the LED will be on, and a 0 means that the LED will be off.",
+                "sub_idn": 6,
+                "format": "I",
+                "unit": "",
+                "frame_type": 2,
+                "maximum": 4294967295,
+                "minimum": 0,
+                "default_value": 0,
+                "decimal": 0,
+                "single_step": 1
+            },
+            {
+                "type_idn": 88,
+                "descriptor": "Throttle Control Value Index",
+                "info": "The IFCI throttle control value index",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "Unconfigured"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    255
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "DroneCAN Throttle Priority",
+                "info": "DroneCAN's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 1,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "Hobby Throttle Priority",
+                "info": "Hobby protocols' priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 2,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 104,
+                "descriptor": "IQUART Throttle Priority",
+                "info": "IQUART's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "sub_idn": 3,
+                "format": "B",
+                "unit": "",
+                "frame_type": 1,
+                "list_name": [
+                    "Protocol Disabled",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
+                ]
+            },
+            {
+                "type_idn": 105,
+                "descriptor": "Field Weakening",
+                "info": "Determines whether the motor will attempt to field weaken or if it will limit its drive voltage to the supply voltage.",
+                "sub_idn": 0,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "list_name": [
+                    "Disabled",
+                    "Enabled"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            }
+        ]
+    }
+]
