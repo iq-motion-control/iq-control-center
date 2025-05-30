@@ -41,7 +41,6 @@ void Tab::CreateFrames()
   gridLayout_->setContentsMargins(11, 11, 11, 11);
   gridLayout_->setObjectName(QStringLiteral("gridLayout"));
 
-  qDebug() << "In frame creation";
   int frame_vertical_position = 0;
   for(std::pair<std::string, Client*> client: client_map_)
   {
@@ -64,8 +63,6 @@ void Tab::CreateFrames()
       }
 
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
-
-      QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
 
       //Only put this in if it is allowed by our firmware version
       if(fv->IsValidForConnectedFirmware()){
@@ -126,7 +123,6 @@ void Tab::CreateFrames()
           ++frame_vertical_position;
 
        }else{
-          qDebug() << "Skipping tab creation for "+QString::fromStdString(client_entry_descriptor);
           iv.pcon->AddToLog("Skipping tab creation for "+QString::fromStdString(client_entry_descriptor));
       }
     }

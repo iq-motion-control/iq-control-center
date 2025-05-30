@@ -26,6 +26,7 @@
 #include <QFile>
 #include <QString>
 #include <QTextStream>
+#include <QVersionNumber>
 
 #include <map>
 #include <string>
@@ -33,12 +34,10 @@
 
 #include <math.h>
 
-//Trying this to get at the iv for port connection
+//Include this so we can get at the iv variable for the port connection, good for logging and firmware version checking
 #include "main.h"
 
 #define POSITION_BYTE_LEN 1
-
-#include <QVersionNumber>
 
 class FrameVariables {
  public:

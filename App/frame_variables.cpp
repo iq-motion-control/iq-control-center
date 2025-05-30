@@ -19,15 +19,21 @@
 */
 
 #include "frame_variables.h"
-#include <QDebug>
 
 bool FrameVariables::IsValidForConnectedFirmware(){
-    QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
+    QString connected_fw_version_string = iv.pcon->GetFirmwareVersionString();
 
-    //Only valid if it is within the firmware version range specified by the resources file
-    //QVersionNumber makes comparing these version numbers very easy and convenient, no need to mess around with decomposing the version number ourselves
-    bool is_valid = (connected_fw_version >= min_fw_version_) && (connected_fw_version <= max_fw_version_);
-    return is_valid;
+    //If our connected fw version string is not initialized, don't even try to do this check, something is wrong
+    if(connected_fw_version_string != ""){
+        QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
+
+        //Only valid if it is within the firmware version range specified by the resources file
+        //QVersionNumber makes comparing these version numbers very easy and convenient, no need to mess around with decomposing the version number ourselves
+        bool is_valid = (connected_fw_version >= min_fw_version_) && (connected_fw_version <= max_fw_version_);
+        return is_valid;
+    }
+
+    return false;
 }
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
@@ -198,7 +204,6 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
       }
   }else{
       QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
-      qDebug() << "Skipping " << parameter_descriptor;
       iv.pcon->AddToLog("Skipped creating frame variables for "+parameter_descriptor+" because it is not applicable to firmware version "+iv.pcon->GetFirmwareVersionString());
   }
 
