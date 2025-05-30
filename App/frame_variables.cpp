@@ -201,7 +201,7 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
   }else{
       QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
       qDebug() << "Skipping " << parameter_descriptor;
-      iv.pcon->AddToLog("Skipped "+parameter_descriptor+" because it is not applicable to firmware version "+iv.pcon->GetFirmwareVersionString());
+      iv.pcon->AddToLog("Skipped creating frame variables for "+parameter_descriptor+" because it is not applicable to firmware version "+iv.pcon->GetFirmwareVersionString());
   }
 
   return frame_variables_ptr;

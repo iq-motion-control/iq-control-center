@@ -96,12 +96,16 @@ void TabPopulator::CreateTabFrames() {
       LinkTabWidgetAndFirmwareFiles();
 
   tab_map_->clear();
+
+  //Want to be logging what is happening during our frame creation
+  iv.pcon->logging_active_ = true;
   for (std::pair<QWidget *, std::vector<std::string>> tab_firmware : tab_widget_firmware_files) {
     std::shared_ptr<Tab> tab =
         std::make_shared<Tab>(tab_firmware.first, iv.pcon->GetObjId(), tab_firmware.second);
     tab->CreateFrames();
     UpdateTabMap(tab, tab_firmware.second[1]);
   }
+  iv.pcon->logging_active_ = false;
 }
 
 void TabPopulator::UpdateTabMap(std::shared_ptr<Tab> &tab, std::string &tab_name) {
