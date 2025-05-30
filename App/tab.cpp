@@ -49,9 +49,6 @@ void Tab::CreateFrames()
     {
       std::string client_entry_descriptor = client_entry.first;
 
-//      qDebug() << "Descriptor: " << QString(client_entry);
-//      qDebug() << "Descriptor: " << QString::fromStdString(client_entry_descriptor);
-
       bool entry_needs_reboot = false;
 
       //We need to check to see if this is the Module ID entry. if it is,
@@ -71,7 +68,7 @@ void Tab::CreateFrames()
       QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
 
       //Only put this in if it is allowed by our firmware version
-      if(connected_fw_version >= fv->min_fw_version_ && connected_fw_version <= fv->max_fw_version_){
+      if(fv->IsValidForConnectedFirmware()){
           uint8_t frame_type = fv->frame_type_;
 
           switch(frame_type)

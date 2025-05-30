@@ -21,6 +21,15 @@
 #include "frame_variables.h"
 #include <QDebug>
 
+bool FrameVariables::IsValidForConnectedFirmware(){
+    QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
+
+    //Only valid if it is within the firmware version range specified by the resources file
+    //QVersionNumber makes comparing these version numbers very easy and convenient, no need to mess around with decomposing the version number ourselves
+    bool is_valid = (connected_fw_version >= min_fw_version_) && (connected_fw_version <= max_fw_version_);
+    return is_valid;
+}
+
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
                                                                const std::string &folder_path,
                                                                bool using_custom_order) {
@@ -99,31 +108,20 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
   frame_variables_ptr->frame_type_ = param["frame_type"].asUInt();
 
   if(param.isMember("min_fw_version")){
-//      qDebug() << "PCON Version String:" << iv.pcon->GetFirmwareVersionString();
-//      iv.pcon->AddToLog("Hi from min fw");
-//      qDebug() << "Found a min_fw_version";
-//      qDebug() << QString::fromStdString(param["min_fw_version"].asString());
-      frame_variables_ptr->min_fw_version_ = QVersionNumber::fromString(QString::fromStdString(param["min_fw_version"].asString()));
-//      qDebug() << "Min Version Number: " << frame_variables_ptr->min_fw_version_.toString();
+    frame_variables_ptr->min_fw_version_ = QVersionNumber::fromString(QString::fromStdString(param["min_fw_version"].asString()));
   }else{
-    //Give it the smallest possible version if one isn't specified, v0.0.0
     frame_variables_ptr->min_fw_version_ = QVersionNumber(0, 0, 0);
   }
 
   QVersionNumber max_fw;
   if(param.isMember("max_fw_version")){
-//      qDebug() << "Found a max_fw_version";
-//      qDebug() << QString::fromStdString(param["max_fw_version"].asString());
       frame_variables_ptr->max_fw_version_ = QVersionNumber::fromString(QString::fromStdString(param["max_fw_version"].asString()));
-//      qDebug() << "Max Version Number: " << max_fw.toString();
   }else{
      frame_variables_ptr->max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
   }
 
-  QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
-
-  //Only put this in if it is allowed by our firmware version
-  if(connected_fw_version >= frame_variables_ptr->min_fw_version_ && connected_fw_version <= frame_variables_ptr->max_fw_version_){
+  //Only make this if its valid for the firmware on the connected module. Otherwise, skip it
+  if(frame_variables_ptr->IsValidForConnectedFirmware()){
       switch (param["frame_type"].asUInt()) {
         case 1: {
           uint8_t list_size = param["list_name"].size();

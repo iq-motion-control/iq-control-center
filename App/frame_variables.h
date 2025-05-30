@@ -52,10 +52,7 @@ class FrameVariables {
   // 5 = button
   // 6 = readonly
 
-  //Not sure if I should do a string here or not for this, I'll just start like this
-//  std::string min_fw_version_ = "";
-//  std::string max_fw_version_ = "";
-
+  //Start these at the smallest possible and biggest possible version, so we are effectively doing no checking if they aren't defined
   QVersionNumber min_fw_version_ = QVersionNumber(0, 0, 0);
   QVersionNumber max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
 
@@ -107,6 +104,8 @@ class FrameVariables {
   TestingFrame testing_frame_;
   ButtonFrame button_frame_;
   ReadOnlyFrame read_only_frame_;
+
+  bool IsValidForConnectedFirmware();
 };
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
