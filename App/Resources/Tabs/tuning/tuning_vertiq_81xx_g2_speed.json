@@ -141,7 +141,7 @@
         "decimal": 0,
         "single_step": 1
       },
-	  {
+      {
         "type_idn": 80,
         "descriptor": "DroneCAN Zero Behavior",
         "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command when DroneCAN is bypassing arming.",
@@ -152,15 +152,15 @@
         "list_name": [
           "Coast",
           "Brake",
-		  "Normal Controller"
+          "Normal Controller"
         ],
         "list_value": [
           0,
           1,
-		  2
+          2
         ]
       },
-	  {
+      {
         "type_idn": 50,
         "descriptor": "Voltage Slew Limit Enable",
         "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command.",
@@ -177,7 +177,7 @@
           0
         ]
       },
-	  {
+      {
         "type_idn": 50,
         "descriptor": "Voltage Slew Limit",
         "info": "Sets the slew limit of the motor in V/s. Only has an effect of the slew limit is enabled.",
@@ -253,11 +253,12 @@
         "format": "f",
         "unit": "s",
         "frame_type": 2,
+        "min_fw_version": "0.1.0",
         "maximum": 1000000000,
         "minimum": 0,
         "single_step": 0.001,
         "decimal": 3,
-        "nan": true
+        "nan": true,
       }
     ]
   }
