@@ -19,6 +19,7 @@
 */
 
 #include "frame_variables.h"
+#include <QDebug>
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,
                                                                const std::string &folder_path,
@@ -96,79 +97,111 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
 FrameVariables *CreateFrameVariables(const Json::Value &param) {
   FrameVariables *frame_variables_ptr = new FrameVariables();
   frame_variables_ptr->frame_type_ = param["frame_type"].asUInt();
-  switch (param["frame_type"].asUInt()) {
-    case 1: {
-      uint8_t list_size = param["list_name"].size();
-      for (uint8_t ii = 0; ii < list_size; ++ii) {
-        std::string name = param["list_name"][ii].asString();
-        int value = param["list_value"][ii].asInt();
-        frame_variables_ptr->combo_frame_.list_names.push_back(name);
-        frame_variables_ptr->combo_frame_.list_values.push_back(value);
-      }
-      frame_variables_ptr->combo_frame_.info = param["info"].asString();
-      break;
-    }
-    case 2: {
-      double maximum = NAN;
-      double minimum = NAN;
-      if (!param["maximum"].isNull()) {
-        maximum = param["maximum"].asDouble();
-      }
-      if (!param["minimum"].isNull()) {
-        minimum = param["minimum"].asDouble();
-      }
-      frame_variables_ptr->spin_frame_.maximum = maximum;
-      frame_variables_ptr->spin_frame_.minimum = minimum;
-      frame_variables_ptr->spin_frame_.single_step = param["single_step"].asDouble();
-      frame_variables_ptr->spin_frame_.decimal = param["decimal"].asDouble();
-      frame_variables_ptr->spin_frame_.unit = param["unit"].asString();
-      frame_variables_ptr->spin_frame_.nan = param["nan"].asBool();
-      frame_variables_ptr->spin_frame_.info = param["info"].asString();
-      break;
-    }
-    case 3: {
-      break;
-    }
-    case 4: {
-      double maximum = NAN;
-      double minimum = NAN;
-      if (!param["maximum"].isNull()) {
-        maximum = param["maximum"].asDouble();
-      }
-      if (!param["minimum"].isNull()) {
-        minimum = param["minimum"].asDouble();
-      }
-      frame_variables_ptr->testing_frame_.maximum = maximum;
-      frame_variables_ptr->testing_frame_.minimum = minimum;
-      frame_variables_ptr->testing_frame_.single_step = param["single_step"].asDouble();
-      frame_variables_ptr->testing_frame_.default_value = param["default_value"].asDouble();
-      frame_variables_ptr->testing_frame_.decimal = param["decimal"].asDouble();
-      frame_variables_ptr->testing_frame_.unit = param["unit"].asString();
-      frame_variables_ptr->testing_frame_.info = param["info"].asString();
-      break;
-    }
-    case 5: {
-      frame_variables_ptr->button_frame_.info = param["info"].asString();
-      break;
-    }
-    case 6: {
-        double maximum = NAN;
-        double minimum = NAN;
-        if (!param["maximum"].isNull()) {
-          maximum = param["maximum"].asDouble();
-        }
-        if (!param["minimum"].isNull()) {
-          minimum = param["minimum"].asDouble();
-        }
-        frame_variables_ptr->read_only_frame_.maximum = maximum;
-        frame_variables_ptr->read_only_frame_.minimum = minimum;
-        frame_variables_ptr->read_only_frame_.single_step = param["single_step"].asDouble();
-        frame_variables_ptr->read_only_frame_.decimal = param["decimal"].asDouble();
-        frame_variables_ptr->read_only_frame_.unit = param["unit"].asString();
-        frame_variables_ptr->read_only_frame_.nan = param["nan"].asBool();
-        frame_variables_ptr->read_only_frame_.info = param["info"].asString();
-    break;
+
+  if(param.isMember("min_fw_version")){
+//      qDebug() << "PCON Version String:" << iv.pcon->GetFirmwareVersionString();
+//      iv.pcon->AddToLog("Hi from min fw");
+//      qDebug() << "Found a min_fw_version";
+//      qDebug() << QString::fromStdString(param["min_fw_version"].asString());
+      frame_variables_ptr->min_fw_version_ = QVersionNumber::fromString(QString::fromStdString(param["min_fw_version"].asString()));
+//      qDebug() << "Min Version Number: " << frame_variables_ptr->min_fw_version_.toString();
+  }else{
+    //Give it the smallest possible version if one isn't specified, v0.0.0
+    frame_variables_ptr->min_fw_version_ = QVersionNumber(0, 0, 0);
   }
+
+  QVersionNumber max_fw;
+  if(param.isMember("max_fw_version")){
+//      qDebug() << "Found a max_fw_version";
+//      qDebug() << QString::fromStdString(param["max_fw_version"].asString());
+      frame_variables_ptr->max_fw_version_ = QVersionNumber::fromString(QString::fromStdString(param["max_fw_version"].asString()));
+//      qDebug() << "Max Version Number: " << max_fw.toString();
+  }else{
+     frame_variables_ptr->max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
+  }
+
+  QVersionNumber connected_fw_version = QVersionNumber::fromString(iv.pcon->GetFirmwareVersionString());
+
+  //Only put this in if it is allowed by our firmware version
+  if(connected_fw_version >= frame_variables_ptr->min_fw_version_ && connected_fw_version <= frame_variables_ptr->max_fw_version_){
+      switch (param["frame_type"].asUInt()) {
+        case 1: {
+          uint8_t list_size = param["list_name"].size();
+          for (uint8_t ii = 0; ii < list_size; ++ii) {
+            std::string name = param["list_name"][ii].asString();
+            int value = param["list_value"][ii].asInt();
+            frame_variables_ptr->combo_frame_.list_names.push_back(name);
+            frame_variables_ptr->combo_frame_.list_values.push_back(value);
+          }
+          frame_variables_ptr->combo_frame_.info = param["info"].asString();
+          break;
+        }
+        case 2: {
+          double maximum = NAN;
+          double minimum = NAN;
+          if (!param["maximum"].isNull()) {
+            maximum = param["maximum"].asDouble();
+          }
+          if (!param["minimum"].isNull()) {
+            minimum = param["minimum"].asDouble();
+          }
+          frame_variables_ptr->spin_frame_.maximum = maximum;
+          frame_variables_ptr->spin_frame_.minimum = minimum;
+          frame_variables_ptr->spin_frame_.single_step = param["single_step"].asDouble();
+          frame_variables_ptr->spin_frame_.decimal = param["decimal"].asDouble();
+          frame_variables_ptr->spin_frame_.unit = param["unit"].asString();
+          frame_variables_ptr->spin_frame_.nan = param["nan"].asBool();
+          frame_variables_ptr->spin_frame_.info = param["info"].asString();
+          break;
+        }
+        case 3: {
+          break;
+        }
+        case 4: {
+          double maximum = NAN;
+          double minimum = NAN;
+          if (!param["maximum"].isNull()) {
+            maximum = param["maximum"].asDouble();
+          }
+          if (!param["minimum"].isNull()) {
+            minimum = param["minimum"].asDouble();
+          }
+          frame_variables_ptr->testing_frame_.maximum = maximum;
+          frame_variables_ptr->testing_frame_.minimum = minimum;
+          frame_variables_ptr->testing_frame_.single_step = param["single_step"].asDouble();
+          frame_variables_ptr->testing_frame_.default_value = param["default_value"].asDouble();
+          frame_variables_ptr->testing_frame_.decimal = param["decimal"].asDouble();
+          frame_variables_ptr->testing_frame_.unit = param["unit"].asString();
+          frame_variables_ptr->testing_frame_.info = param["info"].asString();
+          break;
+        }
+        case 5: {
+          frame_variables_ptr->button_frame_.info = param["info"].asString();
+          break;
+        }
+        case 6: {
+            double maximum = NAN;
+            double minimum = NAN;
+            if (!param["maximum"].isNull()) {
+              maximum = param["maximum"].asDouble();
+            }
+            if (!param["minimum"].isNull()) {
+              minimum = param["minimum"].asDouble();
+            }
+            frame_variables_ptr->read_only_frame_.maximum = maximum;
+            frame_variables_ptr->read_only_frame_.minimum = minimum;
+            frame_variables_ptr->read_only_frame_.single_step = param["single_step"].asDouble();
+            frame_variables_ptr->read_only_frame_.decimal = param["decimal"].asDouble();
+            frame_variables_ptr->read_only_frame_.unit = param["unit"].asString();
+            frame_variables_ptr->read_only_frame_.nan = param["nan"].asBool();
+            frame_variables_ptr->read_only_frame_.info = param["info"].asString();
+        break;
+      }
+      }
+  }else{
+      QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
+      qDebug() << "Skipping " << parameter_descriptor;
+      iv.pcon->AddToLog("Skipped "+parameter_descriptor+" because it is not applicable to firmware version "+iv.pcon->GetFirmwareVersionString());
   }
 
   return frame_variables_ptr;

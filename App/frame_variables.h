@@ -33,7 +33,12 @@
 
 #include <math.h>
 
+//Trying this to get at the iv for port connection
+#include "main.h"
+
 #define POSITION_BYTE_LEN 1
+
+#include <QVersionNumber>
 
 class FrameVariables {
  public:
@@ -46,6 +51,13 @@ class FrameVariables {
   // 4 = testing
   // 5 = button
   // 6 = readonly
+
+  //Not sure if I should do a string here or not for this, I'll just start like this
+//  std::string min_fw_version_ = "";
+//  std::string max_fw_version_ = "";
+
+  QVersionNumber min_fw_version_ = QVersionNumber(0, 0, 0);
+  QVersionNumber max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
 
   struct ComboFrame {
     std::vector<std::string> list_names;
