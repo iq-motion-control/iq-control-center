@@ -253,6 +253,7 @@
         "format": "f",
         "unit": "s",
         "frame_type": 2,
+        "min_fw_version": "0.1.0",
         "maximum": 1000000000,
         "minimum": 0,
         "single_step": 0.001,

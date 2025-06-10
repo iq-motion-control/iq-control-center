@@ -126,7 +126,7 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
      frame_variables_ptr->max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
   }
 
-  //Only make this if its valid for the firmware on the connected module. Otherwise, skip it
+  //Only make this if it is valid for the firmware on the connected module. Otherwise, skip it
   if(frame_variables_ptr->IsValidForConnectedFirmware()){
       switch (param["frame_type"].asUInt()) {
         case 1: {
