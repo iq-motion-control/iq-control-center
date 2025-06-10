@@ -238,7 +238,7 @@
         "unit": "",
         "frame_type": 5
       },
-	  {
+      {
         "type_idn": 85,
         "descriptor": "Stow Target Acceleration",
         "info": "Determines the acceleration that will try to be maintained during the stow. A low acceleration will cause a more gradual transition to stow, while a high acceleration will cause a more aggressive stow.",
@@ -252,7 +252,7 @@
         "single_step": 1.0,
         "nan": true
       },
-	  {
+      {
         "type_idn": 52,
         "descriptor": "Timeout Meaning",
         "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will cause the motor to become disarmed in either case.",
@@ -269,7 +269,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 87,
         "descriptor": "Stopped Speed",
         "info": "Determines the speed the module must be below to be considered stopped.",
@@ -283,7 +283,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-	  {
+      {
         "type_idn": 87,
         "descriptor": "Stopped Time",
         "info": "Determines how long the long the module must be stopped before considering a stop complete.",
@@ -297,7 +297,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-	  {
+      {
         "type_idn": 86,
         "descriptor": "Always Armed",
         "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
@@ -313,8 +313,8 @@
           0,
           1
         ]
-    },
-	  {
+      },
+      {
         "type_idn": 80,
         "descriptor": "Arming by DroneCAN ArmingStatus",
         "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
@@ -322,6 +322,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -330,8 +331,8 @@
           0,
           1
         ]
-    },
-	  {
+      },
+      {
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -356,6 +357,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Use New-Style Telemetry",
           "Use Old-Style Telemetry"
@@ -365,7 +367,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Percentage",
         "info": "Determines the throtlte percentage to treat as the zero spin throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
@@ -379,7 +381,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+      {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Tolerance",
         "info": "Determines the tolerance below (or above on the negative side) the zero spin throttle to also consider as a 0% spin throttle.",
@@ -401,6 +403,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -420,7 +423,7 @@
         "frame_type": 1,
         "list_name": [
           "Disarmed",
-		  "Armed"
+          "Armed"
         ],
         "list_value": [
           0,
@@ -435,6 +438,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "max_fw_version": "0.0.1",
         "list_name": [
           "Unknown",
           "Hobby",

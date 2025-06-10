@@ -38,6 +38,7 @@ PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * r
   hardware_major_str_(HARDWARE_MAJOR_STRING),
   electronics_str_(ELECTRONICS_STRING),
   electronics_major_str_(ELECTRONICS_MAJOR_STRING),
+  firmware_version_str_(""),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
   perform_timer_callback_(true)
@@ -831,6 +832,7 @@ void PortConnection::GetDeviceInformationResponses(){
 
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
+    firmware_version_str_ = firmware_build_number_string;
 
     hardware_type_ = hardware_type;
     hardware_major_version_ = hardware_major_version;
@@ -1133,4 +1135,8 @@ void PortConnection::HandleRestartNeeded(){
 
      //Let the timer callback work again
      perform_timer_callback_ = true;
+}
+
+QString PortConnection::GetFirmwareVersionString(){
+    return firmware_version_str_;
 }

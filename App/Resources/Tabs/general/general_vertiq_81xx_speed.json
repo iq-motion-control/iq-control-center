@@ -308,6 +308,7 @@
                 "format": "I",
                 "unit": "Throttles",
                 "frame_type": 2,
+                "min_fw_version": "0.0.9",
                 "maximum": 100000,
                 "minimum": 1,
                 "default_value": 1,
@@ -401,6 +402,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "min_fw_version": "0.0.9",
                 "list_name": [
                     "0",
                     "1",
@@ -448,6 +450,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "1",
@@ -469,6 +472,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "1",
@@ -490,6 +494,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "1",

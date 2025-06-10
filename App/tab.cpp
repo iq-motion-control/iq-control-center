@@ -64,62 +64,67 @@ void Tab::CreateFrames()
 
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
 
-      uint8_t frame_type = fv->frame_type_;
+      //Only put this in if it is allowed by our firmware version
+      if(fv->IsValidForConnectedFirmware()){
+          uint8_t frame_type = fv->frame_type_;
 
-      switch(frame_type)
-      {
-        case 1:
-        {
-          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
-          ConnectFrameCombo(fc);
-          frame_map_[client_entry_descriptor] = fc;
-          break;
-        }
-        case 2:
-        {
+          switch(frame_type)
+          {
+            case 1:
+            {
+              FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
+              ConnectFrameCombo(fc);
+              frame_map_[client_entry_descriptor] = fc;
+              break;
+            }
+            case 2:
+            {
+              FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()), entry_needs_reboot);
+              gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
+              ConnectFrameSpinBox(fsb);
+              frame_map_[client_entry_descriptor] = fsb;
+              break;
+            }
+            case 3:
+            {
+              FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
+              ConnectFrameSwitch(fs);
+    //          frame_map_[client_entry_descriptor] = fs;
+              break;
+            }
+            case 4:
+            {
+              FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
+              ConnectFrameTesting(ft);
+              frame_map_[client_entry_descriptor] = ft;
+              break;
+            }
+            case 5:
+            {
+              FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
+              ConnectFrameButton(fb);
+              frame_map_[client_entry_descriptor] = fb;
+              break;
+            }
 
-          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()), entry_needs_reboot);
-          gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
-          ConnectFrameSpinBox(fsb);
-          frame_map_[client_entry_descriptor] = fsb;
-          break;
-        }
-        case 3:
-        {
-          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
-          ConnectFrameSwitch(fs);
-//          frame_map_[client_entry_descriptor] = fs;
-          break;
-        }
-        case 4:
-        {
-          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
-          ConnectFrameTesting(ft);
-          frame_map_[client_entry_descriptor] = ft;
-          break;
-        }
-        case 5:
-        {
-          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
-          ConnectFrameButton(fb);
-          frame_map_[client_entry_descriptor] = fb;
-          break;
-        }
+            case 6:
+            {
+              FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
+              ConnectFrameReadOnly(fr);
+              frame_map_[client_entry_descriptor] = fr;
+              break;
+            }
+          }
+          ++frame_vertical_position;
 
-        case 6:
-        {
-          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
-          ConnectFrameReadOnly(fr);
-          frame_map_[client_entry_descriptor] = fr;
-          break;
-        }
+       }else{
+          iv.pcon->AddToLog("Skipping tab creation for "+QString::fromStdString(client_entry_descriptor));
       }
-      ++frame_vertical_position;
     }
   }
 

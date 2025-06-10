@@ -26,12 +26,16 @@
 #include <QFile>
 #include <QString>
 #include <QTextStream>
+#include <QVersionNumber>
 
 #include <map>
 #include <string>
 #include "IQ_api/json_cpp.hpp"
 
 #include <math.h>
+
+//Include this so we can get at the iv variable for the port connection, good for logging and firmware version checking
+#include "main.h"
 
 #define POSITION_BYTE_LEN 1
 
@@ -46,6 +50,10 @@ class FrameVariables {
   // 4 = testing
   // 5 = button
   // 6 = readonly
+
+  //Start these at the smallest possible and biggest possible version, so we are effectively doing no checking if they aren't defined
+  QVersionNumber min_fw_version_ = QVersionNumber(0, 0, 0);
+  QVersionNumber max_fw_version_ = QVersionNumber(INT_MAX, INT_MAX, INT_MAX);
 
   struct ComboFrame {
     std::vector<std::string> list_names;
@@ -95,6 +103,8 @@ class FrameVariables {
   TestingFrame testing_frame_;
   ButtonFrame button_frame_;
   ReadOnlyFrame read_only_frame_;
+
+  bool IsValidForConnectedFirmware();
 };
 
 std::map<std::string, FrameVariables *> FrameVariablesFromJson(const std::string &file_name,

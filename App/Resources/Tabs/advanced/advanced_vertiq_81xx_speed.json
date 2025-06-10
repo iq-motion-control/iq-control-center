@@ -322,6 +322,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "max_fw_version": "0.0.1",
         "list_name": [
           "Unknown",
           "Hobby",
@@ -360,6 +361,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -377,6 +379,7 @@
       "format": "B",
       "unit": "enum",
       "frame_type": 1,
+      "min_fw_version": "0.1.0",
       "list_name": [
         "Use New-Style Telemetry",
         "Use Old-Style Telemetry"
@@ -422,6 +425,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
