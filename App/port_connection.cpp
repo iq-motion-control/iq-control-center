@@ -373,6 +373,27 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   //know who they're recovering
   found_in_bootloader = CheckIfInBootLoader();
 
+  //If we see someone there, do something about it ASAP. Don't start sending IQUART stuff
+
+  //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
+  //We should kill all of our known detections, and make the only path forward recovery
+  if(found_in_bootloader){
+        //Every second, the TimerTimeout function gets called.
+        //in the case that we are re-detecting to deal with a recovery module later
+        //we need to say that connection_state_ is false until we've dealt with the popup
+        //If we don't, then the timer will cause us to try and talk to another module
+        //which it can't...which will cause an attempt to reconnect, which will pop up a second
+        //recovery message.
+        bool temp_connection = connection_state_;
+        connection_state_ = 0;
+
+                //If we're trying to recover right now, then we should stop here!
+        if(DisplayRecoveryMessage()){
+        connection_state_ = temp_connection;
+        return;
+        }
+  }
+
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
 
@@ -413,25 +434,6 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
-
-      //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
-      //We should kill all of our known detections, and make the only path forward recovery
-      if(found_in_bootloader){
-        //Every second, the TimerTimeout function gets called.
-        //in the case that we are re-detecting to deal with a recovery module later
-        //we need to say that connection_state_ is false until we've dealt with the popup
-        //If we don't, then the timer will cause us to try and talk to another module
-        //which it can't...which will cause an attempt to reconnect, which will pop up a second
-        //recovery message.
-        bool temp_connection = connection_state_;
-        connection_state_ = 0;
-
-        //If we're trying to recover right now, then we should stop here!
-        if(DisplayRecoveryMessage()){
-            connection_state_ = temp_connection;
-            return;
-        }
-      }
 
       if(num_modules_discovered_ > 0){
         //Update system control to the value stored in detected_module_ids_. This may be 0
