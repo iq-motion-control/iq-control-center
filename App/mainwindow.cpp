@@ -394,7 +394,7 @@ void MainWindow::ShowMotorSavedValues() {
 }
 
 void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
-    QString success_message = "Default Settings Values Saved";
+    QString success_message = "Parameter Settings Values Saved";
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
 
@@ -403,16 +403,16 @@ void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
     QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
     QAbstractButton * exitButton = msgBox.addButton("Do Not Reboot Now", QMessageBox::NoRole);
 
-    msgBox.setWindowTitle("Defaults Set Successfully");
+    msgBox.setWindowTitle("Parameters Set Successfully");
 
     QString text;
 
     if(!unable_to_reboot){
-        text.append("Set values from default file successfully. We recommend that you restart your module"
+        text.append("Set values from parameters file successfully. We recommend that you restart your module"
                     " to ensure that all changes take effect. If you would like to restart your module now,"
                     " please select Reboot Now. Your module will disconnect from IQ Control Center.");
     }else{
-        text.append("Set values from default file successfully. Due to the values changed, your "
+        text.append("Set values from parameters file successfully. Due to the values changed, your "
                     "module has disconnected, and we are unable to reboot your module through IQ Control Center. We highly "
                     "recommend that you manually power cycle your module to ensure that all new parameters take effect.");
 
@@ -427,12 +427,12 @@ void MainWindow::HandleDefaultsPopup(bool unable_to_reboot){
         //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
         iv.pcon->RebootMotor();
     }else{
-        iv.pcon->AddToLog("module not rebooted after setting through defaults");
+        iv.pcon->AddToLog("module not rebooted after setting through parameters file");
     }
 }
 
 bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
-    iv.pcon->AddToLog("setting through defaults");
+    iv.pcon->AddToLog("Setting values from parameters file");
 
     //create a map of the values in the defaults file (descriptor and value)
     std::map<std::string, double> default_value_map;
@@ -482,7 +482,7 @@ bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
                     general_special_value_map[value_descriptor] = value;
                 }
             }else{
-               iv.pcon->AddToLog("Null value in defaults file for " + QString(value_descriptor.c_str()));
+               iv.pcon->AddToLog("Null value in parameters file for " + QString(value_descriptor.c_str()));
             }
           }
 
@@ -496,16 +496,15 @@ bool MainWindow::ReadAndPopulateDefaults(Json::Value defaults){
             //yay, you found the right tab. Now set the value in the tab to what was given
             //in the defaults file, and make sure the correct values appear in the gui
 
-            iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through defaults\n");
+            iv.pcon->AddToLog("setting " + QString(tab_descriptor.c_str()) + " values through parameters file\n");
 
             tab_map_[tab_descriptor]->SaveDefaults(default_value_map);
 
-            iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through defaults\n");
+            iv.pcon->AddToLog("checking " + QString(tab_descriptor.c_str()) + " values after setting through parameters file\n");
             tab_map_[tab_descriptor]->CheckSavedValues();
 
           } else {
-
-            QString error_message = "Wrong Default Settings Selected";
+            QString error_message = "Wrong Parameter Selected";
             iv.label_message->setText(error_message);
             iv.pcon->AddToLog(error_message);
             return false;
@@ -546,7 +545,7 @@ void MainWindow::SetDefaults(Json::Value defaults) {
 
 bool MainWindow::HandleSpecialDefaults() {
 
-    iv.pcon->AddToLog("setting special defaults\n");
+    iv.pcon->AddToLog("setting special parameters\n");
 
     //The Json::Value defaults holds all of the information held in the Defaults file json input
     //We've already got the special frames that we care about stored.
@@ -654,7 +653,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
                   //INT_MIN indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
                   //It's ok for support files, that may be interesting information to see
                   if(fc->GetFrameValue() == INT_MIN && exportStyle == exportFileTypes::DEFAULTS_FILE){
-                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to parameters file because of bad value");
                       attach_new_object = false;
                   }else{
                       current_tab_json_object->insert("value", fc->GetFrameValue());
@@ -670,7 +669,7 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
                   //nan indicates we had problems actually reading this guy, so let's not put a bad value in our defaults file.
                   //It's ok for support files, that may be interesting information to see
                   if(std::isnan(fsb->GetFrameValue()) && exportStyle == exportFileTypes::DEFAULTS_FILE){
-                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to defaults file because of bad value");
+                      iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to parameters file because of bad value");
                       attach_new_object = false;
                   }else{
                       current_tab_json_object->insert("value", fsb->GetFrameValue());
@@ -836,7 +835,7 @@ void MainWindow::on_generate_support_button_clicked(){
 }
 
 void MainWindow::display_successful_import(){
-    QString success_message("Custom defaults imported properly");
+    QString success_message("Custom parameters file imported properly");
     iv.label_message->setText(success_message);
     iv.pcon->AddToLog(success_message);
     def->RefreshFilesInDefaults();
@@ -852,23 +851,23 @@ void MainWindow::import_defaults_file_from_path(QString json_to_import){
         QFileInfo file_info(json_to_import);
         QString path_to_copy_to(iv.pcon->path_to_user_defaults_repo_ + "/" + file_info.fileName());
 
-        iv.pcon->AddToLog("Copying defaults file to: " + path_to_copy_to);
+        iv.pcon->AddToLog("Copying parameters file to: " + path_to_copy_to);
 
         bool copySuccessful = QFile::copy(defaults_file.fileName(), path_to_copy_to);
 
         //Say that the file was imported properly, and then refresh the defaults dropdown
         if(copySuccessful){
             display_successful_import();
-            iv.pcon->AddToLog("successfully added a custom defaults file at: " + json_to_import);
+            iv.pcon->AddToLog("successfully added a custom parameters file at: " + json_to_import);
         }else{
             //Pop up a window that says it seems like a file with that name already exists...rename it please. also
             //give the option to overwrite the old one
             QMessageBox msgBox;
-            msgBox.setWindowTitle("Defaults Import Error");
+            msgBox.setWindowTitle("Parameters File Import Error");
 
-            iv.pcon->AddToLog("Failed to import: " + json_to_import + ". A defaults file with that name already exists.");
+            iv.pcon->AddToLog("Failed to import: " + json_to_import + ". A parameters file with that name already exists.");
 
-            QString text("A defaults file with the same name already exists. To"
+            QString text("A parameters file with the same name already exists. To"
                          " overwrite the existing file please select the \"Overwrite\" button. Otherwise, please "
                          "select \"Cancel,\" rename your file, and try importing it again.");
 
@@ -906,7 +905,7 @@ void MainWindow::on_import_defaults_pushbutton_clicked(){
     QString openDir = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
     //Open up the file window to let people pick the json they want to add to the Control Center
-    QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Defaults JSON File"), openDir,
+    QString json_to_import = QFileDialog::getOpenFileName(0, ("Select Parameters JSON File"), openDir,
                                                           tr("JSON (*.json)"));
 
     import_defaults_file_from_path(json_to_import);
@@ -921,7 +920,7 @@ void MainWindow::on_export_defaults_pushbutton_clicked(){
         write_parameters_to_file(&tab_array, exportFileTypes::DEFAULTS_FILE);
         write_data_to_json(tab_array, exportFileTypes::DEFAULTS_FILE);
     }else{
-        ui->header_error_label->setText("Please connect your module before attempting to generate a custom defaults file.");
+        ui->header_error_label->setText("Please connect your module before attempting to generate a custom parameters file.");
     }
 
 }
@@ -944,7 +943,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
         }
 
         case exportFileTypes::DEFAULTS_FILE:{
-            file_beginning.append("custom_defaults_");
+            file_beginning.append("custom_parameters_");
             supportFilePath = QFileDialog::getSaveFileName(this, tr("Open Directory"),
                                                 "/home/" + file_beginning + ui->label_firmware_name->text() + ".json",
                                                 tr("json (*.json"));
@@ -1014,7 +1013,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
             }
             case exportFileTypes::DEFAULTS_FILE: {
                 //If someone exports their defaults file, they'll probably want to use it again later on. So give them that option.
-                text.append("Your module's current state has been saved in " + supportFilePath + ". Would you like to add these defaults"
+                text.append("Your module's current state has been saved in " + supportFilePath + ". Would you like to add these parameters"
                             " to the Control Center now? If no, you will have to use the Import button to do so manually later.");
 
                 msgBox.setStandardButtons(QMessageBox::No);
@@ -1025,7 +1024,7 @@ void MainWindow::write_data_to_json(QJsonArray tab_array, exportFileTypes fileEx
         msgBox.setText(text);
         //If they click yes to import their export, then we'll have to directly import the file into the Defaults folder
         if(msgBox.exec() == QMessageBox::Yes){
-            iv.pcon->AddToLog("Importing defaults file from current module state.");
+            iv.pcon->AddToLog("Importing parameters file from current module state.");
             import_defaults_file_from_path(supportFilePath);
         }
     } else {
