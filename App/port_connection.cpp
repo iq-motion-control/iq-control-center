@@ -1099,37 +1099,41 @@ void PortConnection::HandleRestartNeeded(){
     //Don't let the timer timeout try and talk to us while we're doing this
     perform_timer_callback_ = false;
 
-    RebootMotor();
-
     //Pop up a message saying what's going on
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
+    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
+    msgBox.addButton(QMessageBox::Ok);
     msgBox.setWindowTitle("Reboot Required");
 
-     QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+     QString text = "Setting this parameter requires a module reboot to take effect. To automatically reboot your module, selected Reboot Now. If there are multiple modules connected on a bus, they will also be re-detected. "
+        "Otherwise, select OK and manually reboot your module.";
 
      //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
      //if there's no one left, then we should just give up and close the port
-     if(num_modules_discovered_ > 1){
-
-        //We've got others here, make sure to redetect
-        should_redetect = true;
-
-        //pop up a message for them telling what just happened
-        text = text + " We will automatically rescan the network.";
-
-     }
 
      msgBox.setText(text);
      msgBox.exec();
+
+    if(msgBox.clickedButton() == rebootButton){
+        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        AddToLog("User selected Reboot Now to automatically reboot module after setting parameter.");
+        RebootMotor();
+        if(num_modules_discovered_ > 1){
+            //We've got others here, make sure to redetect
+            should_redetect = true;
+        }
+    }else{
+        AddToLog("User selected OK to manually reboot module after setting parameter.");
+    }
 
      if(should_redetect){
          //Stop here for 2 seconds to make sure everyone is rebooted!
          QTime end_pause = QTime::currentTime().addSecs(2);
          while (QTime::currentTime() < end_pause)
              QCoreApplication::processEvents(QEventLoop::AllEvents);
-
          //Find who's here now
+         AddToLog("Attempting to redetected modules after reboot.");
          DetectNumberOfModulesOnBus();
      }
 
