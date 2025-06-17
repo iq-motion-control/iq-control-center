@@ -127,7 +127,7 @@ void FrameSpinBox::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
   spin_box_->setDecimals(fv->spin_frame_.decimal);
 }
 
-void FrameSpinBox::SaveValue() {
+void FrameSpinBox::SaveValue(bool fromParameterFile) {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
 
@@ -151,7 +151,7 @@ void FrameSpinBox::SaveValue() {
       RemoveStarFromLabel();
 
       //If we need to restart when we change this parameter, then make the user restart
-      if(requires_restart_){
+      if(requires_restart_ && !fromParameterFile){
         iv.pcon->HandleRestartNeeded();
       }
 
