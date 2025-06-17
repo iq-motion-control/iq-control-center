@@ -68,7 +68,7 @@ class FrameSpinBox: public Frame
     void SetFrameValue(double new_value);
 
   public slots:
-    void SaveValue();
+    void SaveValue(bool fromParameterFile = false);
     void GetSavedValue();
     void SpinBoxValueChanged(double spin_box_value);
     void ShowInfo();
