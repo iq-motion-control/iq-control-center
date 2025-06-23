@@ -1445,7 +1445,7 @@ QComboBox:on, QComboBox:off {
               </font>
              </property>
              <property name="text">
-              <string>PRE-CONFIGURED PARAMETER FILES</string>
+              <string>PARAMETER FILES</string>
              </property>
             </widget>
            </item>
@@ -1636,7 +1636,7 @@ QPushButton:hover{
                 <x>0</x>
                 <y>0</y>
                 <width>1143</width>
-                <height>631</height>
+                <height>630</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1888,8 +1888,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1963,8 +1963,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2715,8 +2715,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>100</width>
-                <height>30</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -4636,7 +4636,7 @@ QPushButton:hover{
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
