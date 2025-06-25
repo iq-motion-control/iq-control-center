@@ -1106,7 +1106,7 @@ void PortConnection::HandleRestartNeeded(){
     msgBox.addButton(QMessageBox::Ok);
     msgBox.setWindowTitle("Reboot Required");
 
-     QString text = "Setting this parameter requires a module reboot to take effect. To automatically reboot your module, selected Reboot Now. If there are multiple modules connected on a bus, they will also be re-detected. "
+     QString text = "Setting this parameter requires a module reboot to take effect. To automatically reboot your module, select Reboot Now. If there are multiple modules connected on a bus, they will still be connected. "
         "Otherwise, select OK and manually reboot your module.";
 
      //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
@@ -1116,7 +1116,7 @@ void PortConnection::HandleRestartNeeded(){
      msgBox.exec();
 
     if(msgBox.clickedButton() == rebootButton){
-        //reboot the motor to make sure all changes take full effect (specifically is module id gets changed)
+        //reboot the motor to make sure all changes take full effect (specifically if module id gets changed)
         AddToLog("User selected Reboot Now to automatically reboot module after setting parameter.");
         RebootMotor();
         if(num_modules_discovered_ > 1){
@@ -1133,7 +1133,7 @@ void PortConnection::HandleRestartNeeded(){
          while (QTime::currentTime() < end_pause)
              QCoreApplication::processEvents(QEventLoop::AllEvents);
          //Find who's here now
-         AddToLog("Attempting to redetected modules after reboot.");
+         AddToLog("Attempting to redetect modules after reboot.");
          DetectNumberOfModulesOnBus();
      }
 
