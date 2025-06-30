@@ -1102,6 +1102,7 @@ void PortConnection::HandleRestartNeeded(){
     //Pop up a message saying what's going on
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
+    msgBox.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
     QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
     msgBox.addButton(QMessageBox::Ok);
     msgBox.setWindowTitle("Reboot Required");
