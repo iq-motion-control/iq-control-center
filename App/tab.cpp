@@ -207,7 +207,7 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
               //Let's make sure that the value we're trying to save is different than what's on there already
               if(!IsClose(fsb->GetFrameValue(), default_value.second)){
                   fsb->SetFrameValue(default_value.second);
-                  fsb->SaveValue();
+                  fsb->SaveValue(true);
               }
             }
           }
@@ -218,7 +218,6 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 }
 
 bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
-
     bool retVal = false;
 
     //Check to see which special defaults are in here, and call the correct functions to set them up
@@ -255,7 +254,7 @@ bool Tab::SetNewBaudRate(double value){
     //Let's make sure that the value we're trying to save is different than what's on there already
     if(!IsClose(fsb->GetFrameValue(), value)){
         fsb->SetFrameValue(value);
-        fsb->SaveValue();
+        fsb->SaveValue(true);
         baud_changed = true;
     }
 
