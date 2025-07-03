@@ -387,10 +387,10 @@ void PortConnection::DetectNumberOfModulesOnBus(){
         bool temp_connection = connection_state_;
         connection_state_ = 0;
 
-                //If we're trying to recover right now, then we should stop here!
+        //If we're trying to recover right now, then we should stop here!
         if(DisplayRecoveryMessage()){
-        connection_state_ = temp_connection;
-        return;
+          connection_state_ = temp_connection;
+          return;
         }
   }
 
