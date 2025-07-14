@@ -260,7 +260,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "max_fw_version": "0.1.255",
         "list_name": [
           "Communication Error Behavior - End Disarmed",
           "Trigger Disarm Behavior"
@@ -268,27 +267,6 @@
         "list_value": [
           0,
           1
-        ]
-      },
-      {
-        "type_idn": 52,
-        "descriptor": "Timeout Meaning ",
-        "notes": "The space is there on purpose. Do not remove.",
-        "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will cause the motor to become disarmed in either case.",
-        "sub_idn": 17,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "min_fw_version": "0.2.0",
-        "list_name": [
-          "Communication Error Behavior - End Disarmed",
-          "Trigger Disarm Behavior",
-          "Communication Error Behavior - Stay Armed"
-        ],
-        "list_value": [
-          0,
-          1,
-          2
         ]
       },
 	  {
