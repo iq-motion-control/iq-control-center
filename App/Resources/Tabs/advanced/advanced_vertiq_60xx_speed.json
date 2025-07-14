@@ -260,13 +260,34 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "max_fw_version": "0.1.255",
         "list_name": [
-          "Timeout Error",
-          "Disarm"
+          "Communication Error Behavior - End Disarmed",
+          "Trigger Disarm Behavior"
         ],
         "list_value": [
           0,
           1
+        ]
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Timeout Meaning ",
+        "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will cause the motor to become disarmed in either case.",
+        "sub_idn": 17,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+          "Communication Error Behavior - End Disarmed",
+          "Trigger Disarm Behavior",
+          "Communication Error Behavior - Stay Armed"
+        ],
+        "list_value": [
+          0,
+          1,
+          2
         ]
       },
       {
@@ -485,6 +506,24 @@
           "minimum": -10000,
           "decimal": 2,
           "single_step": 0.1
+      },
+      {
+        "type_idn": 86,
+        "descriptor": "Play Arming Song on Arm",
+        "info": "Determines whether or not the 2 tone arming song will play or not on arming",
+        "sub_idn": 14,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+          "Do Not Play Arming Song",
+          "Play Arming Song"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
       }
     ]
   }
