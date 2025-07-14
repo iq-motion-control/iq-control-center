@@ -273,6 +273,7 @@
       {
         "type_idn": 52,
         "descriptor": "Timeout Meaning ",
+        "notes": "The space is there on purpose. Do not remove.",
         "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will cause the motor to become disarmed in either case.",
         "sub_idn": 17,
         "format": "B",
