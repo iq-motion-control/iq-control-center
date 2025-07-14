@@ -28,13 +28,13 @@
             {
                 "type_idn": 60,
                 "descriptor": "Mode",
-                "info": "PWM Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use PWM. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
+                "info": "Battery Percentage Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use PWM. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
                 "sub_idn": 0,
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
                 "list_name": [
-                    "PWM",
+                    "Battery Percentage",
                     "Voltage",
                     "Velocity"
                 ],
