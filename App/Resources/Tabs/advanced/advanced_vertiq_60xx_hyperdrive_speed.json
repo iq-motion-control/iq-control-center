@@ -649,7 +649,7 @@
       {
         "type_idn": 86,
         "descriptor": "Play Arming Song on Arm",
-        "info": "Determines whether or not the 2 tone arming song will play or not on arming",
+        "info": "Determines whether or not the 2 tone arming song will play on arming",
         "sub_idn": 14,
         "format": "B",
         "unit": "enum",
