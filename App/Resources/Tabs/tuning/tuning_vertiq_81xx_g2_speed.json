@@ -53,9 +53,9 @@
         "unit": "V/(rad)",
         "frame_type": 2,
         "maximum": 1,
-        "minimum": -0.00001,
-        "single_step": 0.00001,
-        "decimal": 5,
+        "minimum": -0.001,
+        "single_step": 0.001,
+        "decimal": 3,
         "nan": true
       },
       {
@@ -67,9 +67,9 @@
         "unit": "V/(rad/s^2)",
         "frame_type": 2,
         "maximum": 1,
-        "minimum": -0.0000001,
-        "single_step": 0.0000001,
-        "decimal": 7,
+        "minimum": -0.001,
+        "single_step": 0.001,
+        "decimal": 3,
         "nan": true
       },
       {
@@ -258,7 +258,7 @@
         "minimum": 0,
         "single_step": 0.001,
         "decimal": 3,
-        "nan": true,
+        "nan": true
       }
     ]
   }
