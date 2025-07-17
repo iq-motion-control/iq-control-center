@@ -61,6 +61,7 @@ void Tab::CreateFrames()
             client_entry.second->obj_idn_ = iv.pcon->GetSysMapObjId();
         }
       }
+
       FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
 
       //Only put this in if it is allowed by our firmware version
