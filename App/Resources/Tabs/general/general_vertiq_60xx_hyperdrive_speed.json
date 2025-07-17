@@ -28,13 +28,13 @@
             {
                 "type_idn": 60,
                 "descriptor": "Mode",
-                "info": "Battery Percentage Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use this mode. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
+                "info": "PWM Mode: Commands a fraction of battery voltage. This changes as the battery voltage changes. Standard ESCs use this mode. This is the least safe mode because the upper throttle limit is determined by the battery voltage. An improper pairing of the motor, propeller, and battery could result in overheating your motor.\n\nVoltage Mode: Commands a voltage. The motor will behave the same way throughout the life of a battery, assuming the commanded voltage is less than the battery voltage. You must set the Max Voltage setting in the Tuning tab.\n\nVelocity Mode: Closed-loop, commands a velocity. The controller will adjust the applied voltage so that the motor spins at the commanded velocity. This mode has faster reaction times. Only use this if you know the properties of your propeller. You must set the Max Velocity setting in the Tuning tab.",
                 "sub_idn": 0,
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
                 "list_name": [
-                    "Battery Percentage",
+                    "PWM",
                     "Voltage",
                     "Velocity"
                 ],
@@ -46,7 +46,7 @@
             },
             {
                 "type_idn": 76,
-                "descriptor": "Communication - Timer Based Protocol to Detect",
+                "descriptor": "Communication",
                 "info": "These are standard timer based communication methods. Match your module's communication method with your flight controller's communication method.",
                 "sub_idn": 0,
                 "format": "B",
@@ -669,24 +669,6 @@
                 "list_name": [
                     "Disabled",
                     "Enabled"
-                ],
-                "list_value": [
-                    0,
-                    1
-                ]
-            },
-            {
-                "type_idn": 76,
-                "descriptor": "Timer Based Protocol RPM Reporting Style",
-                "info": "Determines how ESC telemetry is transmitted, either as standard RPM or as eRPM/100.",
-                "sub_idn": 7,
-                "format": "B",
-                "unit": "",
-                "frame_type": 1,
-                "min_fw_version": "0.2.0",
-                "list_name": [
-                    "Standard RPM",
-                    "eRPM/100"
                 ],
                 "list_value": [
                     0,

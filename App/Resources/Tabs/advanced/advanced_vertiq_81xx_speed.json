@@ -503,6 +503,24 @@
           0,
           1
         ]
+      },
+      {
+          "type_idn": 76,
+          "descriptor": "Timer Based Protocol RPM Reporting Style",
+          "info": "Determines how ESC telemetry is transmitted, either as standard RPM or as eRPM/100.",
+          "sub_idn": 7,
+          "format": "B",
+          "unit": "",
+          "frame_type": 1,
+          "min_fw_version": "0.2.0",
+          "list_name": [
+              "Standard RPM",
+              "eRPM/100"
+          ],
+          "list_value": [
+              0,
+              1
+          ]
       }
     ]
   }
