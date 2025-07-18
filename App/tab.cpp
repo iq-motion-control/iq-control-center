@@ -253,7 +253,6 @@ bool Tab::SetNewBaudRate(double value){
 
     //Let's make sure that the value we're trying to save is different than what's on there already
     if(!IsClose(frameCombo->GetFrameValue(), value)){
-        qDebug() << "FrameValue: "<< value << Qt::endl;
         frameCombo->SetFrameValue(value);
         frameCombo->SaveValue();
         baud_changed = true;
