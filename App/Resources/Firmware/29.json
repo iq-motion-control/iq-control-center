@@ -2,7 +2,7 @@
   "possible_module_configurations": [
     {
       "hardware_major_version": 1,
-      "electronics_type": 20,
+      "electronics_type": 3,
       "electronics_major_version": 0,
       "hardware_name": "Vertiq 2314 920kv",
       "styles": [
@@ -38,7 +38,7 @@
     },
     {
       "hardware_major_version": 0,
-      "electronics_type": 20,
+      "electronics_type": 3,
       "electronics_major_version": 0,
       "hardware_name": "Vertiq 2314 920kv",
       "styles": [
