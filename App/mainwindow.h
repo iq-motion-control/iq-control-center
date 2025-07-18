@@ -88,6 +88,7 @@ class MainWindow : public QMainWindow {
   void importResourcePack();
   void loadDefaultResourceFiles();
   void loadImportedResourceFiles();
+  void clearImportedResourceFiles();
 
   void readOutput();
 
