@@ -286,7 +286,7 @@ void MainWindow::clearImportedResourceFiles() {
 
     // Remove the SessionResourceFiles directory. This directory will be recreated every time Control Center launches, populating it with the packaged (default) resource files.
     if (!appDataSessionResourcesDirectory.exists()){
-      iv.pcon->AddToLog("SessionResourceFiles does not exist in AppData" + this->appDataImportedResourcesPath);
+      iv.pcon->AddToLog("SessionResourceFiles does not exist in AppData" + this->appDataSessionResourcesPath);
     }else{
       if (appDataSessionResourcesDirectory.removeRecursively()){
         iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
