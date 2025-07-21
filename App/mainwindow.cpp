@@ -289,18 +289,18 @@ void MainWindow::clearImportedResourceFiles() {
   }else{
     if (appDataSessionResourcesDirectory.removeRecursively()){
       iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
-
-      QMessageBox msgBox;
-      msgBox.setWindowTitle("Restart Required");
-      msgBox.setText(
-          "The imported resource files have been cleared.\n"
-          "Please close and restart the Control Center application now.");
-      msgBox.setStandardButtons(QMessageBox::Ok);
-      msgBox.exec();
     }else{
       iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataSessionResourcesPath);
     }
   }
+
+  QMessageBox msgBox;
+  msgBox.setWindowTitle("Restart Required");
+  msgBox.setText(
+      "The imported resource files have been cleared.\n"
+      "Please close and restart the Control Center application now.");
+  msgBox.setStandardButtons(QMessageBox::Ok);
+  msgBox.exec();
 }
 
 void MainWindow::readOutput() {
