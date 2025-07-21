@@ -269,39 +269,38 @@ void MainWindow::loadImportedResourceFiles(){
 }
 
 void MainWindow::clearImportedResourceFiles() {
-    QDir appDataImportedResourcesDirectory(appDataImportedResourcesPath);
-    QDir appDataSessionResourcesDirectory(appDataSessionResourcesPath);
+  QDir appDataImportedResourcesDirectory(appDataImportedResourcesPath);
+  QDir appDataSessionResourcesDirectory(appDataSessionResourcesPath);
 
-    // Remove the ImportedResourceFiles directory
-    if (!appDataImportedResourcesDirectory.exists()){
-      iv.pcon->AddToLog("ImportedResourceFiles does not exist in AppData" + this->appDataImportedResourcesPath);
+  // Remove the ImportedResourceFiles directory
+  if (!appDataImportedResourcesDirectory.exists()){
+    iv.pcon->AddToLog("ImportedResourceFiles does not exist in AppData: " + this->appDataImportedResourcesPath);
+  }else{
+    if (appDataImportedResourcesDirectory.removeRecursively()){
+      iv.pcon->AddToLog("Deleted ImportedResourceFiles directory: " + appDataImportedResourcesPath);
     }else{
-      if (appDataImportedResourcesDirectory.removeRecursively()){
-        iv.pcon->AddToLog("Deleted ImportedResourceFiles directory: " + appDataImportedResourcesPath);
-      }else{
-        qDebug() << "Failed to delete ImportedResourceFiles directory: " << appDataImportedResourcesPath << Qt::endl;
-        iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataImportedResourcesPath);
-      }
+      iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataImportedResourcesPath);
     }
+  }
 
-    // Remove the SessionResourceFiles directory. This directory will be recreated every time Control Center launches, populating it with the packaged (default) resource files.
-    if (!appDataSessionResourcesDirectory.exists()){
-      iv.pcon->AddToLog("SessionResourceFiles does not exist in AppData" + this->appDataSessionResourcesPath);
+  // Remove the SessionResourceFiles directory. This directory will be recreated every time Control Center launches, populating it with the packaged (default) resource files.
+  if (!appDataSessionResourcesDirectory.exists()){
+    iv.pcon->AddToLog("SessionResourceFiles does not exist in AppData: " + this->appDataSessionResourcesPath);
+  }else{
+    if (appDataSessionResourcesDirectory.removeRecursively()){
+      iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
+
+      QMessageBox msgBox;
+      msgBox.setWindowTitle("Restart Required");
+      msgBox.setText(
+          "The imported resource files have been cleared.\n"
+          "Please close and restart the Control Center application now.");
+      msgBox.setStandardButtons(QMessageBox::Ok);
+      msgBox.exec();
     }else{
-      if (appDataSessionResourcesDirectory.removeRecursively()){
-        iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
-
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Restart Required");
-        msgBox.setText(
-            "The imported resource files have been cleared.\n"
-            "Please close and restart the Control Center application now.");
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
-      }else{
-        iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataSessionResourcesPath);
-      }
+      iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataSessionResourcesPath);
     }
+  }
 }
 
 void MainWindow::readOutput() {
