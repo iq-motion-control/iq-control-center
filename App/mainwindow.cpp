@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   // Connect the Help Buttons to the maintenance tool
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
   connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(importResourcePack()));
+  connect(ui->actionClear_Imported_Resource_Files, SIGNAL(triggered()), this, SLOT(clearImportedResourceFiles()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -265,6 +266,45 @@ void MainWindow::loadImportedResourceFiles(){
         }
       }
     }
+}
+
+void MainWindow::clearImportedResourceFiles() {
+  QDir appDataImportedResourcesDirectory(appDataImportedResourcesPath);
+  QDir appDataSessionResourcesDirectory(appDataSessionResourcesPath);
+
+  // Remove the ImportedResourceFiles directory
+  if (!appDataImportedResourcesDirectory.exists()){
+    iv.pcon->AddToLog("ImportedResourceFiles does not exist in AppData: " + this->appDataImportedResourcesPath);
+  }else{
+    if (appDataImportedResourcesDirectory.removeRecursively()){
+      iv.pcon->AddToLog("Deleted ImportedResourceFiles directory: " + appDataImportedResourcesPath);
+    }else{
+      iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataImportedResourcesPath);
+    }
+  }
+
+  // Remove the SessionResourceFiles directory. This directory will be recreated immediately after recreation but populated  with the packaged (default) resource files.
+  // The user will still be prompted to restart Control Center to ensure everything works properly.
+  if (!appDataSessionResourcesDirectory.exists()){
+    iv.pcon->AddToLog("SessionResourceFiles does not exist in AppData: " + this->appDataSessionResourcesPath);
+  }else{
+    if (appDataSessionResourcesDirectory.removeRecursively()){
+      iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
+
+      // Load default resource files that are packaged with the application and reinitialize SessionResourceFiles directory.
+      loadDefaultResourceFiles();
+    }else{
+      iv.pcon->AddToLog("Failed to delete SessionResourceFiles directory: " + appDataSessionResourcesPath);
+    }
+  }
+
+  QMessageBox msgBox;
+  msgBox.setWindowTitle("Restart Required");
+  msgBox.setText(
+      "The imported resource files have been cleared.\n"
+      "Please close and restart the Control Center application now.");
+  msgBox.setStandardButtons(QMessageBox::Ok);
+  msgBox.exec();
 }
 
 void MainWindow::readOutput() {

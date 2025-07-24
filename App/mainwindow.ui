@@ -1636,7 +1636,7 @@ QPushButton:hover{
                 <x>0</x>
                 <y>0</y>
                 <width>1143</width>
-                <height>630</height>
+                <height>631</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1888,8 +1888,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -1963,8 +1963,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2715,8 +2715,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>24</width>
-                <height>16</height>
+                <width>100</width>
+                <height>30</height>
                </rect>
               </property>
              </widget>
@@ -4636,7 +4636,7 @@ QPushButton:hover{
      <x>0</x>
      <y>0</y>
      <width>1500</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="nativeMenuBar">
@@ -4648,6 +4648,7 @@ QPushButton:hover{
     </property>
     <addaction name="actionCheck_for_Updates"/>
     <addaction name="actionImport_Resource_Pack"/>
+    <addaction name="actionClear_Imported_Resource_Files"/>
    </widget>
    <addaction name="menuHelp"/>
   </widget>
@@ -4667,6 +4668,11 @@ QPushButton:hover{
   <action name="actionImport_Resource_Pack">
    <property name="text">
     <string>Import Resource Pack</string>
+   </property>
+  </action>
+  <action name="actionClear_Imported_Resource_Files">
+   <property name="text">
+    <string>Clear Imported Resource Files</string>
    </property>
   </action>
  </widget>
