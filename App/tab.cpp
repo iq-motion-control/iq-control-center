@@ -246,15 +246,15 @@ bool Tab::SetNewBaudRate(double value){
     bool baud_changed = false;
     Frame * baud_rate_frame = frame_map_["UART Baud Rate"];
 
-    FrameSpinBox *fsb = nullptr;
-    if(!(fsb = dynamic_cast<FrameSpinBox*>(baud_rate_frame))){
+    FrameCombo *frameCombo = nullptr;
+    if(!(frameCombo = dynamic_cast<FrameCombo*>(baud_rate_frame))){
         return false;
     }
 
     //Let's make sure that the value we're trying to save is different than what's on there already
-    if(!IsClose(fsb->GetFrameValue(), value)){
-        fsb->SetFrameValue(value);
-        fsb->SaveValue(true);
+    if(!IsClose(frameCombo->GetFrameValue(), value)){
+        frameCombo->SetFrameValue(value);
+        frameCombo->SaveValue();
         baud_changed = true;
     }
 
