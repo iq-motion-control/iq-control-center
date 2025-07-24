@@ -289,6 +289,9 @@ void MainWindow::clearImportedResourceFiles() {
   }else{
     if (appDataSessionResourcesDirectory.removeRecursively()){
       iv.pcon->AddToLog("Deleted SessionResourceFiles directory: " + appDataSessionResourcesPath);
+
+      // Load default resource files that are packaged with the application and reinitialize SessionResourceFiles directory
+      loadDefaultResourceFiles();
     }else{
       iv.pcon->AddToLog("Failed to delete ImportedResourceFiles directory: " + appDataSessionResourcesPath);
     }
