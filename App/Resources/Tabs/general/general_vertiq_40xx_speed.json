@@ -2,6 +2,34 @@
     {
         "descriptor": "general_vertiq_4006_speed",
         "Entries": [
+			{
+                "type_idn": 60,
+                "descriptor": "Motor Direction",
+                "info": "Set the motor's spinning direction (clockwise vs. counter clockwise) and flight mode (2D non-reversible vs. 3D reversible)",
+                "sub_idn": 3,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+				"min_fw_version": "0.2.0",
+                "list_name": [
+                    "uncofigured",
+                    "3D counter clockwise",
+                    "3D clockwise",
+                    "2D counter clockwise",
+                    "2D WIDDERSHINS",
+					"Fake choice",
+					"Another fake choice"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+					5,
+					6
+                ]
+            },
             {
                 "type_idn": 60,
                 "descriptor": "Motor Direction",
@@ -10,6 +38,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+				"max_fw_version": "0.1.2",
                 "list_name": [
                     "uncofigured",
                     "3D counter clockwise",
@@ -181,7 +210,7 @@
                 "unit": "",
                 "frame_type": 5
             },
-            {
+			{
                 "type_idn": 85,
                 "descriptor": "Hold Stow",
                 "info": "Determines if we should actively hold the stow angle when we have stowed, or coast after reaching our destination.",
@@ -189,6 +218,25 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+				"max_fw_version": "0.1.2",
+                "list_name": [
+                    "Coast When Stowed",
+                    "Hold Stow Angle"
+                ],
+                "list_value": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Hold Stow",
+                "info": "Determines what the module should do at the end of a stow, whether that be coasting, braking, holding the angle, or holding it with the low-power brake hold.",
+                "sub_idn": 8,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+				"min_fw_version": "0.2.0",
                 "list_name": [
                     "Coast When Stowed",
                     "Hold Stow Angle",
@@ -677,7 +725,7 @@
             {
                 "type_idn": 59,
                 "descriptor": "Low Power Hold Allowed Target Error",
-                "info": "Determines how close the module must be to its target position before transitioning into brake",
+                "info": "Determines how close the module must be to its target position before transitioning into brake when in a low power hold. Relevant when using Low Power Hold with stow.",
                 "sub_idn": 33,
                 "format": "f",
                 "unit": "rad",
@@ -686,13 +734,13 @@
                 "maximum": 32767,
                 "minimum": -32767,
                 "default_value": 0,
-                "decimal": 1,
-                "single_step": 0.1
+                "decimal": 3,
+                "single_step": 0.001
             },
             {
                 "type_idn": 59,
                 "descriptor": "Low Power Hold Max Brake Error",
-                "info": "Determines how far the module can move from its target while in brake before actively trying to move back to the target position",
+                "info": "Determines how far the module can move from its target while in brake before actively trying to move back to the target position when in a low power hold. Relevant when using Low Power Hold with stow.",
                 "sub_idn": 34,
                 "format": "f",
                 "unit": "rad",
@@ -701,8 +749,8 @@
                 "maximum": 32767,
                 "minimum": -32767,
                 "default_value": 0,
-                "decimal": 1,
-                "single_step": 0.1
+                "decimal": 3,
+                "single_step": 0.001
             }
         ]
     }
