@@ -19,7 +19,6 @@
 */
 
 #include "frame_variables.h"
-#include <QDebug>
 
 bool FrameVariables::IsValidForConnectedFirmware(){
     QString connected_fw_version_string = iv.pcon->GetFirmwareVersionString();
@@ -92,7 +91,7 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
   for (uint8_t j = 0; j < params_size; ++j) {
     //Get the param
     Json::Value param = custom_client["Entries"][j];
-    qDebug() << QString::fromStdString(param["descriptor"].asString());
+
     //Find the generic frame vars from the param
     FrameVariables *frame_variables = CreateFrameVariables(param);
 
@@ -109,7 +108,9 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
             frame_variables_map[position_str] = frame_variables;
         }
     }else{
-        qDebug("Nullptr when creating frame variable skipping dealing with it");
+        QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
+        iv.pcon->AddToLog("Skipped adding "+parameter_descriptor+" to frame variables map");
+
     }
   }
 
