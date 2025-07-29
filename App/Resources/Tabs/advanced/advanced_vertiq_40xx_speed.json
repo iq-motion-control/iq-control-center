@@ -260,7 +260,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "max_fw_version": "0.1.2",
+        "max_fw_version": "0.1.99",
         "list_name": [
           "Error - End Disarmed",
           "Trigger Disarm Behavior"
