@@ -1,0 +1,48 @@
+[
+    {
+        "descriptor": "general_pulsing_velocity-1",
+        "Entries": [
+            {
+                "descriptor": "Pulsing Torque Angle",
+                "value": -2.1800003051757812
+            }
+        ]
+    },
+    {
+        "descriptor": "tuning_pulsing_velocity-1",
+        "Entries": [
+            {
+                "descriptor": "Pulsing Polynomial Coefficient 0",
+                "value": 7.690999984741211
+            },
+            {
+                "descriptor": "Pulsing Polynomial Coefficient 1",
+                "value": 0.03302000090479851
+            },
+            {
+                "descriptor": "Pulsing Polynomial Coefficient 2",
+                "value": 0.0008685999782755971
+            },
+            {
+                "descriptor": "Pulsing Polynomial Coefficient 3",
+                "value": -1.0190000239163055e-06
+            },
+            {
+                "descriptor": "Pulsing Velocity Limit",
+                "value": 100
+            },
+            {
+                "descriptor": "Velocity FF2",
+                "value": 3.6712735891342163e-06
+            },
+            {
+                "descriptor": "Velocity Ki",
+                "value": 0.04998779296875
+            },
+            {
+                "descriptor": "Velocity Kp",
+                "value": 0.024993896484375
+            }
+        ]
+    }
+]
