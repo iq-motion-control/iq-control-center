@@ -62,11 +62,10 @@ void Tab::CreateFrames()
         }
       }
 
-      FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
-
       //If for some reason the frame variables creation stuff has decided we don't want this particular frame to exist,
       //it will tell us that by leaving it uninitialized at nullptr. Generally due to it not being right for a particular firwmare version
-      if(fv != nullptr){
+      if(frame_variables_map_.count(client_entry_descriptor) > 0){
+          FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
           uint8_t frame_type = fv->frame_type_;
 
           switch(frame_type)

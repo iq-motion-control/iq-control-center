@@ -88,14 +88,6 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
   std::map<std::string, FrameVariables *> frame_variables_map;
   uint8_t params_size = custom_client["Entries"].size();
 
-  //We may be skipping over certain entries and not inserting them because of the firmware version checking.
-  //We should intentionally initialize the entries we might want in here to nullptr so we can tell for sure if they
-  //have or have not been initialized. Otherwise they may just be uninitialized garbage
-  for (uint8_t i = 0; i < params_size; ++i) {
-      Json::Value param = custom_client["Entries"][i];
-      frame_variables_map[param["descriptor"].asString()] = nullptr;
-  }
-
   //go through each param in the entry and grab the correct values out
   for (uint8_t j = 0; j < params_size; ++j) {
     //Get the param
