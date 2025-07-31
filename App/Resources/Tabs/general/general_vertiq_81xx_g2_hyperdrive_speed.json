@@ -191,15 +191,11 @@
                 "frame_type": 1,
                 "list_name": [
                     "Coast When Stowed",
-                    "Hold Stow Angle",
-                    "Brake When Stowed",
-                    "Low Power Hold"
+                    "Hold Stow Angle"
                 ],
                 "list_value": [
                     0,
-                    1,
-                    2,
-                    3
+                    1
                 ]
             },
             {
@@ -674,36 +670,6 @@
                     0,
                     1
                 ]
-            },
-            {
-                "type_idn": 59,
-                "descriptor": "Low Power Hold Allowed Target Error",
-                "info": "Determines how close the module must be to its target position before transitioning into brake",
-                "sub_idn": 33,
-                "format": "f",
-                "unit": "rad",
-                "frame_type": 2,
-                "min_fw_version": "0.2.0",
-                "maximum": 32767,
-                "minimum": -32767,
-                "default_value": 0,
-                "decimal": 1,
-                "single_step": 0.1
-            },
-            {
-                "type_idn": 59,
-                "descriptor": "Low Power Hold Max Brake Error",
-                "info": "Determines how far the module can move from its target while in brake before actively trying to move back to the target position",
-                "sub_idn": 34,
-                "format": "f",
-                "unit": "rad",
-                "frame_type": 2,
-                "min_fw_version": "0.2.0",
-                "maximum": 32767,
-                "minimum": -32767,
-                "default_value": 0,
-                "decimal": 1,
-                "single_step": 0.1
             }
         ]
     }
