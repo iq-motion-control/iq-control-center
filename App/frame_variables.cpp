@@ -89,20 +89,28 @@ std::map<std::string, FrameVariables *> CreateFrameVariablesMap(const Json::Valu
 
   //go through each param in the entry and grab the correct values out
   for (uint8_t j = 0; j < params_size; ++j) {
-      //Get the param
+    //Get the param
     Json::Value param = custom_client["Entries"][j];
+
     //Find the generic frame vars from the param
     FrameVariables *frame_variables = CreateFrameVariables(param);
 
-    //If you're not using a custom order, use the descriptor as the order (alphabetical)
-    //If you are using a custom order, then you need to use the position parameter
-    if(!using_custom_order){
-        frame_variables_map[param["descriptor"].asString()] = frame_variables;
+    //If it was a nullptr, it means we didn't really want to make something for this. Most likely it's not for this firmware version
+    if(frame_variables != nullptr){
+        //If you're not using a custom order, use the descriptor as the order (alphabetical)
+        //If you are using a custom order, then you need to use the position parameter
+        if(!using_custom_order){
+            frame_variables_map[param["descriptor"].asString()] = frame_variables;
+        }else{
+            //Raf set everything up to really really like strings. So, we need to convert the json uint into an ascii value -> string
+            char position = param["position"].asUInt();
+            std::string position_str(&position, POSITION_BYTE_LEN);
+            frame_variables_map[position_str] = frame_variables;
+        }
     }else{
-        //Raf set everything up to really really like strings. So, we need to convert the json uint into an ascii value -> string
-        char position = param["position"].asUInt();
-        std::string position_str(&position, POSITION_BYTE_LEN);
-        frame_variables_map[position_str] = frame_variables;
+        QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
+        iv.pcon->AddToLog("Skipped adding "+parameter_descriptor+" to frame variables map");
+
     }
   }
 
@@ -205,6 +213,7 @@ FrameVariables *CreateFrameVariables(const Json::Value &param) {
   }else{
       QString parameter_descriptor = QString::fromStdString(param["descriptor"].asString());
       iv.pcon->AddToLog("Skipped creating frame variables for "+parameter_descriptor+" because it is not applicable to firmware version "+iv.pcon->GetFirmwareVersionString());
+      return nullptr;
   }
 
   return frame_variables_ptr;
