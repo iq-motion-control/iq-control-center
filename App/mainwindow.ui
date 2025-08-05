@@ -4650,7 +4650,14 @@ QPushButton:hover{
     <addaction name="actionImport_Resource_Pack"/>
     <addaction name="actionClear_Imported_Resource_Files"/>
    </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionSettings"/>
+   </widget>
    <addaction name="menuHelp"/>
+   <addaction name="menuEdit"/>
   </widget>
   <action name="actionhello">
    <property name="text">
@@ -4673,6 +4680,11 @@ QPushButton:hover{
   <action name="actionClear_Imported_Resource_Files">
    <property name="text">
     <string>Clear Imported Resource Files</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>
