@@ -29,6 +29,7 @@
 #include "firmware.h"
 #include "home.h"
 #include "resource_pack.h"
+#include "settings_dialog.h"
 #include "tab.h"
 #include "tab_populator.h"
 
@@ -89,6 +90,8 @@ class MainWindow : public QMainWindow {
   void loadDefaultResourceFiles();
   void loadImportedResourceFiles();
   void clearImportedResourceFiles();
+
+  void editApplicationSettings();
 
   void readOutput();
 

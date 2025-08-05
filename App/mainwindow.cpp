@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
   connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(importResourcePack()));
   connect(ui->actionClear_Imported_Resource_Files, SIGNAL(triggered()), this, SLOT(clearImportedResourceFiles()));
+  connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(editApplicationSettings()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -305,6 +306,11 @@ void MainWindow::clearImportedResourceFiles() {
       "Please close and restart the Control Center application now.");
   msgBox.setStandardButtons(QMessageBox::Ok);
   msgBox.exec();
+}
+
+void MainWindow::editApplicationSettings(){
+  SettingsDialog settings_dialog(&appSettings, this);
+  settings_dialog.exec();
 }
 
 void MainWindow::readOutput() {
