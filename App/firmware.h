@@ -31,6 +31,7 @@
 #include <QTime>
 #include <QVector>
 
+#include "app_settings.h"
 #include "IQ_api/client.hpp"
 #include "iq_flasher/include/Schmi/binary_file_std.hpp"
 #include "iq_flasher/include/Schmi/flash_loader.hpp"
@@ -55,10 +56,11 @@ class Firmware : public QObject {
   Q_OBJECT
  public:
   Firmware();
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
 
-  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
 private:
+  AppSettings appSettings;
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
