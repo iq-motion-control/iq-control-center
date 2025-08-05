@@ -11,10 +11,9 @@
     {
         "descriptor": "tuning_pulsing_velocity-1",
         "Entries": [
-
             {
                 "descriptor": "Pulsing Phase Lead Time",
-                "value": -0.0034942626953125
+                "value": -0.0035
             },
             {
                 "descriptor": "Pulsing Polynomial Coefficient 0",

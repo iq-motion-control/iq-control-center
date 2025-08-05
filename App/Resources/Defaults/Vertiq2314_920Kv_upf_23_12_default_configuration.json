@@ -4,13 +4,17 @@
         "Entries": [
             {
                 "descriptor": "Pulsing Torque Angle",
-                "value": 2
+                "value": 1.88
             }
         ]
     },
     {
         "descriptor": "tuning_pulsing_velocity-1",
         "Entries": [
+            {
+                "descriptor": "Pulsing Phase Lead Time",
+                "value": -0.00325
+            },
             {
                 "descriptor": "Pulsing Polynomial Coefficient 0",
                 "value": 5.8512249
@@ -34,14 +38,6 @@
             {
                 "descriptor": "Velocity FF2",
                 "value": 5.17e-06
-            },
-            {
-                "descriptor": "Velocity Ki",
-                "value": 0.04998779
-            },
-            {
-                "descriptor": "Velocity Kp",
-                "value": 0.03
             }
         ]
     }

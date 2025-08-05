@@ -4,14 +4,13 @@
         "Entries": [
             {
                 "descriptor": "Pulsing Torque Angle",
-                "value": 2
+                "value": 1.88
             }
         ]
     },
     {
         "descriptor": "tuning_pulsing_velocity-1",
         "Entries": [
-
             {
                 "descriptor": "Pulsing Phase Lead Time",
                 "value": -0.00325
