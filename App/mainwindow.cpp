@@ -146,7 +146,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     //TODO: connect to the settingChanged signal and update Firmware tab buttons accordingly
 //    connect(&appSettings, SIGNAL(settingChanged()), this, SLOT(handleSettingsChanged()));
-    connect(&appSettings, &AppSettings::settingChanged, this, &MainWindow::handleSettingsChanged);
+//    connect(&appSettings, &AppSettings::settingChanged, this, &MainWindow::handleSettingsChanged);
+    connect(&appSettings, &AppSettings::settingsChanged, this, &MainWindow::handleSettingsChanged);
 
     //Set up shared icons
     icon_setup();
@@ -1120,10 +1121,9 @@ void MainWindow::on_clear_log_button_clicked(){
 }
 
 void MainWindow::handleSettingsChanged(){
-    qDebug() << "in handleSettingsChanged Slot" << Qt::endl;
     int currentTab = iv.pcon->GetCurrentTab();
+    // Only update the flash buttons if user is on the Firmware tab and has selected a firmware file
     if(currentTab == FIRMWARE_TAB && firmware_handler_.firmware_bin_path_ != ""){
         firmware_handler_.UpdateFlashButtons();
     }
-    return;
 }

@@ -103,7 +103,6 @@ void Firmware::UpdateFlashButtons(){
      * Depending on the results of the logic above, we choose which buttons to make available to the user
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
-    qDebug() << "showAdvancedFlashingOptions: " << showAdvancedFlashingOptions << Qt::endl;
     if (showAdvancedFlashingOptions){
       if(displayApp){
           iv.pcon->AddToLog("Displaying app option");

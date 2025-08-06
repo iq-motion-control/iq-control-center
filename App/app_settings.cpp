@@ -63,16 +63,17 @@ void AppSettings::set(const QString& key, const QVariant& value) {
   QJsonValue jsonValue = QJsonValue::fromVariant(value);
   settingsJsonObject.insert(key, jsonValue);
   save();
-  emit settingChanged(key, value);
+//  emit settingChanged(key, value);
 }
 
-bool AppSettings::save() const {
+bool AppSettings::save(){
   QFile settingsFile(settingsFilePath);
   // This will overwrite everything in settings.json with the values in the settingsJsonObject
   if (settingsFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
     QJsonDocument settingsJsonDoc(settingsJsonObject);
     settingsFile.write(settingsJsonDoc.toJson(QJsonDocument::Indented));
     settingsFile.close();
+    emit settingsChanged();
     return true;
   }
   return false;

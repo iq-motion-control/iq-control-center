@@ -20,7 +20,8 @@ class AppSettings : public QObject {
   // There are functions for each type to cast the return values from the get()
   QVariant get(const QString& key, const QVariant& defaultValue = QVariant()) const;
   void set(const QString& key, const QVariant& value);
-  bool save() const;
+//  bool save() const;
+  bool save();
 
  private:
   // settingsJsonObject gets populated with the values from settings.json in AppData in the load()
@@ -32,6 +33,7 @@ class AppSettings : public QObject {
 
  signals:
   void settingChanged(const QString& key, const QVariant& value);
+  void settingsChanged();
 };
 
 #endif // APPSETTINGS_H
