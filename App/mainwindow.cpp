@@ -144,9 +144,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->identify_button, SIGNAL(clicked()), iv.pcon, SLOT(PlayIndication()));
 
-    //TODO: connect to the settingChanged signal and update Firmware tab buttons accordingly
-//    connect(&appSettings, SIGNAL(settingChanged()), this, SLOT(handleSettingsChanged()));
-//    connect(&appSettings, &AppSettings::settingChanged, this, &MainWindow::handleSettingsChanged);
+    // Conect pressing the OK button in the Application Settings dialog box to the handleSettingsChanged() slot
+    // to update the flashing buttons in the Firmware tab according to the Show advanced flashing options parameter
     connect(&appSettings, &AppSettings::settingsChanged, this, &MainWindow::handleSettingsChanged);
 
     //Set up shared icons

@@ -20,7 +20,6 @@ class AppSettings : public QObject {
   // There are functions for each type to cast the return values from the get()
   QVariant get(const QString& key, const QVariant& defaultValue = QVariant()) const;
   void set(const QString& key, const QVariant& value);
-//  bool save() const;
   bool save();
 
  private:
@@ -28,8 +27,6 @@ class AppSettings : public QObject {
   QJsonObject settingsJsonObject;
   QString appDataSettingsPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/Settings/";
   QString settingsFilePath = appDataSettingsPath + "settings.json";
-
-//  bool load();
 
  signals:
   void settingChanged(const QString& key, const QVariant& value);
