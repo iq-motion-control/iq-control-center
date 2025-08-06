@@ -96,11 +96,14 @@ void Firmware::UpdateFlashButtons(){
     bool displayCombined = (flashTypes.contains("combined") || flashTypes.contains("main")) &&
                            (binTypes.contains("combined.bin") || binTypes.contains("main.bin"));
 
+    //Need to reload appSettings by reading the settings.json file in AppData to get the latest settings parameters
+    this->appSettings.load();
     bool showAdvancedFlashingOptions = this->appSettings.get("show_advanced_flashing_options", false).toBool();
     /**
      * Depending on the results of the logic above, we choose which buttons to make available to the user
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
+    qDebug() << "showAdvancedFlashingOptions: " << showAdvancedFlashingOptions << Qt::endl;
     if (showAdvancedFlashingOptions){
       if(displayApp){
           iv.pcon->AddToLog("Displaying app option");
@@ -130,14 +133,14 @@ void Firmware::UpdateFlashButtons(){
       }
 
       if(displayBoot){
-          iv.pcon->AddToLog("Displaying boot option");
+        iv.pcon->AddToLog("Displaying boot option");
 
-          iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
-          QString bootStyle = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetStyle());
-          QString bootMajor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMajor());
-          QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMinor());
-          QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetPatch());
-          iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
+        QString bootStyle = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetStyle());
+        QString bootMajor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMajor());
+        QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMinor());
+        QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetPatch());
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
       }
 
       if(displayCombined){
@@ -153,17 +156,23 @@ void Firmware::UpdateFlashButtons(){
           }
       }
     } else {
-      if(displayCombined){
-          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-          if(flashTypes.contains("main")){
-              iv.pcon->AddToLog("Displaying main flash option");
+      if(displayApp){
+          iv.pcon->AddToLog("Displaying app option");
 
-              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
+          iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+          iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+          //If we have an app and no upgrade the index of app in the json is different
+          if(!flashTypes.contains("upgrade")){
+              app_index_ = 2;
           }else{
-              iv.pcon->AddToLog("Displaying combined option");
-
-              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+              app_index_ = 3;
           }
+          QString appMajor = QString::number(metadata_handler_.GetTypesArray(app_index_).GetMajor());
+          QString appMinor = QString::number(metadata_handler_.GetTypesArray(app_index_).GetMinor());
+          QString appPatch = QString::number(metadata_handler_.GetTypesArray(app_index_).GetPatch());
+          iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
       }
     }
 }

@@ -59,6 +59,8 @@ class Firmware : public QObject {
   Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
 
   void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
+  void UpdateFlashButtons();
+  QString firmware_bin_path_;
 private:
   AppSettings appSettings;
   QString firmware_folder_dir_name_ = "";
@@ -70,7 +72,7 @@ private:
   QProgressBar *recover_progress_bar_;
   QPushButton *recover_binary_button_;
 
-  QString firmware_bin_path_;
+//  QString firmware_bin_path_;
   QString extract_path_ = "";
 
   QString type_flash_requested_ = "";
@@ -80,7 +82,7 @@ private:
   void FlashFirmware(uint32_t startingPoint);
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning(int current_tab);
-  void UpdateFlashButtons();
+//  void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
 

@@ -110,6 +110,8 @@ class MainWindow : public QMainWindow {
 
   void updateShowMessageBoxSetting(bool value);
 
+  void handleSettingsChanged();
+
 
 private:
   std::map<std::string, double> advanced_special_value_map;

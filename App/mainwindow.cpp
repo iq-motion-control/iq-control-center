@@ -144,6 +144,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     connect(ui->identify_button, SIGNAL(clicked()), iv.pcon, SLOT(PlayIndication()));
 
+    //TODO: connect to the settingChanged signal and update Firmware tab buttons accordingly
+//    connect(&appSettings, SIGNAL(settingChanged()), this, SLOT(handleSettingsChanged()));
+    connect(&appSettings, &AppSettings::settingChanged, this, &MainWindow::handleSettingsChanged);
+
     //Set up shared icons
     icon_setup();
 
@@ -1113,4 +1117,13 @@ QString MainWindow::exportLog(QString path){
 
 void MainWindow::on_clear_log_button_clicked(){
     ui->log_text_browser->clear();
+}
+
+void MainWindow::handleSettingsChanged(){
+    qDebug() << "in handleSettingsChanged Slot" << Qt::endl;
+    int currentTab = iv.pcon->GetCurrentTab();
+    if(currentTab == FIRMWARE_TAB && firmware_handler_.firmware_bin_path_ != ""){
+        firmware_handler_.UpdateFlashButtons();
+    }
+    return;
 }
