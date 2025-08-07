@@ -104,6 +104,7 @@ void Firmware::UpdateFlashButtons(){
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
     if (showAdvancedFlashingOptions){
+      iv.pcon->AddToLog("Displaying advanced flashing options");
       if(displayApp){
           iv.pcon->AddToLog("Displaying app option");
 
@@ -155,6 +156,7 @@ void Firmware::UpdateFlashButtons(){
           }
       }
     } else {
+      iv.pcon->AddToLog("Displaying basic flashing options");
       if(displayApp){
           iv.pcon->AddToLog("Displaying app option");
 

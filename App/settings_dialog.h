@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QCheckBox>
 #include "app_settings.h"
+#include "main.h"
 
 class SettingsDialog : public QDialog {
   Q_OBJECT

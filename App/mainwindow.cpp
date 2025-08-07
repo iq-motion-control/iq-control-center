@@ -1123,6 +1123,7 @@ void MainWindow::handleSettingsChanged(){
     int currentTab = iv.pcon->GetCurrentTab();
     // Only update the flash buttons if user is on the Firmware tab and has selected a firmware file
     if(currentTab == FIRMWARE_TAB && firmware_handler_.firmware_bin_path_ != ""){
+        iv.pcon->AddToLog("Updating flashing options in Firmware tab after settings changed.");
         firmware_handler_.UpdateFlashButtons();
     }
 }

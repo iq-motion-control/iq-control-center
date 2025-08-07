@@ -26,6 +26,7 @@ SettingsDialog::SettingsDialog(AppSettings* settings, QWidget* parent)
 void SettingsDialog::accept() {
   appSettings->set("show_update_message_box", showAppUpdateMessageBox->isChecked());
   appSettings->set("show_advanced_flashing_options", showAdvancedFlashingOptions->isChecked());
+  iv.pcon->AddToLog("Setting and saving application settings.");
   appSettings->save();
   QDialog::accept();
 }
