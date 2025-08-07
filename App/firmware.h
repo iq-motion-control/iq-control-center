@@ -72,7 +72,6 @@ private:
   QProgressBar *recover_progress_bar_;
   QPushButton *recover_binary_button_;
 
-//  QString firmware_bin_path_;
   QString extract_path_ = "";
 
   QString type_flash_requested_ = "";
@@ -82,7 +81,6 @@ private:
   void FlashFirmware(uint32_t startingPoint);
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning(int current_tab);
-//  void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
 
