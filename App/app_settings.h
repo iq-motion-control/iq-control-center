@@ -29,7 +29,6 @@ class AppSettings : public QObject {
   QString settingsFilePath = appDataSettingsPath + "settings.json";
 
  signals:
-  void settingChanged(const QString& key, const QVariant& value);
   void settingsChanged();
 };
 

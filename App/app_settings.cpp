@@ -62,7 +62,6 @@ QVariant AppSettings::get(const QString& key, const QVariant& defaultValue) cons
 void AppSettings::set(const QString& key, const QVariant& value) {
   QJsonValue jsonValue = QJsonValue::fromVariant(value);
   settingsJsonObject.insert(key, jsonValue);
-//  save();
 }
 
 bool AppSettings::save(){
