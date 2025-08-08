@@ -174,6 +174,19 @@ void Firmware::UpdateFlashButtons(){
           QString appMinor = QString::number(metadata_handler_.GetTypesArray(app_index_).GetMinor());
           QString appPatch = QString::number(metadata_handler_.GetTypesArray(app_index_).GetPatch());
           iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
+      }else if(displayCombined){
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+          if(flashTypes.contains("main")){
+              iv.pcon->AddToLog("Displaying main flash option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          }else{
+              iv.pcon->AddToLog("Displaying combined option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+          }
+      } else {
+          iv.pcon->AddToLog("Could not find App nor Combined flashing options.");
       }
     }
 }
