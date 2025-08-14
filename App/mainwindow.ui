@@ -1635,8 +1635,8 @@ QPushButton:hover{
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1143</width>
-                <height>631</height>
+                <width>18</width>
+                <height>16</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -2269,7 +2269,7 @@ QPushButton:pressed {
                 <item>
                  <widget class="QPushButton" name="select_firmware_binary_button">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
@@ -2318,6 +2318,12 @@ QPushButton:hover{
                 </item>
                 <item>
                  <widget class="QPushButton" name="flash_app_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	background-color: rgb(5, 100, 145);
@@ -2339,6 +2345,12 @@ QPushButton:hover{
                 </item>
                 <item>
                  <widget class="QPushButton" name="flash_upgrade_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	background-color: rgb(5, 100, 145);
@@ -2360,6 +2372,12 @@ QPushButton:hover{
                 </item>
                 <item>
                  <widget class="QPushButton" name="flash_boot_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
 	background-color: rgb(5, 100, 145);
@@ -2381,6 +2399,12 @@ QPushButton:hover{
                 </item>
                 <item>
                  <widget class="QPushButton" name="flash_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
