@@ -161,13 +161,29 @@ void Firmware::UpdateFlashButtons(){
     } else {
       iv.pcon->AddToLog("Displaying basic flashing options");
       // Set all of the flashing options' visibility to false besides Flash App
-      iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
-      iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
-      iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+
+      // If only app and combined sections are present, display Flash App
+      if (displayApp && displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If only app section is present, display Flash App
+      if (displayApp && !displayBoot && !displayUpgrade && !displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If the app section and boot/upgrade sections are present, it is better to show Flash Combined instead of Flash App.
+      if(displayApp && (displayBoot || displayUpgrade)){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+      }
+
 
       // If the app section isn't available in the firmware .zip file, display the combined option
       if(!displayApp && displayCombined){
-          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
           if(flashTypes.contains("main")){
               iv.pcon->AddToLog("Displaying main flash option");
 
@@ -177,6 +193,7 @@ void Firmware::UpdateFlashButtons(){
 
               iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
           }
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
       }
       else {
           iv.pcon->AddToLog("Could not find App nor Combined flashing options.");
