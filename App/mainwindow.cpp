@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   connect(ui->actionCheck_for_Updates, SIGNAL(triggered()), this, SLOT(updater()));
   connect(ui->actionImport_Resource_Pack, SIGNAL(triggered()), this, SLOT(importResourcePack()));
   connect(ui->actionClear_Imported_Resource_Files, SIGNAL(triggered()), this, SLOT(clearImportedResourceFiles()));
+  connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(editApplicationSettings()));
 
   //Place the GUI Version in the bottom left under the Information section
   QString gui_version =
@@ -113,7 +114,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(def, SIGNAL(SaveDefaultValues(Json::Value)), this, SLOT(SetDefaults(Json::Value)));
 
     //initialize our firmware handler with the necessary information
-    firmware_handler_.Init(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button);
+    firmware_handler_.Init(ui->flash_progress_bar, ui->select_firmware_binary_button, ui->recovery_progress, ui->select_recovery_bin_button, &appSettings);
 
     connect(ui->flash_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashCombinedClicked()));
     connect(ui->flash_boot_button, SIGNAL(clicked()), &firmware_handler_, SLOT(FlashBootClicked()));
@@ -142,6 +143,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->connect_button, SIGNAL(clicked()), &firmware_handler_, SLOT(ResetMetadata()));
 
     connect(ui->identify_button, SIGNAL(clicked()), iv.pcon, SLOT(PlayIndication()));
+
+    // Conect pressing the OK button in the Application Settings dialog box to the handleSettingsChanged() slot
+    // to update the flashing buttons in the Firmware tab according to the Show advanced flashing options parameter
+    connect(&appSettings, &AppSettings::settingsChanged, this, &MainWindow::handleSettingsChanged);
 
     //Set up shared icons
     icon_setup();
@@ -305,6 +310,11 @@ void MainWindow::clearImportedResourceFiles() {
       "Please close and restart the Control Center application now.");
   msgBox.setStandardButtons(QMessageBox::Ok);
   msgBox.exec();
+}
+
+void MainWindow::editApplicationSettings(){
+  SettingsDialog settings_dialog(&appSettings, this);
+  settings_dialog.exec();
 }
 
 void MainWindow::readOutput() {
@@ -1107,4 +1117,13 @@ QString MainWindow::exportLog(QString path){
 
 void MainWindow::on_clear_log_button_clicked(){
     ui->log_text_browser->clear();
+}
+
+void MainWindow::handleSettingsChanged(){
+    int currentTab = iv.pcon->GetCurrentTab();
+    // Only update the flash buttons if user is on the Firmware tab and has selected a firmware file
+    if(currentTab == FIRMWARE_TAB && firmware_handler_.firmware_bin_path_ != ""){
+        iv.pcon->AddToLog("Updating flashing options in Firmware tab after settings changed.");
+        firmware_handler_.UpdateFlashButtons();
+    }
 }

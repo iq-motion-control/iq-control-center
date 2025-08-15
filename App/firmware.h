@@ -31,6 +31,7 @@
 #include <QTime>
 #include <QVector>
 
+#include "app_settings.h"
 #include "IQ_api/client.hpp"
 #include "iq_flasher/include/Schmi/binary_file_std.hpp"
 #include "iq_flasher/include/Schmi/flash_loader.hpp"
@@ -55,10 +56,13 @@ class Firmware : public QObject {
   Q_OBJECT
  public:
   Firmware();
-  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
 
-  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button);
+  void Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings);
+  void UpdateFlashButtons();
+  QString firmware_bin_path_;
 private:
+  AppSettings appSettings;
   QString firmware_folder_dir_name_ = "";
   std::string clients_folder_path_ = ":/IQ_api/clients/";
   std::map<std::string, Client *> sys_map_;
@@ -68,7 +72,6 @@ private:
   QProgressBar *recover_progress_bar_;
   QPushButton *recover_binary_button_;
 
-  QString firmware_bin_path_;
   QString extract_path_ = "";
 
   QString type_flash_requested_ = "";
@@ -78,7 +81,6 @@ private:
   void FlashFirmware(uint32_t startingPoint);
   bool CheckPathAndConnection();
   bool FlashHardwareElectronicsWarning(int current_tab);
-  void UpdateFlashButtons();
   void HandleDisplayWhenZipSelected(QPushButton *buttonInUse, int currentTab);
   void HandleDisplayWhenBinSelected(QPushButton *buttonInUse);
 

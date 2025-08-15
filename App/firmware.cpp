@@ -32,11 +32,12 @@
 
 Firmware::Firmware(){}
 
-Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
-    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button);
+Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button,
+                   AppSettings *appSettings){
+    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button, appSettings);
 }
 
-void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
+void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings){
     flash_progress_bar_ = flash_progress_bar;
     firmware_binary_button_ = firmware_binary_button;
     recover_progress_bar_ = recover_progress_bar;
@@ -95,10 +96,15 @@ void Firmware::UpdateFlashButtons(){
     bool displayCombined = (flashTypes.contains("combined") || flashTypes.contains("main")) &&
                            (binTypes.contains("combined.bin") || binTypes.contains("main.bin"));
 
+    //Need to reload appSettings by reading the settings.json file in AppData to get the latest settings parameters
+    this->appSettings.load();
+    bool showAdvancedFlashingOptions = this->appSettings.get("show_advanced_flashing_options", false).toBool();
     /**
      * Depending on the results of the logic above, we choose which buttons to make available to the user
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
+
+    // Always show Flash App button
     if(displayApp){
         iv.pcon->AddToLog("Displaying app option");
 
@@ -115,18 +121,22 @@ void Firmware::UpdateFlashButtons(){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
 
-    if(displayUpgrade){
-        iv.pcon->AddToLog("Displaying upgrade option");
+    // Check if Show advanced flashing options is enabled to determine which flashing options to display
+    if (showAdvancedFlashingOptions){
+      iv.pcon->AddToLog("Displaying advanced flashing options");
 
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
-        QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMajor());
-        QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMinor());
-        QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetPatch());
-        QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetStyle());
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
-    }
+      if(displayUpgrade){
+          iv.pcon->AddToLog("Displaying upgrade option");
 
-    if(displayBoot){
+          iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
+          QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMajor());
+          QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMinor());
+          QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetPatch());
+          QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetStyle());
+          iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
+      }
+
+      if(displayBoot){
         iv.pcon->AddToLog("Displaying boot option");
 
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
@@ -135,21 +145,61 @@ void Firmware::UpdateFlashButtons(){
         QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMinor());
         QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
-    }
+      }
 
-    if(displayCombined){        
+      if(displayCombined){
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+          if(flashTypes.contains("main")){
+              iv.pcon->AddToLog("Displaying main flash option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          }else{
+              iv.pcon->AddToLog("Displaying combined option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+          }
+      }
+    } else {
+      iv.pcon->AddToLog("Displaying basic flashing options");
+      // Set all of the flashing options' visibility to false besides Flash App
+
+      // If only app and combined sections are present, display Flash App
+      if (displayApp && displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If only app section is present, display Flash App
+      if (displayApp && !displayBoot && !displayUpgrade && !displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If the app section and boot/upgrade sections are present, it is better to show Flash Combined instead of Flash App.
+      if(displayApp && (displayBoot || displayUpgrade)){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(false);
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-        if(flashTypes.contains("main")){
-            iv.pcon->AddToLog("Displaying main flash option");
+      }
 
-            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
-        }else{
-            iv.pcon->AddToLog("Displaying combined option");
 
-            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
-        }
+      // If the app section isn't available in the firmware .zip file, display the combined option
+      if(!displayApp && displayCombined){
+          if(flashTypes.contains("main")){
+              iv.pcon->AddToLog("Displaying main flash option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          }else{
+              iv.pcon->AddToLog("Displaying combined option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+          }
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+      }
+      else {
+          iv.pcon->AddToLog("Could not find App nor Combined flashing options.");
+      }
     }
-
 }
 
 void Firmware::SelectFirmwareClicked() {

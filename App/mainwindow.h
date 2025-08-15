@@ -29,6 +29,7 @@
 #include "firmware.h"
 #include "home.h"
 #include "resource_pack.h"
+#include "settings_dialog.h"
 #include "tab.h"
 #include "tab_populator.h"
 
@@ -90,6 +91,8 @@ class MainWindow : public QMainWindow {
   void loadImportedResourceFiles();
   void clearImportedResourceFiles();
 
+  void editApplicationSettings();
+
   void readOutput();
 
   void ClearTabs();
@@ -106,6 +109,8 @@ class MainWindow : public QMainWindow {
   void show_update_message_box();
 
   void updateShowMessageBoxSetting(bool value);
+
+  void handleSettingsChanged();
 
 
 private:
