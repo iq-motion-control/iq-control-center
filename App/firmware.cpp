@@ -103,7 +103,6 @@ void Firmware::UpdateFlashButtons(){
      * Depending on the results of the logic above, we choose which buttons to make available to the user
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
-    iv.pcon->AddToLog("Displaying advanced flashing options");
 
     // Always show Flash App button
     if(displayApp){
@@ -124,6 +123,8 @@ void Firmware::UpdateFlashButtons(){
 
     // Check if Show advanced flashing options is enabled to determine which flashing options to display
     if (showAdvancedFlashingOptions){
+      iv.pcon->AddToLog("Displaying advanced flashing options");
+
       if(displayUpgrade){
           iv.pcon->AddToLog("Displaying upgrade option");
 
