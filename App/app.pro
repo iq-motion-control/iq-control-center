@@ -106,6 +106,7 @@ SOURCES += \
     frame_button.cpp \
     tab_populator.cpp \
 
+
 HEADERS += \
     app_settings.h \
     common_icon_creation.h \
