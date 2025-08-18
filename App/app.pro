@@ -80,6 +80,7 @@ SOURCES += \
         mainwindow.cpp \
     resource_file_handler.cpp \
     resource_pack.cpp \
+    settings_dialog.cpp \
     switch.cpp \
     IQ_api/client.cpp \
     IQ_api/client_helpers.cpp \
@@ -104,7 +105,6 @@ SOURCES += \
     custom_combo_box.cpp \
     frame_button.cpp \
     tab_populator.cpp \
-
 
 HEADERS += \
     app_settings.h \
@@ -131,6 +131,7 @@ HEADERS += \
     qserial_interface.h \
     resource_file_handler.h \
     resource_pack.h \
+    settings_dialog.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \
