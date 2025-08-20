@@ -722,7 +722,10 @@ void MainWindow::write_parameters_to_file(QJsonArray * json_array, exportFileTyp
                       iv.pcon->AddToLog("Skipping adding " + QString(frame->first.c_str()) + " to parameters file because of bad value");
                       attach_new_object = false;
                   }else{
-                      current_tab_json_object->insert("value", fsb->GetFrameValue());
+                      // The spinbox displays its value rounded based on its decimals parameter,
+                      // but internally the value is still stored as a double.
+                      double frameValue = QString::number(fsb->spin_box_->value(), 'f', fsb->spin_box_->decimals()).toDouble();
+                      current_tab_json_object->insert("value", frameValue);
                       attach_new_object = true;
                   }
                 break;
