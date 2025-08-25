@@ -90,6 +90,15 @@ FrameSpinBox::FrameSpinBox(QWidget *parent, Client *client,
   value_ = saved_value_;
 }
 
+double FrameSpinBox::GetFrameValue(){
+    return value_;
+}
+
+void FrameSpinBox::SetFrameValue(double new_value){
+    //Limit this value to be in what we consider our legal range based on the minimum and maximum
+    value_ = qBound(spin_box_->minimum(), new_value, spin_box_->maximum());
+}
+
 void FrameSpinBox::ShowInfo() {
   QPoint globalPos = push_button_info_->mapToGlobal(push_button_info_->rect().topLeft());
   QWhatsThis::showText(globalPos, info_, push_button_info_);
@@ -118,7 +127,7 @@ void FrameSpinBox::SetSpinBox(QSizePolicy size_policy, FrameVariables *fv) {
   spin_box_->setDecimals(fv->spin_frame_.decimal);
 }
 
-void FrameSpinBox::SaveValue() {
+void FrameSpinBox::SaveValue(bool fromParameterFile) {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
 
@@ -142,7 +151,7 @@ void FrameSpinBox::SaveValue() {
       RemoveStarFromLabel();
 
       //If we need to restart when we change this parameter, then make the user restart
-      if(requires_restart_){
+      if(requires_restart_ && !fromParameterFile){
         iv.pcon->HandleRestartNeeded();
       }
 

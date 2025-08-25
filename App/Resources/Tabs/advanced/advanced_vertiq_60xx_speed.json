@@ -260,13 +260,34 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "max_fw_version": "0.1.127",
         "list_name": [
-          "Timeout Error",
-          "Disarm"
+          "Error - End Disarmed",
+          "Trigger Disarm Behavior"
         ],
         "list_value": [
           0,
           1
+        ]
+      },
+      {
+        "type_idn": 52,
+        "descriptor": "Timeout Meaning",
+        "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. There are options for a communication error to cause the motor to disarm or remain armed ",
+        "sub_idn": 17,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+          "Error - End Disarmed",
+          "Trigger Disarm Behavior",
+          "Error - Remain Armed"
+        ],
+        "list_value": [
+          0,
+          1,
+          2
         ]
       },
       {
@@ -322,6 +343,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "max_fw_version": "0.0.2",
         "list_name": [
           "Unknown",
           "Hobby",
@@ -360,6 +382,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -377,6 +400,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Use New-Style Telemetry",
           "Use Old-Style Telemetry"
@@ -422,6 +446,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
+        "min_fw_version": "0.1.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -481,6 +506,42 @@
           "minimum": -10000,
           "decimal": 2,
           "single_step": 0.1
+      },
+      {
+        "type_idn": 86,
+        "descriptor": "Play Arming Song on Arm",
+        "info": "Determines whether or not the 2 tone arming song will play on arming",
+        "sub_idn": 14,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+          "Do Not Play Arming Song",
+          "Play Arming Song"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Timer Based Protocol RPM Reporting Style",
+        "info": "Determines how ESC telemetry is transmitted, either as standard RPM or as eRPM/100.",
+        "sub_idn": 7,
+        "format": "B",
+        "unit": "",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+            "Standard RPM",
+            "eRPM/100"
+        ],
+        "list_value": [
+            0,
+            1
+        ]
       }
     ]
   }

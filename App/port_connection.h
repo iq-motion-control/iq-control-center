@@ -399,6 +399,8 @@ class PortConnection : public QObject {
 
   void PlayIndication();
 
+  QString GetFirmwareVersionString();
+
  signals:
 
   void ObjIdFound();
@@ -454,6 +456,7 @@ class PortConnection : public QObject {
   QString hardware_major_str_;
   QString electronics_str_;
   QString electronics_major_str_;
+  QString firmware_version_str_;
 
   uint8_t detected_module_ids_[MAX_MODULE_ID + 1]; //We can have a maximum of 63 modules before we run out of possible module IDs [0, 62]
   uint8_t num_modules_discovered_; //keep track of the number we've actually found

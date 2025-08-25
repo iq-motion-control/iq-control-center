@@ -32,11 +32,12 @@
 
 Firmware::Firmware(){}
 
-Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
-    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button);
+Firmware::Firmware(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button,
+                   AppSettings *appSettings){
+    Init(flash_progress_bar, firmware_binary_button, recover_progress_bar, recover_binary_button, appSettings);
 }
 
-void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button){
+void Firmware::Init(QProgressBar *flash_progress_bar, QPushButton *firmware_binary_button, QProgressBar *recover_progress_bar, QPushButton *recover_binary_button, AppSettings *appSettings){
     flash_progress_bar_ = flash_progress_bar;
     firmware_binary_button_ = firmware_binary_button;
     recover_progress_bar_ = recover_progress_bar;
@@ -95,11 +96,18 @@ void Firmware::UpdateFlashButtons(){
     bool displayCombined = (flashTypes.contains("combined") || flashTypes.contains("main")) &&
                            (binTypes.contains("combined.bin") || binTypes.contains("main.bin"));
 
+    //Need to reload appSettings by reading the settings.json file in AppData to get the latest settings parameters
+    this->appSettings.load();
+    bool showAdvancedFlashingOptions = this->appSettings.get("show_advanced_flashing_options", false).toBool();
     /**
      * Depending on the results of the logic above, we choose which buttons to make available to the user
      * Each button (excluding combined) gets its version as well as type for what it will flash
      */
+
+    // Always show Flash App button
     if(displayApp){
+        iv.pcon->AddToLog("Displaying app option");
+
         iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
         //If we have an app and no upgrade the index of app in the json is different
         if(!flashTypes.contains("upgrade")){
@@ -113,33 +121,85 @@ void Firmware::UpdateFlashButtons(){
         iv.pcon->GetMainWindowAccess()->flash_app_button->setText("Flash App v" + appMajor + "." + appMinor + "." + appPatch);
     }
 
-    if(displayUpgrade){
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
-        QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMajor());
-        QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMinor());
-        QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetPatch());
-        QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetStyle());
-        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
-    }
+    // Check if Show advanced flashing options is enabled to determine which flashing options to display
+    if (showAdvancedFlashingOptions){
+      iv.pcon->AddToLog("Displaying advanced flashing options");
 
-    if(displayBoot){
+      if(displayUpgrade){
+          iv.pcon->AddToLog("Displaying upgrade option");
+
+          iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(true);
+          QString upgradeMajor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMajor());
+          QString upgradeMinor = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetMinor());
+          QString upgradePatch = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetPatch());
+          QString upgradeStyle = QString::number(metadata_handler_.GetTypesArray(UPGRADE_INDEX).GetStyle());
+          iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setText("Flash Upgrade v" + upgradeStyle + "."+ upgradeMajor + "." + upgradeMinor + "." + upgradePatch);
+      }
+
+      if(displayBoot){
+        iv.pcon->AddToLog("Displaying boot option");
+
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(true);
         QString bootStyle = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetStyle());
         QString bootMajor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMajor());
         QString bootMinor = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetMinor());
         QString bootPatch = QString::number(metadata_handler_.GetTypesArray(BOOT_INDEX).GetPatch());
         iv.pcon->GetMainWindowAccess()->flash_boot_button->setText("Flash Boot v" + bootStyle + "." + bootMajor + "." + bootMinor + "." + bootPatch);
-    }
+      }
 
-    if(displayCombined){
+      if(displayCombined){
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+          if(flashTypes.contains("main")){
+              iv.pcon->AddToLog("Displaying main flash option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          }else{
+              iv.pcon->AddToLog("Displaying combined option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+          }
+      }
+    } else {
+      iv.pcon->AddToLog("Displaying basic flashing options");
+      // Set all of the flashing options' visibility to false besides Flash App
+
+      // If only app and combined sections are present, display Flash App
+      if (displayApp && displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_upgrade_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_boot_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If only app section is present, display Flash App
+      if (displayApp && !displayBoot && !displayUpgrade && !displayCombined){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(true);
+      }
+
+      // If the app section and boot/upgrade sections are present, it is better to show Flash Combined instead of Flash App.
+      if(displayApp && (displayBoot || displayUpgrade)){
+        iv.pcon->GetMainWindowAccess()->flash_app_button->setVisible(false);
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
-        if(flashTypes.contains("main")){
-            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
-        }else{
-            iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
-        }
-    }
+      }
 
+
+      // If the app section isn't available in the firmware .zip file, display the combined option
+      if(!displayApp && displayCombined){
+          if(flashTypes.contains("main")){
+              iv.pcon->AddToLog("Displaying main flash option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash");
+          }else{
+              iv.pcon->AddToLog("Displaying combined option");
+
+              iv.pcon->GetMainWindowAccess()->flash_button->setText("Flash Combined");
+          }
+          iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
+      }
+      else {
+          iv.pcon->AddToLog("Could not find App nor Combined flashing options.");
+      }
+    }
 }
 
 void Firmware::SelectFirmwareClicked() {
@@ -171,8 +231,10 @@ void Firmware::SelectFirmwareClicked() {
 
         //Pick which button we want to use
         if(currentTab == FIRMWARE_TAB){
+            iv.pcon->AddToLog("Using firmware binary button");
             buttonInUse = firmware_binary_button_;
         }else if(currentTab == RECOVERY_TAB){
+            iv.pcon->AddToLog("Using recovery button");
             buttonInUse = recover_binary_button_;
         }
 
@@ -180,17 +242,21 @@ void Firmware::SelectFirmwareClicked() {
         //The functionality for looking at the metadata and the binaries assumes there is only
         //one set of metadata and binaries active at any one time, but if the user switches selections
         //without flashing we could have lingering metadata
+        iv.pcon->AddToLog("Resetting metadata");
         ResetMetadata();
 
         //Check if it's empty. If it is do nothing and keep displaying the text
         //If we picked a bin file, process it as we always have, but flash a warning
         //If we picked a zip folder, use quazip
         if (firmware_bin_path_.isEmpty()) {
+          iv.pcon->AddToLog("No firmware selected");
           buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
         } else if(firmware_bin_path_.contains(".bin")){
+            iv.pcon->AddToLog("Binary file selected");
             HandleDisplayWhenBinSelected(buttonInUse);
         //If you want to use a zip dir
         }else if(firmware_bin_path_.contains(".zip")){
+            iv.pcon->AddToLog("Zip selected");
             HandleDisplayWhenZipSelected(buttonInUse, currentTab);
         }
 
@@ -209,6 +275,9 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
 
     using_metadata_ = true;
     metadata_handler_.Init(iv.pcon);
+
+    iv.pcon->AddToLog("Extracting metadata");
+
     //extract the archive, then we can treat it normally as a folder
     metadata_handler_.ExtractMetadata(firmware_bin_path_);
 
@@ -238,15 +307,18 @@ void Firmware::HandleDisplayWhenZipSelected(QPushButton * buttonInUse, int curre
 
     //We are only ever going to have one json per released zip
     //Use that to find the one to grab the data from
+    iv.pcon->AddToLog("Reading metadata");
     metadata_handler_.ReadMetadata();
 
     //If the wrong type of motor is connect for the selected file, don't let them move forward
     //When we have gotten to this point, we've either confirmed that our guess at the correct type of module
     //was a correct guess, or the user said we were wrong, and we'll warn them as they pick firmware
     if(FlashHardwareElectronicsWarning(currentTab)){
+        iv.pcon->AddToLog("Firmware was for wrong module");
         return;
     }
 
+    iv.pcon->AddToLog("Firmware was for the correct module");
 
     //If we aren't in recovery, present only the options that can be safely flashed.
     //Only giving combined option from recovery mode
@@ -271,6 +343,9 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
         if (firmware_bin_path_.contains(invalidBinary, Qt::CaseSensitive)) {
             QString warningMessage = "Flashing " + firmware_bin_path_ + " will damage your motor. Please choose another file or contact support@vertiq.co for any issues with your motor.";
             msgBox.setText(warningMessage);
+
+            iv.pcon->AddToLog(warningMessage);
+
             msgBox.addButton(QMessageBox::Ok);
             if(msgBox.exec() == QMessageBox::Ok){
                 buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
@@ -281,6 +356,9 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
             return;
         }
     }
+
+    iv.pcon->AddToLog("Displaying binary warning");
+
     //Pop up a warning window about dangers of flashing a binary
     msgBox.setText(
         "As flashing raw binaries can be dangerous, we strongly advise using a provided archive if available. If you flash firmware "
@@ -291,13 +369,18 @@ void Firmware::HandleDisplayWhenBinSelected(QPushButton *buttonInUse){
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
+
     //If you pick no, reset to the init state
     if(msgBox.exec() == QMessageBox::No){
+        iv.pcon->AddToLog("User declined flashing a raw binary file");
+
         buttonInUse->setText("Select Firmware (\".bin\") or (\".zip\")" );
         firmware_bin_path_ = "";
         iv.pcon->GetMainWindowAccess()->flash_button->setVisible(false);
         return;
     }
+
+    iv.pcon->AddToLog("User continuing with binary flash operation");
 
     //If you want to move forward, make the flash button available
     iv.pcon->GetMainWindowAccess()->flash_button->setVisible(true);
@@ -482,7 +565,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
 
     //only try to go into boot mode if we are trying to flash new firmware from a motor not in recovery
     if(currentTab == FIRMWARE_TAB){
+        iv.pcon->AddToLog("Jumping into boot mode");
         if (!BootMode()) {
+            iv.pcon->AddToLog("Failed to activate boot mode");
             return;
         }
     }
@@ -496,11 +581,17 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
 
       Schmi::FlashLoader * fl;
 
+      iv.pcon->AddToLog("Creating new flash loader instance");
+
       if(currentTab == FIRMWARE_TAB){
           fl = new Schmi::FlashLoader(&ser, &bin, &error, &flashBar);
       }else if(currentTab == RECOVERY_TAB){
           fl = new Schmi::FlashLoader(&ser, &bin, &error, &recoverBar);
       }
+
+      iv.pcon->AddToLog("Initializing flasher");
+      iv.pcon->AddToLog("Binary file size is: " + QString::number(bin.GetBinaryFileSize()) + " bytes long");
+      iv.pcon->AddToLog("Flash starting from: 0x" + QString::number(startingPoint, 16));
 
       fl->Init();
 
@@ -520,7 +611,9 @@ void Firmware::FlashFirmware(uint32_t startingPoint){
 
       bool init_usart = false;
       bool global_erase = false;
-      fl->Flash(init_usart, global_erase, startingPoint);
+
+      bool flash_result = fl->Flash(init_usart, global_erase, startingPoint);
+      iv.pcon->AddToLog("Flash result returned: " + QString::number(flash_result));
 
       //We don't want people to hang out in the recovery page. so don't let them
       if(currentTab == RECOVERY_TAB){
@@ -543,8 +636,12 @@ bool Firmware::BootMode() {
   if (iv.pcon->GetConnectionState() == 1) {
     try {
       QSerialInterface *ser = iv.pcon->GetQSerialInterface();
-      if (!sys_map_["system_control_client"]->Set(*ser, std::string("reboot_boot_loader")))
+
+      if (!sys_map_["system_control_client"]->Set(*ser, std::string("reboot_boot_loader"))){
+        iv.pcon->AddToLog("Couldn't reboot to boot loader");
         throw QString("COULDN'T REBOOT: please reconnect or try again");
+      }
+
       ser->SendNow();
 
       QString status_msg("Waiting for motor to go in BootMode");

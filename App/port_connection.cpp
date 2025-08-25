@@ -38,6 +38,7 @@ PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * r
   hardware_major_str_(HARDWARE_MAJOR_STRING),
   electronics_str_(ELECTRONICS_STRING),
   electronics_major_str_(ELECTRONICS_MAJOR_STRING),
+  firmware_version_str_(""),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
   perform_timer_callback_(true)
@@ -372,6 +373,27 @@ void PortConnection::DetectNumberOfModulesOnBus(){
   //know who they're recovering
   found_in_bootloader = CheckIfInBootLoader();
 
+  //If we see someone there, do something about it ASAP. Don't start sending IQUART stuff
+
+  //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
+  //We should kill all of our known detections, and make the only path forward recovery
+  if(found_in_bootloader){
+        //Every second, the TimerTimeout function gets called.
+        //in the case that we are re-detecting to deal with a recovery module later
+        //we need to say that connection_state_ is false until we've dealt with the popup
+        //If we don't, then the timer will cause us to try and talk to another module
+        //which it can't...which will cause an attempt to reconnect, which will pop up a second
+        //recovery message.
+        bool temp_connection = connection_state_;
+        connection_state_ = 0;
+
+        //If we're trying to recover right now, then we should stop here!
+        if(DisplayRecoveryMessage()){
+          connection_state_ = temp_connection;
+          return;
+        }
+  }
+
   //Only try to talk to the modules if we're connected to the PC serial
   if(ser_.ser_port_->isOpen()){
 
@@ -412,25 +434,6 @@ void PortConnection::DetectNumberOfModulesOnBus(){
 
       //Update our gui and log with who we've found
       UpdateGuiWithModuleIds(module_id_with_system_control_zero);
-
-      //If there's someone in recovery mode, we want to make it as safe as possible for them to not break anything
-      //We should kill all of our known detections, and make the only path forward recovery
-      if(found_in_bootloader){
-        //Every second, the TimerTimeout function gets called.
-        //in the case that we are re-detecting to deal with a recovery module later
-        //we need to say that connection_state_ is false until we've dealt with the popup
-        //If we don't, then the timer will cause us to try and talk to another module
-        //which it can't...which will cause an attempt to reconnect, which will pop up a second
-        //recovery message.
-        bool temp_connection = connection_state_;
-        connection_state_ = 0;
-
-        //If we're trying to recover right now, then we should stop here!
-        if(DisplayRecoveryMessage()){
-            connection_state_ = temp_connection;
-            return;
-        }
-      }
 
       if(num_modules_discovered_ > 0){
         //Update system control to the value stored in detected_module_ids_. This may be 0
@@ -831,6 +834,7 @@ void PortConnection::GetDeviceInformationResponses(){
 
     firmware_value_ = firmware_value;
     firmware_style_ = firmware_style;
+    firmware_version_str_ = firmware_build_number_string;
 
     hardware_type_ = hardware_type;
     hardware_major_version_ = hardware_major_version;
@@ -1097,40 +1101,49 @@ void PortConnection::HandleRestartNeeded(){
     //Don't let the timer timeout try and talk to us while we're doing this
     perform_timer_callback_ = false;
 
-    RebootMotor();
-
     //Pop up a message saying what's going on
     //Give the user the option to reboot the module after setting with defaults.
     QMessageBox msgBox;
+    msgBox.setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowTitleHint);
+    QAbstractButton * rebootButton = msgBox.addButton("Reboot Now", QMessageBox::YesRole);
+    msgBox.addButton(QMessageBox::Ok);
     msgBox.setWindowTitle("Reboot Required");
 
-     QString text = "Setting this parameter requires a module reboot to take effect. We are rebooting your module now.";
+     QString text = "Setting this parameter requires a module reboot to take effect. To automatically reboot your module, select Reboot Now. If there are multiple modules connected on a bus, they will still be connected. "
+        "Otherwise, select OK and manually reboot your module.";
 
      //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
      //if there's no one left, then we should just give up and close the port
-     if(num_modules_discovered_ > 1){
-
-        //We've got others here, make sure to redetect
-        should_redetect = true;
-
-        //pop up a message for them telling what just happened
-        text = text + " We will automatically rescan the network.";
-
-     }
 
      msgBox.setText(text);
      msgBox.exec();
+
+    if(msgBox.clickedButton() == rebootButton){
+        //reboot the motor to make sure all changes take full effect (specifically if module id gets changed)
+        AddToLog("User selected Reboot Now to automatically reboot module after setting parameter.");
+        RebootMotor();
+        if(num_modules_discovered_ > 1){
+            //We've got others here, make sure to redetect
+            should_redetect = true;
+        }
+    }else{
+        AddToLog("User selected OK to manually reboot module after setting parameter.");
+    }
 
      if(should_redetect){
          //Stop here for 2 seconds to make sure everyone is rebooted!
          QTime end_pause = QTime::currentTime().addSecs(2);
          while (QTime::currentTime() < end_pause)
              QCoreApplication::processEvents(QEventLoop::AllEvents);
-
          //Find who's here now
+         AddToLog("Attempting to redetect modules after reboot.");
          DetectNumberOfModulesOnBus();
      }
 
      //Let the timer callback work again
      perform_timer_callback_ = true;
+}
+
+QString PortConnection::GetFirmwareVersionString(){
+    return firmware_version_str_;
 }

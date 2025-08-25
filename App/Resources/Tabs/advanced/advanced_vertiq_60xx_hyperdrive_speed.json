@@ -261,8 +261,8 @@
         "unit": "enum",
         "frame_type": 1,
         "list_name": [
-          "Timeout Error",
-          "Disarm"
+          "Error - End Disarmed",
+          "Trigger Disarm Behavior"
         ],
         "list_value": [
           0,

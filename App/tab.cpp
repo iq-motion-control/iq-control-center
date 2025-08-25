@@ -62,64 +62,69 @@ void Tab::CreateFrames()
         }
       }
 
-      FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
+      //If for some reason the frame variables creation stuff has decided we don't want this particular frame to exist,
+      //it will tell us that by leaving it uninitialized at nullptr. Generally due to it not being right for a particular firwmare version
+      if(frame_variables_map_.count(client_entry_descriptor) > 0){
+          FrameVariables* fv =  frame_variables_map_[client_entry_descriptor];
+          uint8_t frame_type = fv->frame_type_;
 
-      uint8_t frame_type = fv->frame_type_;
+          switch(frame_type)
+          {
+            case 1:
+            {
+              FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
+              ConnectFrameCombo(fc);
+              frame_map_[client_entry_descriptor] = fc;
+              break;
+            }
+            case 2:
+            {
+              FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()), entry_needs_reboot);
+              gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
+              ConnectFrameSpinBox(fsb);
+              frame_map_[client_entry_descriptor] = fsb;
+              break;
+            }
+            case 3:
+            {
+              FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
+              ConnectFrameSwitch(fs);
+    //          frame_map_[client_entry_descriptor] = fs;
+              break;
+            }
+            case 4:
+            {
+              FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
+              ConnectFrameTesting(ft);
+              frame_map_[client_entry_descriptor] = ft;
+              break;
+            }
+            case 5:
+            {
+              FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
+              ConnectFrameButton(fb);
+              frame_map_[client_entry_descriptor] = fb;
+              break;
+            }
 
-      switch(frame_type)
-      {
-        case 1:
-        {
-          FrameCombo *fc = new FrameCombo(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fc,frame_vertical_position, 1, 1, 1);
-          ConnectFrameCombo(fc);
-          frame_map_[client_entry_descriptor] = fc;
-          break;
-        }
-        case 2:
-        {
+            case 6:
+            {
+              FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
+              gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
+              ConnectFrameReadOnly(fr);
+              frame_map_[client_entry_descriptor] = fr;
+              break;
+            }
+          }
+          ++frame_vertical_position;
 
-          FrameSpinBox *fsb = new FrameSpinBox(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()), entry_needs_reboot);
-          gridLayout_->addWidget(fsb,frame_vertical_position, 1, 1, 1);
-          ConnectFrameSpinBox(fsb);
-          frame_map_[client_entry_descriptor] = fsb;
-          break;
-        }
-        case 3:
-        {
-          FrameSwitch *fs = new FrameSwitch(parent_, client.second, client_entry, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fs->frame_,frame_vertical_position, 1, 1, 1);
-          ConnectFrameSwitch(fs);
-//          frame_map_[client_entry_descriptor] = fs;
-          break;
-        }
-        case 4:
-        {
-          FrameTesting *ft = new FrameTesting(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(ft,frame_vertical_position, 1, 1, 1);
-          ConnectFrameTesting(ft);
-          frame_map_[client_entry_descriptor] = ft;
-          break;
-        }
-        case 5:
-        {
-          FrameButton *fb = new FrameButton(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fb,frame_vertical_position, 1, 1, 1);
-          ConnectFrameButton(fb);
-          frame_map_[client_entry_descriptor] = fb;
-          break;
-        }
-
-        case 6:
-        {
-          FrameReadOnly *fr = new FrameReadOnly(parent_, client.second, client_entry, fv, using_custom_order_, QString(frame_descriptors_[client_entry_descriptor].c_str()));
-          gridLayout_->addWidget(fr,frame_vertical_position, 1, 1, 1);
-          ConnectFrameReadOnly(fr);
-          frame_map_[client_entry_descriptor] = fr;
-          break;
-        }
+       }else{
+          iv.pcon->AddToLog("Skipping tab creation for "+QString::fromStdString(client_entry_descriptor));
       }
-      ++frame_vertical_position;
     }
   }
 
@@ -186,8 +191,8 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
                 break;
 
               //Let's make sure that the value we're trying to save is different than what's on there already
-              if(!IsClose(fc->value_, default_value.second)){
-                  fc->value_ = default_value.second;
+              if(!IsClose(fc->GetFrameValue(), default_value.second)){
+                  fc->SetFrameValue(default_value.second);
                   fc->SaveValue();
               }
 
@@ -200,9 +205,9 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
                 break;
 
               //Let's make sure that the value we're trying to save is different than what's on there already
-              if(!IsClose(fsb->value_, default_value.second)){
-                  fsb->value_ = default_value.second;
-                  fsb->SaveValue();
+              if(!IsClose(fsb->GetFrameValue(), default_value.second)){
+                  fsb->SetFrameValue(default_value.second);
+                  fsb->SaveValue(true);
               }
             }
           }
@@ -213,7 +218,6 @@ void Tab::SaveDefaults(std::map<std::string,double> default_value_map)
 }
 
 bool Tab::SaveSpecialDefaults(std::map<std::string,double> default_value_map){
-
     bool retVal = false;
 
     //Check to see which special defaults are in here, and call the correct functions to set them up
@@ -242,15 +246,15 @@ bool Tab::SetNewBaudRate(double value){
     bool baud_changed = false;
     Frame * baud_rate_frame = frame_map_["UART Baud Rate"];
 
-    FrameSpinBox *fsb = nullptr;
-    if(!(fsb = dynamic_cast<FrameSpinBox*>(baud_rate_frame))){
+    FrameCombo *frameCombo = nullptr;
+    if(!(frameCombo = dynamic_cast<FrameCombo*>(baud_rate_frame))){
         return false;
     }
 
     //Let's make sure that the value we're trying to save is different than what's on there already
-    if(!IsClose(fsb->value_, value)){
-        fsb->value_ = value;
-        fsb->SaveValue();
+    if(!IsClose(frameCombo->GetFrameValue(), value)){
+        frameCombo->SetFrameValue(value);
+        frameCombo->SaveValue();
         baud_changed = true;
     }
 

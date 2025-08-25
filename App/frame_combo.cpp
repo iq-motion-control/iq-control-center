@@ -80,7 +80,45 @@ FrameCombo::FrameCombo(QWidget *parent, Client *client,
   connect(push_button_info_, SIGNAL(clicked()), this, SLOT(ShowInfo()));
 
   //Initialize the value
-  value_ = index_value_[combo_box_->currentIndex()];
+  GetSavedValue();
+  UpdateValueFromIndex(combo_box_->currentIndex());
+}
+
+void FrameCombo::UpdateValueFromIndex(int index){
+    //-1 indicates we don't have a good value/index combo available, we had some problem talking to the motor about this most likely.
+    //Set the value to INT_MIN so its obvious something is wrong.
+    if(index != -1){
+      value_ = index_value_[index];
+    }else{
+      value_ = INT_MIN;
+    }
+}
+
+double FrameCombo::GetFrameValue(){
+    return value_;
+}
+
+bool FrameCombo::SetFrameValue(int new_value){
+    //Want to find if this value is one of the values we said is allowed. Finding keys is much easier than finding values sadly,
+    //so chug through the list to see if this is allowed. If not, we won't set to something illegal.
+    bool value_allowed = false;
+    for (auto it = index_value_.begin(); it != index_value_.end(); it++){
+        if(it->second == new_value){
+            iv.pcon->AddToLog("Combo box value found at key: " + QString::number(it->first));
+            value_allowed = true;
+            break;
+        }
+    }
+
+    if(value_allowed){
+        iv.pcon->AddToLog("Setting new combo frame value: " + QString::number(new_value));
+        value_ = new_value;
+    }else{
+        iv.pcon->AddToLog("Rejected new combo frame value: " + QString::number(new_value));
+    }
+
+    //Since failure to set is possible, it is nice to let the upper level have a chance to know that if it cares
+    return value_allowed;
 }
 
 void FrameCombo::ShowInfo() {
@@ -150,7 +188,8 @@ void FrameCombo::GetSavedValue() {
       iv.pcon->AddToLog(QString(error_string.c_str()).toLower());
     }
 
-    int key = 0;
+    //Start at -1 so if we don't find anything it is obvious to us that something went wrong. -1 is an easy error marker.
+    int key = -1;
     for (auto &i : index_value_) {
       if (i.second == saved_value_) {
         key = i.first;
@@ -169,7 +208,7 @@ void FrameCombo::GetSavedValue() {
 }
 
 void FrameCombo::ComboBoxIndexChange(int index) {
-  value_ = index_value_[index];
+  UpdateValueFromIndex(index);
 
   if (value_ != saved_value_) {
     AddStarToLabel();

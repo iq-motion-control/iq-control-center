@@ -293,6 +293,7 @@
       "format": "B",
       "unit": "enum",
       "frame_type": 1,
+      "min_fw_version": "0.0.32",
       "list_name": [
           "0",
           "1",

@@ -252,7 +252,7 @@
         "single_step": 1.0,
         "nan": true
       },
-	  {
+      {
         "type_idn": 52,
         "descriptor": "Timeout Meaning",
         "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. A timeout will cause the motor to become disarmed in either case.",
@@ -261,8 +261,8 @@
         "unit": "enum",
         "frame_type": 1,
         "list_name": [
-          "Timeout Error",
-          "Disarm"
+          "Error - End Disarmed",
+          "Trigger Disarm Behavior"
         ],
         "list_value": [
           0,

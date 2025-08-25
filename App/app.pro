@@ -35,7 +35,7 @@ ICON = icons/IQ.icns
 DEFINES += QT_DEPRECATED_WARNINGS
 
 DEFINES += MAJOR=1 \
-           MINOR=9 \
+           MINOR=10 \
            PATCH=0
 
 win32 {
@@ -80,6 +80,7 @@ SOURCES += \
         mainwindow.cpp \
     resource_file_handler.cpp \
     resource_pack.cpp \
+    settings_dialog.cpp \
     switch.cpp \
     IQ_api/client.cpp \
     IQ_api/client_helpers.cpp \
@@ -131,6 +132,7 @@ HEADERS += \
     qserial_interface.h \
     resource_file_handler.h \
     resource_pack.h \
+    settings_dialog.h \
     switch.h \
     IQ_api/bipbuffer.h \
     IQ_api/byte_queue.h \
