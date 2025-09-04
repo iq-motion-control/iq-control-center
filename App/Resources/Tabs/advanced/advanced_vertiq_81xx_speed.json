@@ -343,7 +343,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "max_fw_version": "0.0.1",
+        "max_fw_version": "0.0.9",
         "list_name": [
           "Unknown",
           "Hobby",
