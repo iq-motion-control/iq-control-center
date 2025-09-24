@@ -1130,3 +1130,16 @@ void MainWindow::handleSettingsChanged(){
         firmware_handler_.UpdateFlashButtons();
     }
 }
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event); // call base implementation
+
+    int currentWidth = event->size().width();
+
+    if (currentWidth < 1200) {  // threshold width
+        ui->label_control_center->setVisible(false);
+    } else {
+        ui->label_control_center->setVisible(true);
+    }
+}
