@@ -1137,7 +1137,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     int currentWidth = event->size().width();
 
-    if (currentWidth < 1200) {  // threshold width
+    if (currentWidth < 1360) {  // threshold width
         ui->label_control_center->setVisible(false);
     } else {
         ui->label_control_center->setVisible(true);
