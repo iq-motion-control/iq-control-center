@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1450</width>
-    <height>750</height>
+    <width>720</width>
+    <height>480</height>
    </size>
   </property>
   <property name="palette">
@@ -2782,8 +2782,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>1149</width>
-                <height>707</height>
+                <width>24</width>
+                <height>16</height>
                </rect>
               </property>
              </widget>
@@ -4007,7 +4007,7 @@ QPushButton:checked {
          </property>
          <property name="minimumSize">
           <size>
-           <width>290</width>
+           <width>175</width>
            <height>0</height>
           </size>
          </property>
@@ -4032,16 +4032,16 @@ QPushButton:checked {
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>62</width>
+           <width>32</width>
            <height>20</height>
           </size>
          </property>
         </spacer>
        </item>
-       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <item>
         <widget class="QGroupBox" name="module_connections_group_box">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4079,7 +4079,7 @@ QGroupBox:title{
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1,0,0,0,0,0">
           <item>
            <layout class="QVBoxLayout" name="detected_modules_layout">
             <item alignment="Qt::AlignVCenter">
@@ -4163,11 +4163,11 @@ QGroupBox:title{
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::MinimumExpanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>10</width>
+              <width>5</width>
               <height>20</height>
              </size>
             </property>
@@ -4227,11 +4227,11 @@ QPushButton:hover{
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Minimum</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>15</width>
+              <width>5</width>
               <height>20</height>
              </size>
             </property>
@@ -4331,17 +4331,17 @@ QPushButton:hover{
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::MinimumExpanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>10</width>
+              <width>5</width>
               <height>20</height>
              </size>
             </property>
            </spacer>
           </item>
-          <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+          <item>
            <widget class="QPushButton" name="identify_button">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -4401,7 +4401,7 @@ QPushButton:hover{
           <enum>Qt::Horizontal</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
+          <enum>QSizePolicy::Minimum</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -4411,10 +4411,10 @@ QPushButton:hover{
          </property>
         </spacer>
        </item>
-       <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+       <item>
         <widget class="QGroupBox" name="serial_group_box">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -4446,7 +4446,7 @@ QGroupBox:title{
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,0,0,0">
           <item>
            <layout class="QVBoxLayout" name="serial_baud_rate_layout">
             <item>
@@ -4637,7 +4637,7 @@ QGroupBox:title{
             </property>
            </spacer>
           </item>
-          <item alignment="Qt::AlignVCenter">
+          <item>
            <widget class="QPushButton" name="connect_button">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

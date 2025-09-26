@@ -112,6 +112,8 @@ class MainWindow : public QMainWindow {
 
   void handleSettingsChanged();
 
+  void resizeEvent(QResizeEvent *event);
+
 
 private:
   std::map<std::string, double> advanced_special_value_map;
