@@ -1130,3 +1130,18 @@ void MainWindow::handleSettingsChanged(){
         firmware_handler_.UpdateFlashButtons();
     }
 }
+
+void MainWindow::resizeEvent(QResizeEvent *event){
+    // Overrides the resizeEvent to check if the app's width is less than 1360px
+    // If so, hide the IQ Control Center logo to give widgets more space
+    QMainWindow::resizeEvent(event);
+
+    int currentWidth = event->size().width();
+    int threshold_width = 1360;
+
+    if (currentWidth < threshold_width) {
+        ui->label_control_center->setVisible(false);
+    } else {
+        ui->label_control_center->setVisible(true);
+    }
+}
