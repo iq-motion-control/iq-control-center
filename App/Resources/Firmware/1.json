@@ -1,6 +1,135 @@
 {
   "possible_module_configurations": [
     {
+      "hardware_major_version": 4,
+      "electronics_type": 3,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 2306 2200kv",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 32,
+          "name": "speed-1"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "servo-1"
+        },
+        {
+          "style": 4,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "stepdir-1"
+        },
+        {
+          "style": 3,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 24,
+          "name": "pulsing-1"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "pulsing_velocity-1"
+        }
+      ]
+    },
+    {
+      "hardware_major_version": 3,
+      "electronics_type": 3,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 2306 2200kv",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 32,
+          "name": "speed-1"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "servo-1"
+        },
+        {
+          "style": 4,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "stepdir-1"
+        },
+        {
+          "style": 3,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 24,
+          "name": "pulsing-1"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "pulsing_velocity-1"
+        }
+      ]
+    },
+    {
+      "hardware_major_version": 2,
+      "electronics_type": 3,
+      "electronics_major_version": 0,
+      "hardware_name": "Vertiq 2306 2200kv",
+      "styles": [
+        {
+          "style": 1,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 32,
+          "name": "speed-1"
+        },
+        {
+          "style": 2,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "servo-1"
+        },
+        {
+          "style": 4,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 18,
+          "name": "stepdir-1"
+        },
+        {
+          "style": 3,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 24,
+          "name": "pulsing-1"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "pulsing_velocity-1"
+        }
+      ]
+    },
+    {
       "hardware_major_version": 1,
       "electronics_type": 3,
       "electronics_major_version": 0,
@@ -18,7 +147,7 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 18,
-          "name": "servo-1" 
+          "name": "servo-1"
         },
         {
           "style": 4,
@@ -61,7 +190,7 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 18,
-          "name": "servo-1" 
+          "name": "servo-1"
         },
         {
           "style": 4,
