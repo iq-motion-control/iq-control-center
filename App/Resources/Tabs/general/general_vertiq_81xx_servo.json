@@ -79,7 +79,7 @@
         {
           "type_idn": 78,
           "descriptor": "Servo mode",
-          "info": "Maps the input to PWM mode, voltage mode, velocity mode, or position mode.  This selection determines the units of Unit maximum and Unit minimum.",
+          "info": "Maps the input to PWM mode, voltage mode, velocity mode, or angular displacement mode, or linear displacement mode. This selection determines the units of Unit maximum and Unit minimum.",
           "sub_idn": 0,
           "format": "B",
           "unit": "enum",
