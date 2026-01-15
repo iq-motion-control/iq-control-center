@@ -79,7 +79,7 @@
       {
         "type_idn": 78,
         "descriptor": "Servo mode",
-	      "info": "Maps the input to PWM mode, voltage mode, velocity mode, or position mode.  This selection determines the units of Unit maximum and Unit minimum.",
+        "info": "Maps the input to PWM mode, voltage mode, velocity mode, or position mode.  This selection determines the units of Unit maximum and Unit minimum.",
         "sub_idn": 0,
         "format": "B",
         "unit": "enum",
@@ -88,14 +88,16 @@
           "PWM",
           "Voltage",
           "Velocity",
-          "Position"
+          "Angular Displacement",
+          "Linear Displacement"
         ],
         "list_value": [
           0,
           1,
           2,
-          3
-	      ]
+          3,
+          4
+        ]
       },
       {
         "type_idn": 76,
@@ -173,7 +175,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "list_name": [
             "0",
             "1",
@@ -221,7 +223,7 @@
         "format": "I",
         "unit": "ID",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 127,
         "minimum": 0,
         "decimal": 0,
@@ -235,7 +237,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 256,
         "minimum": 0,
         "decimal": 0,
@@ -249,7 +251,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 1000,
         "minimum": 0,
         "decimal": 0,
@@ -263,7 +265,7 @@
         "format": "B",
         "unit": "%",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 100,
         "minimum": 0,
         "decimal": 0,
@@ -277,7 +279,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "list_name": [
             "Inactive",
             "Active"
@@ -295,7 +297,7 @@
         "format": "f",
         "unit": "seconds",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 1000,
         "minimum": 0.1,
         "default_value": 1,
@@ -310,7 +312,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 4294967295,
         "minimum": 0,
         "default_value": 0,
@@ -325,7 +327,7 @@
         "format": "B",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 255,
         "minimum": 0,
         "decimal": 0,
@@ -339,7 +341,7 @@
         "format": "B",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 255,
         "minimum": 0,
         "decimal": 0,
@@ -353,7 +355,7 @@
         "format": "B",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 255,
         "minimum": 0,
         "decimal": 0,
@@ -367,7 +369,7 @@
         "format": "n",
         "unit": "",
         "frame_type": 5,
-        "min_fw_version": "0.1.1"
+        "min_fw_version": "0.1.0"
       },
       {
         "type_idn": 100,
@@ -377,7 +379,7 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "list_name": [
             "Inactive",
             "Active"
@@ -395,7 +397,7 @@
         "format": "f",
         "unit": "seconds",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 1000,
         "minimum": 0.1,
         "default_value": 1,
@@ -410,7 +412,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.1.1",
+        "min_fw_version": "0.1.0",
         "maximum": 4294967295,
         "minimum": 0,
         "default_value": 0,
