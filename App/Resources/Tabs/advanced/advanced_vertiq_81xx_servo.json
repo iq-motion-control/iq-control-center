@@ -169,6 +169,67 @@
         "format": "n",
         "unit": "",
         "frame_type": 5
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Bitrate",
+        "info": "The bitrate used by the CAN bus",
+        "sub_idn": 10,
+        "format": "I",
+        "unit": "bps",
+        "frame_type": 1,
+        "min_fw_version": "0.1.0",
+        "list_name": [
+          "1000000",
+          "500000",
+          "250000",
+          "125000"
+        ],
+        "list_value": [
+          1000000,
+          500000,
+          250000,
+          125000
+        ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Warning Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node warning health checks are active. Bit 0: coil temperature check | Bit 1: microcontroller temperature check | Bit 2: over voltage check",
+        "sub_idn": 15,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.1.0",
+        "maximum": 7,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Error Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node error health checks are active. Bit 0: timeout check | Bit 1: 0 < derate < 1 check",
+        "sub_idn": 16,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.1.0",
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Critical Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node critical health checks are active. Bit 0: derate = 0 check | Bit 1: drive locked out check",
+        "sub_idn": 17,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.1.0",
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
       }
     ]
   }
