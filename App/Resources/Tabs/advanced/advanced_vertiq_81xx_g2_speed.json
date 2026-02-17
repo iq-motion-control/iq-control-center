@@ -542,6 +542,87 @@
             0,
             1
         ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Warning Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node warning health checks are active. Bit 0: coil temperature check | Bit 1: microcontroller temperature check | Bit 2: over voltage check",
+        "sub_idn": 15,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.3.0",
+        "maximum": 7,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Error Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node error health checks are active. Bit 0: timeout check | Bit 1: 0 < derate < 1 check",
+        "sub_idn": 16,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.3.0",
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Critical Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node critical health checks are active. Bit 0: derate = 0 check | Bit 1: drive locked out check",
+        "sub_idn": 17,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.3.0",
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 76,
+        "descriptor": "Allow DSHOT Disarming Message",
+        "info": "Determines whether or not the special DSHOT disarming message (DSHOT value 0) forces your module to perform a disarming transition.",
+        "sub_idn": 8,
+        "format": "B",
+        "unit": "",
+        "frame_type": 1,
+        "min_fw_version": "0.2.1",
+        "list_name": [
+            "Allow Message",
+            "Ignore Message"
+        ],
+        "list_value": [
+            1,
+            0
+        ]
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN ESC Status Error Count Meaning",
+        "info": "Determines the meaning of the reported error count in the DroneCAN ESC Status message. Options are to report the number of CAN TX errors, CAN RX errors, max of CAN TX or CAN RX errors, CAN TX errors | CAN RX errors, or total CAN errors.",
+        "sub_idn": 18,
+        "format": "I",
+        "unit": "",
+        "frame_type": 1,
+        "min_fw_version": "0.3.0",
+        "list_name": [
+            "TX Errors",
+            "RX Errors",
+            "Max of TX or RX Errors",
+            "TX Errors | RX Errors",
+            "Total Errors"
+        ],
+        "list_value": [
+            0,
+            1,
+            2,
+            3,
+            4
+        ]
       }
     ]
   }
