@@ -623,6 +623,108 @@
             3,
             4
         ]
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Supply Current Limit Enable",
+        "info": "",
+        "sub_idn": 50,
+        "format": "B",
+        "unit": "Enables the motoring and regeneration supply current limiters. When disabled, those limits will have no effect on operation.",
+        "frame_type": 1,
+        "min_fw_version": "0.2.0",
+        "list_name": [
+            "Disabled",
+            "Enabled"
+        ],
+        "list_value": [
+            0,
+            1
+        ]
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Regenerating Supply Current Limit",
+        "info": "Determines the limit that the supply current limiter will aim to keep the regenerated supply current above when the motor is regenerating. For example, if this were set to -1A, the limiter would try to prevent the motor from regenerating more than -1A into the supply.",
+        "sub_idn": 49,
+        "format": "f",
+        "unit": "A",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": -0.25,
+        "minimum": -1000.0,
+        "decimal": 2,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Motoring Supply Current Limit",
+        "info": "Determines the limit that the supply current limiter will aim to keep the motoring supply current below when the motor is motoring. For example, if this were set to 1A, the limiter would try to prevent the motor from drawing more than 1A when motoring.",
+        "sub_idn": 48,
+        "format": "f",
+        "unit": "A",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": 1000.0,
+        "minimum": 0.25,
+        "decimal": 2,
+        "single_step": 0.1
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Regenerating Supply Current Limit Kp",
+        "info": "Sets the P gain for the closed loop controller on the regenerating supply current limiter. Increasing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
+        "sub_idn": 55,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": 5.0,
+        "minimum": 0.0,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Regenerating Supply Current Limit Ki",
+        "info": "Sets the I gain for the closed loop controller on the regenerating supply current limiter. Increasing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
+        "sub_idn": 56,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": 5.0,
+        "minimum": 0.0,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Motoring Supply Current Limit Kp",
+        "info": "Sets the P gain for the closed loop controller on the motoring supply current limiter. Changing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
+        "sub_idn": 58,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": 5.0,
+        "minimum": 0.0,
+        "decimal": 2,
+        "single_step": 0.01
+      },
+      {
+        "type_idn": 50,
+        "descriptor": "Motoring Supply Current Limit Ki",
+        "info": "Sets the I gain for the closed loop controller on the motoring supply current limiter. Changing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
+        "sub_idn": 59,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "min_fw_version": "0.2.0",
+        "maximum": 5.0,
+        "minimum": 0.0,
+        "decimal": 2,
+        "single_step": 0.01
       }
     ]
   }
