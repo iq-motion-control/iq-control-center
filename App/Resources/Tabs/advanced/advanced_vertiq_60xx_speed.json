@@ -642,10 +642,10 @@
             1
         ]
       },
-     {
+      {
         "type_idn": 50,
         "descriptor": "Regenerating Supply Current Limit",
-        "info": "Determines the limit that the supply current limiter will aim to keep the regenerated supply current above when the motor is regenerating. For example, if this were set to -1A, the limiter would try to prevent the motor from regenerating more than -1A into the supply.",
+        "info": "The target maximum allowed regenerated supply current when Supply Current Limit Enable is enabled and the motor is regenerating. For example, if this were set to -1A, the limiter would try to prevent the motor from regenerating more than -1A into the supply.",
         "sub_idn": 49,
         "format": "f",
         "unit": "A",
@@ -659,7 +659,7 @@
       {
         "type_idn": 50,
         "descriptor": "Motoring Supply Current Limit",
-        "info": "Determines the limit that the supply current limiter will aim to keep the motoring supply current below when the motor is motoring. For example, if this were set to 1A, the limiter would try to prevent the motor from drawing more than 1A when motoring.",
+        "info": "The target maximum allowed motoring supply current when Supply Current Limit Enable is enabled and the motor is motoring. For example, if this were set to 1A, the limiter would try to prevent the motor from drawing more than 1A when motoring.",
         "sub_idn": 48,
         "format": "f",
         "unit": "A",
@@ -673,7 +673,7 @@
       {
         "type_idn": 50,
         "descriptor": "Regenerating Supply Current Limit Kp",
-        "info": "Sets the P gain for the closed loop controller on the regenerating supply current limiter. Increasing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
+        "info": "Sets the regenerating supply current limiter’s closed loop controller’s P gain. Increasing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
         "sub_idn": 55,
         "format": "f",
         "unit": "",
@@ -687,7 +687,7 @@
       {
         "type_idn": 50,
         "descriptor": "Regenerating Supply Current Limit Ki",
-        "info": "Sets the I gain for the closed loop controller on the regenerating supply current limiter. Increasing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
+        "info": "Sets the regenerating supply current limiter’s closed loop controller’s I gain. Increasing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
         "sub_idn": 56,
         "format": "f",
         "unit": "",
@@ -701,7 +701,7 @@
       {
         "type_idn": 50,
         "descriptor": "Motoring Supply Current Limit Kp",
-        "info": "Sets the P gain for the closed loop controller on the motoring supply current limiter. Changing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
+        "info": "Sets the motoring supply current limiter’s closed loop controller’s P gain. Changing this can improve the accuracy of the limiting, but a gain that is too high can cause oscillation and overshoot.",
         "sub_idn": 58,
         "format": "f",
         "unit": "",
@@ -715,7 +715,7 @@
       {
         "type_idn": 50,
         "descriptor": "Motoring Supply Current Limit Ki",
-        "info": "Sets the I gain for the closed loop controller on the motoring supply current limiter. Changing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
+        "info": "Sets the motoring supply current limiter’s closed loop controller’s I gain. Changing this can improve the steady state error of the limit, but a gain that is too high can cause oscillation and windup issues.",
         "sub_idn": 59,
         "format": "f",
         "unit": "",
