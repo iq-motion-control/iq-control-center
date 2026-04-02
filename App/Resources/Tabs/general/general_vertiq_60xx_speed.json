@@ -345,6 +345,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "max_fw_version": "0.2.256",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -356,6 +357,34 @@
                     1,
                     2,
                     3
+                ]
+            },
+            {
+                "type_idn": 86,
+                "descriptor": "Disarm Behavior",
+                "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 9,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "min_fw_version": "0.3.0",
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow",
+                    "Coast to Stow",
+                    "Coast to Brake",
+                    "0V to Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
                 ]
             },
             {
@@ -385,6 +414,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "max_fw_version": "0.2.256",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -396,6 +426,34 @@
                     1,
                     2,
                     3
+                ]
+            },
+            {
+                "type_idn": 52,
+                "descriptor": "Timeout Behavior",
+                "info": "Determines what behavior to perform when a timeout error occurs. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 18,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "min_fw_version": "0.3.0",
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow",
+                    "Coast to Stow",
+                    "Coast to Brake",
+                    "0V to Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
                 ]
             },
             {
