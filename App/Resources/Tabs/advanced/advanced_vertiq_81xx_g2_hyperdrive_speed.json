@@ -548,7 +548,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.3",
+        "min_fw_version": "0.0.4",
         "maximum": 7,
         "minimum": 0,
         "single_step": 1
@@ -561,7 +561,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.3",
+        "min_fw_version": "0.0.4",
         "maximum": 3,
         "minimum": 0,
         "single_step": 1
@@ -574,7 +574,7 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.3",
+        "min_fw_version": "0.0.4",
         "maximum": 3,
         "minimum": 0,
         "single_step": 1
