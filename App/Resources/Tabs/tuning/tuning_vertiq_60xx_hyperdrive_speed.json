@@ -24,7 +24,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 4200,
+        "maximum": 1700,
         "minimum": -0.5,
         "single_step": 0.5,
         "nan": true,
