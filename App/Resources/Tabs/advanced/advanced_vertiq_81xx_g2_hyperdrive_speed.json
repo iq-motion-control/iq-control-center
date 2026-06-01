@@ -36,7 +36,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 1200,
+        "maximum": 4100,
         "minimum": 0,
         "single_step": 1
       },
@@ -48,7 +48,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 1300,
+        "maximum": 4200,
         "minimum": 0,
         "single_step": 1
       },
@@ -335,24 +335,7 @@
           1
         ]
     },
-	  {
-        "type_idn": 80,
-        "descriptor": "Arming by DroneCAN ArmingStatus",
-        "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
-        "sub_idn": 12,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Disabled",
-          "Enabled"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-    },
-	  {
+	{
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -369,6 +352,23 @@
           1
         ]
       },
+      {
+        "type_idn": 80,
+        "descriptor": "Arming by DroneCAN ArmingStatus",
+        "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
+        "sub_idn": 12,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Disabled",
+          "Enabled"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+    },
       {
         "type_idn": 80,
         "descriptor": "DroneCAN Telemetry Style",
