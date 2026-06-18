@@ -48,8 +48,8 @@
             },
             {
                 "type_idn": 76,
-                "descriptor": "Communication",
-                "info": "These are standard timer based communication methods. Match your module's communication method with your flight controller's communication method.",
+                "descriptor": "Timer Based Protocol Communication",
+                "info": "These are standard timer based communication methods (e.g. PWM, DSHOT). Match your module's communication method with your flight controller's communication method if using one of these protocols.",
                 "sub_idn": 0,
                 "format": "B",
                 "unit": "enum",
@@ -709,8 +709,8 @@
             },
             {
                 "type_idn": 104,
-                "descriptor": "Hobby Throttle Priority",
-                "info": "Hobby protocols' priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "descriptor": "Timer Based Protocol Priority",
+                "info": "Timer Based Protocol protocols' (e.g. PWM, DSHOT) priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
                 "sub_idn": 2,
                 "format": "B",
                 "unit": "",
