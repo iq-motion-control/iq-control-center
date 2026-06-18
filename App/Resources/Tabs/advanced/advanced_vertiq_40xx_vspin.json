@@ -5,7 +5,7 @@
       {
         "type_idn": 102,
         "descriptor": "Supply Voltage Limit Start",
-		"info": "The supply voltage at which the safeties will start to attempt to limit the regeneration of the motor",
+        "info": "The supply voltage at which the safeties will start to attempt to limit the regeneration of the motor",
         "sub_idn": 5,
         "format": "f",
         "unit": "V",
