@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "tuning_vertiq_60xx_hyperdrive_speed",
+    "descriptor": "tuning_vertiq_40xx_vspin",
     "Entries": [
       {
         "type_idn": 60,
@@ -10,7 +10,7 @@
         "format": "f",
         "unit": "V",
         "frame_type": 2,
-        "maximum": 50.4,
+        "maximum": 25.2,
         "minimum": -0.1,
         "single_step": 0.1,
         "nan": true,
@@ -24,7 +24,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 1700,
+        "maximum": 4200,
         "minimum": -0.5,
         "single_step": 0.5,
         "nan": true,
@@ -38,7 +38,7 @@
         "format": "f",
         "unit": "N*m",
         "frame_type": 2,
-        "maximum": 5.0,
+        "maximum": 2.0,
         "minimum": -0.1,
         "single_step": 0.1,
         "nan": true,
@@ -155,7 +155,7 @@
         "decimal": 0,
         "single_step": 1
       },
-      {
+	  {
         "type_idn": 80,
         "descriptor": "DroneCAN Zero Behavior",
         "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command when DroneCAN is bypassing arming.",
@@ -166,12 +166,12 @@
         "list_name": [
           "Coast",
           "Brake",
-          "Normal Controller"
+		  "Normal Controller"
         ],
         "list_value": [
           0,
           1,
-          2
+		  2
         ]
       },
       {

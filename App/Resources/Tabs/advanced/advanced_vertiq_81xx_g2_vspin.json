@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "advanced_vertiq_60xx_hyperdrive_speed",
+    "descriptor": "advanced_vertiq_81xx_g2_vspin",
     "Entries": [
       {
         "type_idn": 102,
@@ -36,7 +36,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 1600,
+        "maximum": 4100,
         "minimum": 0,
         "single_step": 1
       },
@@ -48,7 +48,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 1700,
+        "maximum": 4200,
         "minimum": 0,
         "single_step": 1
       },
@@ -60,7 +60,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 90,
+        "maximum": 120,
         "minimum": 0,
         "single_step": 0.1,
         "decimal": 1
@@ -238,7 +238,7 @@
         "unit": "",
         "frame_type": 5
       },
-      {
+	  {
         "type_idn": 85,
         "descriptor": "Stow Target Acceleration",
         "info": "Determines the acceleration that will try to be maintained during the stow. A low acceleration will cause a more gradual transition to stow, while a high acceleration will cause a more aggressive stow.",
@@ -290,7 +290,7 @@
           2
         ]
       },
-      {
+	  {
         "type_idn": 87,
         "descriptor": "Stopped Speed",
         "info": "Determines the speed the module must be below to be considered stopped.",
@@ -304,7 +304,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-      {
+	  {
         "type_idn": 87,
         "descriptor": "Stopped Time",
         "info": "Determines how long the long the module must be stopped before considering a stop complete.",
@@ -318,7 +318,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-      {
+	  {
         "type_idn": 86,
         "descriptor": "Always Armed",
         "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
@@ -334,8 +334,8 @@
           0,
           1
         ]
-      },
-      {
+    },
+	{
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -368,7 +368,7 @@
           0,
           1
         ]
-      },
+    },
       {
         "type_idn": 80,
         "descriptor": "DroneCAN Telemetry Style",
@@ -386,7 +386,7 @@
           1
         ]
       },
-      {
+	  {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Percentage",
         "info": "Determines the throtlte percentage to treat as the zero spin throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
@@ -400,7 +400,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-      {
+	  {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Tolerance",
         "info": "Determines the tolerance below (or above on the negative side) the zero spin throttle to also consider as a 0% spin throttle.",
@@ -441,7 +441,7 @@
         "frame_type": 1,
         "list_name": [
           "Disarmed",
-          "Armed"
+		  "Armed"
         ],
         "list_value": [
           0,
@@ -663,7 +663,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 90,
+        "maximum": 120,
         "minimum": 0,
         "single_step": 0.1,
         "decimal": 1
@@ -715,7 +715,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 90,
+        "maximum": 120,
         "minimum": 0,
         "decimal": 1,
         "single_step": 0.1
@@ -729,7 +729,7 @@
         "unit": "A",
         "frame_type": 2,
         "maximum": 0,
-        "minimum": -90,
+        "minimum": -120,
         "single_step": 0.1,
         "decimal": 1
       },
@@ -780,7 +780,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 90,
+        "maximum": 120,
         "minimum": 0,
         "decimal": 1,
         "single_step": 0.1

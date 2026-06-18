@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "advanced_vertiq_81xx_g2_hyperdrive_speed",
+    "descriptor": "advanced_vertiq_40xx_vspin",
     "Entries": [
       {
         "type_idn": 102,
@@ -36,7 +36,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 4100,
+        "maximum": 2000,
         "minimum": 0,
         "single_step": 1
       },
@@ -48,7 +48,7 @@
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 4200,
+        "maximum": 2100,
         "minimum": 0,
         "single_step": 1
       },
@@ -60,7 +60,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 120,
+        "maximum": 70,
         "minimum": 0,
         "single_step": 0.1,
         "decimal": 1
@@ -335,7 +335,7 @@
           1
         ]
     },
-	{
+	  {
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -352,7 +352,7 @@
           1
         ]
       },
-      {
+	  {
         "type_idn": 80,
         "descriptor": "Arming by DroneCAN ArmingStatus",
         "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
@@ -369,23 +369,23 @@
           1
         ]
     },
-      {
-        "type_idn": 80,
-        "descriptor": "DroneCAN Telemetry Style",
-        "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
-        "sub_idn": 13,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Use New-Style Telemetry",
-          "Use Old-Style Telemetry"
-        ],
-        "list_value": [
-          0,
-          1
-        ]
-      },
+    {
+      "type_idn": 80,
+      "descriptor": "DroneCAN Telemetry Style",
+      "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
+      "sub_idn": 13,
+      "format": "B",
+      "unit": "enum",
+      "frame_type": 1,
+      "list_name": [
+        "Use New-Style Telemetry",
+        "Use Old-Style Telemetry"
+      ],
+      "list_value": [
+        0,
+        1
+      ]
+    },
 	  {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Percentage",
@@ -431,7 +431,7 @@
           1
         ]
       },
-      {
+	  {
         "type_idn": 86,
         "descriptor": "Arming State",
         "info": "Reports the current arming state and allows for manually changing it. Setting this to a different state will force the motor to transition to that arming state.",
@@ -663,7 +663,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 120,
+        "maximum": 70,
         "minimum": 0,
         "single_step": 0.1,
         "decimal": 1
@@ -715,7 +715,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 120,
+        "maximum": 70,
         "minimum": 0,
         "decimal": 1,
         "single_step": 0.1
@@ -729,7 +729,7 @@
         "unit": "A",
         "frame_type": 2,
         "maximum": 0,
-        "minimum": -120,
+        "minimum": -70,
         "single_step": 0.1,
         "decimal": 1
       },
@@ -780,7 +780,7 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 120,
+        "maximum": 70,
         "minimum": 0,
         "decimal": 1,
         "single_step": 0.1
