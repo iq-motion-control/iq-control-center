@@ -449,28 +449,6 @@
         ]
       },
       {
-        "type_idn": 86,
-        "descriptor": "Manual Arming Throttle Source",
-        "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
-        "sub_idn": 11,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "max_fw_version": "0.0.2",
-        "list_name": [
-          "Unknown",
-          "Hobby",
-          "DroneCAN",
-          "IQUART"
-        ],
-        "list_value": [
-          0,
-          1,
-          2,
-          3
-        ]
-      },
-      {
         "type_idn": 80,
         "descriptor": "DroneCAN Bitrate",
         "info": "The bitrate used by the CAN bus",
@@ -722,7 +700,7 @@
       },
       {
         "type_idn": 102,
-        "descriptor": "Regnerating Supply Current Limit",
+        "descriptor": "Regenerating Supply Current Limit",
         "info": "The supply current to limit the supply current regenerated when using the regenerating supply current limit",
         "sub_idn": 23,
         "format": "f",
