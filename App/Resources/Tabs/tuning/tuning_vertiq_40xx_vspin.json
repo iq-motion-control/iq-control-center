@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "tuning_vertiq_40xx_hyperdrive_speed",
+    "descriptor": "tuning_vertiq_40xx_vspin",
     "Entries": [
       {
         "type_idn": 60,
@@ -27,6 +27,20 @@
         "maximum": 4200,
         "minimum": -0.5,
         "single_step": 0.5,
+        "nan": true,
+        "decimal": 1
+      },
+      {
+        "type_idn": 60,
+        "descriptor": "Max Torque",
+        "info": "Only relevant in Torque Mode. This is the torque the controller will command at full throttle. Setting this torque without knowing the properties of your propeller could result in overheating your motor.",      
+        "sub_idn": 12,
+        "format": "f",
+        "unit": "N*m",
+        "frame_type": 2,
+        "maximum": 2.0,
+        "minimum": -0.1,
+        "single_step": 0.1,
         "nan": true,
         "decimal": 1
       },

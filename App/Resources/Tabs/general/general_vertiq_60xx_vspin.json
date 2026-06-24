@@ -1,6 +1,6 @@
 [
     {
-        "descriptor": "general_vertiq_40xx_hyperdrive_speed",
+        "descriptor": "general_vertiq_60xx_vspin",
         "Entries": [
             {
                 "type_idn": 60,
@@ -11,7 +11,7 @@
                 "unit": "enum",
                 "frame_type": 1,
                 "list_name": [
-                    "uncofigured",
+                    "unconfigured",
                     "3D counter clockwise",
                     "3D clockwise",
                     "2D counter clockwise",
@@ -36,18 +36,20 @@
                 "list_name": [
                     "PWM",
                     "Voltage",
-                    "Velocity"
+                    "Velocity",
+                    "Torque"
                 ],
                 "list_value": [
                     0,
                     1,
-                    2
+                    2,
+                    3
                 ]
             },
             {
                 "type_idn": 76,
-                "descriptor": "Communication",
-                "info": "These are standard timer based communication methods. Match your module's communication method with your flight controller's communication method.",
+                "descriptor": "Timer Based Protocol Communication",
+                "info": "These are standard timer based communication methods (e.g. PWM, DSHOT). Match your module's communication method with your flight controller's communication method if using one of these protocols.",
                 "sub_idn": 0,
                 "format": "B",
                 "unit": "enum",
@@ -189,6 +191,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "max_fw_version": "0.0.2",
                 "list_name": [
                     "Coast When Stowed",
                     "Hold Stow Angle"
@@ -196,6 +199,28 @@
                 "list_value": [
                     0,
                     1
+                ]
+            },
+            {
+                "type_idn": 85,
+                "descriptor": "Hold Stow",
+                "info": "Determines what the module should do at the end of a stow, whether that be coasting, braking, holding the angle, or holding it with the low-power brake hold.",
+                "sub_idn": 8,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "min_fw_version": "0.0.3",
+                "list_name": [
+                    "Coast When Stowed",
+                    "Hold Stow Angle",
+                    "Brake When Stowed",
+                    "Low Power Hold"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3
                 ]
             },
             {
@@ -274,7 +299,7 @@
             {
                 "type_idn": 86,
                 "descriptor": "Disarm On Throttle",
-                "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disrm On Throttle, throttle messages will not cause the module to disarm.",
+                "info": "Determines if the throttle input will be used to transition to the disarmed state. When this is set to Do Not Disarm On Throttle, throttle messages will not cause the module to disarm.",
                 "sub_idn": 5,
                 "format": "B",
                 "unit": "enum",
@@ -321,6 +346,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "max_fw_version": "0.0.3",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -336,6 +362,34 @@
             },
             {
                 "type_idn": 86,
+                "descriptor": "Disarm Behavior",
+                "info": "Determines what behavior to perform when disarming. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 9,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "min_fw_version": "0.0.4",
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow",
+                    "Coast to Stow",
+                    "Coast to Brake",
+                    "0V to Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ]
+            },
+            {
+                "type_idn": 86,
                 "descriptor": "Disarm Song Playback Option",
                 "info": "Determines how many times the disarming song will play on a disarm.",
                 "sub_idn": 10,
@@ -345,7 +399,7 @@
                 "list_name": [
                     "Never Play",
                     "Play Once",
-                    "Play Continuosly"
+                    "Play Continuously"
                 ],
                 "list_value": [
                     0,
@@ -361,6 +415,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "max_fw_version": "0.0.3",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -376,6 +431,34 @@
             },
             {
                 "type_idn": 52,
+                "descriptor": "Timeout Behavior",
+                "info": "Determines what behavior to perform when a timeout error occurs. The module will perform the first part of the requested behavior, wait for the module to come to a stop, play the song as appropriate, and then perform the last part of its behavior.",
+                "sub_idn": 18,
+                "format": "B",
+                "unit": "enum",
+                "frame_type": 1,
+                "min_fw_version": "0.0.4",
+                "list_name": [
+                    "Coast",
+                    "0V to Coast",
+                    "0V to Brake",
+                    "Stow",
+                    "Coast to Stow",
+                    "Coast to Brake",
+                    "0V to Stow"
+                ],
+                "list_value": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ]
+            },
+            {
+                "type_idn": 52,
                 "descriptor": "Timeout Song Playback Option",
                 "info": "Determines how many times the timeout song will play on a timeout error.",
                 "sub_idn": 19,
@@ -385,7 +468,7 @@
                 "list_name": [
                     "Never Play",
                     "Play Once",
-                    "Play Continuosly"
+                    "Play Continuously"
                 ],
                 "list_value": [
                     0,
@@ -401,6 +484,7 @@
                 "format": "B",
                 "unit": "%",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 100,
                 "minimum": 0,
                 "decimal": 0,
@@ -414,6 +498,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "min_fw_version": "0.0.3",
                 "list_name": [
                     "Inactive",
                     "Active"
@@ -431,6 +516,7 @@
                 "format": "f",
                 "unit": "seconds",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 1000,
                 "minimum": 0.1,
                 "default_value": 1,
@@ -445,6 +531,7 @@
                 "format": "I",
                 "unit": "",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 4294967295,
                 "minimum": 0,
                 "default_value": 0,
@@ -459,6 +546,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 255,
                 "minimum": 0,
                 "decimal": 0,
@@ -472,6 +560,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 255,
                 "minimum": 0,
                 "decimal": 0,
@@ -485,6 +574,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 255,
                 "minimum": 0,
                 "decimal": 0,
@@ -497,7 +587,8 @@
                 "sub_idn": 3,
                 "format": "n",
                 "unit": "",
-                "frame_type": 5
+                "frame_type": 5,
+                "min_fw_version": "0.0.3"
             },
             {
                 "type_idn": 100,
@@ -507,6 +598,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "min_fw_version": "0.0.3",
                 "list_name": [
                     "Inactive",
                     "Active"
@@ -524,6 +616,7 @@
                 "format": "f",
                 "unit": "seconds",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 1000,
                 "minimum": 0.1,
                 "default_value": 1,
@@ -538,6 +631,7 @@
                 "format": "I",
                 "unit": "",
                 "frame_type": 2,
+                "min_fw_version": "0.0.3",
                 "maximum": 4294967295,
                 "minimum": 0,
                 "default_value": 0,
@@ -552,6 +646,7 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
+                "min_fw_version": "0.0.3",
                 "list_name": [
                     "0",
                     "1",
@@ -614,8 +709,8 @@
             },
             {
                 "type_idn": 104,
-                "descriptor": "Hobby Throttle Priority",
-                "info": "Hobby protocols' priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "descriptor": "Timer Based Protocol Priority",
+                "info": "Timer Based Protocol protocols' (e.g. PWM, DSHOT) priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
                 "sub_idn": 2,
                 "format": "B",
                 "unit": "",
@@ -653,6 +748,36 @@
                     2,
                     3
                 ]
+            },
+            {
+                "type_idn": 59,
+                "descriptor": "Low Power Hold Allowed Target Error",
+                "info": "Determines how close the module must be to its target position before transitioning into brake when in a low power hold. Relevant when using Low Power Hold with stow.",
+                "sub_idn": 33,
+                "format": "f",
+                "unit": "rad",
+                "frame_type": 2,
+                "min_fw_version": "0.0.3",
+                "maximum": 32767,
+                "minimum": -32767,
+                "default_value": 0,
+                "decimal": 3,
+                "single_step": 0.001
+            },
+            {
+                "type_idn": 59,
+                "descriptor": "Low Power Hold Max Brake Error",
+                "info": "Determines how far the module can move from its target while in brake before actively trying to move back to the target position when in a low power hold. Relevant when using Low Power Hold with stow.",
+                "sub_idn": 34,
+                "format": "f",
+                "unit": "rad",
+                "frame_type": 2,
+                "min_fw_version": "0.0.3",
+                "maximum": 32767,
+                "minimum": -32767,
+                "default_value": 0,
+                "decimal": 3,
+                "single_step": 0.001
             },
             {
                 "type_idn": 105,

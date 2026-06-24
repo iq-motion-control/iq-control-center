@@ -19,6 +19,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     },
@@ -41,6 +48,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     },
@@ -63,6 +77,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     },
@@ -85,6 +106,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     },
@@ -107,6 +135,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     },
@@ -129,6 +164,13 @@
           "min_minor_build": 0,
           "min_patch_build": 0,
           "name": "vertiq_81xx_g2_servo"
+        },
+        {
+          "style": 7,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_vspin"
         }
       ]
     }
