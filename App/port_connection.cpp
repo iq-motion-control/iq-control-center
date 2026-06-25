@@ -41,7 +41,9 @@ PortConnection::PortConnection(Ui::MainWindow *user_int, ResourceFileHandler * r
   firmware_version_str_(""),
   num_modules_discovered_(0),
   indication_handle_(&ser_, clients_folder_path_),
-  perform_timer_callback_(true)
+  perform_timer_callback_(true),
+  missed_heartbeats_(0),
+  max_allowed_missed_heartbeats_(DEFAULT_MAX_ALLOWED_MISSED_HEARTBEATS)
 {
 
       SetPortConnection(0);
@@ -954,34 +956,65 @@ void PortConnection::DisplayInvalidFirmwareMessage(){
     msgBox.exec();
 }
 
+void PortConnection::SetMaxAllowedMissedHeartbeats(int new_max_allowed_missed_heartbeats){
+    max_allowed_missed_heartbeats_ = new_max_allowed_missed_heartbeats;
+}
+
+int PortConnection::GetMaxAllowedMissedHearbeats(){
+    return max_allowed_missed_heartbeats_;
+}
+
+//Called when we timeout on our heartbeats to deal with closing out and cleaning up our connection
+void PortConnection::HandleTimeout(){
+    AddToLog("Handling timeout");
+
+    //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
+    //if there's no one left, then we should just give up and close the port
+    if(num_modules_discovered_ > 1){
+        AddToLog("Attempting to reconnect to another module after timeout");
+
+        //pop up a message for them telling what just happened
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Module Disconnected");
+        msgBox.setText(
+            "Your currently targeted module has disconnected. We will rescan the network, and reconnect to another module.");
+        msgBox.exec();
+
+        //Find who's here now
+        DetectNumberOfModulesOnBus();
+
+    }else{
+      AddToLog("No other modules connected, disconnecting serial port due to timeout");
+
+      ClearDetections();
+      delete ser_.ser_port_;
+      SetPortConnection(0);
+      QString error_message = "Serial Port Disconnected";
+      ui_->header_error_label->setText(error_message);
+      emit LostConnection();
+    }
+}
+
 void PortConnection::TimerTimeout() {
   if (connection_state_ == 1 && perform_timer_callback_) {
     uint8_t obj_id;
     //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
-        //If we have multiple modules on the bus, we should rescan, and connect to a new module...and let the users know what's going on
-        //if there's no one left, then we should just give up and close the port
-        if(num_modules_discovered_ > 1){
-
-            //pop up a message for them telling what just happened
-            QMessageBox msgBox;
-            msgBox.setWindowTitle("Module Disconnected");
-            msgBox.setText(
-                "Your currently targeted module has disconnected. We will rescan the network, and reconnect to another module.");
-            msgBox.exec();
-
-            //Find who's here now
-            DetectNumberOfModulesOnBus();
-
-        }else{
-          ClearDetections();
-          delete ser_.ser_port_;
-          SetPortConnection(0);
-          QString error_message = "Serial Port Disconnected";
-          ui_->header_error_label->setText(error_message);
-          emit LostConnection();
-        }
+        missed_heartbeats_++;
+        AddToLog("No reply to heartbeat. Missed hearbeats = " + QString::number(missed_heartbeats_));
+    }else{
+        //We got a response, so clear out our consecutive missed heartbeat counter
+        missed_heartbeats_ = 0;
     }
+
+    if(missed_heartbeats_ > max_allowed_missed_heartbeats_){
+        //If you miss too many heartbeats in a row, timeout and disconnect
+        AddToLog("Missed heartbeats above allowed maximum. Maximum missed hearbeats = " + QString::number(max_allowed_missed_heartbeats_));
+        HandleTimeout();
+    }
+  }else{
+      //Clear out our heartbeat counting whenever we aren't doing a timeout check
+      missed_heartbeats_ = 0;
   }
 }
 
@@ -1098,7 +1131,7 @@ void PortConnection::PlayIndication(){
 void PortConnection::HandleRestartNeeded(){
     bool should_redetect = false;
 
-    //Don't let the timer timeout try and talk to us while we're doing this
+    //Don't let the timer timeout try and talk to us while we're doing this.
     perform_timer_callback_ = false;
 
     //Pop up a message saying what's going on
@@ -1140,7 +1173,7 @@ void PortConnection::HandleRestartNeeded(){
          DetectNumberOfModulesOnBus();
      }
 
-     //Let the timer callback work again
+     //Let the timer callback work again.
      perform_timer_callback_ = true;
 }
 
