@@ -438,7 +438,7 @@ class PortConnection : public QObject {
   uint32_t GetLinesInLog();
 
   /**
-   * @brief Handle if a heartbeat timeout triggers, closing out the connection and cleaning up
+   * @brief Handle if a heartbeat timeout triggers, closing out the connection and cleaning up. Will switch to another online motor if possible.
    */
   void HandleTimeout();
 
