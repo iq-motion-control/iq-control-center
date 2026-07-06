@@ -390,7 +390,7 @@ class PortConnection : public QObject {
    * @brief Gets the number of consecutive heartbeat responses that can be missed before disconnecting
    * @return int the number of consecutive heartbeat responses that can be missed before disconnecting
    */
-  int GetMaxAllowedMissedHearbeats();
+  int GetMaxAllowedMissedHeartbeats();
 
  public slots:
   void DetectModulesClickedCallback();

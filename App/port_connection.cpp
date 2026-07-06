@@ -960,7 +960,7 @@ void PortConnection::SetMaxAllowedMissedHeartbeats(int new_max_allowed_missed_he
     max_allowed_missed_heartbeats_ = new_max_allowed_missed_heartbeats;
 }
 
-int PortConnection::GetMaxAllowedMissedHearbeats(){
+int PortConnection::GetMaxAllowedMissedHeartbeats(){
     return max_allowed_missed_heartbeats_;
 }
 
@@ -1001,7 +1001,7 @@ void PortConnection::TimerTimeout() {
     //we didn't get a reply from our target module
     if (!GetEntryReply(ser_, sys_map_["system_control_client"], "module_id", 5, 0.05f, obj_id)) {
         missed_heartbeats_++;
-        AddToLog("No reply to heartbeat. Missed hearbeats = " + QString::number(missed_heartbeats_));
+        AddToLog("No reply to heartbeat. Missed heartbeats = " + QString::number(missed_heartbeats_));
     }else{
         //We got a response, so clear out our consecutive missed heartbeat counter
         missed_heartbeats_ = 0;
@@ -1009,7 +1009,7 @@ void PortConnection::TimerTimeout() {
 
     if(missed_heartbeats_ > max_allowed_missed_heartbeats_){
         //If you miss too many heartbeats in a row, timeout and disconnect
-        AddToLog("Missed heartbeats above allowed maximum. Maximum missed hearbeats = " + QString::number(max_allowed_missed_heartbeats_));
+        AddToLog("Missed heartbeats above allowed maximum. Maximum missed heartbeats = " + QString::number(max_allowed_missed_heartbeats_));
         HandleTimeout();
     }
   }else{
