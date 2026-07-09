@@ -19,10 +19,10 @@
             {
                 "type_idn": 74,
                 "descriptor": "Sample Pulsing Zero Angle",
-                "info": "Samples a new pulsing zero angle based on the current angle",
+                "info": "Samples a new pulsing zero angle based on the current angle.",
                 "sub_idn": 15,
                 "format": "n",
-                "unit": "",
+                "unit": "rads",
                 "frame_type": 5
             },
             {
@@ -149,10 +149,10 @@
             {
                 "type_idn": 85,
                 "descriptor": "Sample Zero Angle",
-                "info": "Samples a new zero angle based on the current angle",
+                "info": "Samples a new zero angle based on the current angle.",
                 "sub_idn": 3,
                 "format": "n",
-                "unit": "",
+                "unit": "rads",
                 "frame_type": 5
             },
             {
@@ -281,7 +281,7 @@
             {
                 "type_idn": 86,
                 "descriptor": "Consecutive Disarming Throttles to Disarm",
-                "info": "Number of consecutive disarming throttles needed to disarm the module",
+                "info": "Number of consecutive disarming throttles needed to disarm the module.",
                 "sub_idn": 13,
                 "format": "I",
                 "unit": "Throttles",
