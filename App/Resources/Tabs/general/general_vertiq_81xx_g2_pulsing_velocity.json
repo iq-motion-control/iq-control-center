@@ -487,8 +487,7 @@
                 "sub_idn": 3,
                 "format": "n",
                 "unit": "",
-                "frame_type": 5,
-                "min_fw_version": "0.0.0"
+                "frame_type": 5
             },
             {
                 "type_idn": 100,

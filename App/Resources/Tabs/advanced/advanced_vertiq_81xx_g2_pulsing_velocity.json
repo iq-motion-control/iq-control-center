@@ -526,7 +526,6 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "min_fw_version": "0.2.0",
         "maximum": 1000.0,
         "minimum": 0.25,
         "decimal": 2,
