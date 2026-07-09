@@ -209,7 +209,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
           "Error - End Disarmed",
           "Trigger Disarm Behavior",
@@ -274,7 +273,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -309,7 +307,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
           "Use New-Style Telemetry",
           "Use Old-Style Telemetry"
@@ -355,7 +352,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
           "Disabled",
           "Enabled"
@@ -424,7 +420,6 @@
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
           "Do Not Play Arming Song",
           "Play Arming Song"
@@ -442,7 +437,6 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 7,
         "minimum": 0,
         "single_step": 1
@@ -455,7 +449,6 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 3,
         "minimum": 0,
         "single_step": 1
@@ -468,7 +461,6 @@
         "format": "I",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 3,
         "minimum": 0,
         "single_step": 1
@@ -481,7 +473,6 @@
         "format": "I",
         "unit": "",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
             "TX Errors",
             "RX Errors",
@@ -505,7 +496,6 @@
         "format": "B",
         "unit": "Enables the motoring and regeneration supply current limiters. When disabled, those limits will have no effect on operation.",
         "frame_type": 1,
-        "min_fw_version": "0.0.0",
         "list_name": [
             "Disabled",
             "Enabled"
@@ -523,7 +513,6 @@
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": -0.25,
         "minimum": -1000.0,
         "decimal": 2,
@@ -551,7 +540,6 @@
         "format": "f",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 5.0,
         "minimum": 0.0,
         "decimal": 2,
@@ -565,7 +553,6 @@
         "format": "f",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 5.0,
         "minimum": 0.0,
         "decimal": 2,
@@ -579,7 +566,6 @@
         "format": "f",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 5.0,
         "minimum": 0.0,
         "decimal": 2,
@@ -593,7 +579,6 @@
         "format": "f",
         "unit": "",
         "frame_type": 2,
-        "min_fw_version": "0.0.0",
         "maximum": 5.0,
         "minimum": 0.0,
         "decimal": 2,

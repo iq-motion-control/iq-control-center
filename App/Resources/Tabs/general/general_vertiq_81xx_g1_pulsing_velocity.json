@@ -204,7 +204,6 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "Coast When Stowed",
                     "Hold Stow Angle",
@@ -311,7 +310,7 @@
             {
                 "type_idn": 86,
                 "descriptor": "Consecutive Arming Throttles to Arm",
-                "info": "The low end of the calibration in us",
+                "info": "The number of consecutive throttles in the arming region required to arm the module. Any throttles that come in outside of the arming region will reset the count.",
                 "sub_idn": 8,
                 "format": "I",
                 "unit": "Throttles",
@@ -328,7 +327,6 @@
                 "format": "I",
                 "unit": "Throttles",
                 "frame_type": 2,
-                "min_fw_version": "0.0.0",
                 "maximum": 100000,
                 "minimum": 1,
                 "default_value": 1,
@@ -342,7 +340,6 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -410,7 +407,6 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "Coast",
                     "0V to Coast",
@@ -457,7 +453,6 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "Protocol Disabled",
                     "1",
@@ -479,7 +474,6 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "Protocol Disabled",
                     "1",
@@ -501,7 +495,6 @@
                 "format": "f",
                 "unit": "rad",
                 "frame_type": 2,
-                "min_fw_version": "0.0.0",
                 "maximum": 32767,
                 "minimum": -32767,
                 "default_value": 0,
@@ -516,7 +509,6 @@
                 "format": "f",
                 "unit": "rad",
                 "frame_type": 2,
-                "min_fw_version": "0.0.0",
                 "maximum": 32767,
                 "minimum": -32767,
                 "default_value": 0,
@@ -734,7 +726,6 @@
                 "format": "B",
                 "unit": "enum",
                 "frame_type": 1,
-                "min_fw_version": "0.0.0",
                 "list_name": [
                     "0",
                     "1",
