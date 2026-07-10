@@ -164,7 +164,7 @@
             {
                 "type_idn": 85,
                 "descriptor": "Stow Target Angle",
-                "info": "The angle in radians the module will stow at with respect to the zero angle",
+                "info": "The angle in radians the module will stow at with respect to the zero angle.",
                 "sub_idn": 1,
                 "format": "f",
                 "unit": "rads",
@@ -177,7 +177,7 @@
             {
                 "type_idn": 85,
                 "descriptor": "Stow Zero Angle",
-                "info": "The zero angle",
+                "info": "The zero angle.",
                 "sub_idn": 0,
                 "format": "f",
                 "unit": "rads",
@@ -448,7 +448,7 @@
             {
                 "type_idn": 104,
                 "descriptor": "DroneCAN Throttle Priority",
-                "info": "DroneCAN's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "info": "DroneCAN's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority.",
                 "sub_idn": 1,
                 "format": "B",
                 "unit": "",
@@ -469,7 +469,7 @@
             {
                 "type_idn": 104,
                 "descriptor": "IQUART Throttle Priority",
-                "info": "IQUART's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority",
+                "info": "IQUART's priority when receiving concurrent throttle commands from multiple sources. The higher the value the higher the priority.",
                 "sub_idn": 3,
                 "format": "B",
                 "unit": "",
@@ -659,7 +659,7 @@
             {
                 "type_idn": 78,
                 "descriptor": "Unit minimum",
-                    "info": "Minimum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 1000ms (or equivalent).",
+                "info": "Minimum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 1000ms (or equivalent).",
                 "sub_idn": 1,
                 "format": "f",
                 "unit": "",
@@ -672,7 +672,7 @@
             {
                 "type_idn": 78,
                 "descriptor": "Unit maximum",
-                    "info": "Maximum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 2000ms (or equivalent).",
+                "info": "Maximum value of the servo input.  The unit is determined by the Servo mode.  This is the applied value at 2000ms (or equivalent).",
                 "sub_idn": 2,
                 "format": "f",
                 "unit": "",
