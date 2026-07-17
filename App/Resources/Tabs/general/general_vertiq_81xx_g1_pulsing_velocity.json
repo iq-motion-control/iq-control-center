@@ -143,7 +143,6 @@
                 "format": "I",
                 "unit": "",
                 "frame_type": 2,
-                "min_fw_version": "0.1.0",
                 "maximum": 256,
                 "minimum": 0,
                 "decimal": 0,
