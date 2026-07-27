@@ -25,7 +25,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_81xx_g2_hyperdrive_speed"
+          "name": "vertiq_81xx_g2_vspin"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_pulsing_velocity"
         }
       ]
     },
@@ -54,7 +61,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_81xx_g2_hyperdrive_speed"
+          "name": "vertiq_81xx_g2_vspin"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_pulsing_velocity"
         }
       ]
     },
@@ -83,7 +97,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_81xx_g2_hyperdrive_speed"
+          "name": "vertiq_81xx_g2_vspin"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_pulsing_velocity"
         }
       ]
     },
@@ -112,7 +133,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_81xx_g2_hyperdrive_speed"
+          "name": "vertiq_81xx_g2_vspin"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_pulsing_velocity"
         }
       ]
     },
@@ -141,7 +169,14 @@
           "min_major_build": 0,
           "min_minor_build": 0,
           "min_patch_build": 0,
-          "name": "vertiq_81xx_g2_hyperdrive_speed"
+          "name": "vertiq_81xx_g2_vspin"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g2_pulsing_velocity"
         }
       ]
     },
@@ -186,6 +221,13 @@
           "min_minor_build": 0,
           "min_patch_build": 2,
           "name": "vertiq_81xx_servo"
+        },
+        {
+          "style": 6,
+          "min_major_build": 0,
+          "min_minor_build": 0,
+          "min_patch_build": 0,
+          "name": "vertiq_81xx_g1_pulsing_velocity"
         }
       ]
     }

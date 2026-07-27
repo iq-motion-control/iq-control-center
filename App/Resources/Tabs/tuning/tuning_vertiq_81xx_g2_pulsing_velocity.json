@@ -1,6 +1,6 @@
 [
   {
-    "descriptor": "tuning_vertiq_81xx_g2_hyperdrive_speed",
+    "descriptor": "tuning_vertiq_81xx_g2_pulsing_velocity",
     "Entries": [
       {
         "type_idn": 60,
@@ -141,7 +141,7 @@
         "decimal": 0,
         "single_step": 1
       },
-	  {
+      {
         "type_idn": 80,
         "descriptor": "DroneCAN Zero Behavior",
         "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command when DroneCAN is bypassing arming.",
@@ -152,19 +152,19 @@
         "list_name": [
           "Coast",
           "Brake",
-		  "Normal Controller"
+          "Normal Controller"
         ],
         "list_value": [
           0,
           1,
-		  2
+          2
         ]
       },
       {
-        "type_idn": 102,
-        "descriptor": "Motor Current Slew Limit Enable",
-        "info": "Enables the motor current slew limit which limits how quickly the motor current can change",
-        "sub_idn": 17,
+        "type_idn": 50,
+        "descriptor": "Voltage Slew Limit Enable",
+        "info": "Determines how the motor reacts to receiving a zero setpoint from a DroneCAN Raw Command.",
+        "sub_idn": 47,
         "format": "B",
         "unit": "enum",
         "frame_type": 1,
@@ -178,15 +178,15 @@
         ]
       },
       {
-        "type_idn": 102,
-        "descriptor": "Motor Current Slew Limit",
-        "info": "Sets the motor current slew limit of the motor in A/s. Only has an effect if the slew limit is enabled.",
-        "sub_idn": 16,
+        "type_idn": 50,
+        "descriptor": "Voltage Slew Limit",
+        "info": "Sets the slew limit of the motor in V/s. Only has an effect of the slew limit is enabled.",
+        "sub_idn": 46,
         "format": "f",
-        "unit": "A/s",
+        "unit": "V/s",
         "frame_type": 2,
         "maximum": 10000,
-        "minimum": 100,
+        "minimum": 1,
         "decimal": 0,
         "single_step": 1
       },
@@ -258,6 +258,97 @@
         "single_step": 0.001,
         "decimal": 3,
         "nan": true
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Cutoff Velocity",
+        "info": "The minimum velocity of the motor before pulsing can be enabled.",
+        "sub_idn": 6,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 2,
+        "maximum": 3750,
+        "minimum": 0,
+        "decimal":0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Polynomial Coefficient 0",
+        "info": "The zeroth coefficient of the polynomial cutoff",
+        "sub_idn": 7,
+        "format": "f",
+        "unit": "V",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 8,
+        "single_step": 0.001
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Polynomial Coefficient 1",
+        "info": "The first coefficient of the polynomial cutoff",
+        "sub_idn": 8,
+        "format": "f",
+        "unit": "V*(s/rad)",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 8,
+        "single_step": 0.001
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Polynomial Coefficient 2",
+        "info": "The second coefficient of the polynomial cutoff",
+        "sub_idn": 9,
+        "format": "f",
+        "unit": "V*(s/rad)^2",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 8,
+        "single_step": 0.001
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Polynomial Coefficient 3",
+        "info": "The third coefficient of the polynomial cutoff",
+        "sub_idn": 10,
+        "format": "f",
+        "unit": "V*(s/rad)^3",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 11,
+        "single_step": 0.001
+      },
+      {
+        "type_idn": 74,
+        "descriptor": "Pulsing Phase Lead Time",
+        "info": "The velocity phase correction factor",
+        "sub_idn": 11,
+        "format": "f",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 1000,
+        "minimum": -1000,
+        "decimal": 8,
+        "single_step": 0.001
+      },
+	    {
+        "type_idn": 89,
+        "descriptor": "Pulsing Velocity Limit",
+        "info": "The maximum pulsing velocity",
+        "sub_idn": 1,
+        "format": "f",
+        "unit": "rad/s",
+        "frame_type": 2,
+        "maximum": 3450.0,
+        "minimum": 0.0,
+        "decimal": 1,
+        "single_step": 1.0
       }
     ]
   }

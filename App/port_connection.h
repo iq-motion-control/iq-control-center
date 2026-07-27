@@ -77,6 +77,8 @@
 #define ELECTRONICS_STRING "connected module has electronics type: "
 #define ELECTRONICS_MAJOR_STRING "connected module has electronics major version: "
 
+#define DEFAULT_MAX_ALLOWED_MISSED_HEARTBEATS 5
+
 class PortConnection : public QObject {
   Q_OBJECT
  public:
@@ -378,6 +380,18 @@ class PortConnection : public QObject {
 
   void HandleRestartNeeded();
 
+  /**
+   * @brief Sets the number of consecutive heartbeat responses that can be missed before disconnecting
+   * @param new_max_allowed_missed_heartbeats the number of consecutive heartbeat responses that can be missed before disconnecting
+   */
+  void SetMaxAllowedMissedHeartbeats(int new_max_allowed_missed_heartbeats);
+
+  /**
+   * @brief Gets the number of consecutive heartbeat responses that can be missed before disconnecting
+   * @return int the number of consecutive heartbeat responses that can be missed before disconnecting
+   */
+  int GetMaxAllowedMissedHeartbeats();
+
  public slots:
   void DetectModulesClickedCallback();
 
@@ -423,6 +437,11 @@ class PortConnection : public QObject {
 
   uint32_t GetLinesInLog();
 
+  /**
+   * @brief Handle if a heartbeat timeout triggers, closing out the connection and cleaning up. Will switch to another online motor if possible.
+   */
+  void HandleTimeout();
+
   Ui::MainWindow *ui_;
 
   //Object that handles finding and extracting information from resource files. Useful for extracting names during recovery and flash checking.
@@ -464,6 +483,8 @@ class PortConnection : public QObject {
   IndicationHandler indication_handle_;
 
   bool perform_timer_callback_;
+  int missed_heartbeats_; //Keep track of how many consecutive heartbeats we've missed so we can determine if we want to disconnect
+  int max_allowed_missed_heartbeats_; //How many heartbeats are we allowed to miss without disconnecting? This could potentially be something we expose as a setting
 };
 
 #endif  // CONNECTION_HPP

@@ -1,12 +1,12 @@
 [
   {
-    "descriptor": "advanced_vertiq_40xx_hyperdrive_speed",
+    "descriptor": "advanced_vertiq_81xx_g1_pulsing_velocity",
     "Entries": [
-     {
-        "type_idn": 102,
-        "descriptor": "Supply Voltage Limit End",
-        "info": "A safety feature that does not allow the motor to regenerate the supply above the set voltage. Used in conjunction with Supply Voltage Limit Start",
-        "sub_idn": 5,
+      {
+        "type_idn": 50,
+        "descriptor": "Volts Limit",
+        "info": "A safety feature that does not allow the motor to regenerate above the set voltage.",
+        "sub_idn": 35,
         "format": "f",
         "unit": "V",
         "frame_type": 2,
@@ -16,10 +16,10 @@
         "decimal": 1
       },
       {
-        "type_idn": 102,
-        "descriptor": "Supply Voltage Limit Start",
-        "info": "The supply voltage at which the safeties will start to attempt to limit the regeneration of the motor",
-        "sub_idn": 6,
+        "type_idn": 50,
+        "descriptor": "Volts Limit Starting Voltage",
+        "info": "The voltage at which the safeties will start to attempt to limit the regeneration of the motor",
+        "sub_idn": 29,
         "format": "f",
         "unit": "V",
         "frame_type": 2,
@@ -29,38 +29,38 @@
         "decimal": 1
       },
       {
-        "type_idn": 102,
+        "type_idn": 50,
         "descriptor": "Speed Redline Start",
-        "info": "A safety feature that attempts to limit the speed of the motor. The motor will start to adjust the applied motor current to oppose overspeeding when the motor exceeds the Speed Redline Start and will adjust more aggressively as the speed increases up to the Speed Redline End",
-        "sub_idn": 3,
+        "info": "A safety feature that begins derating the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "sub_idn": 38,
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 2000,
+        "maximum": 4100,
         "minimum": 0,
         "single_step": 1
       },
       {
-        "type_idn": 102,
+        "type_idn": 50,
         "descriptor": "Speed Redline End",
-        "info": "A safety feature that attempts to limit the speed of the motor. The motor will start to adjust the applied motor current to oppose overspeeding when the motor exceeds the Speed Redline Start and will adjust more aggressively as the speed increases up to the Speed Redline End",
-        "sub_idn": 4,
+        "info": "A safety feature that fully derates the motor at this speed. Between the redline start and redline end, the motor will linearly throttle down the applied voltage.",
+        "sub_idn": 39,
         "format": "f",
         "unit": "rad/s",
         "frame_type": 2,
-        "maximum": 2100,
+        "maximum": 4200,
         "minimum": 0,
         "single_step": 1
       },
       {
-        "type_idn": 102,
-        "descriptor": "Motor Current Max",
-        "info": "The maximum motor current to apply to the motor",
-        "sub_idn": 1,
+        "type_idn": 50,
+        "descriptor": "Current Max",
+        "info": "A calculated maximum current using the built-in motor model.",
+        "sub_idn": 34,
         "format": "f",
         "unit": "A",
         "frame_type": 2,
-        "maximum": 70,
+        "maximum": 120,
         "minimum": 0,
         "single_step": 0.1,
         "decimal": 1
@@ -170,75 +170,7 @@
         "unit": "",
         "frame_type": 5
       },
-      {
-        "type_idn": 76,
-        "descriptor": "Hobby Calibrated Communication Protocol",
-        "info": "Indicates which hobby protocol the module has been calibrated with. A module can only be calibrated with one protocol at a time. The module does not need to be calibrated to listen to a protocol, for example you could control the module with PWM in the No Calibration state. Calibration is just an available option if the flight controller and the motor have different minimum and maximum limits. This setting is NOT USER SETTABLE, it can only be changed by performing a calibration.",
-        "sub_idn": 2,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "No Calibration",
-          "Autodetect",
-          "Hobby Disabled",
-          "Standard PWM",
-          "OneShot125",
-          "OneShot42",
-          "MultiShot",
-          "DShot150",
-          "DShot300",
-          "DShot600",
-          "DShot1200"
-        ],
-        "list_value": [
-          0,
-          255,
-          254,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8
-        ]
-      },
-      {
-        "type_idn": 76,
-        "descriptor": "Hobby Calibration High",
-        "info": "The high end of the calibration in us",
-        "sub_idn": 3,
-        "format": "I",
-        "unit": "us",
-        "frame_type": 2,
-        "maximum": 4294967295,
-        "minimum": 0,
-        "single_step": 1
-      },
-      {
-        "type_idn": 76,
-        "descriptor": "Hobby Calibration Low",
-        "info": "The low end of the calibration in us",
-        "sub_idn": 4,
-        "format": "I",
-        "unit": "us",
-        "frame_type": 2,
-        "maximum": 4294967295,
-        "minimum": 0,
-        "single_step": 1
-      },
-      {
-        "type_idn": 76,
-        "descriptor": "Hobby Calibration Reset",
-        "info": "Resets all Hobby calibration data to the factory default state. The module will have no user calibration stored on it after this reset.",
-        "sub_idn": 5,
-        "format": "n",
-        "unit": "",
-        "frame_type": 5
-      },
-	  {
+	    {
         "type_idn": 85,
         "descriptor": "Stow Target Acceleration",
         "info": "Determines the acceleration that will try to be maintained during the stow. A low acceleration will cause a more gradual transition to stow, while a high acceleration will cause a more aggressive stow.",
@@ -269,7 +201,26 @@
           1
         ]
       },
-	  {
+      {
+        "type_idn": 52,
+        "descriptor": "Timeout Meaning",
+        "info": "Used to indicate if a timeout is intended to be used as an intentional disarm or as an error. If set to disarm, the timeout will act just like a disarm and trigger the disarm behavior and song. When set to an error, the timeout behavior and song will trigger. There are options for a communication error to cause the motor to disarm or remain armed ",
+        "sub_idn": 17,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Error - End Disarmed",
+          "Trigger Disarm Behavior",
+          "Error - Remain Armed"
+        ],
+        "list_value": [
+          0,
+          1,
+          2
+        ]
+      },
+	    {
         "type_idn": 87,
         "descriptor": "Stopped Speed",
         "info": "Determines the speed the module must be below to be considered stopped.",
@@ -283,7 +234,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-	  {
+	    {
         "type_idn": 87,
         "descriptor": "Stopped Time",
         "info": "Determines how long the long the module must be stopped before considering a stop complete.",
@@ -297,7 +248,7 @@
         "decimal": 1,
         "single_step": 0.1
       },
-	  {
+	    {
         "type_idn": 86,
         "descriptor": "Always Armed",
         "info": "Determines if the module will always force itself to arm, regardless of what throttle it receives.",
@@ -313,8 +264,8 @@
           0,
           1
         ]
-    },
-	  {
+      },
+	    {
         "type_idn": 80,
         "descriptor": "DroneCAN Bypass Arming",
         "info": "Allows to bypass arming with DroneCAN throttle messages. DroneCAN throttle messages will not be impacted by the arming state, will not cause arming state transitions, and will use the zero behavior setting. Useful for continuing to use 'old-style' DroneCAN support.",
@@ -331,7 +282,7 @@
           1
         ]
       },
-	  {
+      {
         "type_idn": 80,
         "descriptor": "Arming by DroneCAN ArmingStatus",
         "info": "Determines if the module will arm and disarm using DroneCAN ArmingStatus messages.",
@@ -347,25 +298,25 @@
           0,
           1
         ]
-    },
-    {
-      "type_idn": 80,
-      "descriptor": "DroneCAN Telemetry Style",
-      "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
-      "sub_idn": 13,
-      "format": "B",
-      "unit": "enum",
-      "frame_type": 1,
-      "list_name": [
-        "Use New-Style Telemetry",
-        "Use Old-Style Telemetry"
-      ],
-      "list_value": [
-        0,
-        1
-      ]
-    },
-	  {
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Telemetry Style",
+        "info": "'Use New-Style Telemetry' will output ESC Status and ESC Status Extended as your telemetry. 'Use Old-Style Telemetry' will output ESC Status and Device Temperature as your telemetry.",
+        "sub_idn": 13,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Use New-Style Telemetry",
+          "Use Old-Style Telemetry"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
+      },
+	    {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Percentage",
         "info": "Determines the throtlte percentage to treat as the zero spin throttle. A throttle of that percentage will cause a 0% spin, and all throttles greater than that will be scaled based on that 0%.",
@@ -379,7 +330,7 @@
         "decimal": 2,
         "single_step": 0.01
       },
-	  {
+	    {
         "type_idn": 60,
         "descriptor": "Zero Spin Throttle Tolerance",
         "info": "Determines the tolerance below (or above on the negative side) the zero spin throttle to also consider as a 0% spin throttle.",
@@ -410,7 +361,7 @@
           1
         ]
       },
-	  {
+	    {
         "type_idn": 86,
         "descriptor": "Arming State",
         "info": "Reports the current arming state and allows for manually changing it. Setting this to a different state will force the motor to transition to that arming state.",
@@ -420,32 +371,11 @@
         "frame_type": 1,
         "list_name": [
           "Disarmed",
-		  "Armed"
+          "Armed"
         ],
         "list_value": [
           0,
           1
-        ]
-      },
-      {
-        "type_idn": 86,
-        "descriptor": "Manual Arming Throttle Source",
-        "info": "Determines the throttle source to lock on to when aming manually or using Always Armed.",
-        "sub_idn": 11,
-        "format": "B",
-        "unit": "enum",
-        "frame_type": 1,
-        "list_name": [
-          "Unknown",
-          "Hobby",
-          "DroneCAN",
-          "IQUART"
-        ],
-        "list_value": [
-          0,
-          1,
-          2,
-          3
         ]
       },
       {
@@ -483,168 +413,80 @@
           "single_step": 0.1
       },
       {
-          "type_idn": 102,
-          "descriptor": "Motoring Supply Current Limit Enable",
-          "info": "Enables the motoring supply current limit feature which will attempt to limit the maximum current draw from the supply when motoring",
-          "sub_idn": 7,
-          "format": "B",
-          "unit": "enum",
-          "frame_type": 1,
-          "list_name": [
-            "Disabled",
-            "Enabled"
-          ],
-          "list_value": [
-            0,
-            1
-          ]
+        "type_idn": 86,
+        "descriptor": "Play Arming Song on Arm",
+        "info": "Determines whether or not the 2 tone arming song will play on arming.",
+        "sub_idn": 14,
+        "format": "B",
+        "unit": "enum",
+        "frame_type": 1,
+        "list_name": [
+          "Do Not Play Arming Song",
+          "Play Arming Song"
+        ],
+        "list_value": [
+          0,
+          1
+        ]
       },
       {
-          "type_idn": 102,
-          "descriptor": "Regenerating Supply Current Limit Enable",
-          "info": "Enables the regenerating supply current limit feature which will attempt to limit the maximum current sent to the supply when regenerating",
-          "sub_idn": 10,
-          "format": "B",
-          "unit": "enum",
-          "frame_type": 1,
-          "list_name": [
-            "Disabled",
-            "Enabled"
-          ],
-          "list_value": [
-            0,
-            1
-          ]
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Warning Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node warning health checks are active. Bit 0: coil temperature check | Bit 1: microcontroller temperature check | Bit 2: over voltage check",
+        "sub_idn": 15,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 7,
+        "minimum": 0,
+        "single_step": 1
       },
       {
-        "type_idn": 102,
-        "descriptor": "Motoring Supply Current Limit",
-        "info": "The supply current to limit the supply current draw to when using the motoring supply current limit",
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Error Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node error health checks are active. Bit 0: timeout check | Bit 1: 0 < derate < 1 check",
+        "sub_idn": 16,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN Health Critical Check Enable Bitmask",
+        "info": "A bitmask used to determine what DroneCAN node critical health checks are active. Bit 0: derate = 0 check | Bit 1: drive locked out check",
+        "sub_idn": 17,
+        "format": "I",
+        "unit": "",
+        "frame_type": 2,
+        "maximum": 3,
+        "minimum": 0,
+        "single_step": 1
+      },
+      {
+        "type_idn": 80,
+        "descriptor": "DroneCAN ESC Status Error Count Meaning",
+        "info": "Determines the meaning of the reported error count in the DroneCAN ESC Status message. Options are to report the number of CAN TX errors, CAN RX errors, max of CAN TX or CAN RX errors, CAN TX errors | CAN RX errors, or total CAN errors.",
         "sub_idn": 18,
-        "format": "f",
-        "unit": "A",
-        "frame_type": 2,
-        "maximum": 70,
-        "minimum": 0,
-        "single_step": 0.1,
-        "decimal": 1
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Motoring Supply Current Limit Kp",
-        "info": "Kp for the closed loop adjustment available when using the motoring supply current limiter",
-        "sub_idn": 19,
-        "format": "f",
+        "format": "I",
         "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 2,
-        "single_step": 0.01
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Motoring Supply Current Limit Ki",
-        "info": "Ki for the closed loop adjustment available when using the motoring supply current limiter",
-        "sub_idn": 20,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 2,
-        "single_step": 0.01
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Motoring Supply Current Limit Kd",
-        "info": "Kd for the closed loop adjustment available when using the motoring supply current limiter",
-        "sub_idn": 21,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 3,
-        "single_step": 0.001
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Motoring Supply Current Limit Max Adjust",
-        "info": "The maximum amount of closed loop adjustment that the motoring supply current limiter can add to its feed-forward limit.",
-        "sub_idn": 22,
-        "format": "f",
-        "unit": "A",
-        "frame_type": 2,
-        "maximum": 70,
-        "minimum": 0,
-        "decimal": 1,
-        "single_step": 0.1
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Regnerating Supply Current Limit",
-        "info": "The supply current to limit the supply current regenerated when using the regenerating supply current limit",
-        "sub_idn": 23,
-        "format": "f",
-        "unit": "A",
-        "frame_type": 2,
-        "maximum": 0,
-        "minimum": -70,
-        "single_step": 0.1,
-        "decimal": 1
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Regenerating Supply Current Limit Kp",
-        "info": "Kp for the closed loop adjustment available when using the regenerating supply current limiter",
-        "sub_idn": 24,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 2,
-        "single_step": 0.01
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Regenerating Supply Current Limit Ki",
-        "info": "Ki for the closed loop adjustment available when using the regenerating supply current limiter",
-        "sub_idn": 25,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 2,
-        "single_step": 0.01
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Regenerating Supply Current Limit Kd",
-        "info": "Kd for the closed loop adjustment available when using the regenerating supply current limiter",
-        "sub_idn": 26,
-        "format": "f",
-        "unit": "",
-        "frame_type": 2,
-        "maximum": 10,
-        "minimum": 0,
-        "decimal": 3,
-        "single_step": 0.001
-      },
-      {
-        "type_idn": 102,
-        "descriptor": "Regenerating Supply Current Limit Max Adjust",
-        "info": "The maximum amount of closed loop adjustment that the regenerating supply current limiter can add to its feed-forward limit.",
-        "sub_idn": 27,
-        "format": "f",
-        "unit": "A",
-        "frame_type": 2,
-        "maximum": 70,
-        "minimum": 0,
-        "decimal": 1,
-        "single_step": 0.1
+        "frame_type": 1,
+        "list_name": [
+            "TX Errors",
+            "RX Errors",
+            "Max of TX or RX Errors",
+            "TX Errors | RX Errors",
+            "Total Errors"
+        ],
+        "list_value": [
+            0,
+            1,
+            2,
+            3,
+            4
+        ]
       }
     ]
   }
