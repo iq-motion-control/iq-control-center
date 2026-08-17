@@ -316,7 +316,7 @@
             {
                 "type_idn": 86,
                 "descriptor": "Consecutive Arming Throttles to Arm",
-                "info": "The low end of the calibration in us",
+                "info": "The number of consecutive throttles in the arming region required to arm the module. Any throttles that come in outside of the arming region will reset the count.",
                 "sub_idn": 8,
                 "format": "I",
                 "unit": "Throttles",
