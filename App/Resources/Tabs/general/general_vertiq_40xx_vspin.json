@@ -696,9 +696,9 @@
                 "frame_type": 1,
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,
@@ -717,9 +717,9 @@
                 "frame_type": 1,
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,
@@ -738,9 +738,9 @@
                 "frame_type": 1,
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,

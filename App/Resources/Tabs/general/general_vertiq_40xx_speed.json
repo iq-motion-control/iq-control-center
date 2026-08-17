@@ -696,9 +696,9 @@
                 "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,
@@ -718,9 +718,9 @@
                 "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,
@@ -740,9 +740,9 @@
                 "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
-                    "1",
-                    "2",
-                    "3"
+                    "Low",
+                    "Medium",
+                    "High"
                 ],
                 "list_value": [
                     0,
