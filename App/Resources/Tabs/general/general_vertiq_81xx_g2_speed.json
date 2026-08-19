@@ -693,6 +693,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "Low",
@@ -714,6 +715,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "Low",
@@ -735,6 +737,7 @@
                 "format": "B",
                 "unit": "",
                 "frame_type": 1,
+                "min_fw_version": "0.1.0",
                 "list_name": [
                     "Protocol Disabled",
                     "Low",
