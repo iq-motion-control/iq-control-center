@@ -736,8 +736,8 @@
         "frame_type": 1,
         "min_fw_version": "0.3.2",
         "list_name": [
-            "Allow Tunnels",
-            "Filter Out Tunnels"
+            "Allow Tunnel Messages",
+            "Filter Out Tunnel Messages"
         ],
         "list_value": [
             1,
