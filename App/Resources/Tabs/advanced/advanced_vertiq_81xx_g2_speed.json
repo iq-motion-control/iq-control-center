@@ -728,7 +728,7 @@
       },
       {
         "type_idn": 80,
-        "descriptor": "Accept DroneCAN Tunnel Messages",
+        "descriptor": "Accept DroneCAN Tunnels",
         "info": "Configures if DroneCAN tunnel messages will be allowed through by the hardware filters. Reboot is required after changing this parameter.",
         "sub_idn": 19,
         "format": "B",
@@ -736,8 +736,8 @@
         "frame_type": 1,
         "min_fw_version": "0.3.2",
         "list_name": [
-            "Allow Tunnel Messages",
-            "Filter Out Tunnel Messages"
+            "Allow Tunnels",
+            "Filter Out Tunnels"
         ],
         "list_value": [
             1,
